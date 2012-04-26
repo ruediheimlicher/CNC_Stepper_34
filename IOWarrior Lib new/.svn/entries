@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wc-entries
+   xmlns="svn:">
+<entry
+   committed-rev="42"
+   name=""
+   committed-date="2006-08-01T19:53:45.333025Z"
+   url="file:///Users/ilja/Library/svnrepository/IOWarrior/trunk/IOWarrior%20Lib%20Sources"
+   last-author="ilja"
+   kind="dir"
+   uuid="8937a34f-60e0-0310-9c68-de4b3b040f2d"
+   repos="file:///Users/ilja/Library/svnrepository"
+   revision="42"/>
+<entry
+   committed-rev="44"
+   name="IOWarriorLib.c"
+   text-time="2006-08-25T13:39:51.000000Z"
+   committed-date="2006-09-20T11:18:50.982341Z"
+   checksum="d674f0e8bca36be7788e686e8829390b"
+   last-author="ilja"
+   kind="file"
+   prop-time="2006-08-01T19:54:03.000000Z"
+   revision="44"/>
+<entry
+   committed-rev="44"
+   name="IOWarriorLib.h"
+   text-time="2006-08-25T13:38:49.000000Z"
+   committed-date="2006-09-20T11:18:50.982341Z"
+   checksum="3794cfbb9434958866eec40734a67417"
+   last-author="ilja"
+   kind="file"
+   prop-time="2006-08-01T19:54:03.000000Z"
+   revision="44"/>
+</wc-entries>
