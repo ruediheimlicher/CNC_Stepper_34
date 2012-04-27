@@ -315,7 +315,7 @@ private void button4_Click(object sender, EventArgs e)
             sendbuffer[i] = 0;
          }
          
-         sendbuffer[20] = pwm;
+ //        sendbuffer[20] = pwm;
          
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          
@@ -806,9 +806,10 @@ private void button4_Click(object sender, EventArgs e)
    
    
     // in 32:
+   /*
     sendbuffer[20]=pwm;
     sendbuffer[0]=0xE2; // code fuer DC 
-
+*/
     
    //sendbuffer[8]=pwm;
    

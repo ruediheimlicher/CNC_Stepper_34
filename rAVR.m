@@ -1271,7 +1271,7 @@ return returnInt;
    
    
    int erfolg=0;
-   NSLog(@"PWM Sichern");
+   //NSLog(@"PWM Sichern");
    BOOL LibOK=NO;
    BOOL istOrdner;
    NSError* error=0;
@@ -1322,7 +1322,7 @@ return returnInt;
       //NSLog(@"reportPWMSichern: gesicherter PListDic: %@",[tempPListDic description]);
       
       erfolg=[tempPListDic writeToURL:PListURL atomically:YES];
-      NSLog(@"reportPWMSichern erfolg: %d",erfolg);
+      //NSLog(@"reportPWMSichern erfolg: %d",erfolg);
    }
    
    
@@ -1342,8 +1342,8 @@ return returnInt;
 
 - (int)saveSpeed
 {
-   NSLog(@"saveSpeed");
-   NSLog(@"saveSpeed speed: %d",[SpeedFeld intValue]);
+   //NSLog(@"saveSpeed");
+   //NSLog(@"saveSpeed speed: %d",[SpeedFeld intValue]);
    
    
    
@@ -1378,7 +1378,7 @@ return returnInt;
    
    if (PListPfad)
    {
-      NSLog(@"saveSpeed: PListPfad: %@ ",PListPfad);
+      //NSLog(@"saveSpeed: PListPfad: %@ ",PListPfad);
       
       NSMutableDictionary* tempPListDic;//=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
       NSFileManager *Filemanager=[NSFileManager defaultManager];
@@ -1398,7 +1398,7 @@ return returnInt;
       //NSLog(@"saveSpeed: gesicherter PListDic: %@",[tempPListDic description]);
       
       erfolg=[tempPListDic writeToURL:PListURL atomically:YES];
-      NSLog(@"saveSpeed erfolg: %d",erfolg);
+      //NSLog(@"saveSpeed erfolg: %d",erfolg);
    }
    
    
@@ -4574,7 +4574,7 @@ return returnInt;
    [CNC_Lefttaste setEnabled:YES];
    [CNC_Uptaste setEnabled:YES];
    [CNC_Downtaste setEnabled:YES];
-   [self setBusy:0];
+//   [self setBusy:0];
    // anscheinend OK
    //end von 32
    
@@ -4593,7 +4593,7 @@ return returnInt;
 	[CNC_Sendtaste setEnabled:![sender state]];
 	[CNC_Terminatetaste setEnabled:![sender state]];
 	[DC_Taste setState:0];
-   [self setBusy:0];
+//   [self setBusy:0];
    
    NSMutableDictionary* haltInfoDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[haltInfoDic setObject:[NSNumber numberWithInt:[CNC_Halttaste state]] forKey:@"halt"];
@@ -5415,7 +5415,7 @@ return returnInt;
       if (homeanschlagCount == 4)
           {
              NSLog(@"AVR  USBReadAktion Home erreicht");
-             [self setBusy:0];
+//             [self setBusy:0];
           }
       
    }
