@@ -84,7 +84,6 @@
 							<string key="NSFrame">{{7, 10}, {1218, 676}}</string>
 							<reference key="NSSuperview" ref="727013072"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView" ref="689186444"/>
 							<array class="NSMutableArray" key="NSTabViewItems">
 								<object class="NSTabViewItem" id="605208388">
 									<string key="NSIdentifier">1</string>
@@ -503,7 +502,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 																		<string key="NSFrameSize">{423, 90}</string>
 																		<reference key="NSSuperview" ref="527394496"/>
 																		<reference key="NSWindow"/>
-																		<reference key="NSNextKeyView" ref="513827858"/>
+																		<reference key="NSNextKeyView" ref="238551647"/>
 																		<bool key="NSEnabled">YES</bool>
 																		<object class="NSTableHeaderView" key="NSHeaderView" id="57985406">
 																			<reference key="NSNextResponder" ref="238551647"/>
@@ -770,7 +769,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 														<string key="NSFrame">{{79, 13}, {425, 108}}</string>
 														<reference key="NSSuperview" ref="427529702"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="238551647"/>
+														<reference key="NSNextKeyView" ref="527394496"/>
 														<int key="NSsFlags">133682</int>
 														<reference key="NSVScroller" ref="513827858"/>
 														<reference key="NSHScroller" ref="451351778"/>
@@ -4571,6 +4570,22 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
+						<string key="label">CNC_BlockKonfigurierenTaste</string>
+						<reference key="source" ref="1068649839"/>
+						<reference key="destination" ref="805928123"/>
+					</object>
+					<int key="connectionID">1708</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">CNC_BlockAnfuegenTaste</string>
+						<reference key="source" ref="1068649839"/>
+						<reference key="destination" ref="439901508"/>
+					</object>
+					<int key="connectionID">1709</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="751885620"/>
 						<reference key="destination" ref="1068649839"/>
@@ -7066,7 +7081,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">1707</int>
+			<int key="maxID">1709</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
