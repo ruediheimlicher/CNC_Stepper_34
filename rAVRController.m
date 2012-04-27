@@ -272,9 +272,10 @@ private void button4_Click(object sender, EventArgs e)
         
          NSScanner *theScanner;
          unsigned	  value;
+         NSLog(@"writeCNCAbschnitt tempSchnittdatenArray:");
          for (i=0;i<[tempSchnittdatenArray count];i++)
          {
-            
+            NSLog(@"i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
             NSString* tempString=[[tempSchnittdatenArray objectAtIndex:i]stringValue];
             int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
              NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
@@ -791,21 +792,23 @@ private void button4_Click(object sender, EventArgs e)
       sendbuffer[i] = 0;
    }
    
-   /*
+   
     // in 32:
     sendbuffer[20]=pwm;
     sendbuffer[0]=0xE2; // code fuer DC 
 
-    */
-   sendbuffer[8]=pwm;
+    
+   //sendbuffer[8]=pwm;
    
-   sendbuffer[16]=0xE2; // code fuer DC 
+   //sendbuffer[16]=0xE2; // code fuer DC 
    
    
    int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
+   sendbuffer[0]=0x00;
+   sendbuffer[20]=0;
    
-   sendbuffer[16]=0x00;
-   sendbuffer[8]=0;
+ //  sendbuffer[16]=0x00;
+ //  sendbuffer[8]=0;
    Stepperposition=1;
    free(sendbuffer);
    if ([readTimer isValid])

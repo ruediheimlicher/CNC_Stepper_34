@@ -5230,7 +5230,7 @@ return returnInt;
       [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
       
       NSString* s1=@"Der Heizdraht ist noch nicht eingeschaltet.";
-      NSString* s2=@"";
+      NSString* s2=@"Nach dem Einschalten den Vorgang erneut starten.";
       NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
       [Warnung setInformativeText:InformationString];
       [Warnung setAlertStyle:NSWarningAlertStyle];
@@ -5245,6 +5245,9 @@ return returnInt;
       case NSAlertFirstButtonReturn: // Einschalten
       {
          [DC_Taste setState:1];
+         [self DC_ON:[DC_PWM intValue]]; 
+         return;
+               
       }
       case NSAlertSecondButtonReturn: // Ignorieren
       {
