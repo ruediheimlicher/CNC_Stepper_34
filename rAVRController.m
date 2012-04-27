@@ -793,7 +793,7 @@ private void button4_Click(object sender, EventArgs e)
    if ([[note userInfo]objectForKey:@"pwm"])
    {
       pwm =[[[note userInfo]objectForKey:@"pwm"]intValue];
-      NSLog(@"AVRController DC_Aktion pwm: %d",pwm);
+      //NSLog(@"AVRController DC_Aktion pwm: %d",pwm);
    }
    char*      sendbuffer;
    
@@ -806,13 +806,14 @@ private void button4_Click(object sender, EventArgs e)
    
    
     // in 32:
-   /*
+   
     sendbuffer[20]=pwm;
     sendbuffer[0]=0xE2; // code fuer DC 
-*/
+
     
-   sendbuffer[8]=pwm;
+   //sendbuffer[8]=pwm;
    
+   // code fuer Task angeben
    sendbuffer[16]=0xE2; // code fuer DC 
    
    
@@ -851,7 +852,9 @@ private void button4_Click(object sender, EventArgs e)
       sendbuffer[i] = 0;
    }
    sendbuffer[8]=ein;
+   // code fuer Task angeben:
    sendbuffer[16]=0xE4; // code fuer Stepperstrom 
+   
    int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
    sendbuffer[16]=0x00;
    sendbuffer[8]=0;

@@ -1175,6 +1175,7 @@ return returnInt;
 - (IBAction)reportDC_Stepper:(id)sender
 {
    //NSLog(@"reportDC_Stepper Wert: %d ",[sender intValue]); 
+   
    [DC_PWM setIntValue:[sender intValue]];
    if ([DC_Taste state])
    {
@@ -4574,7 +4575,7 @@ return returnInt;
    [CNC_Lefttaste setEnabled:YES];
    [CNC_Uptaste setEnabled:YES];
    [CNC_Downtaste setEnabled:YES];
-//   [self setBusy:0];
+   [self setBusy:0];
    // anscheinend OK
    //end von 32
    
@@ -4593,7 +4594,7 @@ return returnInt;
 	[CNC_Sendtaste setEnabled:![sender state]];
 	[CNC_Terminatetaste setEnabled:![sender state]];
 	[DC_Taste setState:0];
-//   [self setBusy:0];
+   [self setBusy:0];
    
    NSMutableDictionary* haltInfoDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[haltInfoDic setObject:[NSNumber numberWithInt:[CNC_Halttaste state]] forKey:@"halt"];
@@ -5415,7 +5416,7 @@ return returnInt;
       if (homeanschlagCount == 4)
           {
              NSLog(@"AVR  USBReadAktion Home erreicht");
-//             [self setBusy:0];
+             [self setBusy:0];
           }
       
    }
