@@ -1143,8 +1143,8 @@ return returnInt;
    
    //  NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
    //  NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
-   NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
-   NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
+//   NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
+//   NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
 	cncposition =0;
    if (i==0 || i==[KoordinatenTabelle count]-1)
    {
@@ -1270,7 +1270,7 @@ return returnInt;
    
    
    int erfolg=0;
-   NSLog(@"PWM Sichern");
+   //NSLog(@"PWM Sichern");
    BOOL LibOK=NO;
    BOOL istOrdner;
    NSError* error=0;
@@ -1321,7 +1321,7 @@ return returnInt;
       //NSLog(@"reportPWMSichern: gesicherter PListDic: %@",[tempPListDic description]);
       
       erfolg=[tempPListDic writeToURL:PListURL atomically:YES];
-      NSLog(@"reportPWMSichern erfolg: %d",erfolg);
+      //NSLog(@"reportPWMSichern erfolg: %d",erfolg);
    }
    
    
@@ -1377,7 +1377,7 @@ return returnInt;
    
    if (PListPfad)
    {
-      NSLog(@"saveSpeed: PListPfad: %@ ",PListPfad);
+      //NSLog(@"saveSpeed: PListPfad: %@ ",PListPfad);
       
       NSMutableDictionary* tempPListDic;//=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
       NSFileManager *Filemanager=[NSFileManager defaultManager];
@@ -1397,7 +1397,7 @@ return returnInt;
       //NSLog(@"saveSpeed: gesicherter PListDic: %@",[tempPListDic description]);
       
       erfolg=[tempPListDic writeToURL:PListURL atomically:YES];
-      NSLog(@"saveSpeed erfolg: %d",erfolg);
+      //NSLog(@"saveSpeed erfolg: %d",erfolg);
    }
    
    
