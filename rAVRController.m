@@ -811,9 +811,9 @@ private void button4_Click(object sender, EventArgs e)
     sendbuffer[0]=0xE2; // code fuer DC 
 */
     
-   //sendbuffer[8]=pwm;
+   sendbuffer[8]=pwm;
    
-   //sendbuffer[16]=0xE2; // code fuer DC 
+   sendbuffer[16]=0xE2; // code fuer DC 
    
    
    int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
