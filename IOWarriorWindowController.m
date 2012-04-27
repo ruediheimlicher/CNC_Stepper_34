@@ -658,6 +658,8 @@ void print_all_num(struct Abschnitt* list)
    schliessencounter=0;	// Zaehlt FensterschliessenAktionen
     
     ignoreDuplicates=1;
+   
+   pwm=0;
 	int  r;
 	char buf[64];
     

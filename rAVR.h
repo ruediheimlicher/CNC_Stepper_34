@@ -239,6 +239,7 @@
 - (IBAction)reportStartKnopf:(id)sender;
 - (IBAction)reportStopKnopf:(id)sender;
 - (void)DC_ON:(int)pwm;
+- (int)pwm;
 - (void)setStepperstrom:(int)ein;
 
 - (int)saveSpeed;

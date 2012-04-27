@@ -182,6 +182,13 @@ private void button4_Click(object sender, EventArgs e)
    //NSLog(@"USB_SchnittdatenAktion SchnittDatenArray Stepperposition: %d",Stepperposition);
 	//NSLog(@"USB_SchnittdatenAktion note: %@",[[note userInfo]description]);
    
+   if ([[note userInfo]objectForKey:@"pwm"])
+   {
+      pwm = [[[note userInfo]objectForKey:@"pwm"]intValue];
+   
+   }
+   
+   
    if ([[note userInfo]objectForKey:@"schnittdatenarray"])
     {
 
@@ -268,14 +275,16 @@ private void button4_Click(object sender, EventArgs e)
          int i;
          
          
-         NSArray* tempSchnittdatenArray=[SchnittDatenArray objectAtIndex:Stepperposition];
-        
+         NSMutableArray* tempSchnittdatenArray=(NSMutableArray*)[SchnittDatenArray objectAtIndex:Stepperposition];
+         //[tempSchnittdatenArray addObject:[NSNumber numberWithInt:[AVR pwm]]];
          NSScanner *theScanner;
          unsigned	  value;
-         NSLog(@"writeCNCAbschnitt tempSchnittdatenArray:");
+         //NSLog(@"writeCNCAbschnitt tempSchnittdatenArray count: %d",[tempSchnittdatenArray count]);
+         //NSLog(@"tempSchnittdatenArray object 20: %d",[[tempSchnittdatenArray objectAtIndex:20]intValue]);
+         
          for (i=0;i<[tempSchnittdatenArray count];i++)
          {
-            NSLog(@"i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
+           // NSLog(@"i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
             NSString* tempString=[[tempSchnittdatenArray objectAtIndex:i]stringValue];
             int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
              NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
@@ -297,13 +306,16 @@ private void button4_Click(object sender, EventArgs e)
             
             //sendbuffer[i]=(char)[[tempSchnittdatenArray objectAtIndex:i]UTF8String];
          }
- 
+         
+         
          
          // Rest auffüllen
          for (i=[tempSchnittdatenArray count];i<32;i++)
          {
             sendbuffer[i] = 0;
          }
+         
+         sendbuffer[20] = pwm;
          
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          
@@ -777,11 +789,11 @@ private void button4_Click(object sender, EventArgs e)
 
 - (void)DC_Aktion:(NSNotification*)note
 {
-   int pwm=0;
+   
    if ([[note userInfo]objectForKey:@"pwm"])
    {
       pwm =[[[note userInfo]objectForKey:@"pwm"]intValue];
-      //NSLog(@"AVRController DC_Aktion pwm: %d",pwm);
+      NSLog(@"AVRController DC_Aktion pwm: %d",pwm);
    }
    char*      sendbuffer;
    

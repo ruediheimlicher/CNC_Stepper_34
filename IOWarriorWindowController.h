@@ -84,6 +84,7 @@
    int               pfeilaktion;
    
     int              USBStatus;
+   int               pwm;
     NSMutableIndexSet* HomeAnschlagSet;
 }
 

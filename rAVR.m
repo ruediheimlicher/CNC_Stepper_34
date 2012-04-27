@@ -4593,6 +4593,7 @@ return returnInt;
 	[CNC_Sendtaste setEnabled:![sender state]];
 	[CNC_Terminatetaste setEnabled:![sender state]];
 	[DC_Taste setState:0];
+   [self setBusy:0];
    
    NSMutableDictionary* haltInfoDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[haltInfoDic setObject:[NSNumber numberWithInt:[CNC_Halttaste state]] forKey:@"halt"];
@@ -5246,7 +5247,7 @@ return returnInt;
       {
          [DC_Taste setState:1];
          [self DC_ON:[DC_PWM intValue]]; 
-         return;
+         //return;
                
       }
       case NSAlertSecondButtonReturn: // Ignorieren
@@ -5396,6 +5397,7 @@ return returnInt;
       }
 
    }
+   
    if([[note userInfo]objectForKey:@"home"])
    {
       //NSLog(@"AVR  USBReadAktion home: %d",[[[note userInfo]objectForKey:@"home"]intValue]);
@@ -5413,6 +5415,7 @@ return returnInt;
       if (homeanschlagCount == 4)
           {
              NSLog(@"AVR  USBReadAktion Home erreicht");
+             [self setBusy:0];
           }
       
    }
