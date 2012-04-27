@@ -5171,7 +5171,6 @@ return returnInt;
 - (NSDictionary*)AnzahlSchritte
 {
    return 0;
-   
 }
 
 #pragma mark AutoTask
