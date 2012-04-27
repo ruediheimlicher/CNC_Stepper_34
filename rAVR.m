@@ -912,7 +912,7 @@ return returnInt;
    
    NSArray* tempLinienArray = [CNC LinieVonPunkt:NSMakePoint(25,25) mitLaenge:15 mitWinkel:30];
    //NSLog(@"tempLinienArray: %@",tempLinienArray);
-
+   [AbbrandFeld setFloatValue:0.6];
 	//NSLog(@"reportStartKnopf state: %d",[sender state]);
 	if ([sender state])
 	{
@@ -929,6 +929,7 @@ return returnInt;
          [WertXStepper setFloatValue:0.0];
          [WertYStepper setFloatValue:0.0];
          [IndexStepper setIntValue:0];
+         [AbbrandFeld setFloatValue:0.6];
          
          NSNumber* KoordinateAX=[NSNumber numberWithFloat:[WertXFeld floatValue]];
          NSNumber* KoordinateAY=[NSNumber numberWithFloat:[WertYFeld floatValue]];
@@ -3669,7 +3670,8 @@ return returnInt;
              bis=[KoordinatenTabelle count]-3;
           }
        }
-   KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrand:0.6 aufSeite:0 von:von bis:bis];
+   float abbrand = [AbbrandFeld floatValue];
+   KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrand:abbrand aufSeite:0 von:von bis:bis];
    
    // Startwerte in mm in CNC_Eingabe aktualisieren
    NSMutableDictionary* StartwertDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];

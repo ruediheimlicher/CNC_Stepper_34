@@ -1676,7 +1676,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
     seite = 0: abbrand oben, Negativform
     seite = 1: abbrand aussen, Positivform
     */
-   NSLog(@"addAbbrand Mass: %2.4f",abbrand);
+   NSLog(@"addAbbrand Mass: %2.4f von: %d bis: %d",abbrand,von,bis);
    int i=0;
    NSMutableArray* AbbrandArray = [[NSMutableArray alloc]initWithCapacity:0];
 //   NSLog(@"addAbbrandVonKoordinaten ax: %@",[Koordinatentabelle valueForKey:@"ax"]);
@@ -1861,7 +1861,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          //NSLog(@"i %d mod %2.2f %2.2f %2.2f %2.2f  %2.2f %2.2f %2.2f %f",i,ax,ay,bx,by,ax+abbranda[0],ay+abbranda[1],bx+abbrandb[0],by+abbrandb[1]);
          if (((i>10)&&(i<18)) || (i> 40))
          {
-            //NSLog(@"i: %d tempDic: %@",i,[tempDic description]);
+            NSLog(@"i: %d tempDic: %@",i,[tempDic description]);
          }
       } // i im Bereich
       

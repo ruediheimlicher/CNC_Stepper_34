@@ -190,6 +190,8 @@
    IBOutlet id					LagePop;
    IBOutlet id					WinkelFeld;
    IBOutlet id					WinkelStepper;
+   
+   IBOutlet id					AbbrandFeld;
     
    IBOutlet	id					GleichesProfilRadioKnopf;
    IBOutlet id					WertFeld;
