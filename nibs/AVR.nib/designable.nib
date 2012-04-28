@@ -2311,7 +2311,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 														<int key="NSvFlags">274</int>
 														<string key="NSFrame">{{1, 1.25}, {1103, 0}}</string>
 														<reference key="NSSuperview" ref="996991511"/>
-														<reference key="NSNextKeyView"/>
 														<string key="NSReuseIdentifierKey">_NS:632</string>
 													</object>
 												</array>
@@ -2495,13 +2494,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<int key="NSPeriodicInterval">75</int>
 												</object>
 											</object>
-											<object class="NSProgressIndicator" id="549635312">
+											<object class="NSProgressIndicator" id="382493987">
 												<reference key="NSNextResponder" ref="689186444"/>
 												<int key="NSvFlags">1292</int>
 												<object class="NSPSMatrix" key="NSDrawMatrix"/>
 												<string key="NSFrame">{{19, 314}, {32, 32}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
-												<int key="NSpiFlags">20490</int>
+												<int key="NSpiFlags">28682</int>
 												<double key="NSMaxValue">100</double>
 											</object>
 										</array>
@@ -4523,7 +4522,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">CNC_busySpinner</string>
 						<reference key="source" ref="1068649839"/>
-						<reference key="destination" ref="549635312"/>
+						<reference key="destination" ref="382493987"/>
 					</object>
 					<int key="connectionID">1714</int>
 				</object>
@@ -4692,7 +4691,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="225590066"/>
 							<reference ref="455412614"/>
 							<reference ref="973410250"/>
-							<reference ref="549635312"/>
+							<reference ref="382493987"/>
 						</array>
 						<reference key="parent" ref="605208388"/>
 					</object>
@@ -6703,7 +6702,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					</object>
 					<object class="IBObjectRecord">
 						<int key="objectID">1713</int>
-						<reference key="object" ref="549635312"/>
+						<reference key="object" ref="382493987"/>
 						<reference key="parent" ref="689186444"/>
 					</object>
 				</array>

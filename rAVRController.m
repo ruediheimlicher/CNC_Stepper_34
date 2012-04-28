@@ -185,7 +185,7 @@ private void button4_Click(object sender, EventArgs e)
    if ([[note userInfo]objectForKey:@"pwm"])
    {
       pwm = [[[note userInfo]objectForKey:@"pwm"]intValue];
-   
+      NSLog(@"USB_SchnittdatenAktion pwm: %d",pwm);
    }
    
    
@@ -274,7 +274,7 @@ private void button4_Click(object sender, EventArgs e)
          sendbuffer=malloc(32);
          //
          int i;
-         
+         pwm = [AVR pwm];
          
          NSMutableArray* tempSchnittdatenArray=(NSMutableArray*)[SchnittDatenArray objectAtIndex:Stepperposition];
          //[tempSchnittdatenArray addObject:[NSNumber numberWithInt:[AVR pwm]]];
@@ -316,7 +316,7 @@ private void button4_Click(object sender, EventArgs e)
             sendbuffer[i] = 0;
          }
          
- //        sendbuffer[20] = pwm;
+         sendbuffer[20] = pwm;
          
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          
@@ -331,7 +331,6 @@ private void button4_Click(object sender, EventArgs e)
    else
    {
       NSLog(@"writeCNCAbschnitt >count\n*\n\n");
-      [AVR setBusy:0];
       //NSLog(@"writeCNCAbschnitt timer inval");
       if (readTimer)
       {
@@ -342,6 +341,9 @@ private void button4_Click(object sender, EventArgs e)
          }
 
       }
+      [AVR setBusy:0];
+      [self DC_Aktion:NULL];
+
       
    }
 	
@@ -688,8 +690,13 @@ private void button4_Click(object sender, EventArgs e)
          {
             
             NSLog(@"readUSB End Abschnitt timer inval");
-            [self stopTimer];
+            
+            [self DC_Aktion:NULL];
+            
             [AVR setBusy:0];
+            [self stopTimer];
+            
+
 
          }
          else 
@@ -710,6 +717,7 @@ private void button4_Click(object sender, EventArgs e)
                {
                   [self stopTimer];
                   [AVR setBusy:0];
+                  [self DC_Aktion:NULL];
                  // [HomeAnschlagSet removeAllIndexes];
 
                }
@@ -795,12 +803,13 @@ private void button4_Click(object sender, EventArgs e)
 
 - (void)DC_Aktion:(NSNotification*)note
 {
-   
-   if ([[note userInfo]objectForKey:@"pwm"])
+   pwm=0;
+   if ([note userInfo]&&[[note userInfo]objectForKey:@"pwm"])
    {
       pwm =[[[note userInfo]objectForKey:@"pwm"]intValue];
       //NSLog(@"AVRController DC_Aktion pwm: %d",pwm);
    }
+   NSLog(@"AVRController DC_Aktion pwm: %d",pwm);
    char*      sendbuffer;
    
    sendbuffer=malloc(32);

@@ -951,7 +951,7 @@ return returnInt;
  
          
       }
-      [DC_Taste setState:0];
+   //   [DC_Taste setState:0];
       [CNC_Stoptaste setEnabled:YES];
       [CNC_Halttaste setEnabled:NO];
 	[self setStepperstrom:1];
@@ -1144,8 +1144,8 @@ return returnInt;
    
    //  NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
    //  NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
-   NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
-   NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
+   //NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
+   //NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
 	cncposition =0;
    if (i==0 || i==[KoordinatenTabelle count]-1)
    {
@@ -1168,7 +1168,7 @@ return returnInt;
 	[CNC_Sendtaste setEnabled:YES];
 	[CNC_Terminatetaste setEnabled:YES];
 	[self setStepperstrom:1];
-   [DC_Taste setState:0];
+   //[DC_Taste setState:0];
    
 }
 
@@ -1177,13 +1177,16 @@ return returnInt;
    //NSLog(@"reportDC_Stepper Wert: %d ",[sender intValue]); 
    
    [DC_PWM setIntValue:[sender intValue]];
-   if ([DC_Taste state])
+   if (CNC_busy == 0) // Weiterleiten an AVRController nur im Stillstand
    {
-      [self DC_ON:[sender intValue]];
-   }
-   else
-   {
-      [self DC_ON:0];
+      if ([DC_Taste state])
+      {
+         [self DC_ON:[sender intValue]];
+      }
+      else
+      {
+         [self DC_ON:0];
+      }
    }
 }
 
@@ -1191,7 +1194,7 @@ return returnInt;
 
 - (IBAction)reportDC_Taste:(id)sender
 {
-   NSLog(@"reportDC_Taste state: %d ",[sender state]); 
+   NSLog(@"reportDC_Taste state: %d pwm: %d",[sender state],[DC_PWM intValue]); 
   
    if ([sender state])
    {
@@ -1214,10 +1217,11 @@ return returnInt;
 }
 
 
-- (void)DC_ON:(int)pwm
+- (void)DC_ON:(int)pwmwert
 {
    NSMutableDictionary* DCDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
-   [DCDic setObject:[NSNumber numberWithInt:pwm] forKey:@"pwm"]; // DC ein/aus, nur fuer AVRController
+   
+   [DCDic setObject:[NSNumber numberWithInt:pwmwert] forKey:@"pwm"]; // DC ein/aus, nur fuer AVRController
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
    [nc postNotificationName:@"DC_pwm" object:self userInfo:DCDic];
    
@@ -5276,6 +5280,8 @@ return returnInt;
     // Array an USB schicken
     NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
     NSMutableDictionary* SchnittdatenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+   [SchnittdatenDic setObject:[NSNumber numberWithInt:[self pwm]] forKey:@"pwm"];
+
    [SchnittdatenDic setObject:SchnittdatenArray forKey:@"schnittdatenarray"];
    [SchnittdatenDic setObject:[NSNumber numberWithInt:cncposition] forKey:@"cncposition"];
    
