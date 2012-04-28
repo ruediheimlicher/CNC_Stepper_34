@@ -1670,6 +1670,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    return AuslaufpunkteArray;
 }
 
+
 - (NSMutableArray*)addAbbrandVonKoordinaten:(NSArray*)Koordinatentabelle mitAbbrand:(float)abbrand aufSeite:(int)seite von:(int)von bis:(int)bis
 {
    /*
