@@ -1192,6 +1192,7 @@ return returnInt;
 - (IBAction)reportDC_Taste:(id)sender
 {
    NSLog(@"reportDC_Taste state: %d ",[sender state]); 
+  
    if ([sender state])
    {
       [self DC_ON:[DC_PWM intValue]];
@@ -1253,12 +1254,13 @@ return returnInt;
    else
    {
       [CNC_busySpinner stopAnimation:NULL];
+      [DC_Taste setState:0];
    }
    
 }
 - (int)busy
 {
-   return [CNC_busySpinner  state];
+   return CNC_busy;
 }
 
 

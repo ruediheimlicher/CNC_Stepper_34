@@ -685,6 +685,7 @@ private void button4_Click(object sender, EventArgs e)
             
             NSLog(@"readUSB End Abschnitt timer inval");
             [self stopTimer];
+            [AVR setBusy:0];
 
          }
          else 

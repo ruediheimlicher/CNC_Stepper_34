@@ -241,6 +241,7 @@
 - (void)DC_ON:(int)pwm;
 - (int)pwm;
 - (void)setStepperstrom:(int)ein;
+- (void)setBusy:(int)busy;
 
 - (int)saveSpeed;
 - (IBAction)reportSpeedStepper:(id)sender;
