@@ -205,7 +205,7 @@ private void button4_Click(object sender, EventArgs e)
        //NSLog(@"USB_SchnittdatenAktion SchnittDatenArray: %@",[SchnittDatenArray description]);
 
        Stepperposition=0;
-       
+       [AVR setBusy:1];
        [self writeCNCAbschnitt];
        //int result = rawhid_recv(0, receivebuffer, 64, 200);
        //NSLog(@"result: %d receivebuffer: %d",result, receivebuffer[0]);
@@ -266,6 +266,7 @@ private void button4_Click(object sender, EventArgs e)
 		if ([AVR halt])
 		{
          NSLog(@"writeCNCAbschnitt HALT");
+         [AVR setBusy:0];
 		}
 		else 
 		{
@@ -330,6 +331,7 @@ private void button4_Click(object sender, EventArgs e)
    else
    {
       NSLog(@"writeCNCAbschnitt >count\n*\n\n");
+      [AVR setBusy:0];
       //NSLog(@"writeCNCAbschnitt timer inval");
       if (readTimer)
       {
@@ -353,6 +355,7 @@ private void button4_Click(object sender, EventArgs e)
       {
          NSLog(@"stopTimer timer inval");
          [readTimer invalidate];
+         [AVR setBusy:0];
       }
       
    }
@@ -531,6 +534,7 @@ private void button4_Click(object sender, EventArgs e)
                      if ([readTimer isValid])
                      {
                         NSLog(@"readUSB  mouseup timer inval");
+                        [AVR setBusy:0];
                         [readTimer invalidate];
                      }
                   }
@@ -705,7 +709,7 @@ private void button4_Click(object sender, EventArgs e)
                else if ([HomeAnschlagSet count]==4)
                {
                   [self stopTimer];
-                  
+                  [AVR setBusy:0];
                  // [HomeAnschlagSet removeAllIndexes];
 
                }
@@ -713,6 +717,7 @@ private void button4_Click(object sender, EventArgs e)
                {
                   [[inTimer userInfo]setObject:[NSNumber numberWithInt:3]forKey:@"home"]; 
                   [self stopTimer];
+                  [AVR setBusy:0];
                }
              }
             
