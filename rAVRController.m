@@ -267,6 +267,18 @@ private void button4_Click(object sender, EventArgs e)
 		{
          NSLog(@"writeCNCAbschnitt HALT");
          [AVR setBusy:0];
+         [self DC_Aktion:NULL];
+
+         if (readTimer)
+         {
+            if ([readTimer isValid])
+            {
+               NSLog(@"writeCNCAbschnitt timer inval");
+               [readTimer invalidate];
+            }
+            
+         }
+         
 		}
 		else 
 		{
@@ -332,6 +344,9 @@ private void button4_Click(object sender, EventArgs e)
    {
       NSLog(@"writeCNCAbschnitt >count\n*\n\n");
       //NSLog(@"writeCNCAbschnitt timer inval");
+      [AVR setBusy:0];
+//      [self DC_Aktion:NULL];
+
       if (readTimer)
       {
          if ([readTimer isValid])
@@ -341,8 +356,6 @@ private void button4_Click(object sender, EventArgs e)
          }
 
       }
-      [AVR setBusy:0];
-      [self DC_Aktion:NULL];
 
       
    }
@@ -358,6 +371,8 @@ private void button4_Click(object sender, EventArgs e)
          NSLog(@"stopTimer timer inval");
          [readTimer invalidate];
          [AVR setBusy:0];
+         [AVR DC_ON:0];
+         
       }
       
    }
@@ -531,12 +546,15 @@ private void button4_Click(object sender, EventArgs e)
                case 0xE1: // Mouseup
                {
                   [SchnittDatenArray removeAllObjects];
+                  [AVR setBusy:0];
+                  //[self DC_Aktion:NULL]; // auskopmmentoiert: DC nicht abstellen bei Pfeilaktionen
                   if (readTimer)
                   {
                      if ([readTimer isValid])
                      {
                         NSLog(@"readUSB  mouseup timer inval");
-                        [AVR setBusy:0];
+
+                        
                         [readTimer invalidate];
                      }
                   }
@@ -715,17 +733,22 @@ private void button4_Click(object sender, EventArgs e)
                }
                else if ([HomeAnschlagSet count]==4)
                {
-                  [self stopTimer];
                   [AVR setBusy:0];
                   [self DC_Aktion:NULL];
-                 // [HomeAnschlagSet removeAllIndexes];
+
+                  [self stopTimer];
+                  
+                  // [HomeAnschlagSet removeAllIndexes];
 
                }
                else if (home == 2)
                {
                   [[inTimer userInfo]setObject:[NSNumber numberWithInt:3]forKey:@"home"]; 
-                  [self stopTimer];
                   [AVR setBusy:0];
+                  [self DC_Aktion:NULL];
+
+                  [self stopTimer];
+                  
                }
              }
             
@@ -777,6 +800,7 @@ private void button4_Click(object sender, EventArgs e)
          char*      sendbuffer;
          sendbuffer=malloc(32);
          sendbuffer[16]=0xE0;
+         sendbuffer[20]=pwm;
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          sendbuffer[16]=0x00;
          free(sendbuffer);

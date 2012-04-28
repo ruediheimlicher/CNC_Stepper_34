@@ -1219,6 +1219,10 @@ return returnInt;
 
 - (void)DC_ON:(int)pwmwert
 {
+   if (pwmwert==0)
+   {
+      [DC_Taste setState:0];
+   }
    NSMutableDictionary* DCDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    
    [DCDic setObject:[NSNumber numberWithInt:pwmwert] forKey:@"pwm"]; // DC ein/aus, nur fuer AVRController
@@ -1259,7 +1263,7 @@ return returnInt;
    else
    {
       [CNC_busySpinner stopAnimation:NULL];
-      [DC_Taste setState:0];
+      //[DC_Taste setState:0];
    }
    
 }
