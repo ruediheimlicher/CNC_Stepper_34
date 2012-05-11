@@ -249,7 +249,9 @@
 - (IBAction)reportProfilLoeschen:(id)sender;
 - (IBAction)reportProfilSpiegelnHorizontal:(id)sender;
 - (IBAction)reportProfilSpiegelnVertikal:(id)sender;
+- (void)doProfilSpiegelnVertikalTask;
 - (IBAction)reportProfilAnfangZuEnde:(id)sender;
+
 - (void)setProfilGraphDaten;
 - (void)clearProfilGraphDaten;
 

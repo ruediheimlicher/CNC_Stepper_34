@@ -1787,6 +1787,7 @@
    {
       return;
    }
+   
    NSLog(@"reportProfilSpiegelnVertikal");
    int i;
    flipV = [FlipVTaste state];
@@ -2048,7 +2049,7 @@
       {
          LibElementName = [NSString stringWithString:[[ElementLibArray objectAtIndex:index]objectForKey:@"name"]];
       }
-      //NSLog(@"LibElementName: %@",LibElementName);
+      NSLog(@"LibElementName: %@",LibElementName);
       if ([[ElementLibArray objectAtIndex:index]objectForKey:@"elementarray"])
       {
          [LibElementArray removeAllObjects];
@@ -2061,7 +2062,7 @@
             [LibEndpunktY setFloatValue:[[[LibElementArray lastObject]objectForKey:@"y"]floatValue]];
             
          }
-         //NSLog(@"reportLibPop LibElementArray LAST: %@",[[LibElementArray lastObject]description]);
+         NSLog(@"reportLibPop LibElementArray LAST: %@",[[LibElementArray lastObject]description]);
       }
       
    }
@@ -2537,8 +2538,6 @@
    
    [self setProfilGraphDaten];
    [ProfilGraph setNeedsDisplay:YES];
-   
-   
 }
 
 - (IBAction)reportProfilSpiegelnVertikal:(id)sender
@@ -2563,7 +2562,6 @@
    
    [self setProfilGraphDaten];
    [ProfilGraph setNeedsDisplay:YES];
-   
    
 }
 

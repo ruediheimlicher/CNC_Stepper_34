@@ -770,7 +770,7 @@ void print_all_num(struct Abschnitt* list)
 	}
 	//	NSLog(@"savePListAktion: PListDic: %@",[PListDic description]);
 	//	NSLog(@"savePListAktion: PListDic: Testarray:  %@",[[PListDic objectForKey:@"testarray"]description]);
-	NSString* PListName=@"CNCCC.plist";
+	NSString* PListName=@"CNC.plist";
 	
 	NSString* PListPfad;
 	//NSLog(@"\n\n");
@@ -801,8 +801,10 @@ void print_all_num(struct Abschnitt* list)
 
 		if ([[AVR KoordinatenTabelle]count])
 		{
-			[tempPListDic setObject:[AVR KoordinatenTabelle] forKey:@"koordinatentabelle"];
+	//		[tempPListDic setObject:[AVR KoordinatenTabelle] forKey:@"koordinatentabelle"];
 		}
+      int cncspeed = [AVR speed];
+      [tempPListDic setObject:[NSNumber numberWithInt:[AVR speed]] forKey:@"speed"];
 		//NSLog(@"savePListAktion: gesicherter PListDic: %@",[tempPListDic description]);
 		
 		BOOL PListOK=[tempPListDic writeToURL:PListURL atomically:YES];
@@ -832,6 +834,7 @@ void print_all_num(struct Abschnitt* list)
 	NSLog(@"Beenden");
    [AVR DC_ON:0];
    [AVR setStepperstrom:0];
+   
 	[self savePListAktion:NULL];
 	return YES;
 }

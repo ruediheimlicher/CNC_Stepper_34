@@ -365,6 +365,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 
 - (NSArray*)SteuerdatenArrayVonDic:(NSDictionary*)derDatenDic // Rampen am Anfang und Ende
 {
+      // CNC mit Rampe
    NSLog(@"SteuerdatenArrayVonDic: %@",[derDatenDic description]);
 	int  anzSchritte;
 	if ([derDatenDic count]==0) 
@@ -1862,7 +1863,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          //NSLog(@"i %d mod %2.2f %2.2f %2.2f %2.2f  %2.2f %2.2f %2.2f %f",i,ax,ay,bx,by,ax+abbranda[0],ay+abbranda[1],bx+abbrandb[0],by+abbrandb[1]);
          if (((i>10)&&(i<18)) || (i> 40))
          {
-            NSLog(@"i: %d tempDic: %@",i,[tempDic description]);
+            //NSLog(@"i: %d tempDic: %@",i,[tempDic description]);
          }
       } // i im Bereich
       

@@ -154,17 +154,21 @@ private void button4_Click(object sender, EventArgs e)
    NSLog(@"USBAktion usbstatus: %d",usbstatus);
    if ([[note userInfo]objectForKey:@"neu"])
    {
+     // free_all_hid();
       int  r;
             
       r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
       if (r <= 0) 
       {
-         NSLog(@"no rawhid device found");
+         NSLog(@"USBAktion: no rawhid device found");
+         [AVR setUSB_Device_Status:0];
+         
       }
       else
       {
          
-         NSLog(@"found rawhid device");
+         NSLog(@"USBAktion: found rawhid device %d",usbstatus);
+         [AVR setUSB_Device_Status:1];
       }
       usbstatus=r;
 
@@ -833,7 +837,7 @@ private void button4_Click(object sender, EventArgs e)
       pwm =[[[note userInfo]objectForKey:@"pwm"]intValue];
       //NSLog(@"AVRController DC_Aktion pwm: %d",pwm);
    }
-   NSLog(@"AVRController DC_Aktion pwm: %d",pwm);
+   //NSLog(@"AVRController DC_Aktion pwm: %d",pwm);
    char*      sendbuffer;
    
    sendbuffer=malloc(32);

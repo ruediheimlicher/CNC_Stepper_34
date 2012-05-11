@@ -242,7 +242,7 @@
 - (int)pwm;
 - (void)setStepperstrom:(int)ein;
 - (void)setBusy:(int)busy;
-
+- (int)speed;
 - (int)saveSpeed;
 - (IBAction)reportSpeedStepper:(id)sender;
 

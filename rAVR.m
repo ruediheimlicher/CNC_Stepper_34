@@ -597,9 +597,10 @@ return returnInt;
 	//NSLog(@"StepCounterA hex: %X int: %d",StepCounterA,StepCounterA);
 
 	NSString* VersionString=[NSString stringWithUTF8String:VERSION];
-	[VersionFeld setStringValue:VersionString];
+   
+	[VersionFeld setStringValue:[NSString stringWithFormat:@"%@ %@",@"Version:",VersionString]];
 	NSString* DatumString=[NSString stringWithUTF8String:DATUM];
-	[DatumFeld setStringValue:DatumString];
+	[DatumFeld setStringValue:[NSString stringWithFormat:@"%@ %@",@"Datum:",DatumString]];
    NSLog(@"Version: %@ Datum: %@",VersionString,DatumString);
 	cncposition =0;
 	[WertFeld setIntValue:10];
@@ -990,6 +991,8 @@ return returnInt;
    {
       return;
    }
+   
+   [CNC setSpeed:[SpeedFeld intValue]];
    int  anzaxplus=0;
    int  anzaxminus=0;
    int  anzayplus=0;
@@ -1252,6 +1255,14 @@ return returnInt;
    }
 }
 
+
+- (int)speed
+{
+      return [SpeedFeld intValue];
+}
+
+
+
 - (void)setBusy:(int)busy
 {
    CNC_busy=busy;
@@ -1507,7 +1518,8 @@ return returnInt;
 	//NSLog(@"reportWertXStepper index: %d wertX: %2.2F wertY: %2.2F",index, wertX, wertY);
 	
 	NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:wertX], @"ax",
-                            [NSNumber numberWithFloat:wertY], @"ay",[NSNumber numberWithInt:index],@"index",NULL];
+                            [NSNumber numberWithFloat:wertY], @"ay",[NSNumber numberWithFloat:wertX], @"bx",
+                            [NSNumber numberWithFloat:wertY], @"by",[NSNumber numberWithInt:index],@"index",NULL];
 		
 		
 	//NSLog(@"tempDic: %@",[tempDic description]);
@@ -1532,7 +1544,8 @@ return returnInt;
 	//NSLog(@"reportWertYStepper index: %d wertX: %2.2F wertY: %2.2F",index, wertX, wertY);
 	
 	NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:wertX], @"ax",
-										 [NSNumber numberWithFloat:wertY], @"ay",[NSNumber numberWithInt:index],@"index",NULL];
+                            [NSNumber numberWithFloat:wertY], @"ay",[NSNumber numberWithFloat:wertX], @"bx",
+                            [NSNumber numberWithFloat:wertY], @"by",[NSNumber numberWithInt:index],@"index",NULL];
 		
 		
 	//NSLog(@"tempDic: %@",[tempDic description]);
@@ -2323,7 +2336,7 @@ return returnInt;
    }
 }
 
-- (IBAction)reportNeueZeile:(id)sender
+- (IBAction)reportNeueZeile:(id)sender // Neuen Punkt einfügen
 {
    NSLog(@"reportNeueZeile Zeile: %d",[IndexFeld intValue]);
    if ([KoordinatenTabelle count]&& [CNCTable numberOfSelectedRows])
@@ -2332,12 +2345,18 @@ return returnInt;
       int index=[IndexFeld intValue];
       float wertX=[WertXFeld floatValue];
       float wertY=[WertYFeld floatValue];
-      NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:wertX], @"ax",
-                               [NSNumber numberWithFloat:wertY], @"ay",[NSNumber numberWithInt:index],@"index",NULL];
+      NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:wertX], @"ax",[NSNumber numberWithFloat:wertY], @"ay",[NSNumber numberWithFloat:wertX], @"bx",[NSNumber numberWithFloat:wertY], @"by",[NSNumber numberWithInt:index],@"index",NULL];
       
+      [ProfilGraph setKlickpunkt:index+1];
       //NSLog(@"tempDic: %@",[tempDic description]);
       [KoordinatenTabelle insertObject:tempDic atIndex:index];
       [self updateIndex];
+      //
+       [IndexFeld setIntValue:index+1];
+       [IndexStepper setIntValue:[IndexFeld intValue]];
+      [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:index+1] byExtendingSelection:NO];
+      
+      //
       [ProfilGraph setDatenArray:KoordinatenTabelle];
       
       [ProfilGraph setNeedsDisplay:YES];
@@ -2345,6 +2364,7 @@ return returnInt;
       [CNCTable reloadData];
       [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:aktuelleZeile+1] byExtendingSelection:NO];
       [WertXFeld selectText:NULL];
+   
    }
 }
 
@@ -2360,13 +2380,21 @@ return returnInt;
          [KoordinatenTabelle removeObjectAtIndex:0];
          [[StartKoordinate cellAtIndex:0]setFloatValue:[[[KoordinatenTabelle objectAtIndex:1]objectForKey:@"ax"]floatValue]];
          [[StartKoordinate cellAtIndex:1]setFloatValue:[[[KoordinatenTabelle objectAtIndex:1]objectForKey:@"ay"]floatValue]];
+         [[StartKoordinate cellAtIndex:0]setFloatValue:[[[KoordinatenTabelle objectAtIndex:1]objectForKey:@"bx"]floatValue]];
+         [[StartKoordinate cellAtIndex:1]setFloatValue:[[[KoordinatenTabelle objectAtIndex:1]objectForKey:@"by"]floatValue]];
+      
+      
+      
       }
       else if (aktuelleZeile == [KoordinatenTabelle count]-1) // letzter Punkt weg
       {
          [KoordinatenTabelle removeObjectAtIndex:[KoordinatenTabelle count]-1];
          [[StopKoordinate cellAtIndex:0]setFloatValue:[[[KoordinatenTabelle objectAtIndex:[KoordinatenTabelle count]-2]objectForKey:@"ax"]floatValue]];
          [[StopKoordinate cellAtIndex:1]setFloatValue:[[[KoordinatenTabelle objectAtIndex:[KoordinatenTabelle count]-2]objectForKey:@"ay"]floatValue]];
+         [[StopKoordinate cellAtIndex:0]setFloatValue:[[[KoordinatenTabelle objectAtIndex:[KoordinatenTabelle count]-2]objectForKey:@"bx"]floatValue]];
+         [[StopKoordinate cellAtIndex:1]setFloatValue:[[[KoordinatenTabelle objectAtIndex:[KoordinatenTabelle count]-2]objectForKey:@"by"]floatValue]];
 
+      
       }
       else
       {
@@ -2741,7 +2769,7 @@ return returnInt;
 				[WertXStepper setFloatValue:stepperXwert];
 				//NSLog(@"stepperXwert: %2.2F",stepperXwert);
 				tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:stepperXwert], @"ax",
-							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"ay",NULL];
+							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"ay",[NSNumber numberWithFloat:stepperXwert], @"bx", [NSNumber numberWithFloat:[WertYFeld floatValue]], @"by",NULL];
 				
 			}break;
 			
@@ -2758,7 +2786,8 @@ return returnInt;
 				[WertXStepper setFloatValue:stepperXwert];
 				NSLog(@"stepperXwert: %2.2F",stepperXwert);
 				tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:stepperXwert], @"ax",
-							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"ay",NULL];
+							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"ay",[NSNumber numberWithFloat:stepperXwert], @"bx",
+							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"by",NULL];
 				
 			}break;
 
@@ -2775,7 +2804,8 @@ return returnInt;
 				[WertYStepper setFloatValue:stepperYwert];
 				//NSLog(@"stepperYwert: %2.2F",stepperYwert);
 				tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:stepperYwert], @"ay",
-							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"ax",NULL];
+							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"ax",[NSNumber numberWithFloat:stepperYwert], @"by",
+							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"bx",NULL];
 				
 			}break;
 			
@@ -2793,7 +2823,8 @@ return returnInt;
 				[WertYStepper setFloatValue:stepperYwert];
 				NSLog(@"stepperYwert: %2.2F",stepperYwert);
 				tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:stepperYwert], @"ay",
-							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"ax",NULL];
+							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"ax",[NSNumber numberWithFloat:stepperYwert], @"by",
+							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"bx",NULL];
 				
 			}break;
 
@@ -2806,7 +2837,7 @@ return returnInt;
 		[ProfilGraph setDatenArray:KoordinatenTabelle];
 		[ProfilGraph setNeedsDisplay:YES];
 		[ProfilTable reloadData];
-		
+		[CNCTable reloadData];
 	}
 	
 }
@@ -3160,9 +3191,9 @@ return returnInt;
    
    //Index des letzten Elements im KoordinatenTabelle sichern
    [UndoSet addIndex:[KoordinatenTabelle count]];
-    
+   
+   // ElementKoordinatenArray von CNC_Eingabe lesen
    NSArray* tempElementKoordinatenArray = [[note userInfo]objectForKey:@"koordinatentabelle"];
-   //NSArray* tempElementKoordinatenArray = [[note userInfo]objectForKey:@"elementarray"];
    //NSLog(@"tempElementKoordinatenArray FIRST: %@",[[tempElementKoordinatenArray objectAtIndex:0]description]);
    //NSLog(@"tempElementKoordinatenArray LAST: %@",[[tempElementKoordinatenArray lastObject]description]);
    //NSLog(@"tempElementKoordinatenArray: %@",[tempElementKoordinatenArray description]);
@@ -3187,14 +3218,14 @@ return returnInt;
       oldbx = [[[KoordinatenTabelle lastObject]objectForKey:@"bx"]floatValue];
       oldby = [[[KoordinatenTabelle lastObject]objectForKey:@"by"]floatValue];
    }
-   else // Start
+   else // Startpunkt, nur Offset aus Offsetfeldern
    {
       oldbx += offsetx;
       oldby += offsety;
    }
    // Offset der letzten Punkte von A und B:
-    
    //NSLog(@"oldax: %2.2f olday: %2.2f",oldax,olday);
+  
    int i=0;
    // 31.10.
    for (i=0;i<[tempElementKoordinatenArray count];i++) // Data 0 ist letztes Data von Koordinatentabelle 
@@ -3292,6 +3323,7 @@ return returnInt;
    NSPoint StartpunktB;
 
    // Werte fuer Abbrandlinie
+   
    float abrax = 0;
    float abray = 0;;
    float abrbx = 0;;
@@ -4383,7 +4415,7 @@ return returnInt;
       tempx -= startx;
       float tempy=[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"ay"]floatValue];
       tempy -= starty;
-      NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:tempx],@"ax",[NSNumber numberWithFloat:tempy],@"ay",[NSNumber numberWithInt:i],@"index", nil];
+      NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:tempx],@"x",[NSNumber numberWithFloat:tempy],@"y",[NSNumber numberWithInt:i],@"index", nil];
       [ElementArray addObject:tempDic];
 
    }
@@ -4403,7 +4435,7 @@ return returnInt;
    NSString* LibPfad=[NSHomeDirectory() stringByAppendingFormat:@"%@%@%@",@"/Documents",@"/CNCDaten",@"/ElementLib"];
    NSURL* LibURL=[NSURL fileURLWithPath:LibPfad];
    LibOK= ([Filemanager fileExistsAtPath:LibPfad isDirectory:&istOrdner]&&istOrdner);
-   //NSLog(@"ElementSichern:    LibPfad: %@ LibOK: %d",LibPfad, LibOK );	
+   NSLog(@"ElementSichern:    LibPfad: %@ LibOK: %d",LibPfad, LibOK );	
    if (LibOK)
    {
       ;
@@ -5198,7 +5230,9 @@ return returnInt;
    
    [self reportNeueLinie:NULL];
    [CNC_Eingabe doProfil1PopTaskMitProfil:8];
-   [CNC_Eingabe setOberseite:0];
+   
+   [CNC_Eingabe setUnterseite:0];
+   [CNC_Eingabe doProfilSpiegelnVertikalTask];
    [CNC_Eingabe doProfilEinfuegenTask];
    [CNC_Eingabe doSchliessenTask];
    
@@ -5438,10 +5472,10 @@ return returnInt;
 
 - (void)setUSB_Device_Status:(int)status
 {
+   NSLog(@"setUSB_Device_Status usbstatus: %d",usbstatus);
    if (status)
    {
-   [USBKontrolle setStringValue:@"USB ON"];
-
+      [USBKontrolle setStringValue:@"USB ON"];
    }
    else
    {

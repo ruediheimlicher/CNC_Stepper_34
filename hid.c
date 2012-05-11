@@ -30,7 +30,8 @@ typedef struct hid_struct hid_t;
 typedef struct buffer_struct buffer_t;
 static hid_t *first_hid = NULL;
 static hid_t *last_hid = NULL;
-struct hid_struct {
+struct hid_struct 
+{
 	IOHIDDeviceRef ref;
 	int open;
 	uint8_t buffer[BUFFER_SIZE];
@@ -111,7 +112,7 @@ int rawhid_recv(int num, void *buf, int len, int timeout)
 static void add_hid(hid_t *h)
 {
 
-   //fprintf(stderr, "add_hid\n");
+   fprintf(stderr, "add_hid\n");
 	if (!first_hid || !last_hid) {
 		first_hid = last_hid = h;
 		h->next = h->prev = NULL;
@@ -400,38 +401,36 @@ static void detach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDevic
 	for (p = first_hid; p; p = p->next) {
 		if (p->ref == dev) 
       {
+         
 			p->open = 0;
 			CFRunLoopStop(CFRunLoopGetCurrent());
 			return;
 		}
 	}
-   
-   
 }
 
 
 static void attach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDeviceRef dev)
 {
-   
-	struct hid_struct *h;
+   struct hid_struct *h;
    
 	fprintf(stderr,"attach callback\n");
-   usbstatus=1;
+   //
 	if (IOHIDDeviceOpen(dev, kIOHIDOptionsTypeNone) != kIOReturnSuccess) return;
 	h = (hid_t *)malloc(sizeof(hid_t));
 	if (!h) return;
    
 	memset(h, 0, sizeof(hid_t));
    
-	IOHIDDeviceScheduleWithRunLoop(dev, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
-	
+	IOHIDDeviceScheduleWithRunLoop(dev, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);	
    IOHIDDeviceRegisterInputReportCallback(dev, h->buffer, sizeof(h->buffer),
                                           input_callback, h);
    h->ref = dev;
 	h->open = 1;
    
 	add_hid(h);
-   usbstatus=1;
+   usbstatus=1; 
+   
    
    /*
    r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
