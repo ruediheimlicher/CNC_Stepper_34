@@ -2400,7 +2400,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 														<string key="NSFrame">{{1, 1.25}, {1103, 0}}</string>
 														<reference key="NSSuperview" ref="996991511"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView" ref="638959668"/>
 														<string key="NSReuseIdentifierKey">_NS:632</string>
 													</object>
 												</array>
@@ -3168,7 +3167,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<int key="NSvFlags">256</int>
 												<string key="NSFrame">{{376, 234}, {77, 26}}</string>
 												<reference key="NSSuperview" ref="654858537"/>
-												<reference key="NSNextKeyView" ref="751885620"/>
 												<int key="NSTag">92</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSPopUpButtonCell" key="NSCell" id="817620576">
@@ -3709,7 +3707,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string key="NSFrame">{{98, 674}, {179, 22}}</string>
 							<reference key="NSSuperview" ref="727013072"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
+							<reference key="NSNextKeyView" ref="334301072"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="241525862">
 								<int key="NSCellFlags">-2079195584</int>
@@ -3744,7 +3742,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string key="NSFrame">{{17, 703}, {88, 17}}</string>
 							<reference key="NSSuperview" ref="727013072"/>
 							<reference key="NSWindow"/>
-							<reference key="NSNextKeyView"/>
+							<reference key="NSNextKeyView" ref="751885620"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="991994540">
 								<int key="NSCellFlags">68288064</int>
@@ -3762,7 +3760,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="58132820"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{1238, 750}</string>
 				<string key="NSMaxSize">{1238, 750}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>

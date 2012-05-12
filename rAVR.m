@@ -2352,21 +2352,22 @@ return returnInt;
       [KoordinatenTabelle insertObject:tempDic atIndex:index];
       
       //
-       [IndexFeld setIntValue:index+1];
-       [IndexStepper setIntValue:[IndexFeld intValue]];
+      [self updateIndex];
+      
+      [IndexFeld setIntValue:index+1];
+      [IndexStepper setIntValue:[IndexFeld intValue]];
       [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:index+1] byExtendingSelection:NO];
       
       //
-      [self updateIndex];
+      
       [ProfilGraph setDatenArray:KoordinatenTabelle];
       [ProfilGraph setKlickpunkt:index+1];
       [ProfilGraph setKlickrange:NSMakeRange(index+1, 1)];
       [ProfilGraph setNeedsDisplay:YES];
-      //[[self window]makeFirstResponder: ProfilGraph];
       
       [CNCTable reloadData];
-      [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:aktuelleZeile+1] byExtendingSelection:NO];
-      [WertXFeld selectText:NULL];
+ //     [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:aktuelleZeile+1] byExtendingSelection:NO];
+ //     [WertXFeld selectText:NULL];
       [[self window]makeFirstResponder: ProfilGraph];
    
    }
