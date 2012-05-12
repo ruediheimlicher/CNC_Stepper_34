@@ -2345,25 +2345,29 @@ return returnInt;
       int index=[IndexFeld intValue];
       float wertX=[WertXFeld floatValue];
       float wertY=[WertYFeld floatValue];
-      NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:wertX], @"ax",[NSNumber numberWithFloat:wertY], @"ay",[NSNumber numberWithFloat:wertX], @"bx",[NSNumber numberWithFloat:wertY], @"by",[NSNumber numberWithInt:index],@"index",NULL];
+      NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:wertX], @"ax",[NSNumber numberWithFloat:wertY], @"ay",[NSNumber numberWithFloat:wertX], @"bx",[NSNumber numberWithFloat:wertY], @"by",[NSNumber numberWithInt:index+1],@"index",NULL];
       
       [ProfilGraph setKlickpunkt:index+1];
       //NSLog(@"tempDic: %@",[tempDic description]);
       [KoordinatenTabelle insertObject:tempDic atIndex:index];
-      [self updateIndex];
+      
       //
        [IndexFeld setIntValue:index+1];
        [IndexStepper setIntValue:[IndexFeld intValue]];
       [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:index+1] byExtendingSelection:NO];
       
       //
+      [self updateIndex];
       [ProfilGraph setDatenArray:KoordinatenTabelle];
-      
+      [ProfilGraph setKlickpunkt:index+1];
+      [ProfilGraph setKlickrange:NSMakeRange(index+1, 1)];
       [ProfilGraph setNeedsDisplay:YES];
-
+      //[[self window]makeFirstResponder: ProfilGraph];
+      
       [CNCTable reloadData];
       [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:aktuelleZeile+1] byExtendingSelection:NO];
       [WertXFeld selectText:NULL];
+      [[self window]makeFirstResponder: ProfilGraph];
    
    }
 }
@@ -2753,7 +2757,7 @@ return returnInt;
 	{
 		int klickpunkt=[[[note userInfo]objectForKey:@"klickpunkt"]intValue];
 		int pfeiltaste=[[[note userInfo]objectForKey:@"pfeiltaste"]intValue];
-		//NSLog(@"PfeiltasteAktion pfeiltaste: %d " ,pfeiltaste);
+		NSLog(@"PfeiltasteAktion pfeiltaste: %d klickpunkt: %d" ,pfeiltaste,klickpunkt);
 		NSDictionary* tempDic;
 		switch (pfeiltaste) 
 		{
@@ -2769,7 +2773,7 @@ return returnInt;
 				[WertXStepper setFloatValue:stepperXwert];
 				//NSLog(@"stepperXwert: %2.2F",stepperXwert);
 				tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:stepperXwert], @"ax",
-							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"ay",[NSNumber numberWithFloat:stepperXwert], @"bx", [NSNumber numberWithFloat:[WertYFeld floatValue]], @"by",NULL];
+							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"ay",[NSNumber numberWithFloat:stepperXwert], @"bx", [NSNumber numberWithFloat:[WertYFeld floatValue]], @"by",[NSNumber numberWithInt:klickpunkt], @"index",NULL];
 				
 			}break;
 			
@@ -2787,7 +2791,7 @@ return returnInt;
 				NSLog(@"stepperXwert: %2.2F",stepperXwert);
 				tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:stepperXwert], @"ax",
 							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"ay",[NSNumber numberWithFloat:stepperXwert], @"bx",
-							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"by",NULL];
+							  [NSNumber numberWithFloat:[WertYFeld floatValue]], @"by",[NSNumber numberWithInt:klickpunkt], @"index",NULL];
 				
 			}break;
 
@@ -2805,7 +2809,7 @@ return returnInt;
 				//NSLog(@"stepperYwert: %2.2F",stepperYwert);
 				tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:stepperYwert], @"ay",
 							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"ax",[NSNumber numberWithFloat:stepperYwert], @"by",
-							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"bx",NULL];
+							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"bx",[NSNumber numberWithInt:klickpunkt], @"index",NULL];
 				
 			}break;
 			
@@ -2824,7 +2828,7 @@ return returnInt;
 				NSLog(@"stepperYwert: %2.2F",stepperYwert);
 				tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:stepperYwert], @"ay",
 							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"ax",[NSNumber numberWithFloat:stepperYwert], @"by",
-							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"bx",NULL];
+							  [NSNumber numberWithFloat:[WertXFeld floatValue]], @"bx",[NSNumber numberWithInt:klickpunkt], @"index",NULL];
 				
 			}break;
 

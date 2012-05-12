@@ -101,6 +101,7 @@ NSLog(@"canBecomeKeyView");
 - (void)setKlickpunkt:(int)derPunkt
 {
    Klickpunkt=derPunkt;
+   startklickpunkt=derPunkt;
 }
 
 
