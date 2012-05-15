@@ -19,5 +19,5 @@
 - (NSDictionary*)SplinekoeffizientenVonArray:(NSArray*)dataArray;
 - (NSArray*)wrenchProfil:(NSArray*)profilArray mitWrench:(float)wrench;
 - (NSMutableArray*)wrenchProfilschnittlinie:(NSArray*)profilArray mitWrench:(float)wrench;
-
+- (NSArray*)readFigur;
 @end

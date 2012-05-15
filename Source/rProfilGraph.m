@@ -58,7 +58,7 @@ return sqrt(dX*dX + dY*dY);
 
 - (BOOL)canBecomeKeyView
 {
-NSLog(@"canBecomeKeyView");
+   //NSLog(@"canBecomeKeyView");
     return YES;
 }
 

@@ -80,6 +80,7 @@ extern int usbstatus;
 	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	[nc postNotificationName:@"Pfeil" object:self userInfo:NotificationDic];
 
+
 }
 
   - (void)mouseDown:(NSEvent *)theEvent
@@ -205,7 +206,7 @@ return returnInt;
 		NSString* PListPfad;
 		//NSLog(@"\n\n");
 		PListPfad=[USBPfad stringByAppendingPathComponent:PListName];
-		NSLog(@"readCNC_PList: PListPfad: %@ ",PListPfad);
+		//NSLog(@"readCNC_PList: PListPfad: %@ ",PListPfad);
 		if (PListPfad)		
 		{
 			//=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
@@ -359,6 +360,11 @@ return returnInt;
               name:@"Blockeingabe"
             object:nil];
    
+   [nc addObserver:self
+          selector:@selector(FigElementeingabeAktion:)
+              name:@"FigElementeingabe"
+            object:nil];
+   
 
 	
 
@@ -367,7 +373,6 @@ return returnInt;
    CNC_Plist = [[NSMutableDictionary alloc]initWithCapacity:0];
    //[CNC_Plist setDictionary: [self readCNC_PList]];
    
-   NSLog(@"CNC_PList %@",[CNC_Plist description]);
 	n=0;
 	aktuellerTag=0;
 	IOW_busy=0;
@@ -674,6 +679,9 @@ return returnInt;
 //   [SpeedStepper setIntValue:12];
    
    
+   
+//   NSArray* FigurArray = [Utils readFigur];
+//   NSLog(@"AVR openProfil FigurArray: \n%@",[FigurArray description]);
 }
 
 
@@ -2366,10 +2374,8 @@ return returnInt;
       [ProfilGraph setNeedsDisplay:YES];
       
       [CNCTable reloadData];
- //     [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:aktuelleZeile+1] byExtendingSelection:NO];
- //     [WertXFeld selectText:NULL];
       [[self window]makeFirstResponder: ProfilGraph];
-   
+      
    }
 }
 
@@ -3842,6 +3848,87 @@ return returnInt;
 
 }
 
+- (void)FigElementeingabeAktion:(NSNotification*)note
+{
+   //NSLog(@"FigElementeingabeAktion note: %@",[[note userInfo] description]);
+   // ElementKoordinatenArray von CNC_Eingabe lesen
+   NSArray* tempElementKoordinatenArray = [[note userInfo]objectForKey:@"koordinatentabelle"];
+   //NSLog(@"tempElementKoordinatenArray FIRST: %@",[[tempElementKoordinatenArray objectAtIndex:0]description]);
+   //NSLog(@"tempElementKoordinatenArray LAST: %@",[[tempElementKoordinatenArray lastObject]description]);
+   //NSLog(@"tempElementKoordinatenArray: %@",[tempElementKoordinatenArray description]);
+   
+   // neu fuer A,B
+   float offsetx = [ProfilBOffsetXFeld floatValue];
+   float offsety = [ProfilBOffsetYFeld floatValue];
+   
+   
+   NSDictionary* oldPosDic = nil;
+   
+   float oldax= 0;//MausPunkt.x;
+   float olday=0;//MausPunkt.y;
+   float oldbx=0;//oldax + offsetx;
+   float oldby=0;//olday + offsety;
+   
+   if ([KoordinatenTabelle count])
+   {
+      oldPosDic = [KoordinatenTabelle lastObject];
+      oldax = [[[KoordinatenTabelle lastObject]objectForKey:@"ax"]floatValue];
+      olday = [[[KoordinatenTabelle lastObject]objectForKey:@"ay"]floatValue];
+      oldbx = [[[KoordinatenTabelle lastObject]objectForKey:@"bx"]floatValue];
+      oldby = [[[KoordinatenTabelle lastObject]objectForKey:@"by"]floatValue];
+   }
+   else // Startpunkt, nur Offset aus Offsetfeldern
+   {
+      oldbx += offsetx;
+      oldby += offsety;
+   }
+   // Offset der letzten Punkte von A und B:
+   //NSLog(@"oldax: %2.2f olday: %2.2f",oldax,olday);
+   
+   int i=0;
+   // 31.10.
+   for (i=0;i<[tempElementKoordinatenArray count];i++) // Data 0 ist letztes Data von Koordinatentabelle 
+   {
+      float dx = [[[tempElementKoordinatenArray objectAtIndex:i]objectAtIndex:0]floatValue]; 
+      float dy = [[[tempElementKoordinatenArray objectAtIndex:i]objectAtIndex:1]floatValue];
+      
+      //NSLog(@"index: %d oldax: %2.2f olday: %2.2f  dx: %2.2f dy: %2.2f",i,oldax,olday,dx,dy);
+      NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:oldax+dx],@"ax",[NSNumber numberWithFloat:olday+dy],@"ay",[NSNumber numberWithFloat:oldbx+dx],@"bx",[NSNumber numberWithFloat:oldby+dy],@"by",[NSNumber numberWithInt:i],@"index", nil];
+      
+      [KoordinatenTabelle addObject: tempDic];
+      
+      
+      
+   }
+   //NSLog(@"LibElementeingabeAktion Koordinatentabelle count: %d numberOfRows: %d ",[KoordinatenTabelle count],[CNCTable numberOfRows]);
+   
+   //NSLog(@"KoordinatenTabelle nach: %@",[KoordinatenTabelle description]);
+   
+   [self updateIndex];
+   
+   [WertXFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ax"]floatValue]];
+   [WertYFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ay"]floatValue]];
+   
+   
+   
+   NSMutableDictionary* StartwertDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+	[StartwertDic setObject:[[KoordinatenTabelle lastObject]objectForKey:@"ax"] forKey:@"startx"];
+	[StartwertDic setObject:[[KoordinatenTabelle lastObject]objectForKey:@"ay"] forKey:@"starty"];
+	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+	[nc postNotificationName:@"eingabedaten" object:self userInfo:StartwertDic];
+   
+   //NSLog(@"KoordinatenTabelle: %@",[KoordinatenTabelle description]);
+   [CNCTable scrollRowToVisible:[KoordinatenTabelle count] - 1];
+   [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:[KoordinatenTabelle count]-1] byExtendingSelection:NO];
+   [ProfilGraph setDatenArray:KoordinatenTabelle];
+	[ProfilGraph setNeedsDisplay:YES];
+   [CNCTable reloadData];
+   
+
+
+}
+
+
 - (NSDictionary*)Rahmen
 {
    NSMutableDictionary* RahmenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
@@ -5243,6 +5330,19 @@ return returnInt;
    
    [CNC_BlockKonfigurierenTaste performClick:NULL];
    [CNC_BlockAnfuegenTaste performClick:NULL];
+   
+}
+
+- (IBAction)reportEdgeTask:(id)sender
+{
+   //[self reportOberkanteAnfahren:NULL];
+   [CNC_Neutaste performClick:NULL];
+   [CNC_Starttaste performClick:NULL];
+   [CNC_Starttaste performClick:NULL];
+   
+   [self reportNeueLinie:NULL];
+   [CNC_Eingabe doLibTaskMitElement:11];
+   [CNC_Eingabe doSchliessenTask];
    
 }
 

@@ -82,6 +82,31 @@
 @end
 
 
+@interface rFigGraph : NSControl 
+{
+   NSDictionary*    DatenDic;
+   NSPoint     StartPunkt;
+   NSPoint     EndPunkt;
+   NSPoint     Mittelpunkt;
+   NSBezierPath* Graph;
+   NSColor*    GraphFarbe;
+   NSPoint     oldMauspunkt;
+   float         scale; // Massstab fuer die Darstellung. Uebergebene Masse sind in mm
+   int         mausistdown;
+   int         klickpunkt;
+   NSRange     klickrange;
+   NSMutableIndexSet* klickset;
+   int         startklickpunkt;
+   NSMutableArray* ElementArray;
+   
+}
+- (void)GitterZeichnenMitUrsprung:(NSPoint)ursprung;
+- (void)setDaten:(NSDictionary*)datenDic;
+- (void)clearGraph;
+@end
+
+
+
 @interface rEinstellungen : NSWindowController 
 {
    // Element
@@ -214,6 +239,18 @@
    IBOutlet id          Blockdicke;
    
    
+   // Figur extern
+   IBOutlet id          FigGraph;
+   IBOutlet id          FigStartpunktX;
+   IBOutlet id          FigStartpunktY;
+   IBOutlet id          FigEndpunktX;
+   IBOutlet id          FigEndpunktY;
+   
+   NSMutableArray*      FigElementArray;
+   NSString*            FigElementPfad;
+
+   
+   
    rUtils*              Utils;
    rCNC*                CNC;
    NSMutableDictionary* PList;
@@ -239,6 +276,7 @@
 - (IBAction)reportLibElementSpiegelnHorizontal:(id)sender;
 - (IBAction)reportLibElementSpiegelnVertikal:(id)sender;
 - (IBAction)reportLibElementAnfangZuEnde:(id)sender;
+- (void)doLibTaskMitElement:(int)Elementnummer;
 - (void)setLibGraphDaten;
 
 // Profil
@@ -272,6 +310,19 @@
 // Block
 - (IBAction)reportBlockEinfuegen:(id)sender;
 - (IBAction)reportOberkanteStepper:(id)sender;
+
+// Extern
+- (IBAction)reportReadFigur:(id)sender;
+- (NSArray*)readFigur;
+//- (int)SetFigElemente:(NSArray*)LibArray;
+//- (IBAction)reportLibPop:(id)sender;
+- (IBAction)reportFigElementEinfuegen:(id)sender;
+- (IBAction)reportFigElementLoeschen:(id)sender;
+- (IBAction)reportFigElementSpiegelnHorizontal:(id)sender;
+- (IBAction)reportFigElementSpiegelnVertikal:(id)sender;
+- (IBAction)reportFigElementAnfangZuEnde:(id)sender;
+- (void)setFigGraphDaten;
+
 
 
 - (void)setPList:(NSDictionary*)plist;

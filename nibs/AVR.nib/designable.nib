@@ -2058,7 +2058,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<string key="NSFrame">{{296, 600}, {30, 19}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="556205305"/>
+												<reference key="NSNextKeyView" ref="971422681"/>
 												<int key="NSTag">1002</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="649224749">
@@ -2400,6 +2400,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 														<string key="NSFrame">{{1, 1.25}, {1103, 0}}</string>
 														<reference key="NSSuperview" ref="996991511"/>
 														<reference key="NSWindow"/>
+														<reference key="NSNextKeyView"/>
 														<string key="NSReuseIdentifierKey">_NS:632</string>
 													</object>
 												</array>
@@ -2511,7 +2512,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<string key="NSFrame">{{107, 517}, {25, 96}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="971422681"/>
+												<reference key="NSNextKeyView" ref="918912789"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSSliderCell" key="NSCell" id="137525192">
 													<int key="NSCellFlags">67501824</int>
@@ -2534,7 +2535,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<string key="NSFrame">{{324, 594}, {19, 27}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="918912789"/>
+												<reference key="NSNextKeyView" ref="556205305"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSStepperCell" key="NSCell" id="938762373">
 													<int key="NSCellFlags">917024</int>
@@ -2591,6 +2592,28 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 													<int key="NSPeriodicInterval">75</int>
 												</object>
 											</object>
+											<object class="NSButton" id="275184602">
+												<reference key="NSNextResponder" ref="689186444"/>
+												<int key="NSvFlags">268</int>
+												<string key="NSFrame">{{10, 93}, {48, 23}}</string>
+												<reference key="NSSuperview" ref="689186444"/>
+												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="264113209"/>
+												<bool key="NSEnabled">YES</bool>
+												<object class="NSButtonCell" key="NSCell" id="541333855">
+													<int key="NSCellFlags">-2080244224</int>
+													<int key="NSCellFlags2">134217728</int>
+													<string key="NSContents">Edge</string>
+													<reference key="NSSupport" ref="686651050"/>
+													<reference key="NSControlView" ref="275184602"/>
+													<int key="NSButtonFlags">-2033434369</int>
+													<int key="NSButtonFlags2">160</int>
+													<string key="NSAlternateContents"/>
+													<string key="NSKeyEquivalent"/>
+													<int key="NSPeriodicDelay">400</int>
+													<int key="NSPeriodicInterval">75</int>
+												</object>
+											</object>
 											<object class="NSProgressIndicator" id="382493987">
 												<reference key="NSNextResponder" ref="689186444"/>
 												<int key="NSvFlags">1292</int>
@@ -2598,7 +2621,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<string key="NSFrame">{{19, 314}, {32, 32}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="264113209"/>
+												<reference key="NSNextKeyView" ref="275184602"/>
 												<int key="NSpiFlags">28682</int>
 												<double key="NSMaxValue">100</double>
 											</object>
@@ -3725,6 +3748,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string key="NSFrame">{{299, 674}, {186, 22}}</string>
 							<reference key="NSSuperview" ref="727013072"/>
 							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<bool key="NSEnabled">YES</bool>
 							<object class="NSTextFieldCell" key="NSCell" id="948342772">
 								<int key="NSCellFlags">-2079195584</int>
@@ -4595,6 +4619,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<int key="connectionID">1714</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">reportEdgeTask:</string>
+						<reference key="source" ref="1068649839"/>
+						<reference key="destination" ref="275184602"/>
+					</object>
+					<int key="connectionID">1718</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="751885620"/>
@@ -4752,12 +4784,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="283564523"/>
 							<reference ref="805485874"/>
 							<reference ref="552804168"/>
-							<reference ref="264113209"/>
 							<reference ref="26190041"/>
 							<reference ref="225590066"/>
 							<reference ref="455412614"/>
 							<reference ref="973410250"/>
 							<reference ref="382493987"/>
+							<reference ref="264113209"/>
+							<reference ref="275184602"/>
 						</array>
 						<reference key="parent" ref="605208388"/>
 					</object>
@@ -6745,6 +6778,19 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="object" ref="382493987"/>
 						<reference key="parent" ref="689186444"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1715</int>
+						<reference key="object" ref="275184602"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="541333855"/>
+						</array>
+						<reference key="parent" ref="689186444"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1716</int>
+						<reference key="object" ref="541333855"/>
+						<reference key="parent" ref="275184602"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -6989,6 +7035,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<string key="1710.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1711.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1713.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1715.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1716.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="289.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="290.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="328.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -7082,7 +7130,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">1714</int>
+			<int key="maxID">1718</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -7097,6 +7145,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="reportClearProfilTabelle:">id</string>
 						<string key="reportDauerpfeilTaste:">id</string>
 						<string key="reportDrehgeber:">id</string>
+						<string key="reportEdgeTask:">id</string>
 						<string key="reportElementSichern:">id</string>
 						<string key="reportEllipse:">id</string>
 						<string key="reportHaltTaste:">id</string>
@@ -7163,6 +7212,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 						<object class="IBActionInfo" key="reportDrehgeber:">
 							<string key="name">reportDrehgeber:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportEdgeTask:">
+							<string key="name">reportEdgeTask:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="reportElementSichern:">

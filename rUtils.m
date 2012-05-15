@@ -709,6 +709,117 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    return wrenchArray;
 }
 
+- (NSArray*)readFigur
+{
+	NSMutableArray* FigurArray=[[NSMutableArray alloc]initWithCapacity:0];
+	NSOpenPanel* OpenPanel=[NSOpenPanel openPanel];
+	[OpenPanel setCanChooseFiles:YES];
+	[OpenPanel setCanChooseDirectories:NO];
+	[OpenPanel setAllowsMultipleSelection:NO];
+   [OpenPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"txt",NULL]];
+	/*
+    [OpenPanel beginSheetForDirectory:NSHomeDirectory() file:nil 
+	 //types:nil 
+    modalForWindow:[self window] 
+    modalDelegate:self 
+    didEndSelector:@selector(ProfilPfadAktion:returnCode:contextInfo:)
+    contextInfo:nil];
+    */
+	int antwort=[OpenPanel runModal];
+	NSURL* FigurPfad=[OpenPanel URL];
+	//NSLog(@"readFigur: URL: %@",FigurPfad);
+	NSError* err=0;
+	NSString* FigurString=[NSString stringWithContentsOfURL:FigurPfad encoding:NSUTF8StringEncoding error:&err]; // String des Speicherpfads
+	
+   NSLog(@"Utils openProfil FigurString: \n%@",FigurString);
+	
+   NSArray* tempArray = [NSArray array];
+   
+	//NSArray* tempArray=[FigurString componentsSeparatedByString:@"\r"];
+   
+   //NSArray* temp_n_Array=[FigurString componentsSeparatedByString:@"\n"];
+   //NSLog(@"Utils openProfil anz: %d temp_n_Array: %@",[temp_n_Array count],temp_n_Array);
+   if ([[FigurString componentsSeparatedByString:@"\n"]count] == 1) // separator \r
+   {
+   tempArray=[FigurString componentsSeparatedByString:@"\r"];   
+   
+   }
+   else 
+   {
+     tempArray=[FigurString componentsSeparatedByString:@"\n"]; 
+   }
+   
+   //NSArray* temp_r_Array=[FigurString componentsSeparatedByString:@"\r"];
+	
+   
+  // NSLog(@"Utils openProfil anz: %d temp_r_Array: \n%@",[temp_r_Array count],temp_r_Array);
+   
+   NSString* firstString = [tempArray objectAtIndex:0];
+	NSLog(@"firstString Titel: %@ ",firstString);
+	if (([[firstString componentsSeparatedByString:@"\t"]count]==1)) // Titel
+	{
+      NSLog(@"Titel gefunden: %@ ",firstString);   
+		NSRange titelRange;
+      
+		titelRange.location = 1;
+		titelRange.length = [tempArray count]-1;
+      
+		tempArray = [tempArray subarrayWithRange:titelRange];
+      
+	}
+	NSLog(@"Utils openFigur tempArray nach Titel: \n%@",[tempArray description]);
+	//NSLog(@"Utils openFigur tempArray count: %d",[tempArray count]);
+	int i=0;
+	
+	NSNumberFormatter *numberFormatter =[[[NSNumberFormatter alloc] init] autorelease];
+	[numberFormatter setMaximumFractionDigits:4];
+	[numberFormatter setFormat:@"##0.0000"];
+   
+	for (i=0;i<[tempArray count];i++)
+	{
+		NSString* tempZeilenString=[tempArray objectAtIndex:i];
+		//NSLog(@"Utils tempZeilenString l: %d",[tempZeilenString length]);
+		if ((tempZeilenString==NULL)|| ([tempZeilenString length]<=1))
+		{
+			continue;
+		}
+		//NSLog(@"char 0: %d",[tempZeilenString characterAtIndex:0]);
+		
+      if ([tempZeilenString characterAtIndex:0]==10)
+		{
+         NSLog(@"char 0 weg");
+         tempZeilenString=[tempZeilenString substringFromIndex:1];
+		}
+		
+      //leerschlag weg
+		while ([tempZeilenString characterAtIndex:0]==' ')
+		{
+         tempZeilenString=[tempZeilenString substringFromIndex:1];
+		}
+		NSLog(@"i: %d tempZeilenString: %@",i,tempZeilenString);
+		//NSLog(@"LeerschlagRange start loc: %d l: %d",LeerschlagRange.location, LeerschlagRange.length);
+		
+		NSArray* tempZeilenArray=[tempZeilenString componentsSeparatedByString:@"\t"];
+		if ([tempZeilenArray count])
+      {
+      // object 0 ist index
+      float wertx=[[tempZeilenArray objectAtIndex:1]floatValue];//*100;
+		float werty=[[tempZeilenArray objectAtIndex:2]floatValue];//*100;
+		NSString*tempX=[NSString stringWithFormat:@"%@", [numberFormatter stringFromNumber:[NSNumber numberWithFloat:wertx]]];
+		NSString*tempY=[NSString stringWithFormat:@"%@", [numberFormatter stringFromNumber:[NSNumber numberWithFloat:werty]]];
+		//NSLog(@"tempX: %@",tempX);
+		//NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:wertx], @"x",
+		//[NSNumber numberWithFloat:werty], @"y",NULL];
+         NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:i],@"index",tempX, @"x",tempY, @"y",NULL];
+		[FigurArray addObject:tempDic];
+      }
+		//[ProfilArray insertObject:tempDic atIndex:0];
+	}
+	
+	//NSLog(@"Utils openProfil FigurArray: \n%@",[FigurArray description]);
+	return FigurArray;
+}
+
 - (IBAction)ok:(id)sender
 {
 NSLog(@"ok");

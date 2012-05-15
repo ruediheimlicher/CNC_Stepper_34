@@ -287,6 +287,7 @@
 - (IBAction)reportLinkeRechteSeite:(id)sender;
 
 - (IBAction)reportProfilTask:(id)sender;
+- (IBAction)reportEdgeTask:(id)sender;
 // SPI
 
 

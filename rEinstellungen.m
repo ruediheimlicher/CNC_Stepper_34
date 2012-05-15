@@ -53,7 +53,7 @@
 
 - (BOOL)canBecomeKeyView
 {
-   NSLog(@"canBecomeKeyView");
+   //NSLog(@"canBecomeKeyView");
    return YES;
 }
 
@@ -164,7 +164,7 @@
    self = [super initWithFrame:frame];
    if (self) 
    {
-      DatenDic=[[[NSArray alloc ]init]retain];
+      DatenDic=[[[NSDictionary alloc ]init]retain];
       oldMauspunkt = NSMakePoint(0,0);
       scale = 1;
       mausistdown=0;
@@ -198,7 +198,7 @@
 
 - (BOOL)canBecomeKeyView
 {
-   NSLog(@"canBecomeKeyView");
+   //NSLog(@"canBecomeKeyView");
    return YES;
 }
 
@@ -482,7 +482,7 @@
 
 - (BOOL)canBecomeKeyView
 {
-   NSLog(@"canBecomeKeyView");
+   //NSLog(@"canBecomeKeyView");
    return YES;
 }
 
@@ -710,6 +710,290 @@
 }
 @end
 
+
+@implementation rFigGraph
+
+- (id)initWithFrame:(NSRect)frame 
+
+{
+	//NSLog(@"rFigGraph init");
+   self = [super initWithFrame:frame];
+   if (self) 
+   {
+      DatenDic=[[[NSDictionary alloc ]init]retain];
+      oldMauspunkt = NSMakePoint(0,0);
+      scale = 1;
+      mausistdown=0;
+      klickpunkt=-1;
+      startklickpunkt=-1;
+      klickset = [[NSMutableIndexSet indexSet]retain];
+      NSRect Diagrammfeld=frame;
+		//		Diagrammfeld.size.width+=400;
+		[self setFrame:Diagrammfeld];
+      Mittelpunkt = NSMakePoint(frame.size.width/2, frame.size.height/2);
+      StartPunkt = Mittelpunkt;
+      EndPunkt = Mittelpunkt;
+		Graph=[NSBezierPath bezierPath];
+		[Graph retain];
+		//[Graph moveToPoint:Mittelpunkt];
+		//lastPunkt=Mittelpunkt;
+		GraphFarbe=[NSColor blueColor]; 
+		//NSLog(@"rProfilGitterlinien Diagrammfeldhoehe: %2.2f ",(frame.size.height-15));
+      ElementArray = [[[NSMutableArray alloc]initWithCapacity:0]retain];
+      
+   }
+   return self;
+}
+
+
+- (void)setScale:(int)derScalefaktor
+{
+	scale = derScalefaktor;
+   
+}
+
+- (BOOL)canBecomeKeyView
+{
+   //NSLog(@"canBecomeKeyView");
+   return YES;
+}
+
+- (BOOL)acceptsFirstResponder 
+{
+	//NSLog(@"acceptsFirstResponder");
+   return YES;
+}
+
+- (void)setDaten:(NSDictionary*)datenDic
+{
+   
+   //NSLog(@"Figgraph setDaten daten: %@",[datenDic description]);
+ 	[datenDic retain];
+	DatenDic=datenDic;
+	[DatenDic release];
+   //[NSColor clearColor];
+   [Graph removeAllPoints];
+   //[ElementArray removeAllObjects];
+   float deltaX=0;
+   float deltaY=0;
+   
+   if ([DatenDic objectForKey:@"startpunkt"])
+   {
+      StartPunkt =NSPointFromString([DatenDic objectForKey:@"startpunkt"]);
+   }
+   
+   if ([DatenDic objectForKey:@"endpunkt"])
+   {
+      EndPunkt =NSPointFromString([DatenDic objectForKey:@"endpunkt"]);
+   }
+   
+   
+   deltaX = EndPunkt.x - StartPunkt.x;
+   deltaY = EndPunkt.y - StartPunkt.y;
+   StartPunkt = Mittelpunkt;
+   EndPunkt.x = Mittelpunkt.x + deltaX;
+   EndPunkt.y = Mittelpunkt.y + deltaY;
+   
+   
+   if ([DatenDic objectForKey:@"elementarray"])
+   {
+      if (ElementArray)
+      {
+         [ElementArray removeAllObjects];
+         //NSLog(@"Libgraph ElementArray da");
+         [ElementArray addObjectsFromArray:[DatenDic objectForKey:@"elementarray"]];
+      }
+      else
+      {
+         NSLog(@"Libgraph ElementArray nicht da");
+      }
+   }
+   
+   
+}
+
+- (void)GitterZeichnen
+{	
+	NSBezierPath* HorizontaleLinie=[NSBezierPath bezierPath];
+	[HorizontaleLinie setLineWidth:0.3];
+   float breite=[self bounds].size.width;
+   float hoehe=[self bounds].size.height-1;
+   NSPoint MitteLinks= NSMakePoint([self bounds].origin.x, Mittelpunkt.y);
+   NSPoint MitteRechts= NSMakePoint([self bounds].origin.x + breite, Mittelpunkt.y);
+   [HorizontaleLinie moveToPoint:MitteLinks];
+   [HorizontaleLinie lineToPoint:MitteRechts];
+	[[NSColor whiteColor]set];
+	[HorizontaleLinie stroke];
+   
+	NSBezierPath* VertikaleLinie=[NSBezierPath bezierPath];
+   NSPoint MitteUnten= NSMakePoint( Mittelpunkt.x,[self bounds].origin.y);
+   NSPoint MitteOben= NSMakePoint(Mittelpunkt.x,[self bounds].origin.y + hoehe);
+   
+   
+   [VertikaleLinie moveToPoint:MitteUnten];
+   [VertikaleLinie lineToPoint:MitteOben];
+	
+	[VertikaleLinie setLineWidth:0.3];
+	[[NSColor whiteColor]set];
+	[VertikaleLinie stroke];
+	
+	
+}
+
+- (void)GitterZeichnenMitUrsprung:(NSPoint)ursprung
+{	
+	NSBezierPath* HorizontaleLinie=[NSBezierPath bezierPath];
+	[HorizontaleLinie setLineWidth:0.3];
+   float breite=[self bounds].size.width;
+   float hoehe=[self bounds].size.height-1;
+   NSPoint MitteLinks= NSMakePoint([self bounds].origin.x, ursprung.y);
+   NSPoint MitteRechts= NSMakePoint([self bounds].origin.x + breite, ursprung.y);
+   [HorizontaleLinie moveToPoint:MitteLinks];
+   [HorizontaleLinie lineToPoint:MitteRechts];
+	[[NSColor greenColor]set];
+	[HorizontaleLinie stroke];
+   
+	NSBezierPath* VertikaleLinie=[NSBezierPath bezierPath];
+   NSPoint MitteUnten= NSMakePoint( ursprung.x,[self bounds].origin.y);
+   NSPoint MitteOben= NSMakePoint(ursprung.x,[self bounds].origin.y + hoehe);
+   
+   
+   [VertikaleLinie moveToPoint:MitteUnten];
+   [VertikaleLinie lineToPoint:MitteOben];
+	
+	[VertikaleLinie setLineWidth:0.3];
+	[[NSColor greenColor]set];
+	[VertikaleLinie stroke];
+	
+	
+}
+
+- (void)drawRect:(NSRect)rect
+{
+   //NSLog(@"LibGraph drawRect");
+   [[NSColor whiteColor]set];
+   NSRect NetzBoxRahmen=[self bounds];//NSMakeRect(NetzEcke.x,NetzEcke.y,200,100);
+	NetzBoxRahmen.size.height-=2;
+	NetzBoxRahmen.size.width-=2;
+	[[NSColor greenColor]set];
+	[NSBezierPath strokeRect:NetzBoxRahmen];
+   float maxX=0,  maxY=0, minX=1000, minY=1000;
+   
+   if (ElementArray)//&&[ElementArray count])
+   {
+      //NSLog(@"LibGraph drawRect 1 ElementArray: %@",[ElementArray description]);
+      //NSLog(@"LibGraph drawRect ElementArray da");
+   }
+   else
+   {
+      //NSLog(@"LibGraph drawRect kein ElementArray");
+   }
+   //return;
+   if (ElementArray&&[ElementArray count])
+   {
+      //NSLog(@"LibGraph drawRect 1 ElementArray: %@",[ElementArray description]);
+      int i;
+      for(i=0;i<[ElementArray count];i++)
+      {
+         float tempX = [[[ElementArray objectAtIndex:i]objectForKey:@"x"]floatValue];
+         float tempY = [[[ElementArray objectAtIndex:i]objectForKey:@"y"]floatValue];
+         
+         //NSLog(@"index: %d tempX: %1.1f tempY: %1.1f *** minX: %1.1f maxX: %1.1f minY: %1.1f maxY: %1.1f",i,tempX,tempY,minX, maxY, minY, maxY);
+         //NSLog(@"index: %d tempX: %1.1f tempY: %1.1f",i,tempX,tempY);
+         if (tempX > maxX)
+         {
+            maxX = tempX;
+         }
+         if (tempY > maxY)
+         {
+            maxY = tempY;
+         }
+         if (tempX < minX)
+         {
+            minX = tempX;
+         }
+         if (tempY < minY)
+         {
+            minY = tempY;
+         }
+         
+      }
+      
+      
+      //NSLog(@"minX: %1.1f maxX: %1.1f minY: %1.1f maxY: %1.1f",minX, maxX, minY, maxY);
+      float feldbreite = [self bounds].size.width;
+      float feldhoehe = [self bounds].size.height;
+      float elementbreite=(maxX-minX);
+      float elementhoehe = (maxY-minY);
+      float scalex=feldbreite/elementbreite;
+      float scaley=feldhoehe/elementhoehe;
+      
+      
+      //NSLog(@"laenge: %1.1f hoehe: %1.1f elementbreite: %1.3f elementhoehe: %1.3f",feldbreite, feldhoehe, elementbreite, elementhoehe);
+      //NSLog(@" scalex: %1.3f scaley: %1.3f", scalex, scaley);
+      if (scalex >= scaley)
+      {
+         scale = scaley;
+      }
+      else
+      {
+         scale = scalex;
+      }
+      //NSLog(@"scale: %1.1f",scale);
+      scale *= 0.8;
+      //Mittelpunkt des Elements suchen
+      float offsetX= (maxX+minX)/2;
+      float offsetY= (maxY+minY)/2;
+      //NSLog(@" offsetX: %1.1f offsetY: %1.1f", offsetX, offsetY);
+      
+      
+      
+      NSPoint scaleStartPunkt= NSMakePoint(([[[ElementArray objectAtIndex:0]objectForKey:@"x"]floatValue]- offsetX)*scale+feldbreite/2 , ([[[ElementArray objectAtIndex:0]objectForKey:@"y"]floatValue]- offsetY)*scale+feldhoehe/2 );
+      NSPoint scaleEndPunkt= NSMakePoint(([[[ElementArray lastObject]objectForKey:@"x"]floatValue]- offsetX)*scale+feldbreite/2 , ([[[ElementArray lastObject]objectForKey:@"y"]floatValue]- offsetY)*scale+feldhoehe/2 );
+      
+      [self GitterZeichnenMitUrsprung:scaleStartPunkt];
+      
+      //NSLog(@"StartPunkt.x: %1.3f StartPunkt.y: %1.3f EndPunkt.x: %1.3f EndPunkt.y: %1.3f",scaleStartPunkt.x, scaleStartPunkt.y, scaleEndPunkt.x, scaleEndPunkt.y);
+      
+      //[Graph moveToPoint:scaleStartPunkt];
+      for (i=0;i<[ElementArray count];i++)
+      {
+         NSPoint tempPunkt= NSMakePoint(([[[ElementArray objectAtIndex:i]objectForKey:@"x"]floatValue]- offsetX)*scale+feldbreite/2 , ([[[ElementArray objectAtIndex:i]objectForKey:@"y"]floatValue]- offsetY)*scale+feldhoehe/2 );
+         // NSLog(@"index: %d tempPunkt.x: %1.3f tempPunkt.y: %1.3f",i,tempPunkt.x, tempPunkt.y);
+         if (i)
+         {
+            [Graph lineToPoint:tempPunkt];
+         }
+         else
+         {
+            [Graph moveToPoint:tempPunkt];
+         }
+      }
+      //[Graph lineToPoint:scaleEndPunkt];
+      [[NSColor blueColor]set];
+      [Graph stroke];
+      
+   }// if count
+   
+}
+
+- (void)clearGraph
+{
+   [Graph removeAllPoints];
+   [ElementArray removeAllObjects];
+   [self setNeedsDisplay:YES];
+   
+}
+
+- (void)dealloc
+{
+   [ElementArray release];
+}
+
+
+@end
+
+
 @implementation rEinstellungen
 - (id) init
 {
@@ -808,6 +1092,9 @@
    //NSLog(@"Einstellungen awake ElementLibArray: %@",[ElementLibArray valueForKey:@"name"]);
    LibElementName = [[NSString string]retain];
    LibElementArray = [[[NSMutableArray alloc]initWithCapacity:0]retain];
+   
+   FigElementArray = [[[NSMutableArray alloc]initWithCapacity:0]retain];
+   
    //NSLog(@"Einstellungen awake end");
    NSArray* MatrixArray=[WinkelMatrix subviews];
    //NSLog(@"MatrixArray: %d desc: %@",[MatrixArray count],[MatrixArray description]);
@@ -1953,6 +2240,10 @@
    }
 }
 
+- (void)doEdgeTask
+{
+   
+}
 
 - (void)setOberseite:(int) ein
 {
@@ -2050,7 +2341,7 @@
          LibElementName = [NSString stringWithString:[[ElementLibArray objectAtIndex:index]objectForKey:@"name"]];
       }
       NSLog(@"LibElementName: %@",LibElementName);
-      if ([[ElementLibArray objectAtIndex:index]objectForKey:@"elementarray"])
+      if ([[ElementLibArray objectAtIndex:index]objectForKey:@"elementarray"])// Daten für Element da
       {
          [LibElementArray removeAllObjects];
          [LibElementArray addObjectsFromArray:[[ElementLibArray objectAtIndex:index]objectForKey:@"elementarray"]];
@@ -2066,6 +2357,7 @@
       }
       
    }
+   
    [libstartx setFloatValue:startx];
    [libstarty setFloatValue:starty];
    
@@ -2074,8 +2366,7 @@
 }
 
 - (IBAction)reportLibElementEinfuegen:(id)sender
-{
-   
+{   
    //NSLog(@"reportLibElementEinfuegen name: %@",LibElementName);
    NSMutableDictionary* ElementDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [ElementDic setObject:@"LibElement"  forKey:@"quelle"];
@@ -2258,6 +2549,31 @@
    
 }
 
+- (void)doLibTaskMitElement:(int)Elementnummer
+{
+   if ([[ElementLibArray objectAtIndex:Elementnummer]objectForKey:@"name"])
+   {
+      LibElementName = [NSString stringWithString:[[ElementLibArray objectAtIndex:Elementnummer]objectForKey:@"name"]];
+   }
+   NSLog(@"LibElementName: %@",LibElementName);
+   if ([[ElementLibArray objectAtIndex:Elementnummer]objectForKey:@"elementarray"])// Daten für Element da
+   {
+      [LibElementArray removeAllObjects];
+      [LibElementArray addObjectsFromArray:[[ElementLibArray objectAtIndex:Elementnummer]objectForKey:@"elementarray"]];
+      if ([LibElementArray count])
+      {
+         [LibStartpunktX setFloatValue:[[[LibElementArray objectAtIndex:0]objectForKey:@"x"]floatValue]];
+         [LibStartpunktY setFloatValue:[[[LibElementArray objectAtIndex:0]objectForKey:@"y"]floatValue]];
+         [LibEndpunktX setFloatValue:[[[LibElementArray lastObject]objectForKey:@"x"]floatValue]];
+         [LibEndpunktY setFloatValue:[[[LibElementArray lastObject]objectForKey:@"y"]floatValue]];
+         
+      }
+      NSLog(@"doLibTaskMitElement LibElementArray: %@",[LibElementArray description]);
+      [self reportLibElementEinfuegen:NULL];
+   }
+
+}
+
 
 - (void)setLibGraphDaten
 {
@@ -2352,8 +2668,7 @@
    [ReverseTaste setState:0];
    
    if ([sender indexOfSelectedItem])
-   {
-      
+   {      
       int index=[sender indexOfSelectedItem]; // Item 0 ist Titel
       [Profile2 selectItemAtIndex:index];    // Profil 2 ist wahrscheinlich gleich
       //NSLog(@"reportProfilPop Profil aus Pop: %@",[Profile1 itemTitleAtIndex:index]);
@@ -2660,6 +2975,7 @@
 {
    [LibElementName release];
    [LibElementArray release];
+   [FigElementArray release];
    [Profil1Name release]; 
    [Profil1Array release];
    [Profil2Array release];
@@ -2915,6 +3231,92 @@
 - (IBAction)reportOberkanteStepper:(id)sender
 {
    
+}
+#pragma mark Externe Figur
+// Extern
+- (NSArray*)readFigur
+{
+   NSArray* FigurArray = [Utils readFigur];
+   NSLog(@"CNC_Eingbe readFigur FigurArray: \n%@",[FigurArray description]);
+
+   return FigurArray;
+}
+
+- (IBAction)reportReadFigur:(id)sender
+{
+   
+  // NSArray* FigurArray = [Utils readFigur];
+   //NSLog(@"CNC_Eingbe readFigur FigurArray: \n%@",[FigurArray description]);
+   FigElementArray= [[NSMutableArray arrayWithArray:[Utils readFigur]]retain]; // retain ist noetig
+   //NSLog(@"CNC_Eingbe readFigur FigElementArray: \n%@",[FigElementArray description]);
+   [self setFigGraphDaten];
+   [FigGraph setNeedsDisplay:YES];
+
+}
+
+//- (int)SetFigElemente:(NSArray*)LibArray;
+//- (IBAction)reportLibPop:(id)sender;
+
+- (IBAction)reportFigElementEinfuegen:(id)sender
+{
+   //NSLog(@"reportFigElementEinfuegen name: %@",LibElementName);
+   NSMutableDictionary* ElementDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+   [ElementDic setObject:@"FigElement"  forKey:@"quelle"];
+	//[ElementDic setObject:FigElementName forKey:@"elementname"];
+   //NSLog(@"reportLibElementEinfuegen FigElementArray: %@",[FigElementArray description]);
+	[ElementDic setObject:FigElementArray forKey:@"elementarray"];
+
+   NSMutableArray* Koordinatentabelle=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+   startx=0;
+   starty=0;
+   int i=0;
+   for (i=1;i<[FigElementArray count];i++) // Erstes Element ist Startpunkt und schon im Array
+   {
+      float tempx = [[[FigElementArray objectAtIndex:i]objectForKey:@"x"]floatValue] + startx;
+      float tempy = [[[FigElementArray objectAtIndex:i]objectForKey:@"y"]floatValue] + starty;
+      [Koordinatentabelle addObject:[NSArray arrayWithObjects:[NSNumber numberWithFloat:tempx],[NSNumber numberWithFloat:tempy], nil]];
+   }
+	[ElementDic setObject:Koordinatentabelle forKey:@"koordinatentabelle"];
+   //NSLog(@"reportFigElementEinfuegen ElementDic: %@",[ElementDic description]);
+   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+   [nc postNotificationName:@"FigElementeingabe" object:self userInfo:ElementDic];
+   [FigGraph clearGraph];
+
+}
+
+- (IBAction)reportFigElementLoeschen:(id)sender
+{
+   
+
+}
+
+- (IBAction)reportFigElementSpiegelnHorizontal:(id)sender
+{
+   
+}
+
+- (IBAction)reportFigElementSpiegelnVertikal:(id)sender
+{
+   
+}
+
+- (IBAction)reportFigElementAnfangZuEnde:(id)sender
+{
+   
+}
+
+- (void)setFigGraphDaten
+{
+   NSMutableDictionary* datenDic = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+   
+   NSPoint Startpunkt = NSMakePoint([[[FigElementArray objectAtIndex:0]objectForKey:@"x"]floatValue]*zoom, [[[FigElementArray objectAtIndex:0]objectForKey:@"y"]floatValue]*zoom);
+   NSPoint Endpunkt = NSMakePoint([[[FigElementArray lastObject]objectForKey:@"x"]floatValue]*zoom, [[[FigElementArray lastObject]objectForKey:@"y"]floatValue]*zoom);
+   [datenDic setObject:NSStringFromPoint(Startpunkt) forKey:@"startpunkt"];
+   [datenDic setObject:NSStringFromPoint(Endpunkt) forKey:@"endpunkt"];
+
+   [datenDic setObject:FigElementArray forKey:@"elementarray"];
+   [FigGraph setDaten:datenDic];
+   [FigGraph setNeedsDisplay:YES];
 }
 
 
