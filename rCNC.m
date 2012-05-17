@@ -105,6 +105,10 @@ Berechnet Angaben fuer den StepperController aus den Koordinaten von Startpunkt,
 Rueckgabe:
 Dic mit Daten:
 schrittex, schrittey: Schritte in x und y-Richtung
+ 
+ Datenbreite ist 15 bit. 
+ Negative Zahlen werden invertiert und 0x8000 dazugezaehlt 
+ 
 delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 */
 - (NSDictionary*)SteuerdatenVonDic:(NSDictionary*)derDatenDic
@@ -434,6 +438,9 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 {
    
    /*
+    Bereitet die Angagen im Steuerdatenarray für die Uebergabe an den USB vor.
+    Alle 16Bit-Zahlen werden aufgeteilt in highbyte und lowbyte
+    
     Aufbau:
     
     delayx = 269;
@@ -1004,7 +1011,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
 	float Umfang = Radius * M_PI;
 	int anzSchritte =Umfang/Schrittlaenge;
    
- 	NSLog(@"Umfang: %2.2f anzSchritte: %d",Umfang, anzSchritte);
+ 	//NSLog(@"Umfang: %2.2f anzSchritte: %d",Umfang, anzSchritte);
 	
 	NSMutableArray* KreispunktKoordinatenArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 	
@@ -1102,7 +1109,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
       anzSchritte = anzahlPunkte;
    }
 
- 	NSLog(@"Umfang: %2.2f anzSchritte: %d",Umfang, anzSchritte);
+ 	//NSLog(@"Umfang: %2.2f anzSchritte: %d",Umfang, anzSchritte);
 	
 	NSMutableArray* KreispunktKoordinatenArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 	
@@ -1144,7 +1151,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    
    [KreispunktKoordinatenArray addObject:[KreispunktKoordinatenArray objectAtIndex:0]];
    
-	NSLog(@"KreispunktArray count: %d",[KreispunktKoordinatenArray count]);
+	//NSLog(@"KreispunktArray count: %d",[KreispunktKoordinatenArray count]);
 	//NSLog(@"KreispunktArray: %@",[KreispunktKoordinatenArray description]);
 	
    return KreispunktKoordinatenArray;
@@ -1614,13 +1621,14 @@ PortA=vs[n & 3]; warte10ms(); n++;
    Endpunkt.y -=tiefe * cosf(winkel);
    NSArray* tempEinlaufArray1 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
    [EinlaufpunkteArray addObject:tempEinlaufArray1];
-   
+ 
+   /*
    // Boden
    Endpunkt.x +=dicke * cosf(winkel);
    Endpunkt.y +=dicke * sinf(winkel);
    NSArray* tempEinlaufArray2 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
    [EinlaufpunkteArray addObject:tempEinlaufArray2];
-   
+   */
    // Ausstich
    Endpunkt.x -=tiefe * sinf(winkel);
    Endpunkt.y +=tiefe * cosf(winkel);
@@ -1656,12 +1664,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    Endpunkt.y -=tiefe;
    NSArray* tempEinlaufArray1 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
    [AuslaufpunkteArray addObject:tempEinlaufArray1];
-   
+ 
+   /*
    // Boden
    Endpunkt.x +=dicke;
    NSArray* tempEinlaufArray2 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
    [AuslaufpunkteArray addObject:tempEinlaufArray2];
-   
+   */
    // Ausstich
    Endpunkt.y +=tiefe;
    NSArray* tempEinlaufArray3 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];

@@ -189,7 +189,7 @@ private void button4_Click(object sender, EventArgs e)
    if ([[note userInfo]objectForKey:@"pwm"])
    {
       pwm = [[[note userInfo]objectForKey:@"pwm"]intValue];
-      NSLog(@"USB_SchnittdatenAktion pwm: %d",pwm);
+//      NSLog(@"USB_SchnittdatenAktion pwm: %d",pwm);
    }
    
    
@@ -241,8 +241,8 @@ private void button4_Click(object sender, EventArgs e)
 - (void)SlaveResetAktion:(NSNotification*)note
 
 {
-   NSLog(@" ");
-   NSLog(@"SlaveResetAktion");
+   //NSLog(@"***");
+   //NSLog(@"SlaveResetAktion");
    char*      sendbuffer;
    sendbuffer=malloc(32);
    int i;
@@ -301,9 +301,11 @@ private void button4_Click(object sender, EventArgs e)
          
          for (i=0;i<[tempSchnittdatenArray count];i++)
          {
-           // NSLog(@"i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
+            
+           //NSLog(@"i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
             NSString* tempString=[[tempSchnittdatenArray objectAtIndex:i]stringValue];
             int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
+            fprintf(stderr,"%d\t",tempWert);
              NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
           
             //theScanner = [NSScanner scannerWithString:[[tempSchnittdatenArray objectAtIndex:i]stringValue]];
@@ -312,7 +314,7 @@ private void button4_Click(object sender, EventArgs e)
             {
                sendbuffer[i] = (char)value;
                //NSLog(@"writeCNCAbschnitt: index: %d	string: %@	hexstring: %@ value: %X	buffer: %x",i,tempString,tempHexString, value,sendbuffer[i]);
-               //NSLog(@"writeCNC i: %d	string: %@",i,tempString);
+               //NSLog(@"writeCNC i: %d	Hexstring: %@ value: %d",i,tempHexString,value);
             }
             else
             {
@@ -323,12 +325,24 @@ private void button4_Click(object sender, EventArgs e)
             
             //sendbuffer[i]=(char)[[tempSchnittdatenArray objectAtIndex:i]UTF8String];
          }
+         fprintf(stderr,"\n");
          
+         /*
+         fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+         //fprintf(stderr,"%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
+                 sendbuffer[0],(sendbuffer[1]& 0x80),sendbuffer[2],(sendbuffer[3]&0x80),
+                 sendbuffer[4],sendbuffer[5],sendbuffer[6],sendbuffer[7],
+                 sendbuffer[8],sendbuffer[9],sendbuffer[10],sendbuffer[11],
+                 sendbuffer[12],sendbuffer[13],sendbuffer[14],sendbuffer[15],
+                 sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19],
+                 sendbuffer[20],sendbuffer[21],sendbuffer[22],sendbuffer[23]);
+          */
          
          
          // Rest auffüllen
          for (i=[tempSchnittdatenArray count];i<32;i++)
          {
+            
             sendbuffer[i] = 0;
          }
          
@@ -510,7 +524,7 @@ private void button4_Click(object sender, EventArgs e)
       
       if ([AbschnittFertig intValue] >= 0xA0) // Code fuer Fertig: AD
       {
-         NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
+         //NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
          //NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
          
          // NSLog(@"AVRController mausistdown: %d abschnittfertig: %d anzrepeat: %d",mausistdown, abschnittfertig,anzrepeat);

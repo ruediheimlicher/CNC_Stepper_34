@@ -120,7 +120,7 @@ return sqrt(dX*dX + dY*dY);
       
       if ([self mouse:tempPunktA inRect:KlickFeld])//||[self mouse:tempPunktB inRect:KlickFeld])
       {
-         NSLog(@"Seite 1 punkt: %d",i);
+         //NSLog(@"Seite 1 punkt: %d",i);
          return i;
       }
       if ([self mouse:tempPunktB inRect:KlickFeld])

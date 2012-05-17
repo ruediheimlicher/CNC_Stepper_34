@@ -1015,6 +1015,11 @@ return returnInt;
 	for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
       NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i];
+      float ax = [[tempNowDic objectForKey:@"ax"]floatValue];
+      float ay = [[tempNowDic objectForKey:@"ay"]floatValue];
+      float bx = [[tempNowDic objectForKey:@"bx"]floatValue];
+      float by = [[tempNowDic objectForKey:@"by"]floatValue];
+      fprintf(stderr,"%d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,ax,ay,bx,by);
       NSDictionary* tempNextDic=[KoordinatenTabelle objectAtIndex:i+1];
       NSPoint tempStartPunktA= NSMakePoint(0,0);
       NSPoint tempStartPunktB= NSMakePoint(0,0);
@@ -2381,7 +2386,7 @@ return returnInt;
 
 - (IBAction)reportZeileWeg:(id)sender
 {
-   NSLog(@"ZeileWeg Zeile: %d",[IndexFeld intValue]);
+   //NSLog(@"ZeileWeg Zeile: %d",[IndexFeld intValue]);
    if (([KoordinatenTabelle count]>1)&& [CNCTable numberOfSelectedRows])
    {
       int aktuelleZeile=[IndexFeld intValue];
@@ -3718,11 +3723,11 @@ return returnInt;
        {
           if (mitEinlauf)
           {
-             von=3;
+             von=2;
           }
           if (mitAuslauf)
           {
-             bis=[KoordinatenTabelle count]-3;
+             bis=[KoordinatenTabelle count]-2;
           }
        }
    float abbrand = [AbbrandFeld floatValue];
@@ -4492,7 +4497,7 @@ return returnInt;
 
 - (IBAction)reportElementSichern:(id)sender
 {
-   NSLog(@"reportElementSichern");
+   //NSLog(@"reportElementSichern");
    //NSLog(@"reportElementSichern KoordinatenTabelle: %@",[KoordinatenTabelle description]);
    float startx=[[[KoordinatenTabelle objectAtIndex:0]objectForKey:@"ax"]floatValue];
    float starty=[[[KoordinatenTabelle objectAtIndex:0]objectForKey:@"ay"]floatValue];
@@ -4513,7 +4518,7 @@ return returnInt;
    }
    
    NSString* neuerName=[self inputNameMitTitel:@"Neues Element" information:@"Name des neuen Elements:" defaultValue:@"Element"];
-   NSLog(@"reportElementSichern ElementArray: %@",[ElementArray description]);
+   //NSLog(@"reportElementSichern ElementArray: %@",[ElementArray description]);
    
    NSDictionary* neuesElementDic = [NSDictionary dictionaryWithObjectsAndKeys:ElementArray,@"elementarray",neuerName,@"name", nil];
 
@@ -5613,6 +5618,8 @@ return returnInt;
    
    return erfolg;
 }
+
+
 
 - (int)numberOfRowsInTableView:(NSTableView *)tableView
 {

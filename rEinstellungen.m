@@ -2353,7 +2353,7 @@
             [LibEndpunktY setFloatValue:[[[LibElementArray lastObject]objectForKey:@"y"]floatValue]];
             
          }
-         NSLog(@"reportLibPop LibElementArray LAST: %@",[[LibElementArray lastObject]description]);
+         //NSLog(@"reportLibPop LibElementArray LAST: %@",[[LibElementArray lastObject]description]);
       }
       
    }
@@ -2372,7 +2372,7 @@
    [ElementDic setObject:@"LibElement"  forKey:@"quelle"];
    //NSLog(@"reportLibElementEinfuegen LibElementArray: %@",[LibElementArray description]);
 	[ElementDic setObject:LibElementName forKey:@"elementname"];
-   NSLog(@"reportLibElementEinfuegen LibElementArray: %@",[LibElementArray description]);
+   //NSLog(@"reportLibElementEinfuegen LibElementArray: %@",[LibElementArray description]);
 	[ElementDic setObject:LibElementArray forKey:@"elementarray"];
    
    // Offset x,y einsetzen
@@ -3069,13 +3069,13 @@
 
 - (IBAction)reportLagePop:(id)sender
 {
-   NSLog(@"reportLagePop");
+   //NSLog(@"reportLagePop");
 }
 
 - (IBAction)reportFormEinfuegen:(id)sender
 {
    FormName = [Form1Pop titleOfSelectedItem];
-   NSLog(@"reportFormEinfuegen name: %@",FormName);
+   //NSLog(@"reportFormEinfuegen name: %@",FormName);
    
    float radiusA1 = [SeiteA1 floatValue]/2;
    float radiusB1 = [SeiteB1 floatValue]/2;
@@ -3172,15 +3172,15 @@
    
    if (radiusA1 >= radiusA2)
    {
-   for (i=1;i<[Form1KoordinatenArray count];i++) // Erstes Element ist Startpunkt und schon im Array
-   {
-      float tempax = [[[Form1KoordinatenArray objectAtIndex:i]objectForKey:@"x"]floatValue] + startx;
-      float tempay = [[[Form1KoordinatenArray objectAtIndex:i]objectForKey:@"y"]floatValue] + starty;
-      float tempbx = [[[Form2KoordinatenArray objectAtIndex:i]objectForKey:@"x"]floatValue] + startx;
-      float tempby = [[[Form2KoordinatenArray objectAtIndex:i]objectForKey:@"y"]floatValue] + starty;
-     [Koordinatentabelle addObject:[NSArray arrayWithObjects:[NSNumber numberWithFloat:tempax],[NSNumber numberWithFloat:tempay],[NSNumber numberWithFloat:tempbx],[NSNumber numberWithFloat:tempby], nil]];
-   
-   }
+      for (i=1;i<[Form1KoordinatenArray count];i++) // Erstes Element ist Startpunkt und schon im Array
+      {
+         float tempax = [[[Form1KoordinatenArray objectAtIndex:i]objectForKey:@"x"]floatValue] + startx;
+         float tempay = [[[Form1KoordinatenArray objectAtIndex:i]objectForKey:@"y"]floatValue] + starty;
+         float tempbx = [[[Form2KoordinatenArray objectAtIndex:i]objectForKey:@"x"]floatValue] + startx;
+         float tempby = [[[Form2KoordinatenArray objectAtIndex:i]objectForKey:@"y"]floatValue] + starty;
+         [Koordinatentabelle addObject:[NSArray arrayWithObjects:[NSNumber numberWithFloat:tempax],[NSNumber numberWithFloat:tempay],[NSNumber numberWithFloat:tempbx],[NSNumber numberWithFloat:tempby], nil]];
+         
+      }
    }
    else
    {
