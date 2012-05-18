@@ -180,9 +180,9 @@
    IBOutlet id          Profilstartx;
    IBOutlet id          Profilstarty;
    
-   IBOutlet id          Profiltiefe1;
-   IBOutlet id          Profiltiefe2;
-   IBOutlet id          Profilwrest2;
+   //IBOutlet id          Profiltiefe1;
+   //IBOutlet id          Profiltiefe2;
+   //IBOutlet id          Profilwrest2;
    
    IBOutlet id          OberseiteCheck;
    IBOutlet id          UnterseiteCheck;

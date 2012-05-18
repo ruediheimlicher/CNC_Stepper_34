@@ -1862,7 +1862,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          
          float whbhypo = hypotf(whb[0],whb[1]);
          //NSLog(@"whbhypo: %2.4f",whbhypo);
-         float abbrandb[2]= {whb[0]/whbhypo*abbrand,whb[1]/whbhypo*abbrand};
+         float abbrandb[2]= {whb[0]/whbhypo*abbrand/cosphi2b,whb[1]/whbhypo*abbrand/cosphi2b};
 
          //NSLog(@"i %d orig %2.2f %2.2f %2.2f %2.2f",i,ax,ay,bx,by);
          [tempDic setObject:[NSNumber numberWithFloat:ax+abbranda[0]] forKey:@"abrax"];

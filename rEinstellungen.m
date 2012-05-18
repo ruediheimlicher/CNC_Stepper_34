@@ -2061,7 +2061,16 @@
    [ErgebnisDic setObject:[NSNumber numberWithFloat:winkel]  forKey:@"winkel"];
    [ErgebnisDic setObject:@"Schliessen"  forKey:@"quelle"];
    //[nc postNotificationName:@"Elementeingabe" object:self userInfo:ErgebnisDic];
-   
+   [self clearProfilGraphDaten];
+   [FlipHTaste setState:0];
+   [FlipVTaste setState:0];
+   [ReverseTaste setState:0];
+
+   [OberseiteCheck setState:1];
+   [UnterseiteCheck setState:1];
+   [EinlaufCheck setState:1];
+   [AuslaufCheck setState:1];
+
    [NSApp stopModalWithCode:1];
    [[self window]orderOut:NULL];
 }
@@ -2949,9 +2958,9 @@
 
 - (void)clearProfilGraphDaten
 {
-   //NSLog(@"setProfilGraphDaten");
+   NSLog(@"clearProfilGraphDaten");
    NSMutableDictionary* datenDic = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
-   [datenDic setObject:[NSArray array]];
+   //[datenDic setObject:[NSArray array]];
    //NSLog(@"Profil1Array: %d",[Profil1Array count]);
    if ([Profil1Array count] )
    {

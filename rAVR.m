@@ -674,6 +674,9 @@ return returnInt;
    [RechtsLinksRadio setSelectedSegment:0];
    [ProfilWrenchEinheitRadio setState:1 atRow:0 column:0];
    
+   [AbbrandFeld setFloatValue:0.6];
+
+   
    [DC_PWM setDelegate:self];
    [SpeedFeld setDelegate:self];
 //   [SpeedStepper setIntValue:12];
@@ -821,8 +824,9 @@ return returnInt;
       
 		//[self Alert:@"showEinstellungenFenster nach init"];
 	}
-	[CNC_Eingabe showWindow:NULL];
    
+	[CNC_Eingabe showWindow:NULL];
+      
 }
 
 /*
@@ -921,8 +925,7 @@ return returnInt;
    
    NSArray* tempLinienArray = [CNC LinieVonPunkt:NSMakePoint(25,25) mitLaenge:15 mitWinkel:30];
    //NSLog(@"tempLinienArray: %@",tempLinienArray);
-   [AbbrandFeld setFloatValue:0.6];
-	//NSLog(@"reportStartKnopf state: %d",[sender state]);
+   	//NSLog(@"reportStartKnopf state: %d",[sender state]);
 	if ([sender state])
 	{
 	
@@ -938,7 +941,7 @@ return returnInt;
          [WertXStepper setFloatValue:0.0];
          [WertYStepper setFloatValue:0.0];
          [IndexStepper setIntValue:0];
-         [AbbrandFeld setFloatValue:0.6];
+        
          
          NSNumber* KoordinateAX=[NSNumber numberWithFloat:[WertXFeld floatValue]];
          NSNumber* KoordinateAY=[NSNumber numberWithFloat:[WertYFeld floatValue]];
@@ -3085,7 +3088,8 @@ return returnInt;
    
    NSModalSession session = [NSApp beginModalSessionForWindow:[CNC_Eingabe window]];
    [CNC_Eingabe setDaten:datenDic];
-   
+   [CNC_Eingabe clearProfilGraphDaten];
+
    
 //   for (;;) 
    {
@@ -3718,7 +3722,7 @@ return returnInt;
    [WertYFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ay"]floatValue]];
    
    int von=0;
-   int bis=0;
+   int bis=[KoordinatenTabelle count];
    if ((mitUnterseite ||  mitOberseite) &&! (mitOberseite && mitUnterseite)) // nur eine Seite
        {
           if (mitEinlauf)
@@ -4275,7 +4279,8 @@ return returnInt;
          dicke = (maxy-miny)+zugabeoben +zugabeunten;
       }
       
-      //NSLog(@"reportBlockkonfigurieren dicke: %2.2f",dicke);
+      NSLog(@"reportBlockkonfigurieren dicke: %2.2f",dicke);
+      [Blockoberkante setIntValue:dicke+5];
       
       [Blockdicke setIntValue:dicke];
       [Blockrand setIntValue:rand];
@@ -4930,12 +4935,34 @@ return returnInt;
       NSNumber* tempay=(NSNumber*)[tempZeilenDic objectForKey:@"ay"];
       NSNumber* tempbx=(NSNumber*)[tempZeilenDic objectForKey:@"bx"];
       NSNumber* tempby=(NSNumber*)[tempZeilenDic objectForKey:@"by"];
+      
+ 
+
       NSNumber* tempindex=(NSNumber*)[tempZeilenDic objectForKey:@"index"];
       NSMutableDictionary* neuerZeilenDic = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+      
+      // keys vertauschen
       [neuerZeilenDic setObject:tempax forKey:@"bx"];
       [neuerZeilenDic setObject:tempay forKey:@"by"];
       [neuerZeilenDic setObject:tempbx forKey:@"ax"];
       [neuerZeilenDic setObject:tempby forKey:@"ay"];
+      
+      if ([tempZeilenDic objectForKey:@"abrax"])
+      {
+         NSNumber* tempabrax=(NSNumber*)[tempZeilenDic objectForKey:@"abrax"];
+         NSNumber* tempabray=(NSNumber*)[tempZeilenDic objectForKey:@"abray"];
+         NSNumber* tempabrbx=(NSNumber*)[tempZeilenDic objectForKey:@"abrbx"];
+         NSNumber* tempabrby=(NSNumber*)[tempZeilenDic objectForKey:@"abrby"];
+         // keys vertauschen
+         [neuerZeilenDic setObject:tempabrax forKey:@"abrbx"];
+         [neuerZeilenDic setObject:tempabray forKey:@"abrby"];
+         [neuerZeilenDic setObject:tempabrbx forKey:@"abrax"];
+         [neuerZeilenDic setObject:tempabrby forKey:@"abray"];
+         
+      }
+
+      
+      
       [neuerZeilenDic setObject:tempindex forKey:@"index"];
       NSLog(@"neuerZeilenDic: %@",[neuerZeilenDic description]);
       [KoordinatenTabelle replaceObjectAtIndex:i withObject:neuerZeilenDic];
@@ -5002,9 +5029,26 @@ return returnInt;
       tempbx += maxX;
       [tempZeilenDic setObject:[NSNumber numberWithFloat:tempbx]forKey:@"bx"];
       
+      // Abbrand
+      if ([tempZeilenDic objectForKey:@"abrax"])
+      {
+      float tempax=[[tempZeilenDic objectForKey:@"abrax"]floatValue]-minX;
+      tempax *= -1;
+      tempax += maxX;
+      [tempZeilenDic setObject:[NSNumber numberWithFloat:tempax]forKey:@"abrax"];
+
+      float tempbx=[[tempZeilenDic objectForKey:@"abrbx"]floatValue]-minX;
+      tempbx *= -1;
+      tempbx += maxX;
+      [tempZeilenDic setObject:[NSNumber numberWithFloat:tempbx]forKey:@"abrbx"];
+
+      
+      }
+      
       [KoordinatenTabelle replaceObjectAtIndex:i withObject:tempZeilenDic];
       
-       NSLog(@"tempZeilenDic nach: %@",[tempZeilenDic  description]);
+       
+      NSLog(@"tempZeilenDic nach: %@",[tempZeilenDic  description]);
   }
 
    /*
