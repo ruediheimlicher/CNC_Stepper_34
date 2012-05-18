@@ -3723,6 +3723,7 @@ return returnInt;
    
    int von=0;
    int bis=[KoordinatenTabelle count];
+   
    if ((mitUnterseite ||  mitOberseite) &&! (mitOberseite && mitUnterseite)) // nur eine Seite
        {
           if (mitEinlauf)
