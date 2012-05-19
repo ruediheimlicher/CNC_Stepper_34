@@ -674,7 +674,7 @@ return returnInt;
    [RechtsLinksRadio setSelectedSegment:0];
    [ProfilWrenchEinheitRadio setState:1 atRow:0 column:0];
    
-   [AbbrandFeld setFloatValue:0.6];
+   [AbbrandFeld setFloatValue:1.0];
 
    
    [DC_PWM setDelegate:self];
