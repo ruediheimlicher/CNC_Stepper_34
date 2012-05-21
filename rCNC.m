@@ -11,6 +11,9 @@
 uint8_t vs[4]={9,5,6,10};	//Tabelle Vollschritt Rechtslauf 
 uint8_t hs[8]={9,1,5,4,6,2,10,8}; //Tabelle Halbschritt Rechtslauf
 
+float full_pwm = 1;
+float red_pwm = 0.3;
+
 
 @implementation rCNC
 - (id)init
@@ -528,7 +531,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 
 	[tempArray addObject:[derDatenDic objectForKey:@"indexh"]];
 	[tempArray addObject:[derDatenDic objectForKey:@"indexl"]];
-   
+   [tempArray addObject:[derDatenDic objectForKey:@"pwm"]];
    
    
    //NSLog(@"SchnittdatenVonDic tempArray: %@",[tempArray description]);
@@ -632,7 +635,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
       NSNumber* KoordinateX=[NSNumber numberWithFloat:tempX];
       NSNumber* KoordinateY=[NSNumber numberWithFloat:tempY];
 
-      NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:KoordinateX, @"x",KoordinateY,@"y" ,[NSNumber numberWithInt:index],@"index", nil];
+      NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:KoordinateX, @"x",KoordinateY,@"y" ,[NSNumber numberWithInt:index],@"index",[NSNumber numberWithFloat:full_pwm], nil];
 		[PfeilKoordinatenArray addObject:tempDic];
 
       tempX += deltaX;
@@ -1609,17 +1612,19 @@ PortA=vs[n & 3]; warte10ms(); n++;
 {
    //float tiefe=10;// Schlitztiefe
    float dicke=0.5; // Schlitzbreite
+   float full_pwm = 1;
+   float red_pwm = 0.3;
    NSMutableArray* EinlaufpunkteArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 
    NSPoint Startpunkt = NSMakePoint(0,0);
    NSPoint Endpunkt = NSMakePoint(0,0);
-   NSArray* tempEinlaufArray0 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
+   NSArray* tempEinlaufArray0 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y],[NSNumber numberWithFloat:full_pwm], nil];
    [EinlaufpunkteArray addObject:tempEinlaufArray0];
   
    // Einstich
    Endpunkt.x +=tiefe * sinf(winkel);
    Endpunkt.y -=tiefe * cosf(winkel);
-   NSArray* tempEinlaufArray1 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
+   NSArray* tempEinlaufArray1 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y],[NSNumber numberWithFloat:full_pwm], nil];
    [EinlaufpunkteArray addObject:tempEinlaufArray1];
  
    /*
@@ -1632,13 +1637,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    // Ausstich
    Endpunkt.x -=tiefe * sinf(winkel);
    Endpunkt.y +=tiefe * cosf(winkel);
-   NSArray* tempEinlaufArray3 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
+   NSArray* tempEinlaufArray3 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y],[NSNumber numberWithFloat:red_pwm], nil];
    [EinlaufpunkteArray addObject:tempEinlaufArray3];
 
    // Einlauf
    Endpunkt.x +=laenge * cosf(winkel);
    Endpunkt.y +=laenge * sinf(winkel);
-   NSArray* tempEinlaufArray4 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
+   NSArray* tempEinlaufArray4 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y],[NSNumber numberWithFloat:full_pwm], nil];
    [EinlaufpunkteArray addObject:tempEinlaufArray4];
 
    return EinlaufpunkteArray;
@@ -1648,21 +1653,24 @@ PortA=vs[n & 3]; warte10ms(); n++;
 {
    //float tiefe=10;// Schlitztiefe
    float dicke=0.5; // Schlitzbreite
+   float full_pwm = 1;
+   float red_pwm = 0.3;
+
    NSMutableArray* AuslaufpunkteArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 
    NSPoint Endpunkt = NSMakePoint(0,0);
-   NSArray* tempEinlaufArray0 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
+   NSArray* tempEinlaufArray0 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], [NSNumber numberWithFloat:full_pwm],nil];
    [AuslaufpunkteArray addObject:tempEinlaufArray0];
   
    // Auslauf
    Endpunkt.x +=laenge;
-   NSArray* tempEinlaufArray4 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
+   NSArray* tempEinlaufArray4 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], [NSNumber numberWithFloat:full_pwm],nil];
    [AuslaufpunkteArray addObject:tempEinlaufArray4];
 
    
    // Einstich
    Endpunkt.y -=tiefe;
-   NSArray* tempEinlaufArray1 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
+   NSArray* tempEinlaufArray1 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y],[NSNumber numberWithFloat:full_pwm], nil];
    [AuslaufpunkteArray addObject:tempEinlaufArray1];
  
    /*
@@ -1673,7 +1681,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    */
    // Ausstich
    Endpunkt.y +=tiefe;
-   NSArray* tempEinlaufArray3 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y], nil];
+   NSArray* tempEinlaufArray3 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y],[NSNumber numberWithFloat:red_pwm], nil];
    [AuslaufpunkteArray addObject:tempEinlaufArray3];
    
    
@@ -1769,7 +1777,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             // Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
             
             cosphi2a=sqrtf((1-cosphia)/2);
-            NSLog(@"i: %d cosphia: %2.4f",i,cosphia*1000);
+            //NSLog(@"i: %d cosphia: %2.4f",i,cosphia*1000);
             if (cosphia <0)
             {
                
@@ -1802,7 +1810,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             float lasthypoa = hypotf(lastwha[0],lastwha[1]);
             float currhypoa = hypotf(wha[0],wha[1]);
             float cospsia = (wha[0]*lastwha[0]+wha[1]*lastwha[1])/(lasthypoa*currhypoa);
-            NSLog(@"lasthypoa: %2.4f currhypoa: %2.4f cospsia: %1.8f",lasthypoa,currhypoa,cospsia);
+            //NSLog(@"lasthypoa: %2.4f currhypoa: %2.4f cospsia: %1.8f",lasthypoa,currhypoa,cospsia);
             if (cospsia<0)
             {
                wha[0] *= -1;
@@ -1812,7 +1820,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             float lasthypob = hypotf(lastwhb[0],lastwhb[1]);
             float currhypob = hypotf(whb[0],whb[1]);
             float cospsib = (whb[0]*lastwhb[0]+whb[1]*lastwhb[1])/(lasthypob*currhypob);
-            NSLog(@"lasthypob: %2.4f currhypob: %2.4f cospsib: %1.8f",lasthypob,currhypob,cospsib);
+            //NSLog(@"lasthypob: %2.4f currhypob: %2.4f cospsib: %1.8f",lasthypob,currhypob,cospsib);
             if (cospsib<0)
             {
                whb[0] *= -1;

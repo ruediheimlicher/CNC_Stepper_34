@@ -277,7 +277,7 @@ private void button4_Click(object sender, EventArgs e)
          {
             if ([readTimer isValid])
             {
-               NSLog(@"writeCNCAbschnitt timer inval");
+               NSLog(@"writeCNCAbschnitt HALT timer inval");
                [readTimer invalidate];
             }
             
@@ -302,8 +302,12 @@ private void button4_Click(object sender, EventArgs e)
          for (i=0;i<[tempSchnittdatenArray count];i++)
          {
             
-           //NSLog(@"i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
+           if (i>15)
+           {
+              //NSLog(@"WriteCNCAbschnitt i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
+           }
             NSString* tempString=[[tempSchnittdatenArray objectAtIndex:i]stringValue];
+            //NSLog(@"i: %d tempString: %@",i,tempString);
             int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
  //           fprintf(stderr,"%d\t",tempWert);
              NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
@@ -325,9 +329,9 @@ private void button4_Click(object sender, EventArgs e)
             
             //sendbuffer[i]=(char)[[tempSchnittdatenArray objectAtIndex:i]UTF8String];
          }
-         fprintf(stderr,"\n");
+         //fprintf(stderr,"\n");
          
-         sendbuffer[20] = pwm;
+         //sendbuffer[20] = pwm;
          
          fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
          //fprintf(stderr,"%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",

@@ -190,7 +190,10 @@
    IBOutlet id					LagePop;
    IBOutlet id					WinkelFeld;
    IBOutlet id					WinkelStepper;
-   
+
+   IBOutlet id					PWMFeld;
+   IBOutlet id					PWMStepper;
+
    IBOutlet id					AbbrandFeld;
     
    IBOutlet	id					GleichesProfilRadioKnopf;
@@ -256,6 +259,9 @@
 - (IBAction)reportIndexStepper:(id)sender;
 - (IBAction)reportWertXStepper:(id)sender;
 - (IBAction)reportWertYStepper:(id)sender;
+
+- (IBAction)reportPWMStepper:(id)sender;
+
 - (IBAction)reportManLeft:(id)sender;
 - (IBAction)reportManRight:(id)sender;
 - (IBAction)reportManUp:(id)sender;
