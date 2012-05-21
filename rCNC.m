@@ -1807,7 +1807,6 @@ PortA=vs[n & 3]; warte10ms(); n++;
             {
                wha[0] *= -1;
                wha[1] *= -1;
-
             }
             //  Seite B
             float lasthypob = hypotf(lastwhb[0],lastwhb[1]);
@@ -1818,7 +1817,6 @@ PortA=vs[n & 3]; warte10ms(); n++;
             {
                whb[0] *= -1;
                whb[1] *= -1;
-               
             }
         }
          

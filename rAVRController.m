@@ -305,7 +305,7 @@ private void button4_Click(object sender, EventArgs e)
            //NSLog(@"i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
             NSString* tempString=[[tempSchnittdatenArray objectAtIndex:i]stringValue];
             int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
-            fprintf(stderr,"%d\t",tempWert);
+ //           fprintf(stderr,"%d\t",tempWert);
              NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
           
             //theScanner = [NSScanner scannerWithString:[[tempSchnittdatenArray objectAtIndex:i]stringValue]];
@@ -327,7 +327,8 @@ private void button4_Click(object sender, EventArgs e)
          }
          fprintf(stderr,"\n");
          
-         /*
+         sendbuffer[20] = pwm;
+         
          fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
          //fprintf(stderr,"%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
                  sendbuffer[0],(sendbuffer[1]& 0x80),sendbuffer[2],(sendbuffer[3]&0x80),
@@ -336,7 +337,7 @@ private void button4_Click(object sender, EventArgs e)
                  sendbuffer[12],sendbuffer[13],sendbuffer[14],sendbuffer[15],
                  sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19],
                  sendbuffer[20],sendbuffer[21],sendbuffer[22],sendbuffer[23]);
-          */
+          
          
          
          // Rest auffüllen
@@ -346,7 +347,9 @@ private void button4_Click(object sender, EventArgs e)
             sendbuffer[i] = 0;
          }
          
-         sendbuffer[20] = pwm;
+         
+         
+         
          
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          
@@ -823,6 +826,35 @@ private void button4_Click(object sender, EventArgs e)
          sendbuffer[16]=0x00;
          free(sendbuffer);
         // NSLog(@"PfeilAktion mouseup Stepperposition: %d",Stepperposition);
+      }
+   }
+   else
+   {
+      mausistdown=0;
+   }
+}
+
+- (void)HaltAktion:(NSNotification*)note
+{
+	//[self reportManDown:NULL];
+	NSLog(@"AVRController HaltAktion note: %@",[[note userInfo]description]);
+   
+   if ([[note userInfo]objectForKey:@"push"])
+   {
+      mausistdown=[[[note userInfo]objectForKey:@"push"]intValue];
+      if (mausistdown == 0) // mouseup
+      {
+         pfeilaktion=1; // in writeCNCAbschnitt wird Datenserie beendet
+         NSLog(@"HaltAktion mouseup start");
+         char*      sendbuffer;
+         sendbuffer=malloc(32);
+         sendbuffer[16]=0xE0;
+         sendbuffer[20]=0; // pwm
+         int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
+         sendbuffer[16]=0x00;
+         free(sendbuffer);
+         NSLog(@"HaltAktion senderfolg: %d",senderfolg);
+         // NSLog(@"HaltAktion mouseup Stepperposition: %d",Stepperposition);
       }
    }
    else

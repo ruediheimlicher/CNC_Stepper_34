@@ -25,6 +25,7 @@
    NSRange     klickrange;
    NSMutableIndexSet* KlicksetA;
    int         startklickpunkt;
+   int         stepperposition;
    
    int GraphOffset;
    
@@ -33,6 +34,7 @@
 - (void)setRahmenArray:(NSArray*)derRahmenArray;
 - (NSArray*)DatenArray;
 - (void)setScale:(int)derScalefaktor;
+- (void)setStepperposition:(int)pos;
 - (BOOL)acceptsFirstResponder;
 - (BOOL)canBecomeKeyView;
 - (void)keyDown:(NSEvent*)derEvent;

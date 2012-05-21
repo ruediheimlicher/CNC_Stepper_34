@@ -965,8 +965,9 @@ return returnInt;
       }
    //   [DC_Taste setState:0];
       [CNC_Stoptaste setEnabled:YES];
+      [CNC_Halttaste setState:0];
       [CNC_Halttaste setEnabled:NO];
-	[self setStepperstrom:1];
+      [self setStepperstrom:1];
    }
 		
 	/*
@@ -1022,7 +1023,7 @@ return returnInt;
       float ay = [[tempNowDic objectForKey:@"ay"]floatValue];
       float bx = [[tempNowDic objectForKey:@"bx"]floatValue];
       float by = [[tempNowDic objectForKey:@"by"]floatValue];
-      fprintf(stderr,"%d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,ax,ay,bx,by);
+      //fprintf(stderr,"%d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,ax,ay,bx,by);
       NSDictionary* tempNextDic=[KoordinatenTabelle objectAtIndex:i+1];
       NSPoint tempStartPunktA= NSMakePoint(0,0);
       NSPoint tempStartPunktB= NSMakePoint(0,0);
@@ -4670,9 +4671,12 @@ return returnInt;
   // NSLog(@"reportNeuTaste KoordinatenTabelle count: %lu",[KoordinatenTabelle count]);
   // NSLog(@"reportNeuTaste KoordinatenTabelle vor: %@",[KoordinatenTabelle description]);
 	[CNC_Preparetaste setEnabled:YES];
+   [CNC_Halttaste setState:0];
    [CNC_Halttaste setEnabled:NO];
 	[CNC_Sendtaste setEnabled:NO];
-	[CNC_Stoptaste setEnabled:NO];
+	[CNC_Starttaste setEnabled:YES];
+   [CNC_Stoptaste setEnabled:NO];
+
    [PositionFeld setIntValue:0];
    [PositionFeld setStringValue:@""];
    
@@ -4701,6 +4705,7 @@ return returnInt;
 	[CNCPositionFeld setIntValue:0];
 	[CNCStepXFeld setIntValue:0];
 	[CNCStepYFeld setIntValue:0];
+   [ProfilGraph setStepperposition:-1];
 	[ProfilGraph setDatenArray:KoordinatenTabelle];
 	
    [ProfilGraph setNeedsDisplay:YES];
@@ -4735,7 +4740,7 @@ return returnInt;
 {
 	NSLog(@"AVR  reportHaltTaste");
 	[CNC_Preparetaste setEnabled:![sender state]];
-	[CNC_Starttaste setEnabled:![sender state]];
+	[CNC_Starttaste setEnabled:[sender state]];
 	[CNC_Stoptaste setEnabled:![sender state]];
 	[CNC_Sendtaste setEnabled:![sender state]];
 	[CNC_Terminatetaste setEnabled:![sender state]];
@@ -4745,11 +4750,13 @@ return returnInt;
    NSMutableDictionary* haltInfoDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[haltInfoDic setObject:[NSNumber numberWithInt:[CNC_Halttaste state]] forKey:@"halt"];
    NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+	[NotificationDic setObject:[NSNumber numberWithInt:[CNC_Halttaste state]] forKey:@"halt"];
 	[NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"push"];
 	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	
-   [nc postNotificationName:@"Pfeil" object:self userInfo:NotificationDic];
+   [nc postNotificationName:@"Halt" object:self userInfo:NotificationDic];
    [self setStepperstrom:0];
+
 }
 
 - (IBAction)reportShiftLeft:(id)sender
@@ -5467,7 +5474,7 @@ return returnInt;
 	[CNC_Halttaste setEnabled:YES];
 	[CNC_Stoptaste setState:0];
    [PositionFeld setIntValue:0];
-   
+   [ProfilGraph setStepperposition:0];
    
    //NSLog(@"reportUSB_sendArray cncposition: %d \nSchnittdatenArray: %@",cncposition,[[SchnittdatenArray objectAtIndex:0]description]);
     // Array an USB schicken
@@ -5506,6 +5513,8 @@ return returnInt;
       if ([[[note userInfo]objectForKey:@"outposition"]intValue] > [PositionFeld intValue])
       {
          [PositionFeld setIntValue:[[[note userInfo]objectForKey:@"outposition"]intValue]];
+         [ProfilGraph setStepperposition:[[[note userInfo]objectForKey:@"outposition"]intValue]];
+         [ProfilGraph setNeedsDisplay:YES];
       }
    }
    

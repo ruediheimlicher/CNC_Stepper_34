@@ -33,7 +33,7 @@ return sqrt(dX*dX + dY*dY);
        Klickpunkt=-1;
        startklickpunkt=-1;
        KlicksetA = [[NSMutableIndexSet indexSet]retain];
-       
+       stepperposition = -1;
        GraphOffset = 0;
     }
     return self;
@@ -104,6 +104,10 @@ return sqrt(dX*dX + dY*dY);
    startklickpunkt=derPunkt;
 }
 
+- (void)setStepperposition:(int)pos
+{
+   stepperposition = pos;
+}
 
 - (int)clickedPunktvonMaus:(NSPoint)derPunkt
 {
@@ -590,11 +594,22 @@ return sqrt(dX*dX + dY*dY);
          }
 			else 
 			{
-				NSRect tempMarkARect=NSMakeRect(PunktA.x-1.1, PunktA.y-1.1, 3.1, 3.1);
+				NSRect tempMarkARect=NSMakeRect(PunktA.x-3.1, PunktA.y-3.1, 6.1, 6.1);
 				tempMarkA=[NSBezierPath bezierPathWithOvalInRect:tempMarkARect];
-				[[NSColor blueColor]set];
-				[tempMarkA stroke];
+				
+            if (i>stepperposition)
+            {
+               [[NSColor blueColor]set];
             
+            }
+				
+            else
+            {
+               [[NSColor yellowColor]set];
+               [tempMarkA fill];
+               
+            }
+            [tempMarkA stroke];
             NSRect tempMarkBRect=NSMakeRect(PunktB.x-1.1, PunktB.y-1.1, 3.1, 3.1);
 				tempMarkB=[NSBezierPath bezierPathWithOvalInRect:tempMarkBRect];
 				[[NSColor redColor]set];

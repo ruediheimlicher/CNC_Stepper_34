@@ -592,7 +592,14 @@ void print_all_num(struct Abschnitt* list)
               name:@"Pfeil"
             object:nil];
 
+   
+   [nc addObserver:self
+          selector:@selector(HaltAktion:)
+              name:@"Halt"
+            object:nil];
+   
 	
+
    
    [nc addObserver:self
           selector:@selector(DC_Aktion:)
