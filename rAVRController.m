@@ -332,16 +332,16 @@ private void button4_Click(object sender, EventArgs e)
          //fprintf(stderr,"\n");
          
          //sendbuffer[20] = pwm;
-         
+        
+         /*
          fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
-         //fprintf(stderr,"%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n",
                  sendbuffer[0],(sendbuffer[1]& 0x80),sendbuffer[2],(sendbuffer[3]&0x80),
                  sendbuffer[4],sendbuffer[5],sendbuffer[6],sendbuffer[7],
                  sendbuffer[8],sendbuffer[9],sendbuffer[10],sendbuffer[11],
                  sendbuffer[12],sendbuffer[13],sendbuffer[14],sendbuffer[15],
                  sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19],
                  sendbuffer[20],sendbuffer[21],sendbuffer[22],sendbuffer[23]);
-          
+          */
          
          
          // Rest auffüllen

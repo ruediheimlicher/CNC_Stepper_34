@@ -3257,10 +3257,11 @@
   // NSArray* FigurArray = [Utils readFigur];
    //NSLog(@"CNC_Eingbe readFigur FigurArray: \n%@",[FigurArray description]);
    FigElementArray= [[NSMutableArray arrayWithArray:[Utils readFigur]]retain]; // retain ist noetig
-   //NSLog(@"CNC_Eingbe readFigur FigElementArray: \n%@",[FigElementArray description]);
+   NSLog(@"CNC_Eingbe readFigur FigElementArray: \n%@",[FigElementArray description]);
    [self setFigGraphDaten];
+   NSLog(@"CNC_Eingbe readFigur A");
    [FigGraph setNeedsDisplay:YES];
-
+   NSLog(@"CNC_Eingbe readFigur B");
 }
 
 //- (int)SetFigElemente:(NSArray*)LibArray;
@@ -3272,7 +3273,7 @@
    NSMutableDictionary* ElementDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [ElementDic setObject:@"FigElement"  forKey:@"quelle"];
 	//[ElementDic setObject:FigElementName forKey:@"elementname"];
-   //NSLog(@"reportLibElementEinfuegen FigElementArray: %@",[FigElementArray description]);
+   NSLog(@"CNC_EingabereportFigElementEinfuegen FigElementArray: %@",[FigElementArray description]);
 	[ElementDic setObject:FigElementArray forKey:@"elementarray"];
 
    NSMutableArray* Koordinatentabelle=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];

@@ -816,7 +816,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 		//[ProfilArray insertObject:tempDic atIndex:0];
 	}
 	
-	//NSLog(@"Utils openProfil FigurArray: \n%@",[FigurArray description]);
+	NSLog(@"Utils openProfil FigurArray: \n%@",[FigurArray description]);
 	return FigurArray;
 }
 

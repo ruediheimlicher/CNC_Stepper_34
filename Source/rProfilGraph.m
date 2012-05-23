@@ -594,7 +594,7 @@ return sqrt(dX*dX + dY*dY);
          }
 			else 
 			{
-				NSRect tempMarkARect=NSMakeRect(PunktA.x-3.1, PunktA.y-3.1, 6.1, 6.1);
+				NSRect tempMarkARect=NSMakeRect(PunktA.x-2.1, PunktA.y-2.1, 4.1, 4.1);
 				tempMarkA=[NSBezierPath bezierPathWithOvalInRect:tempMarkARect];
 				
             if (i>stepperposition)
@@ -605,10 +605,11 @@ return sqrt(dX*dX + dY*dY);
 				
             else
             {
-               [[NSColor yellowColor]set];
+               [[NSColor whiteColor]set];
                [tempMarkA fill];
                
             }
+            
             [tempMarkA stroke];
             NSRect tempMarkBRect=NSMakeRect(PunktB.x-1.1, PunktB.y-1.1, 3.1, 3.1);
 				tempMarkB=[NSBezierPath bezierPathWithOvalInRect:tempMarkBRect];
