@@ -193,6 +193,8 @@
    IBOutlet id          Auslauftiefe;
    IBOutlet id          Einlauflaenge;
    IBOutlet id          Einlauftiefe;
+   IBOutlet id          Einlaufrand;
+   IBOutlet id          Auslaufrand;
  
    IBOutlet id          FlipHTaste;
    IBOutlet id          FlipVTaste;
@@ -238,6 +240,7 @@
    IBOutlet id          Blockbreite;
    IBOutlet id          Blockdicke;
    
+    
    
    // Figur extern
    IBOutlet id          FigGraph;

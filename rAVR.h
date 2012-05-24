@@ -132,6 +132,15 @@
    int                     flipV;
    int                     reverse;
    
+   int einlauflaenge;
+   int einlauftiefe;
+   int einlaufrand;
+   
+   int auslauflaenge;
+   int auslauftiefe;
+   int auslaufrand;
+   
+   
    
    NSMutableArray*			CNCDatenArray;
    NSMutableArray*			SchnittdatenArray;

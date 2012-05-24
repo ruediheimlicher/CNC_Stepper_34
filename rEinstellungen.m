@@ -1386,7 +1386,64 @@
    [Laenge setFloatValue:[self calcLaenge]];
    [LaengeStepper setFloatValue:[Laenge floatValue]];
    [LaengeSlider setFloatValue:[Laenge floatValue]];
+
+   if ([daten objectForKey:@"einlaufrand"])
+   {
+      [Einlaufrand  setIntValue:[[daten objectForKey:@"einlaufrand"]intValue]];// 
+      
+   }
+   else
+   {
+      [Einlaufrand setIntValue:15];
+   }
+//   [Blockrand setIntValue:[Einlaufrand  intValue]];
    
+   if ([daten objectForKey:@"einlauflaenge"])
+   {
+      [Einlauflaenge  setIntValue:[[daten objectForKey:@"einlaufrand"]intValue]];// 
+   }
+   else
+   {
+      [Einlauflaenge setIntValue:15];
+   }
+   if ([daten objectForKey:@"einlauftiefe"])
+   {
+      [Einlauftiefe  setIntValue:[[daten objectForKey:@"einlauftiefe"]intValue]];// 
+   }
+   else
+   {
+      [Einlauftiefe setIntValue:15];
+   }
+
+   
+   
+   if ([daten objectForKey:@"auslaufrand"])
+   {
+      [Auslaufrand  setIntValue:[[daten objectForKey:@"auslaufrand"]intValue]];// 
+   }
+   else
+   {
+      [Auslaufrand setIntValue:15];
+   }
+   
+   if ([daten objectForKey:@"auslauflaenge"])
+   {
+      [Auslauflaenge  setIntValue:[[daten objectForKey:@"auslauflaenge"]intValue]];// 
+   }
+   else
+   {
+      [Auslauflaenge setIntValue:15];
+      
+   }
+   if ([daten objectForKey:@"auslauftiefe"])
+   {
+      [Auslauftiefe  setIntValue:[[daten objectForKey:@"auslauftiefe"]intValue]];// 
+   }
+   else
+   {
+      [Auslauftiefe setIntValue:15];
+   }
+
    /*
     if ([daten objectForKey:@"winkel"])
     {
@@ -2238,11 +2295,17 @@
       [ProfilDic setObject:[NSNumber numberWithInt:flipH] forKey:@"fliph"];
       [ProfilDic setObject:[NSNumber numberWithInt:flipV] forKey:@"flipv"];
       [ProfilDic setObject:[NSNumber numberWithInt:reverse] forKey:@"reverse"];
+      [ProfilDic setObject:[NSNumber numberWithFloat:[Einlaufrand floatValue]] forKey:@"einlaufrand"];
+      [ProfilDic setObject:[NSNumber numberWithFloat:[Auslaufrand floatValue]] forKey:@"auslaufrand"];
       
       [PList setObject:[NSNumber numberWithFloat:[Einlauflaenge floatValue]] forKey:@"einlauflaenge"];
       [PList setObject:[NSNumber numberWithFloat:[Einlauftiefe floatValue]] forKey:@"einlauftiefe"];
       [PList setObject:[NSNumber numberWithFloat:[Auslauflaenge floatValue]] forKey:@"auslauflaenge"];
       [PList setObject:[NSNumber numberWithFloat:[Auslauftiefe floatValue]] forKey:@"auslauftiefe"];
+      
+      [PList setObject:[NSNumber numberWithFloat:[Einlaufrand floatValue]] forKey:@"einlaufrand"];
+      [PList setObject:[NSNumber numberWithFloat:[Auslaufrand floatValue]] forKey:@"auslaufrand"];
+      
       
       NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
       [nc postNotificationName:@"LibProfileingabe" object:self userInfo:ProfilDic];
@@ -2808,16 +2871,26 @@
       
       [ProfilDic setObject:[NSNumber numberWithFloat:[Einlauflaenge floatValue]] forKey:@"einlauflaenge"];
       [ProfilDic setObject:[NSNumber numberWithFloat:[Einlauftiefe floatValue]] forKey:@"einlauftiefe"];
+      [ProfilDic setObject:[NSNumber numberWithFloat:[Einlaufrand floatValue]] forKey:@"einlaufrand"];
+
       [ProfilDic setObject:[NSNumber numberWithFloat:[Auslauflaenge floatValue]] forKey:@"auslauflaenge"];
       [ProfilDic setObject:[NSNumber numberWithFloat:[Auslauftiefe floatValue]] forKey:@"auslauftiefe"];
+      [ProfilDic setObject:[NSNumber numberWithFloat:[Auslaufrand floatValue]] forKey:@"auslaufrand"];
+
+      
       [ProfilDic setObject:[NSNumber numberWithInt:flipH] forKey:@"fliph"];
       [ProfilDic setObject:[NSNumber numberWithInt:flipV] forKey:@"flipv"];
       [ProfilDic setObject:[NSNumber numberWithInt:reverse] forKey:@"reverse"];
       
       [PList setObject:[NSNumber numberWithFloat:[Einlauflaenge floatValue]] forKey:@"einlauflaenge"];
       [PList setObject:[NSNumber numberWithFloat:[Einlauftiefe floatValue]] forKey:@"einlauftiefe"];
+      [PList setObject:[NSNumber numberWithFloat:[Einlaufrand floatValue]] forKey:@"einlaufrand"];
+
       [PList setObject:[NSNumber numberWithFloat:[Auslauflaenge floatValue]] forKey:@"auslauflaenge"];
       [PList setObject:[NSNumber numberWithFloat:[Auslauftiefe floatValue]] forKey:@"auslauftiefe"];
+      [PList setObject:[NSNumber numberWithFloat:[Auslaufrand floatValue]] forKey:@"auslaufrand"];
+    
+
       
       NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
       [nc postNotificationName:@"LibProfileingabe" object:self userInfo:ProfilDic];
@@ -3262,6 +3335,7 @@
    NSLog(@"CNC_Eingbe readFigur A");
    [FigGraph setNeedsDisplay:YES];
    NSLog(@"CNC_Eingbe readFigur B");
+   
 }
 
 //- (int)SetFigElemente:(NSArray*)LibArray;
@@ -3317,7 +3391,7 @@
 
 - (void)setFigGraphDaten
 {
-   NSMutableDictionary* datenDic = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+   NSMutableDictionary* datenDic = [[NSMutableDictionary alloc]initWithCapacity:0];
    
    NSPoint Startpunkt = NSMakePoint([[[FigElementArray objectAtIndex:0]objectForKey:@"x"]floatValue]*zoom, [[[FigElementArray objectAtIndex:0]objectForKey:@"y"]floatValue]*zoom);
    NSPoint Endpunkt = NSMakePoint([[[FigElementArray lastObject]objectForKey:@"x"]floatValue]*zoom, [[[FigElementArray lastObject]objectForKey:@"y"]floatValue]*zoom);

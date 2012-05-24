@@ -848,7 +848,7 @@ void print_all_num(struct Abschnitt* list)
 
 - (void) FensterSchliessenAktion:(NSNotification*)note
 {
-   //NSLog(@"FensterSchliessenAktion note: %@",[[note object]title]);
+   NSLog(@"FensterSchliessenAktion note: %@ schliessencounter: %d",[[note object]title],schliessencounter);
 	if (schliessencounter)
 	{
 		return;
@@ -860,7 +860,8 @@ void print_all_num(struct Abschnitt* list)
    {
       schliessencounter++;
       //NSLog(@"hat Title");
-      if (![[[note object]title]isEqualToString:@"CNC-Eingabe"])
+      // "New Folder" wird bei 10.6.8 als Titel von open zurueckgegeben. Deshalb ausschliessen(iBook schwarz)
+      if (!([[[note object]title]isEqualToString:@"CNC-Eingabe"]||[[[note object]title]isEqualToString:@"New Folder"]))
       {
          if ([self Beenden])
          {
