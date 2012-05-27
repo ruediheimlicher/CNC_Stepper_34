@@ -2298,13 +2298,13 @@
       [ProfilDic setObject:[NSNumber numberWithFloat:[Einlaufrand floatValue]] forKey:@"einlaufrand"];
       [ProfilDic setObject:[NSNumber numberWithFloat:[Auslaufrand floatValue]] forKey:@"auslaufrand"];
       
-      [PList setObject:[NSNumber numberWithFloat:[Einlauflaenge floatValue]] forKey:@"einlauflaenge"];
-      [PList setObject:[NSNumber numberWithFloat:[Einlauftiefe floatValue]] forKey:@"einlauftiefe"];
-      [PList setObject:[NSNumber numberWithFloat:[Auslauflaenge floatValue]] forKey:@"auslauflaenge"];
-      [PList setObject:[NSNumber numberWithFloat:[Auslauftiefe floatValue]] forKey:@"auslauftiefe"];
+      [PList setObject:[NSNumber numberWithInt:[Einlauflaenge intValue]] forKey:@"einlauflaenge"];
+      [PList setObject:[NSNumber numberWithInt:[Einlauftiefe intValue]] forKey:@"einlauftiefe"];
+      [PList setObject:[NSNumber numberWithInt:[Auslauflaenge intValue]] forKey:@"auslauflaenge"];
+      [PList setObject:[NSNumber numberWithInt:[Auslauftiefe intValue]] forKey:@"auslauftiefe"];
       
-      [PList setObject:[NSNumber numberWithFloat:[Einlaufrand floatValue]] forKey:@"einlaufrand"];
-      [PList setObject:[NSNumber numberWithFloat:[Auslaufrand floatValue]] forKey:@"auslaufrand"];
+      [PList setObject:[NSNumber numberWithInt:[Einlaufrand intValue]] forKey:@"einlaufrand"];
+      [PList setObject:[NSNumber numberWithInt:[Auslaufrand intValue]] forKey:@"auslaufrand"];
       
       
       NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
@@ -3326,15 +3326,35 @@
 
 - (IBAction)reportReadFigur:(id)sender
 {
-   
+   /*
+    Vorgehen mit Illustrator:
+    1. Figur zeichnen
+    2. Alle Pfade selektionieren
+    3. Datei> Scripten> Divide: Anzahl teile eingeben
+    4. Datei> Scripten> AnkerpfadSpeichern.
+    > Pfad wird als Textdatei gespeichert.
+    > Oeffnen in Word.
+    5. Titel löschen. Eventuell in erster Zeile Komma an Anfang der Zeile setzen
+    6. Konvertieren in Tabelle mit Kommas als Trennzeichen
+    7. Tabelle kopieren in Excel
+    8. Koordinaten auf Startwert 0,0 reduzieren
+    9. Eventuell Koordinaten passend skalieren 
+    9. Kolonne mit Index voranstellen
+    10. Tabelle kopieren in Word
+    11. Konvertieren in Text mit Tab 
+    12. Sichern als .txt
+    13. Oeffnen in TextEdit, Garbage am Schluss löschen
+    14. Sichern.
+        
+    */
   // NSArray* FigurArray = [Utils readFigur];
    //NSLog(@"CNC_Eingbe readFigur FigurArray: \n%@",[FigurArray description]);
    FigElementArray= [[NSMutableArray arrayWithArray:[Utils readFigur]]retain]; // retain ist noetig
-   NSLog(@"CNC_Eingbe readFigur FigElementArray: \n%@",[FigElementArray description]);
+   //NSLog(@"CNC_Eingbe readFigur FigElementArray: \n%@",[FigElementArray description]);
    [self setFigGraphDaten];
-   NSLog(@"CNC_Eingbe readFigur A");
+   //NSLog(@"CNC_Eingbe readFigur A");
    [FigGraph setNeedsDisplay:YES];
-   NSLog(@"CNC_Eingbe readFigur B");
+   //NSLog(@"CNC_Eingbe readFigur B");
    
 }
 
@@ -3347,7 +3367,7 @@
    NSMutableDictionary* ElementDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [ElementDic setObject:@"FigElement"  forKey:@"quelle"];
 	//[ElementDic setObject:FigElementName forKey:@"elementname"];
-   NSLog(@"CNC_EingabereportFigElementEinfuegen FigElementArray: %@",[FigElementArray description]);
+   //NSLog(@"CNC_EingabereportFigElementEinfuegen FigElementArray: %@",[FigElementArray description]);
 	[ElementDic setObject:FigElementArray forKey:@"elementarray"];
 
    NSMutableArray* Koordinatentabelle=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];

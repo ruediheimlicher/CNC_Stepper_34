@@ -731,7 +731,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 	NSError* err=0;
 	NSString* FigurString=[NSString stringWithContentsOfURL:FigurPfad encoding:NSUTF8StringEncoding error:&err]; // String des Speicherpfads
 	
-   NSLog(@"Utils openProfil FigurString: \n%@",FigurString);
+   //NSLog(@"Utils openProfil FigurString: \n%@",FigurString);
 	
    NSArray* tempArray = [NSArray array];
    
@@ -755,7 +755,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
   // NSLog(@"Utils openProfil anz: %d temp_r_Array: \n%@",[temp_r_Array count],temp_r_Array);
    
    NSString* firstString = [tempArray objectAtIndex:0];
-	NSLog(@"firstString Titel: %@ ",firstString);
+	//NSLog(@"firstString Titel: %@ ",firstString);
 	if (([[firstString componentsSeparatedByString:@"\t"]count]==1)) // Titel
 	{
       NSLog(@"Titel gefunden: %@ ",firstString);   
@@ -767,7 +767,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 		tempArray = [tempArray subarrayWithRange:titelRange];
       
 	}
-	NSLog(@"Utils openFigur tempArray nach Titel: \n%@",[tempArray description]);
+	//NSLog(@"Utils openFigur tempArray nach Titel: \n%@",[tempArray description]);
 	//NSLog(@"Utils openFigur tempArray count: %d",[tempArray count]);
 	int i=0;
 	
@@ -796,7 +796,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 		{
          tempZeilenString=[tempZeilenString substringFromIndex:1];
 		}
-		NSLog(@"i: %d tempZeilenString: %@",i,tempZeilenString);
+		//NSLog(@"i: %d tempZeilenString: %@",i,tempZeilenString);
 		//NSLog(@"LeerschlagRange start loc: %d l: %d",LeerschlagRange.location, LeerschlagRange.length);
 		
 		NSArray* tempZeilenArray=[tempZeilenString componentsSeparatedByString:@"\t"];
@@ -816,7 +816,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 		//[ProfilArray insertObject:tempDic atIndex:0];
 	}
 	
-	NSLog(@"Utils openProfil FigurArray: \n%@",[FigurArray description]);
+	//NSLog(@"Utils openProfil FigurArray: \n%@",[FigurArray description]);
 	return FigurArray;
 }
 

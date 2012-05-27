@@ -217,7 +217,8 @@
    IBOutlet id					OberkantenStepper;
    IBOutlet id					Blockbreite;
    IBOutlet id					Blockdicke;
-   IBOutlet id					Blockrand;
+   IBOutlet id					Einlaufrand;
+   IBOutlet id					Auslaufrand;
    IBOutlet id					AnschlagLinksIndikator;
    IBOutlet id					AnschlagUntenIndikator;
    
@@ -252,10 +253,12 @@
 - (IBAction)reportStopKnopf:(id)sender;
 - (void)DC_ON:(int)pwm;
 - (int)pwm;
+- (int)pwm2save;
 - (void)setStepperstrom:(int)ein;
 - (void)setBusy:(int)busy;
 - (int)speed;
 - (int)saveSpeed;
+- (int)saveProfileinstellungen;
 - (IBAction)reportSpeedStepper:(id)sender;
 
 - (IBAction)reportCNCKnopf:(id)sender;

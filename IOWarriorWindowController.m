@@ -795,7 +795,7 @@ void print_all_num(struct Abschnitt* list)
 		if ([Filemanager fileExistsAtPath:PListPfad])
 		{
 			tempPListDic=[NSMutableDictionary dictionaryWithContentsOfFile:PListPfad];
-			//NSLog(@"savePListAktion: vorhandener PListDic: %@",[tempPListDic description]);
+			NSLog(@"savePListAktion: vorhandener PListDic: %@",[tempPListDic description]);
 		}
 		
 		else
@@ -812,7 +812,9 @@ void print_all_num(struct Abschnitt* list)
 		}
       int cncspeed = [AVR speed];
       [tempPListDic setObject:[NSNumber numberWithInt:[AVR speed]] forKey:@"speed"];
-		//NSLog(@"savePListAktion: gesicherter PListDic: %@",[tempPListDic description]);
+      int pwm = [AVR pwm2save];
+      [tempPListDic setObject:[NSNumber numberWithInt:[AVR pwm2save]] forKey:@"pwm"];
+		NSLog(@"savePListAktion: gesicherter PListDic: %@",[tempPListDic description]);
 		
 		BOOL PListOK=[tempPListDic writeToURL:PListURL atomically:YES];
 		
