@@ -302,7 +302,7 @@ private void button4_Click(object sender, EventArgs e)
          for (i=0;i<[tempSchnittdatenArray count];i++)
          {
             
-           if (i>15)
+           if (i<5)
            {
               //NSLog(@"WriteCNCAbschnitt i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
            }
@@ -779,6 +779,7 @@ private void button4_Click(object sender, EventArgs e)
             
             else
             {
+               //NSLog(@"AbschnittFertig writeCNCAbschnitt abschnittfertig: %X",abschnittfertig);
                [self writeCNCAbschnitt];
             }
             

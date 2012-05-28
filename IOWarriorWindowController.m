@@ -788,20 +788,20 @@ void print_all_num(struct Abschnitt* list)
 	
    if (PListPfad)
 	{
-		NSLog(@"savePListAktion: PListPfad: %@ ",PListPfad);
+		//NSLog(@"savePListAktion: PListPfad: %@ ",PListPfad);
 		
 		NSMutableDictionary* tempPListDic;//=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 		NSFileManager *Filemanager=[NSFileManager defaultManager];
 		if ([Filemanager fileExistsAtPath:PListPfad])
 		{
 			tempPListDic=[NSMutableDictionary dictionaryWithContentsOfFile:PListPfad];
-			NSLog(@"savePListAktion: vorhandener PListDic: %@",[tempPListDic description]);
+			//NSLog(@"savePListAktion: vorhandener PListDic: %@",[tempPListDic description]);
 		}
 		
 		else
 		{
 			tempPListDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
-			NSLog(@"savePListAktion: neuer PListDic");
+			//NSLog(@"savePListAktion: neuer PListDic");
 		}
 		//[tempPListDic setObject:[NSNumber numberWithInt:AnzahlAufgaben] forKey:@"anzahlaufgaben"];
 		//[tempPListDic setObject:[NSNumber numberWithInt:MaximalZeit] forKey:@"zeit"];
@@ -814,7 +814,7 @@ void print_all_num(struct Abschnitt* list)
       [tempPListDic setObject:[NSNumber numberWithInt:[AVR speed]] forKey:@"speed"];
       int pwm = [AVR pwm2save];
       [tempPListDic setObject:[NSNumber numberWithInt:[AVR pwm2save]] forKey:@"pwm"];
-		NSLog(@"savePListAktion: gesicherter PListDic: %@",[tempPListDic description]);
+		//NSLog(@"savePListAktion: gesicherter PListDic: %@",[tempPListDic description]);
 		
 		BOOL PListOK=[tempPListDic writeToURL:PListURL atomically:YES];
 		

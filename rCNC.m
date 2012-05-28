@@ -1734,7 +1734,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          float wha[2] = {}; // Vektor der Winkelhalbierenden a
          float whb[2] = {}; // Vektor der Winkelhalbierenden b
          
-         if (i<bis-1) // naechsten Wert lesen
+         if (i<bis-1) //  Noch im Abbrandbereich bis-1: naechsten Wert lesen
          {
             nextax = [[[Koordinatentabelle objectAtIndex:i+1]objectForKey:@"ax"]floatValue];
             nextay = [[[Koordinatentabelle objectAtIndex:i+1]objectForKey:@"ay"]floatValue];
@@ -1743,7 +1743,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          }
 
          
-         if (i>von) // vorherigen Wert lesen
+         if (i>von) // Schon im Abbrandbereich von: vorherigen Wert lesen
          {
             prevax = [[[Koordinatentabelle objectAtIndex:i-1]objectForKey:@"ax"]floatValue];
             prevay = [[[Koordinatentabelle objectAtIndex:i-1]objectForKey:@"ay"]floatValue];
@@ -1751,34 +1751,39 @@ PortA=vs[n & 3]; warte10ms(); n++;
             prevby = [[[Koordinatentabelle objectAtIndex:i-1]objectForKey:@"by"]floatValue];
          }
          
-         if ((i<bis-1) && (i>von))
+         if ((i<bis-1) && (i>von)) // Punkt im Abbrandbereich
          {
+            //NSLog(@" ");
             // Seite 1
             float preva[2] = {prevax-ax,prevay-ay};
             float nexta[2] = {nextax-ax,nextay-ay};
             // steigung des naechsten Abschnitts
+//            NSLog(@"i: %d  preva[0]: %2.4f preva[1]: %2.4f nexta[0]: %1.4f nexta[1]: %2.4f",i,preva[0],preva[1],nexta[0],nexta[1]);
+           
             float ma = 0;
             if (nexta[0])
             {
-            float ma = nexta[1]/nexta[0];
-            //NSLog(@"i: %d ma:  %2.4f",i,ma);
+               ma = nexta[1]/nexta[0];
+//            NSLog(@"i: %d ma:  %2.4f",i,ma);
             }
             else 
             {
-               //NSLog(@"ma: Nenner 0 bei %d",i);
+//               NSLog(@"ma: Nenner 0 bei %d",i);
             }
             
-            float prevhypoa=hypot(preva[0],preva[1]);
-            float nexthypoa=hypot(nexta[0],nexta[1]);
+            float prevhypoa=hypot(preva[0],preva[1]); // Laenge des vorherigen Weges
+            float nexthypoa=hypot(nexta[0],nexta[1]); // Laenge des naechsten Weges
             
-            float prevnorma[2]= {(preva[0])/prevhypoa,(preva[1])/prevhypoa}; 
-            float nextnorma[2]= {(nexta[0])/nexthypoa,(nexta[1])/nexthypoa};
+            float prevnorma[2]= {(preva[0])/prevhypoa,(preva[1])/prevhypoa}; // vorheriger Normalenvektor 
+            float nextnorma[2]= {(nexta[0])/nexthypoa,(nexta[1])/nexthypoa}; // naechster Normalenvektor
             
             // Winkel aus Skalarprodukt der Einheitsvektoren
-            float cosphia=prevnorma[0]*nextnorma[0]+ prevnorma[1]*nextnorma[1];
+            float cosphia=prevnorma[0]*nextnorma[0]+ prevnorma[1]*nextnorma[1]; // cosinus des Zwischenwinkels
             // Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
-            
-            cosphi2a=sqrtf((1-cosphia)/2);
+
+//            NSLog(@"i: %d  prevhypoa: %2.4f nexthypoa: %2.4f cosphia: %1.8f",i,prevhypoa,nexthypoa,cosphia);
+
+            cosphi2a=sqrtf((1-cosphia)/2);                                       // cosinus des halben Zwischenwinkels
             //NSLog(@"i: %d cosphia: %2.4f",i,cosphia*1000);
             if (cosphia <0)
             {
@@ -1786,9 +1791,16 @@ PortA=vs[n & 3]; warte10ms(); n++;
                //NSLog(@"Wendepunkt bei: %d",i);
             }
             
-            wha[0] = prevnorma[0]+ nextnorma[0];
+            wha[0] = prevnorma[0]+ nextnorma[0];                              // Winkelhalbierende als Vektorsumme der Normalenvektoren
             wha[1] = prevnorma[1]+ nextnorma[1];
-         
+ //           NSLog(@"i: %d  wha[0]: %2.4f wha[1]: %2.4f cosphi: %1.8f",i,wha[0],wha[1],cosphia);
+           // Fehler: wenn winkel zwischen prevnorma und nextnorma = 180°: wha ist (0,0) > wha = (1,0)
+            if (wha[0]==0 && wha[1]==0)
+            {
+               wha[0] = prevnorma[0];
+               wha[1] = prevnorma[1];
+            }
+               
             // Seite 2
             float prevb[2]= {prevbx-bx,prevby-by};
             float nextb[2]= {nextbx-bx,nextby-by};
@@ -1800,19 +1812,29 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             // Winkel aus Skalarprodukt der Einheitsvektoren
             float cosphib=prevnormb[0]*nextnormb[0]+ prevnormb[1]*nextnormb[1];
-            // Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
+
+// Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
             cosphi2b=sqrtf((1-cosphib)/2);
             
             // Winkelhalbierende
             whb[0] = prevnormb[0]+ nextnormb[0];
             whb[1] = prevnormb[1]+ nextnormb[1];
+            if (whb[0]==0 && whb[1]==0)
+            {
+               whb[0] = prevnormb[0];
+               whb[1] = prevnormb[1];
+            }
             
-         // letzte wh : lastwha, lastwhb
+            
+         // letzte wh : lastwha, lastwhb gespeichert in vorherigem Durchgang
           //  Seite A
-            float lasthypoa = hypotf(lastwha[0],lastwha[1]);
-            float currhypoa = hypotf(wha[0],wha[1]);
+            float lasthypoa = hypotf(lastwha[0],lastwha[1]);   // Laenge der vorherigen WH  
+            float currhypoa = hypotf(wha[0],wha[1]);           // Laenge der aktuellen WH 
+            
+            // cosinussatz
             float cospsia = (wha[0]*lastwha[0]+wha[1]*lastwha[1])/(lasthypoa*currhypoa);
-            //NSLog(@"lasthypoa: %2.4f currhypoa: %2.4f cospsia: %1.8f",lasthypoa,currhypoa,cospsia);
+            
+//            NSLog(@"i: %d  lasthypoa: %2.4f currhypoa: %2.4f cospsia: %1.8f",i,lasthypoa,currhypoa,cospsia);
             if (cospsia<0)
             {
                wha[0] *= -1;
@@ -1838,12 +1860,12 @@ PortA=vs[n & 3]; warte10ms(); n++;
          
          if (i==von) // erster Punkt, Abbrandvektor soll senkrecht stehen
          {
-            NSLog(@"i=von");
+            //NSLog(@"i=von");
             float deltaax=nextax-ax;
             float deltaay=nextay-ay;
             float normalenhypoa = hypotf(deltaax, deltaay);
             // Normalenvektor steht senkrecht
-            wha[0] = deltaay/normalenhypoa*(-1);
+            wha[0] = deltaay/normalenhypoa*(-1);      // erster Punkt, wha speichern
             wha[1] = deltaax/normalenhypoa;
             cosphi2a=1;
 
@@ -1861,7 +1883,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
  
          if (i==bis-1) // letzter Punkt, Abbrandvektor soll senkrecht stehen
          {
-            NSLog(@"i=bis-1");
+            //NSLog(@"i=bis-1");
             float deltaax=prevax-ax;
             float deltaay=prevay-ay;
             float normalenhypoa = hypotf(deltaax, deltaay);
@@ -1929,9 +1951,12 @@ PortA=vs[n & 3]; warte10ms(); n++;
             }break;
          }
  */        
-         // wh speichern
+         // ++++++++++++++++++++++++++++++++++
+         // wh speichern fuer naechsten Punkt
+         
          lastwha[0] = wha[0];
          lastwha[1] = wha[1];
+         // ++++++++++++++++++++++++++++++++++
          
          float whahypo = hypotf(wha[0],wha[1]);
         // NSLog(@"prevhypoa %2.2f nexthypoa %2.2f whahypo: %2.4f",prevhypoa,nexthypoa,whahypo);

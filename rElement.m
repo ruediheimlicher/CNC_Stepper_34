@@ -109,7 +109,7 @@
     {
     [tempPListDic setObject:[AVR KoordinatenTabelle] forKey:@"koordinatentabelle"];
     }
-    NSLog(@"savePListAktion: gesicherter PListDic: %@",[tempPListDic description]);
+    //NSLog(@"savePListAktion: gesicherter PListDic: %@",[tempPListDic description]);
     
     BOOL PListOK=[tempPListDic writeToFile:PListPfad atomically:YES];
     

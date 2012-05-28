@@ -278,9 +278,9 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 	
    // Test Spline
    
-   NSLog(@"count: %d Nasenindex: %d",[ProfilArray count],Nasenindex);
+   //NSLog(@"count: %d Nasenindex: %d",[ProfilArray count],Nasenindex);
    
-   NSLog(@"Spline Oberseite");
+   //NSLog(@"Spline Oberseite");
    NSArray* OberseiteArray=[ProfilArray subarrayWithRange:NSMakeRange(0, Nasenindex+1)];
    
   // NSDictionary* OberseiteSplineKoeffArray=[self SplinekoeffizientenVonArray:OberseiteArray];
@@ -294,7 +294,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    }
     
    
-   NSLog(@"Spline Unterseite");
+   //NSLog(@"Spline Unterseite");
    
    NSDictionary* UnterseiteSplineKoeffArray=[self SplinekoeffizientenVonArray:revUnterseiteArray];
 

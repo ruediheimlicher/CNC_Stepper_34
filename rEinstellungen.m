@@ -3031,7 +3031,7 @@
 
 - (void)clearProfilGraphDaten
 {
-   NSLog(@"clearProfilGraphDaten");
+   //NSLog(@"clearProfilGraphDaten");
    NSMutableDictionary* datenDic = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    //[datenDic setObject:[NSArray array]];
    //NSLog(@"Profil1Array: %d",[Profil1Array count]);

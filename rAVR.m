@@ -562,7 +562,7 @@ return returnInt;
 	
 	
 	[ProfilGraph setScale:[[ScalePop selectedItem]tag]];
-   [ProfilGraph setGraphOffset:10];
+   [ProfilGraph setGraphOffset:0];
 	[[self window]makeKeyAndOrderFront:self];
 	
 	NSString* logString=[NSString string];
@@ -1490,7 +1490,7 @@ return returnInt;
 
 - (int)saveProfileinstellungen
 {
-   NSLog(@"saveProfileinstellungen");
+   //NSLog(@"saveProfileinstellungen");
    
    
    
@@ -3312,7 +3312,7 @@ return returnInt;
 {
    //NSLog(@"ElementeingabeAktion note: %@",[[note userInfo] description]);
    //NSLog(@"KoordinatenTabelle vor: %@",[KoordinatenTabelle description]);
-   
+   float origpwm=[DC_PWM intValue];
    
    NSArray* tempElementKoordinatenArray = [[note userInfo]objectForKey:@"koordinatentabelle"];
    //NSLog(@"tempElementKoordinatenArray: %@",[tempElementKoordinatenArray description]);
@@ -3366,8 +3366,8 @@ return returnInt;
       oldbx += dx;
       oldby += dy;
       
-      NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:oldax],@"ax",[NSNumber numberWithFloat:olday],@"ay",[NSNumber numberWithFloat:oldbx],@"bx",[NSNumber numberWithFloat:oldby],@"by",[NSNumber numberWithInt:i],@"index", nil];
-
+      NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:oldax],@"ax",[NSNumber numberWithFloat:olday],@"ay",[NSNumber numberWithFloat:oldbx],@"bx",[NSNumber numberWithFloat:oldby],@"by",[NSNumber numberWithInt:i],@"index",[NSNumber numberWithInt:0],@"pwm", nil];
+//[tempZeilenDic setObject:[NSNumber numberWithInt:origpwm] forKey:@"pwm"];
      
       //NSLog(@"tempDic: %@",[tempDic description]);
       [KoordinatenTabelle addObject: tempDic];
@@ -3793,12 +3793,18 @@ return returnInt;
    
    
    int index=0;
-   
+   int profilstartindex=0;
+   int profilendindex=0;
    // Oberseite einfuegen
    //NSLog(@"Oberseite Nasenindex: %d",Nasenindex);
    //if ([OberseiteCheckbox state])
    if (mitOberseite)
    {
+      // Startindex fixieren, wird fuer Abbrand gebraucht fuer 'von'
+      profilstartindex = [[[KoordinatenTabelle lastObject]objectForKey:@"index"]intValue];
+       profilstartindex =[KoordinatenTabelle count];
+      
+      NSLog(@"profilstartindex: %d",profilstartindex);
       for (index=0;index<= Nasenindex;index++) // Punkte der Oberseite
       {
          NSDictionary* tempZeilenDicA = [ProfilArrayA objectAtIndex:index];
@@ -3871,6 +3877,11 @@ return returnInt;
          //NSLog(@"index: %d x: %1.1f",index,[[[ProfilArrayA objectAtIndex:index]objectForKey:@"ax"]floatValue]);
          
       }
+      // Endindex fixieren, wird fuer Abbrand gebraucht fuer 'bis'
+      profilendindex = [[[KoordinatenTabelle lastObject]objectForKey:@"index"]intValue];
+      profilendindex = [KoordinatenTabelle count];
+      NSLog(@"profilendindex: %d",profilendindex);
+      
    } // mit Unterseite
    
    
@@ -3973,6 +3984,15 @@ return returnInt;
              bis=[KoordinatenTabelle count]-2;
           }
        }
+   
+   if (mitOberseite && mitUnterseite) // ganzes Profil, Einlauf manuell: von, bis an Anfang und Ende des Profils
+   {
+      NSLog(@"mitOberseite && mitUnterseite startindex: %d endindex: %d",profilstartindex, profilendindex );
+      von = profilstartindex;
+      bis = profilendindex;
+   }
+   
+   
    float abbrand = [AbbrandFeld floatValue];
    KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrand:abbrand aufSeite:0 von:von bis:bis];
    
