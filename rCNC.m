@@ -1710,8 +1710,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
    //fprintf(stderr, "i \tprev x \tprev y \tnext x \tnexy \tprefhyp \tnexthyp \tprevnorm x \tprevnorm y \tnextnorm x  \tnextnorm y\n"); 
    for (i=0; i<[Koordinatentabelle count];i++)
    {
+      int seitenkorrektur = 1; 
       NSMutableDictionary* tempDic=[NSMutableDictionary dictionaryWithDictionary:[Koordinatentabelle objectAtIndex:i]];
-      
       if (i>von-1 && i<bis) // Abbrandbereich, von ist 1-basiert
       {
          float ax = [[[Koordinatentabelle objectAtIndex:i]objectForKey:@"ax"]floatValue];
@@ -1793,13 +1793,20 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             wha[0] = prevnorma[0]+ nextnorma[0];                              // Winkelhalbierende als Vektorsumme der Normalenvektoren
             wha[1] = prevnorma[1]+ nextnorma[1];
+            
+            
+            /*
+             Determinante:
+             Erste Gerade: 
+             preva[0] preva[1]
+             zweite Gerade:
+             wha[0] wha[1]
+             det = preva[0]*wha[1]-preva[1]*wha[0]
+             */
+            
+
  //           NSLog(@"i: %d  wha[0]: %2.4f wha[1]: %2.4f cosphi: %1.8f",i,wha[0],wha[1],cosphia);
-           // Fehler: wenn winkel zwischen prevnorma und nextnorma = 180°: wha ist (0,0) > wha = (1,0)
-            if (wha[0]==0 && wha[1]==0)
-            {
-               wha[0] = prevnorma[0];
-               wha[1] = prevnorma[1];
-            }
+            
                
             // Seite 2
             float prevb[2]= {prevbx-bx,prevby-by};
@@ -1815,6 +1822,27 @@ PortA=vs[n & 3]; warte10ms(); n++;
 
 // Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
             cosphi2b=sqrtf((1-cosphib)/2);
+
+ // Determinante. Vorzeichen gibt die Seite der WH an      
+            
+            float deta = preva[0]*wha[1]-preva[1]*wha[0];
+            //NSLog(@"i: %d deta: %2.4f cosphia: %2.4f",i,deta,cosphia);
+            if (deta >= 0)
+            {
+               seitenkorrektur = -1; 
+            }
+            NSLog(@"i: %d deta: %2.4f cosphia: %2.4f seitenkorrektur: %d",i,deta,cosphia,seitenkorrektur);
+
+            // Fehler: wenn winkel zwischen prevnorma und nextnorma = 180°: wha ist (0,0) > wha = (1,0)
+            if (wha[0]==0 && wha[1]==0)
+            {
+               NSLog(@"wha[0]==0 && wha[1]==0");
+               //wha[0] = prevnorma[0]*seitenkorrektur;
+               //wha[1] = prevnorma[1]*seitenkorrektur;
+               wha[0] = lastwha[0]*seitenkorrektur;
+               wha[1] = lastwha[1]*seitenkorrektur;
+            }
+
             
             // Winkelhalbierende
             whb[0] = prevnormb[0]+ nextnormb[0];
@@ -1823,6 +1851,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             {
                whb[0] = prevnormb[0];
                whb[1] = prevnormb[1];
+               
             }
             
             
@@ -1834,11 +1863,17 @@ PortA=vs[n & 3]; warte10ms(); n++;
             // cosinussatz
             float cospsia = (wha[0]*lastwha[0]+wha[1]*lastwha[1])/(lasthypoa*currhypoa);
             
-//            NSLog(@"i: %d  lasthypoa: %2.4f currhypoa: %2.4f cospsia: %1.8f",i,lasthypoa,currhypoa,cospsia);
-            if (cospsia<0)
+
+  //          fprintf(stderr,"%d\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\n",i, ax,ay,preva[0],preva[1],nexta[0],nexta[1],wha[0],wha[1], prevnorma[0],prevnorma[1],nextnorma[0],nextnorma[1],cosphia,lastwha[0],lastwha[1],lasthypoa,nexthypoa,cospsia);
+          
+            //            NSLog(@"i: %d  lasthypoa: %2.4f currhypoa: %2.4f cospsia: %1.8f",i,lasthypoa,currhypoa,cospsia);
+            
+            if (cospsia < 0) // Winkel ist > 90°
             {
-               wha[0] *= -1;
-               wha[1] *= -1;
+               //NSLog(@"Winkel ist > 90°");
+ //              wha[0] *= -1;
+ //              wha[1] *= -1;
+               
             }
             //  Seite B
             float lasthypob = hypotf(lastwhb[0],lastwhb[1]);
@@ -1860,7 +1895,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          
          if (i==von) // erster Punkt, Abbrandvektor soll senkrecht stehen
          {
-            //NSLog(@"i=von");
+            NSLog(@"i=von: %d",i);
             float deltaax=nextax-ax;
             float deltaay=nextay-ay;
             float normalenhypoa = hypotf(deltaax, deltaay);
@@ -1868,7 +1903,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             wha[0] = deltaay/normalenhypoa*(-1);      // erster Punkt, wha speichern
             wha[1] = deltaax/normalenhypoa;
             cosphi2a=1;
-
+            NSLog(@"deltaax: %2.4f deltaay: %2.4f normalenhypoa: %2.4f wha[0]: %2.4f wha[1]: %2.4f cosphi2a: %2.4f",deltaax,deltaay,normalenhypoa,wha[0],wha[1],cosphi2a);
             float deltabx=nextbx-bx;
             float deltaby=nextby-by;
             float normalenhypob = hypotf(deltabx, deltaby);
@@ -1877,7 +1912,19 @@ PortA=vs[n & 3]; warte10ms(); n++;
             whb[1] = deltabx/normalenhypob;
             cosphi2b=1;
 
-         
+            
+            // test
+            if (wha[1]<0 ) // falsche Richtung in Naehe von Wendepunkt
+            {
+               wha[0] *= -1;
+               wha[1] *= -1;
+            }
+            if (whb[1]<0 ) // falsche Richtung in Naehe von Wendepunkt
+            {
+               whb[0] *= -1;
+               whb[1] *= -1;
+            }
+        
          
          }
  
@@ -1899,6 +1946,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             whb[0] = deltaby/normalenhypob*(-1);
             whb[1] = deltabx/normalenhypob;
             cosphi2b=1;
+            
             
             // test
             if (wha[1]<0 ) // falsche Richtung in Naehe von Wendepunkt
@@ -1954,13 +2002,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
          // ++++++++++++++++++++++++++++++++++
          // wh speichern fuer naechsten Punkt
          
-         lastwha[0] = wha[0];
-         lastwha[1] = wha[1];
+         lastwha[0] = wha[0]*seitenkorrektur;
+         lastwha[1] = wha[1]*seitenkorrektur;
          // ++++++++++++++++++++++++++++++++++
          
          float whahypo = hypotf(wha[0],wha[1]);
         // NSLog(@"prevhypoa %2.2f nexthypoa %2.2f whahypo: %2.4f",prevhypoa,nexthypoa,whahypo);
-         float abbranda[2]={wha[0]/whahypo*abbrand/cosphi2a,wha[1]/whahypo*abbrand/cosphi2a};
+         float abbranda[2]={wha[0]*seitenkorrektur/whahypo*abbrand/cosphi2a,wha[1]*seitenkorrektur/whahypo*abbrand/cosphi2a};
          
          lastwhb[0] = whb[0];
          lastwhb[1] = whb[1];

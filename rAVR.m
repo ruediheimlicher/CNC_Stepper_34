@@ -562,7 +562,7 @@ return returnInt;
 	
 	
 	[ProfilGraph setScale:[[ScalePop selectedItem]tag]];
-   [ProfilGraph setGraphOffset:0];
+   [ProfilGraph setGraphOffset:10];
 	[[self window]makeKeyAndOrderFront:self];
 	
 	NSString* logString=[NSString string];
@@ -687,7 +687,7 @@ return returnInt;
    [RechtsLinksRadio setSelectedSegment:0];
    [ProfilWrenchEinheitRadio setState:1 atRow:0 column:0];
    
-   [AbbrandFeld setFloatValue:1.0];
+   [AbbrandFeld setFloatValue:3.0];
 
    
    [DC_PWM setDelegate:self];

@@ -148,9 +148,20 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
       return NULL;
 	}
    
+   NSString* stringterm;
+   if ([[ProfilString componentsSeparatedByString:@"\r"]count]==1)
+   {
+      stringterm = @"\n";
+   }
+   else {
+      stringterm = @"\r";
+   }
    
-	NSArray* tempArray=[ProfilString componentsSeparatedByString:@"\r"];
-   //NSLog(@"tempArray count: %d",[tempArray count]);
+   
+	NSArray* tempArray=[ProfilString componentsSeparatedByString:stringterm];
+   
+   NSLog(@"tempArray count: %d",[tempArray count]);
+   
 	NSString* firstString = [tempArray objectAtIndex:0];
 	//NSLog(@"firstString: %@",firstString );
       
