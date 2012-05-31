@@ -1109,7 +1109,7 @@
    // Profil
    [Profil1Tiefe setDelegate:self];
    [Profil1Tiefe setAlignment:NSRightTextAlignment];
-   [Profil1Tiefe setIntValue:100];
+   [Profil1Tiefe setIntValue:120];
    //[ProfilStartpunktX setFormatter:Eingabeformatter];
    [Profil2Tiefe setDelegate:self];
    [Profil2Tiefe setAlignment:NSRightTextAlignment];
@@ -1152,12 +1152,9 @@
    [Auslauftiefe  setDelegate:self];
    [Auslauftiefe setAlignment:NSRightTextAlignment];
    [Auslauftiefe setFormatter:Eingabeformatter];
+  
    
-   [Einlauflaenge setFloatValue:15];
-   [Einlauftiefe setFloatValue:15];
-   [Auslauflaenge setFloatValue:10];
-   [Auslauftiefe setFloatValue:15];
-
+ 
    // Form
    CNC = [[[rCNC alloc]init]retain];
  //  [SeiteA1 setDelegate:self];
@@ -1389,59 +1386,54 @@
 
    if ([daten objectForKey:@"einlaufrand"])
    {
+      if ([Einlaufrand  intValue] != [[daten objectForKey:@"einlaufrand"]intValue])
+      {
+
       [Einlaufrand  setIntValue:[[daten objectForKey:@"einlaufrand"]intValue]];// 
-      
+      }
    }
-   else
-   {
-      [Einlaufrand setIntValue:15];
-   }
-//   [Blockrand setIntValue:[Einlaufrand  intValue]];
    
    if ([daten objectForKey:@"einlauflaenge"])
    {
-      [Einlauflaenge  setIntValue:[[daten objectForKey:@"einlaufrand"]intValue]];// 
+      if ([Einlauflaenge  intValue] != [[daten objectForKey:@"einlauflaenge"]intValue])
+      {
+  
+      [Einlauflaenge  setIntValue:[[daten objectForKey:@"einlauflaenge"]intValue]];// 
+      }
    }
-   else
-   {
-      [Einlauflaenge setIntValue:15];
-   }
+   
    if ([daten objectForKey:@"einlauftiefe"])
    {
+      
+      if ([Einlauftiefe  intValue] != [[daten objectForKey:@"einlauftiefe"]intValue])
+      {
       [Einlauftiefe  setIntValue:[[daten objectForKey:@"einlauftiefe"]intValue]];// 
+      }
    }
-   else
-   {
-      [Einlauftiefe setIntValue:15];
-   }
-
-   
    
    if ([daten objectForKey:@"auslaufrand"])
    {
+      if ([Auslaufrand  intValue] != [[daten objectForKey:@"auslaufrand"]intValue])
+      {
+
       [Auslaufrand  setIntValue:[[daten objectForKey:@"auslaufrand"]intValue]];// 
-   }
-   else
-   {
-      [Auslaufrand setIntValue:15];
+      }
    }
    
    if ([daten objectForKey:@"auslauflaenge"])
    {
-      [Auslauflaenge  setIntValue:[[daten objectForKey:@"auslauflaenge"]intValue]];// 
+      if ([Auslauflaenge  intValue] != [[daten objectForKey:@"auslauflaenge"]intValue])
+      {
+      [Auslauflaenge  setIntValue:[[daten objectForKey:@"auslauflaenge"]intValue]];//
+      }
    }
-   else
-   {
-      [Auslauflaenge setIntValue:15];
-      
-   }
+
    if ([daten objectForKey:@"auslauftiefe"])
    {
+      if ([Auslauftiefe  intValue] != [[daten objectForKey:@"auslauftiefe"]intValue])
+      {
       [Auslauftiefe  setIntValue:[[daten objectForKey:@"auslauftiefe"]intValue]];// 
-   }
-   else
-   {
-      [Auslauftiefe setIntValue:15];
+      }
    }
 
    /*
@@ -2882,13 +2874,13 @@
       [ProfilDic setObject:[NSNumber numberWithInt:flipV] forKey:@"flipv"];
       [ProfilDic setObject:[NSNumber numberWithInt:reverse] forKey:@"reverse"];
       
-      [PList setObject:[NSNumber numberWithFloat:[Einlauflaenge floatValue]] forKey:@"einlauflaenge"];
-      [PList setObject:[NSNumber numberWithFloat:[Einlauftiefe floatValue]] forKey:@"einlauftiefe"];
-      [PList setObject:[NSNumber numberWithFloat:[Einlaufrand floatValue]] forKey:@"einlaufrand"];
+      [PList setObject:[NSNumber numberWithInt:[Einlauflaenge intValue]] forKey:@"einlauflaenge"];
+      [PList setObject:[NSNumber numberWithInt:[Einlauftiefe intValue]] forKey:@"einlauftiefe"];
+      [PList setObject:[NSNumber numberWithInt:[Einlaufrand intValue]] forKey:@"einlaufrand"];
 
-      [PList setObject:[NSNumber numberWithFloat:[Auslauflaenge floatValue]] forKey:@"auslauflaenge"];
-      [PList setObject:[NSNumber numberWithFloat:[Auslauftiefe floatValue]] forKey:@"auslauftiefe"];
-      [PList setObject:[NSNumber numberWithFloat:[Auslaufrand floatValue]] forKey:@"auslaufrand"];
+      [PList setObject:[NSNumber numberWithInt:[Auslauflaenge intValue]] forKey:@"auslauflaenge"];
+      [PList setObject:[NSNumber numberWithInt:[Auslauftiefe intValue]] forKey:@"auslauftiefe"];
+      [PList setObject:[NSNumber numberWithInt:[Auslaufrand intValue]] forKey:@"auslaufrand"];
     
 
       
@@ -3434,7 +3426,66 @@
    [plist retain];
    [PList release];
    PList = (NSMutableDictionary*)plist;
+   //NSLog(@"CNC_Eingabe setPList: %@",[PList description]);
+ 
    
+   if ([PList objectForKey:@"einlaufrand"])
+   {
+      [Einlaufrand setIntValue:[[PList objectForKey:@"einlaufrand"]intValue]];
+   }
+   else 
+   {
+      [Einlaufrand setIntValue:15];
+   }
+   
+
+   if ([PList objectForKey:@"einlauflaenge"])
+   {
+      [Einlauflaenge setIntValue:[[PList objectForKey:@"einlauflaenge"]intValue]];
+   }
+   else 
+   {
+      [Einlauflaenge setIntValue:15];
+   }
+   
+   if ([PList objectForKey:@"einlauftiefe"])
+   {
+      [Einlauftiefe setIntValue:[[PList objectForKey:@"einlauftiefe"]intValue]];
+   }
+   else 
+   {
+      [Einlauftiefe setIntValue:15];
+   }
+   
+   if ([PList objectForKey:@"auslauflaenge"])
+   {
+      [Auslauflaenge setIntValue:[[PList objectForKey:@"auslauflaenge"]intValue]];
+   }
+   else 
+   {
+      [Auslauflaenge setIntValue:15];
+   }
+   
+   if ([PList objectForKey:@"auslauftiefe"])
+   {
+      [Auslauftiefe setIntValue:[[PList objectForKey:@"auslauftiefe"]intValue]];
+   }
+   else 
+   {
+      [Auslauftiefe setIntValue:15];
+   }
+   
+   
+   if ([PList objectForKey:@"auslaufrand"])
+   {
+      [Auslaufrand setIntValue:[[PList objectForKey:@"auslaufrand"]intValue]];
+   }
+   else 
+   {
+      [Auslaufrand setIntValue:15];
+   }
+
+
 }
 /*
  - (IBAction)showWindow:(id)sender

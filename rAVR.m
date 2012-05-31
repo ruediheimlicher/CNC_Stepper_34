@@ -197,7 +197,7 @@ return returnInt;
 	NSString* USBPfad=[[NSHomeDirectory() stringByAppendingFormat:@"%@%@",@"/Documents",@"/CNCDaten"]retain];
 	CNCDatenDa= ([Filemanager fileExistsAtPath:USBPfad isDirectory:&istOrdner]&&istOrdner);
 	//NSLog(@"mountedVolume:    USBPfad: %@",USBPfad);	
-	NSMutableDictionary* tempPListDic;
+	NSMutableDictionary* tempPListDic = [[NSMutableDictionary alloc]initWithCapacity:0];
    if (CNCDatenDa)
 	{
 		
@@ -370,8 +370,8 @@ return returnInt;
 
 	CNCdataPfad=[NSHomeDirectory() stringByAppendingPathComponent:@"documents/CNCData"];
 	//NSLog(@"CNCdataPfad: %@",CNCdataPfad);
-   CNC_Plist = [[NSMutableDictionary alloc]initWithCapacity:0];
-   //[CNC_Plist setDictionary: [self readCNC_PList]];
+   CNC_PList = [[NSMutableDictionary alloc]initWithCapacity:0];
+   [CNC_PList setDictionary: [self readCNC_PList]];
    
 	n=0;
 	aktuellerTag=0;
@@ -443,7 +443,7 @@ return returnInt;
 	[tempArray addObject:tempDic];
 	
 	
-   CNC_Plist = [self readCNC_PList];
+   CNC_PList = [self readCNC_PList];
    
 	int raum;
 	//NSView* RaumView =[[StepperTab tabViewItemAtIndex:0]view];;
@@ -687,7 +687,7 @@ return returnInt;
    [RechtsLinksRadio setSelectedSegment:0];
    [ProfilWrenchEinheitRadio setState:1 atRow:0 column:0];
    
-   [AbbrandFeld setFloatValue:3.0];
+   [AbbrandFeld setFloatValue:1.0];
 
    
    [DC_PWM setDelegate:self];
@@ -1544,6 +1544,7 @@ return returnInt;
       NSDictionary* tempEinstellungenDic=[NSMutableDictionary dictionaryWithDictionary:[CNC_Eingabe PList]];
       [tempPListDic addEntriesFromDictionary:tempEinstellungenDic];
       [tempPListDic setObject:[NSNumber numberWithInt:[SpeedFeld intValue]] forKey:@"speed"];
+      [tempPListDic setObject:[NSNumber numberWithInt:[DC_PWM intValue]] forKey:@"pwm"];
       [tempPListDic setObject:[NSNumber numberWithInt:[DC_PWM intValue]] forKey:@"pwm"];
       
       //NSLog(@"saveSpeed: gesicherter PListDic: %@",[tempPListDic description]);
@@ -3248,6 +3249,7 @@ return returnInt;
    {
        CNC_Eingabe =[[rEinstellungen alloc]init];
    }
+//   [CNC_Eingabe setPList:[self readCNC_PList]];
    /*
    NSArray* LibElementArray=[self readLib];
    NSArray* LibElementnamenArray=[LibElementArray valueForKey:@"name"];
@@ -3284,6 +3286,7 @@ return returnInt;
    
    NSModalSession session = [NSApp beginModalSessionForWindow:[CNC_Eingabe window]];
    [CNC_Eingabe setDaten:datenDic];
+   [CNC_Eingabe setPList:[self readCNC_PList]];
    [CNC_Eingabe clearProfilGraphDaten];
 
    
@@ -3661,7 +3664,7 @@ return returnInt;
    auslaufrand = [[ProfilDic objectForKey:@"auslaufrand"]intValue];
    [Auslaufrand setIntValue:auslaufrand];
    
-   NSLog(@"einlaufrand: %d auslaufrand: %d",einlaufrand,auslaufrand);
+  // NSLog(@"einlaufrand: %d auslaufrand: %d",einlaufrand,auslaufrand);
    
    // Einlauf-Schnittlinie
    
@@ -3669,11 +3672,11 @@ return returnInt;
    {
       // Endleistenwinkel bestimmen
       float winkelA = [CNC EndleistenwinkelvonProfil:[ProfilDic objectForKey:@"profil1array"]];
-      NSLog(@"Endleistenwinkel A: %2.2f",winkelA*180/M_PI);
+     // NSLog(@"Endleistenwinkel A: %2.2f",winkelA*180/M_PI);
 
       //float winkelB = [CNC EndleistenwinkelvonProfil:[ProfilDic objectForKey:@"profil2array"]];
       float winkelB = [CNC EndleistenwinkelvonProfil:Profil2Array];
-      NSLog(@"Endleistenwinkel B: %2.2f",winkelB*180/M_PI);
+      //NSLog(@"Endleistenwinkel B: %2.2f",winkelB*180/M_PI);
 
      // if ([OberseiteCheckbox state]&& (![OberseiteCheckbox state]))
       if (mitOberseite && (!mitUnterseite)) 
@@ -3993,8 +3996,9 @@ return returnInt;
    }
    
    
-   float abbrand = [AbbrandFeld floatValue];
-   KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrand:abbrand aufSeite:0 von:von bis:bis];
+   float abbranda = [AbbrandFeld floatValue];
+   float abbrandb = [AbbrandFeld floatValue]/[ProfilTiefeFeldB floatValue]*[ProfilTiefeFeldA floatValue]; // groesser bei groesserem Unterschied
+   KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrandA:abbranda  mitAbbrandB:abbrandb aufSeite:0 von:von bis:bis];
    
    // Startwerte in mm in CNC_Eingabe aktualisieren
    NSMutableDictionary* StartwertDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
@@ -4435,7 +4439,7 @@ return returnInt;
 
 - (IBAction)reportBlockkonfigurieren:(id)sender
 {
-   NSLog(@"reportBlockkonfigurieren Seite: %d",[RechtsLinksRadio selectedSegment]);
+   //NSLog(@"reportBlockkonfigurieren Seite: %d",[RechtsLinksRadio selectedSegment]);
    
    // Einlauf und Auslauf in gleicher funktion. Unterschieden durch Parameter 'Lage'.
    // Lage: 0: Einlauf 1: Auslauf
@@ -4517,14 +4521,14 @@ return returnInt;
       float ausmassx = maxx-minx;
       float ausmassy = maxy-miny;
       //NSLog(@"reportBlockkonfigurieren ausmassx: %2.2f ausmassy: %2.2f",ausmassx,ausmassy);
-     
+      
       //NSLog(@"reportBlockkonfigurieren maxy: %2.2f miny: %2.2f",maxy,miny);
       //NSLog(@"reportBlockkonfigurieren maxx: %2.2f minx: %2.2f",maxx,minx);
       
-//      maxy -= fmax(einlaufAY,einlaufBY);       // Abstand von Einlauf bis oberster Punkt 
+      //      maxy -= fmax(einlaufAY,einlaufBY);       // Abstand von Einlauf bis oberster Punkt 
       float abstandoben = maxy - fmax(einlaufAY,einlaufBY);       // Abstand von Einlauf bis oberster Punkt 
       
-//      miny -= fmax(einlaufAY,einlaufBY);      // Abstand von Einlauf bis unterster Punkt
+      //      miny -= fmax(einlaufAY,einlaufBY);      // Abstand von Einlauf bis unterster Punkt
       float abstandunten = fmax(einlaufAY,einlaufBY) - miny;       // Abstand von Einlauf bis oberster Punkt 
       
       //NSLog(@"reportBlockkonfigurieren maxy: %2.2f miny: %2.2f",maxy,miny);
@@ -4536,7 +4540,7 @@ return returnInt;
       float dicke=[Blockdicke floatValue];
       
       float blockoberkante = [Blockoberkante floatValue];
- 
+      
       if ((maxy + fabs(miny))>dicke) 
       {
       }
@@ -4559,64 +4563,64 @@ return returnInt;
       [Blockdicke setIntValue:dicke];
       [Einlaufrand setIntValue:einlaufrand];
       [Auslaufrand setIntValue:auslaufrand];
-
-      [Blockbreite setIntValue:maxx+einlaufrand - minx + auslaufrand];
-//      NSPoint EckeRechtsOben = NSMakePoint(maxx+rand,fmax(einlaufAY,einlaufBY)+ maxy + zugabeoben);
-//      NSLog(@"reportBlockkonfigurieren EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
       
-//      NSPoint EckeLinksOben = NSMakePoint(minx -rand, EckeRechtsOben.y);
+      [Blockbreite setIntValue:maxx+einlaufrand - minx + auslaufrand];
+      //      NSPoint EckeRechtsOben = NSMakePoint(maxx+rand,fmax(einlaufAY,einlaufBY)+ maxy + zugabeoben);
+      //      NSLog(@"reportBlockkonfigurieren EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
+      
+      //      NSPoint EckeLinksOben = NSMakePoint(minx -rand, EckeRechtsOben.y);
       //NSPoint EckeLinksUnten = NSMakePoint(EckeLinksOben.x, EckeRechtsOben.y- dicke);
       //NSPoint EckeRechtsUnten = NSMakePoint(EckeRechtsOben.x, EckeLinksUnten.y);
-
+      
       // neue Berechnung
-       
+      
       
       NSPoint EckeLinksUnten = NSMakePoint(einlaufAX -rand, fmax(einlaufAY,einlaufBY) - abstandunten  -zugabeunten);
       NSPoint EckeLinksOben = NSMakePoint(EckeLinksUnten.x, EckeLinksUnten.y + dicke);
       
       NSPoint EckeRechtsOben = NSMakePoint(EckeLinksOben.x + ausmassx + einlaufrand + auslaufrand, EckeLinksOben.y);
       NSPoint EckeRechtsUnten = NSMakePoint(EckeRechtsOben.x, EckeLinksUnten.y);   
-
-      //NSLog(@"reportBlockkonfigurieren EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
-
-      BlockrahmenArray = [NSMutableArray arrayWithObjects:NSStringFromPoint(EckeLinksOben),NSStringFromPoint(EckeRechtsOben),NSStringFromPoint(EckeRechtsUnten),NSStringFromPoint(EckeLinksUnten), nil];
-
       
-      NSLog(@"reportBlockkonfigurieren RahmenArray: %@",[BlockrahmenArray description]);
+      //NSLog(@"reportBlockkonfigurieren EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
+      
+      BlockrahmenArray = [NSMutableArray arrayWithObjects:NSStringFromPoint(EckeLinksOben),NSStringFromPoint(EckeRechtsOben),NSStringFromPoint(EckeRechtsUnten),NSStringFromPoint(EckeLinksUnten), nil];
+      
+      
+      //NSLog(@"reportBlockkonfigurieren RahmenArray: %@",[BlockrahmenArray description]);
       
       [ProfilGraph setRahmenArray:BlockrahmenArray];
       [ProfilGraph setNeedsDisplay:YES];
-
+      
       // Start Konfig Schnittlinie
-   /*
-      // Startpunkt ist EckeLinksOben. Lage: 0: Einlauf 1: Auslauf
-      NSPoint PositionA = EckeLinksOben;
-      NSPoint PositionB = EckeLinksOben;
-  */
+      /*
+       // Startpunkt ist EckeLinksOben. Lage: 0: Einlauf 1: Auslauf
+       NSPoint PositionA = EckeLinksOben;
+       NSPoint PositionB = EckeLinksOben;
+       */
       // Startpunkt ist EckeLinksUnten. Lage: 0: Einlauf 1: Auslauf
       NSPoint PositionA = EckeLinksUnten;
       NSPoint PositionB = EckeLinksUnten;
-
+      
       
       // Start des Schnittes ist um einstichx, einstichy verschoben
       
       PositionA.x -=einstichx;
       PositionB.x -=einstichx;
-
+      
       PositionA.y -=einstichy;
       PositionB.y -=einstichy;
-
+      
       
       
       int index=0;
       
-       
-       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       
       
       index++;
-
-     
+      
+      
       // weg vom Anschlag einstichy nach oben    
       PositionA.y +=einstichy;
       PositionB.y +=einstichy;
@@ -4626,31 +4630,31 @@ return returnInt;
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*red_pwm],@"pwm",nil]];
       index++;
       
-
+      
       
       // Einstich  zum Blockrand
       PositionA.x +=einstichx;       PositionB.x +=einstichx;
       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
+      
+      
+      /*    
+       // Blockrand senkrecht nach unten schneiden
+       PositionA.y -=dicke;
+       PositionB.y -=dicke;
+       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+       index++;
        
-      
-  /*    
-      // Blockrand senkrecht nach unten schneiden
-      PositionA.y -=dicke;
-      PositionB.y -=dicke;
-      //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
-      index++;
-
-      
-      // weg vom Blockrand 2mm      
-      PositionA.x -=2;
-      PositionB.x -=2;
-      //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
-     index++;
-*/
+       
+       // weg vom Blockrand 2mm      
+       PositionA.x -=2;
+       PositionB.x -=2;
+       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+       index++;
+       */
       
       // Anfahrt von unten: Zuerst schneiden senkrecht noch oben bis Blockrand
       
@@ -4668,42 +4672,42 @@ return returnInt;
       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
-
+      
       /*
-      // Rand bei Einlauf schneiden
-      PositionA.x -=rand;
-      PositionB.x -=rand;
-      NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
-      index++;
- */     
+       // Rand bei Einlauf schneiden
+       PositionA.x -=rand;
+       PositionB.x -=rand;
+       NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
+       index++;
+       */     
       // Schneiden zum Einlauf. Kann in x und y unterschiedlich sein.
- //     NSLog(@"reportBlockkonfigurieren vor Schneiden zum Einlauf EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
+      //     NSLog(@"reportBlockkonfigurieren vor Schneiden zum Einlauf EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
       //NSLog(@"vor index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-
+      
       float deltaAX = einlaufAX - PositionA.x;
-//      deltaAY = PositionA.y - einlaufAY;
+      //      deltaAY = PositionA.y - einlaufAY;
       deltaAY = einlaufAY - PositionA.y;
       
       PositionA.x +=deltaAX;
-     // PositionA.y -=deltaAY;
+      // PositionA.y -=deltaAY;
       PositionA.y +=deltaAY;
-
+      
       
       float deltaBX =   einlaufBX - PositionB.x;
       deltaBY =  einlaufBY - PositionB.y;
-
+      
       PositionB.x +=deltaBX;
       //PositionB.y -=deltaBY;
       PositionB.y +=deltaBY;
-
+      
       
       //NSLog(@"nach index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
-     index++;
+      index++;
       //NSLog(@"BlockKoordinatenTabelle Einlauf: %@",[BlockKoordinatenTabelle description]);
       //NSLog(@"reportBlockkonfigurieren nach Schneiden zum Einlauf EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
-          
+      
       
       // Auslauf
       lage=1;
@@ -4718,19 +4722,19 @@ return returnInt;
       PositionA.x = EckeRechtsOben.x;
       PositionB.x = EckeRechtsOben.x;
       //NSLog(@"Auslauf Rand rechts index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
-      index++;
-
-/*
-      //Schneiden an Blockoberkante rechts
       
-      PositionA.y = EckeRechtsOben.y;
-      PositionB.y = EckeRechtsOben.y;
-
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
-*/
+      
+      /*
+       //Schneiden an Blockoberkante rechts
+       
+       PositionA.y = EckeRechtsOben.y;
+       PositionB.y = EckeRechtsOben.y;
+       
+       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+       index++;
+       */
       //Schneiden an Blockunterkante rechts
       
       PositionA.y = EckeRechtsUnten.y;
@@ -4738,11 +4742,11 @@ return returnInt;
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
-
+      
       //Schneiden an Blockunterkante links - einstichy
       
       PositionA.x = EckeLinksUnten.x-einstichx -2; // Nicht bis Anschlag fahren
-
+      
       PositionB.x = EckeLinksUnten.x-einstichx -2;
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
@@ -4781,9 +4785,9 @@ return returnInt;
          }
       }
       
-      //- (NSArray*)addAbbrandVonKoordinaten:(NSArray*)Koordinatentabelle mitAbbrand:(float)abbrand aufSeite:(int)seite
+      //- (NSArray*)addAbbrandVonKoordinaten:(NSArray*)Koordinatentabelle mitAbbrandA:(float)abbrand aufSeite:(int)seite
 
-//      KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrand:10 aufSeite:0];
+//      KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrandA:10 aufSeite:0];
       
       
       [self updateIndex];
@@ -6163,7 +6167,7 @@ return returnInt;
 	[CNC release];
 	[ProfilDatenOA release];
 	[ProfilDatenUA release];
-   [CNC_Plist release];
+   [CNC_PList release];
 
 }
 @end

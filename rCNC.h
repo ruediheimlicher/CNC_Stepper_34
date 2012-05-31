@@ -45,6 +45,6 @@
 - (NSArray*)EndleisteneinlaufMitWinkel:(float)winkel mitLaenge:(float)laenge  mitTiefe:(float)tiefe;
 - (NSArray*)NasenleistenauslaufMitLaenge:(float)laenge  mitTiefe:(float)tiefe;
 
-- (NSMutableArray*)addAbbrandVonKoordinaten:(NSArray*)Koordinatentabelle mitAbbrand:(float)abbrand aufSeite:(int)seite von:(int)von bis:(int)bis;
+- (NSMutableArray*)addAbbrandVonKoordinaten:(NSArray*)Koordinatentabelle mitAbbrandA:(float)abbrand  mitAbbrandB:(float)abbrandmassb aufSeite:(int)seite von:(int)von bis:(int)bis;
 
 @end

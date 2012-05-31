@@ -37,7 +37,7 @@
 
 @interface rAVR : NSWindowController <NSTableViewDataSource,NSTableViewDelegate>
 {
-   NSMutableDictionary*		CNC_Plist;
+   NSMutableDictionary*		CNC_PList;
    IBOutlet id					StepperTab;
    IBOutlet	id					ProfilFeld;
    
