@@ -42,9 +42,14 @@
    IBOutlet	id					ProfilFeld;
    
    IBOutlet	id					ProfilTiefeFeldA;
-   
    IBOutlet	id					ProfilTiefeFeldB;
-   
+
+   IBOutlet	id					Einlaufbreite;
+   IBOutlet	id					Einlauftiefe;
+
+   IBOutlet	id					Auslaufbreite;
+   IBOutlet	id					Auslauftiefe;
+
    IBOutlet	id					ProfilBOffsetYFeld;
    IBOutlet	id					ProfilBOffsetXFeld;
    

@@ -69,6 +69,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{26, 474}, {180, 35}}</string>
 							<reference key="NSSuperview" ref="1006"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="885357800"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -109,6 +110,8 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{460, 22}, {100, 32}}</string>
 							<reference key="NSSuperview" ref="1006"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<string key="NSReuseIdentifierKey">_NS:161</string>
 							<bool key="NSEnabled">YES</bool>
@@ -136,6 +139,7 @@
 							<int key="NSvFlags">268</int>
 							<string key="NSFrame">{{352, 22}, {108, 32}}</string>
 							<reference key="NSSuperview" ref="1006"/>
+							<reference key="NSWindow"/>
 							<reference key="NSNextKeyView" ref="141786330"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<string key="NSReuseIdentifierKey">_NS:161</string>
@@ -160,7 +164,8 @@
 							<int key="NSvFlags">12</int>
 							<string key="NSFrame">{{22, 50}, {539, 409}}</string>
 							<reference key="NSSuperview" ref="1006"/>
-							<reference key="NSNextKeyView" ref="705135644"/>
+							<reference key="NSWindow"/>
+							<reference key="NSNextKeyView" ref="60655008"/>
 							<int key="NSViewLayerContentsRedrawPolicy">2</int>
 							<string key="NSReuseIdentifierKey">_NS:461</string>
 							<array class="NSMutableArray" key="NSTabViewItems">
@@ -986,7 +991,6 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{339, 17}, {163, 153}}</string>
 												<reference key="NSSuperview" ref="696479135"/>
-												<reference key="NSNextKeyView" ref="459633143"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:499</string>
 												<string key="NSClassName">rGraph</string>
@@ -1004,7 +1008,7 @@
 								<object class="NSTabViewItem" id="952964502">
 									<string key="NSIdentifier">2</string>
 									<object class="NSView" key="NSView" id="60655008">
-										<nil key="NSNextResponder"/>
+										<reference key="NSNextResponder" ref="885357800"/>
 										<int key="NSvFlags">256</int>
 										<array class="NSMutableArray" key="NSSubviews">
 											<object class="NSTextField" id="897445903">
@@ -1012,6 +1016,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{111, 139}, {56, 22}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="115406503"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:248</string>
@@ -1034,6 +1039,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{111, 76}, {56, 22}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="268192185"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:248</string>
@@ -1056,6 +1062,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{14, 142}, {53, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="897445903"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1076,6 +1083,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{14, 79}, {50, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="650341389"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1096,6 +1104,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{111, 277}, {56, 22}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="683179993"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:248</string>
@@ -1118,6 +1127,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{14, 279}, {65, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="178457891"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1138,6 +1148,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{88, 280}, {17, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="368488110"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1158,6 +1169,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{111, 231}, {56, 22}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="525949872"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:248</string>
@@ -1180,6 +1192,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{181, 142}, {29, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="744573790"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1200,6 +1213,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{88, 234}, {15, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="144429811"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1220,6 +1234,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{111, 329}, {195, 22}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="389050136"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:248</string>
@@ -1245,6 +1260,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{14, 330}, {59, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="315132229"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1265,6 +1281,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{181, 279}, {29, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="182089427"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1285,6 +1302,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{280, 280}, {44, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="168942427"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1305,6 +1323,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{183, 235}, {29, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="275747298"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1325,6 +1344,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{184, 81}, {10, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="869405110"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1345,6 +1365,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{164, 136}, {19, 27}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="505483747"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3977</string>
@@ -1366,6 +1387,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{213, 215}, {17, 53}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="398526879"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:40</string>
@@ -1391,6 +1413,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{420, 214}, {17, 53}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="147092345"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:40</string>
@@ -1416,6 +1439,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{103, 165}, {133, 16}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="297043664"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:51</string>
@@ -1441,6 +1465,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{165, 273}, {19, 27}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="711014114"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3977</string>
@@ -1461,6 +1486,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{165, 228}, {19, 27}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="13582044"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3977</string>
@@ -1480,6 +1506,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{373, 275}, {19, 27}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="325411150"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3977</string>
@@ -1500,6 +1527,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{373, 229}, {19, 27}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="244260847"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3977</string>
@@ -1520,6 +1548,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{165, 73}, {19, 27}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="340735772"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3977</string>
@@ -1539,6 +1568,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{105, 305}, {70, 16}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="833430405"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:51</string>
@@ -1564,6 +1594,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{319, 308}, {70, 16}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="729508705"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:51</string>
@@ -1589,6 +1620,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{334, 278}, {41, 22}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="848333101"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:248</string>
@@ -1611,6 +1643,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{280, 233}, {44, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="154856210"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1631,6 +1664,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{334, 231}, {41, 22}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="515961197"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:248</string>
@@ -1653,6 +1687,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{334, 53}, {163, 153}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="460992161"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:499</string>
@@ -1663,6 +1698,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{394, 280}, {29, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="654543381"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1683,6 +1719,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{394, 233}, {29, 17}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="510827186"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:3936</string>
@@ -1703,6 +1740,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{328, 21}, {175, 32}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="459633143"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:161</string>
@@ -1731,6 +1769,7 @@
 														<int key="NSvFlags">268</int>
 														<string key="NSFrame">{{2, 1}, {30, 30}}</string>
 														<reference key="NSSuperview" ref="869405110"/>
+														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="655062553"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:3995</string>
@@ -1760,6 +1799,7 @@
 														<int key="NSvFlags">268</int>
 														<string key="NSFrame">{{25, 1}, {30, 30}}</string>
 														<reference key="NSSuperview" ref="869405110"/>
+														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="887735618"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:3995</string>
@@ -1785,6 +1825,7 @@
 														<int key="NSvFlags">268</int>
 														<string key="NSFrame">{{48, 1}, {30, 30}}</string>
 														<reference key="NSSuperview" ref="869405110"/>
+														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="875842740"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:3995</string>
@@ -1810,6 +1851,7 @@
 														<int key="NSvFlags">268</int>
 														<string key="NSFrame">{{48, 24}, {30, 30}}</string>
 														<reference key="NSSuperview" ref="869405110"/>
+														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="670779009"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:3995</string>
@@ -1834,6 +1876,7 @@
 														<int key="NSvFlags">268</int>
 														<string key="NSFrame">{{25, 24}, {30, 30}}</string>
 														<reference key="NSSuperview" ref="869405110"/>
+														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="333595974"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:3995</string>
@@ -1858,6 +1901,7 @@
 														<int key="NSvFlags">268</int>
 														<string key="NSFrame">{{2, 24}, {30, 30}}</string>
 														<reference key="NSSuperview" ref="869405110"/>
+														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="499076081"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:3995</string>
@@ -1883,6 +1927,7 @@
 														<int key="NSvFlags">268</int>
 														<string key="NSFrame">{{48, 47}, {30, 30}}</string>
 														<reference key="NSSuperview" ref="869405110"/>
+														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="739705704"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:3995</string>
@@ -1908,6 +1953,7 @@
 														<int key="NSvFlags">268</int>
 														<string key="NSFrame">{{25, 47}, {30, 30}}</string>
 														<reference key="NSSuperview" ref="869405110"/>
+														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="334382211"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:3995</string>
@@ -1933,6 +1979,7 @@
 														<int key="NSvFlags">268</int>
 														<string key="NSFrame">{{2, 47}, {30, 30}}</string>
 														<reference key="NSSuperview" ref="869405110"/>
+														<reference key="NSWindow"/>
 														<reference key="NSNextKeyView" ref="592288395"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:3995</string>
@@ -1956,6 +2003,7 @@
 												</array>
 												<string key="NSFrame">{{199, 45}, {81, 84}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="950266470"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:499</string>
@@ -1966,6 +2014,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{199, 12}, {107, 22}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="889538018"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:248</string>
@@ -1987,6 +2036,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{66, 12}, {96, 21}}</string>
 												<reference key="NSSuperview" ref="60655008"/>
+												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="169024791"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:51</string>
@@ -2009,6 +2059,8 @@
 											</object>
 										</array>
 										<string key="NSFrame">{{10, 33}, {519, 363}}</string>
+										<reference key="NSSuperview" ref="885357800"/>
+										<reference key="NSWindow"/>
 										<reference key="NSNextKeyView" ref="14711754"/>
 										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 										<string key="NSReuseIdentifierKey">_NS:473</string>
@@ -2421,7 +2473,6 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{397, -1}, {106, 32}}</string>
 												<reference key="NSSuperview" ref="166697879"/>
-												<reference key="NSNextKeyView" ref="459633143"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:161</string>
 												<bool key="NSEnabled">YES</bool>
@@ -2549,7 +2600,7 @@
 								<object class="NSTabViewItem" id="880817447">
 									<string key="NSIdentifier">4</string>
 									<object class="NSView" key="NSView" id="705135644">
-										<reference key="NSNextResponder" ref="885357800"/>
+										<nil key="NSNextResponder"/>
 										<int key="NSvFlags">256</int>
 										<array class="NSMutableArray" key="NSSubviews">
 											<object class="NSCustomView" id="819332666">
@@ -2640,7 +2691,7 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{279, 323}, {156, 22}}</string>
 												<reference key="NSSuperview" ref="705135644"/>
-												<reference key="NSNextKeyView"/>
+												<reference key="NSNextKeyView" ref="288227987"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:179</string>
 												<bool key="NSEnabled">YES</bool>
@@ -2709,7 +2760,6 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{397, 3}, {106, 28}}</string>
 												<reference key="NSSuperview" ref="705135644"/>
-												<reference key="NSNextKeyView" ref="885357800"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:161</string>
 												<bool key="NSEnabled">YES</bool>
@@ -2827,9 +2877,9 @@
 											<object class="NSButton" id="850142654">
 												<reference key="NSNextResponder" ref="705135644"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{211, 227}, {82, 18}}</string>
+												<string key="NSFrame">{{211, 261}, {82, 18}}</string>
 												<reference key="NSSuperview" ref="705135644"/>
-												<reference key="NSNextKeyView"/>
+												<reference key="NSNextKeyView" ref="114913403"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:239</string>
 												<bool key="NSEnabled">YES</bool>
@@ -2858,9 +2908,9 @@
 											<object class="NSButton" id="114913403">
 												<reference key="NSNextResponder" ref="705135644"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{211, 207}, {82, 18}}</string>
+												<string key="NSFrame">{{211, 241}, {82, 18}}</string>
 												<reference key="NSSuperview" ref="705135644"/>
-												<reference key="NSNextKeyView"/>
+												<reference key="NSNextKeyView" ref="165305909"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:239</string>
 												<bool key="NSEnabled">YES</bool>
@@ -2894,6 +2944,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{55, 41}, {24, 16}}</string>
 																<reference key="NSSuperview" ref="807906934"/>
+																<reference key="NSNextKeyView" ref="1055048671"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:248</string>
 																<int key="NSTag">405</int>
@@ -2915,6 +2966,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{55, 17}, {24, 16}}</string>
 																<reference key="NSSuperview" ref="807906934"/>
+																<reference key="NSNextKeyView" ref="634966324"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:248</string>
 																<int key="NSTag">406</int>
@@ -2936,6 +2988,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{6, 62}, {69, 18}}</string>
 																<reference key="NSSuperview" ref="807906934"/>
+																<reference key="NSNextKeyView" ref="122300871"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:239</string>
 																<bool key="NSEnabled">YES</bool>
@@ -2961,6 +3014,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{6, 40}, {48, 17}}</string>
 																<reference key="NSSuperview" ref="807906934"/>
+																<reference key="NSNextKeyView" ref="57278708"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:3936</string>
 																<bool key="NSEnabled">YES</bool>
@@ -2998,11 +3052,12 @@
 														</array>
 														<string key="NSFrame">{{1, 1}, {96, 88}}</string>
 														<reference key="NSSuperview" ref="165305909"/>
+														<reference key="NSNextKeyView" ref="162325485"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:11</string>
 													</object>
 												</array>
-												<string key="NSFrame">{{301, 186}, {98, 90}}</string>
+												<string key="NSFrame">{{301, 220}, {98, 90}}</string>
 												<reference key="NSSuperview" ref="705135644"/>
 												<reference key="NSNextKeyView" ref="807906934"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -3038,6 +3093,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{55, 38}, {26, 16}}</string>
 																<reference key="NSSuperview" ref="731761604"/>
+																<reference key="NSNextKeyView" ref="229682852"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:248</string>
 																<int key="NSTag">407</int>
@@ -3059,6 +3115,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{55, 14}, {26, 16}}</string>
 																<reference key="NSSuperview" ref="731761604"/>
+																<reference key="NSNextKeyView" ref="850142654"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:248</string>
 																<int key="NSTag">408</int>
@@ -3080,6 +3137,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{5, 60}, {79, 18}}</string>
 																<reference key="NSSuperview" ref="731761604"/>
+																<reference key="NSNextKeyView" ref="1052442470"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:239</string>
 																<bool key="NSEnabled">YES</bool>
@@ -3143,11 +3201,12 @@
 														</array>
 														<string key="NSFrame">{{1, 1}, {91, 88}}</string>
 														<reference key="NSSuperview" ref="181205413"/>
+														<reference key="NSNextKeyView" ref="897658325"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:11</string>
 													</object>
 												</array>
-												<string key="NSFrame">{{106, 186}, {93, 90}}</string>
+												<string key="NSFrame">{{106, 220}, {93, 90}}</string>
 												<reference key="NSSuperview" ref="705135644"/>
 												<reference key="NSNextKeyView" ref="731761604"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -3183,6 +3242,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{9, 40}, {38, 14}}</string>
 																<reference key="NSSuperview" ref="311878333"/>
+																<reference key="NSNextKeyView" ref="256017250"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:1505</string>
 																<bool key="NSEnabled">YES</bool>
@@ -3202,6 +3262,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{11, 13}, {34, 19}}</string>
 																<reference key="NSSuperview" ref="311878333"/>
+																<reference key="NSNextKeyView" ref="181205413"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:9</string>
 																<bool key="NSEnabled">YES</bool>
@@ -3220,11 +3281,12 @@
 														</array>
 														<string key="NSFrame">{{1, 1}, {66, 66}}</string>
 														<reference key="NSSuperview" ref="288227987"/>
+														<reference key="NSNextKeyView" ref="916702831"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:11</string>
 													</object>
 												</array>
-												<string key="NSFrame">{{13, 186}, {68, 68}}</string>
+												<string key="NSFrame">{{13, 220}, {68, 68}}</string>
 												<reference key="NSSuperview" ref="705135644"/>
 												<reference key="NSNextKeyView" ref="311878333"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -3260,6 +3322,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{9, 40}, {38, 14}}</string>
 																<reference key="NSSuperview" ref="609886188"/>
+																<reference key="NSNextKeyView" ref="599173712"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:1505</string>
 																<bool key="NSEnabled">YES</bool>
@@ -3279,6 +3342,7 @@
 																<int key="NSvFlags">268</int>
 																<string key="NSFrame">{{11, 13}, {34, 19}}</string>
 																<reference key="NSSuperview" ref="609886188"/>
+																<reference key="NSNextKeyView" ref="975708053"/>
 																<int key="NSViewLayerContentsRedrawPolicy">2</int>
 																<string key="NSReuseIdentifierKey">_NS:9</string>
 																<bool key="NSEnabled">YES</bool>
@@ -3297,11 +3361,12 @@
 														</array>
 														<string key="NSFrame">{{1, 1}, {66, 66}}</string>
 														<reference key="NSSuperview" ref="634966324"/>
+														<reference key="NSNextKeyView" ref="671943998"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:11</string>
 													</object>
 												</array>
-												<string key="NSFrame">{{422, 186}, {68, 68}}</string>
+												<string key="NSFrame">{{422, 220}, {68, 68}}</string>
 												<reference key="NSSuperview" ref="705135644"/>
 												<reference key="NSNextKeyView" ref="609886188"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
@@ -3324,9 +3389,129 @@
 												<int key="NSTitlePosition">0</int>
 												<bool key="NSTransparent">NO</bool>
 											</object>
+											<object class="NSBox" id="975708053">
+												<reference key="NSNextResponder" ref="705135644"/>
+												<int key="NSvFlags">12</int>
+												<array class="NSMutableArray" key="NSSubviews">
+													<object class="NSView" id="310294706">
+														<reference key="NSNextResponder" ref="975708053"/>
+														<int key="NSvFlags">274</int>
+														<array class="NSMutableArray" key="NSSubviews">
+															<object class="NSTextField" id="162307410">
+																<reference key="NSNextResponder" ref="310294706"/>
+																<int key="NSvFlags">268</int>
+																<string key="NSFrame">{{94, 8}, {34, 19}}</string>
+																<reference key="NSSuperview" ref="310294706"/>
+																<reference key="NSNextKeyView" ref="433989120"/>
+																<int key="NSViewLayerContentsRedrawPolicy">2</int>
+																<string key="NSReuseIdentifierKey">_NS:9</string>
+																<bool key="NSEnabled">YES</bool>
+																<object class="NSTextFieldCell" key="NSCell" id="104856367">
+																	<int key="NSCellFlags">-1804468671</int>
+																	<int key="NSCellFlags2">272761856</int>
+																	<string key="NSContents"/>
+																	<reference key="NSSupport" ref="26"/>
+																	<string key="NSCellIdentifier">_NS:9</string>
+																	<reference key="NSControlView" ref="162307410"/>
+																	<bool key="NSDrawsBackground">YES</bool>
+																	<reference key="NSBackgroundColor" ref="549434536"/>
+																	<reference key="NSTextColor" ref="580823577"/>
+																</object>
+															</object>
+															<object class="NSTextField" id="137146658">
+																<reference key="NSNextResponder" ref="310294706"/>
+																<int key="NSvFlags">268</int>
+																<string key="NSFrame">{{239, 8}, {34, 19}}</string>
+																<reference key="NSSuperview" ref="310294706"/>
+																<reference key="NSNextKeyView" ref="819332666"/>
+																<int key="NSViewLayerContentsRedrawPolicy">2</int>
+																<string key="NSReuseIdentifierKey">_NS:9</string>
+																<bool key="NSEnabled">YES</bool>
+																<object class="NSTextFieldCell" key="NSCell" id="884491980">
+																	<int key="NSCellFlags">-1804468671</int>
+																	<int key="NSCellFlags2">272761856</int>
+																	<string key="NSContents"/>
+																	<reference key="NSSupport" ref="26"/>
+																	<string key="NSCellIdentifier">_NS:9</string>
+																	<reference key="NSControlView" ref="137146658"/>
+																	<bool key="NSDrawsBackground">YES</bool>
+																	<reference key="NSBackgroundColor" ref="549434536"/>
+																	<reference key="NSTextColor" ref="580823577"/>
+																</object>
+															</object>
+															<object class="NSTextField" id="888702512">
+																<reference key="NSNextResponder" ref="310294706"/>
+																<int key="NSvFlags">268</int>
+																<string key="NSFrame">{{9, 10}, {61, 14}}</string>
+																<reference key="NSSuperview" ref="310294706"/>
+																<reference key="NSNextKeyView" ref="162307410"/>
+																<int key="NSViewLayerContentsRedrawPolicy">2</int>
+																<string key="NSReuseIdentifierKey">_NS:1505</string>
+																<bool key="NSEnabled">YES</bool>
+																<object class="NSTextFieldCell" key="NSCell" id="276680691">
+																	<int key="NSCellFlags">68288064</int>
+																	<int key="NSCellFlags2">272761856</int>
+																	<string key="NSContents">Abbrand A</string>
+																	<reference key="NSSupport" ref="26"/>
+																	<string key="NSCellIdentifier">_NS:1505</string>
+																	<reference key="NSControlView" ref="888702512"/>
+																	<reference key="NSBackgroundColor" ref="76929889"/>
+																	<reference key="NSTextColor" ref="86577635"/>
+																</object>
+															</object>
+															<object class="NSTextField" id="433989120">
+																<reference key="NSNextResponder" ref="310294706"/>
+																<int key="NSvFlags">268</int>
+																<string key="NSFrame">{{172, 9}, {61, 14}}</string>
+																<reference key="NSSuperview" ref="310294706"/>
+																<reference key="NSNextKeyView" ref="137146658"/>
+																<int key="NSViewLayerContentsRedrawPolicy">2</int>
+																<string key="NSReuseIdentifierKey">_NS:1505</string>
+																<bool key="NSEnabled">YES</bool>
+																<object class="NSTextFieldCell" key="NSCell" id="534848981">
+																	<int key="NSCellFlags">68288064</int>
+																	<int key="NSCellFlags2">272761856</int>
+																	<string key="NSContents">Abbrand B</string>
+																	<reference key="NSSupport" ref="26"/>
+																	<string key="NSCellIdentifier">_NS:1505</string>
+																	<reference key="NSControlView" ref="433989120"/>
+																	<reference key="NSBackgroundColor" ref="76929889"/>
+																	<reference key="NSTextColor" ref="86577635"/>
+																</object>
+															</object>
+														</array>
+														<string key="NSFrame">{{1, 1}, {291, 33}}</string>
+														<reference key="NSSuperview" ref="975708053"/>
+														<reference key="NSNextKeyView" ref="888702512"/>
+														<int key="NSViewLayerContentsRedrawPolicy">2</int>
+														<string key="NSReuseIdentifierKey">_NS:11</string>
+													</object>
+												</array>
+												<string key="NSFrame">{{106, 170}, {293, 35}}</string>
+												<reference key="NSSuperview" ref="705135644"/>
+												<reference key="NSNextKeyView" ref="310294706"/>
+												<int key="NSViewLayerContentsRedrawPolicy">2</int>
+												<string key="NSReuseIdentifierKey">_NS:9</string>
+												<string key="NSOffsets">{0, 0}</string>
+												<object class="NSTextFieldCell" key="NSTitleCell">
+													<int key="NSCellFlags">67239424</int>
+													<int key="NSCellFlags2">0</int>
+													<string key="NSContents">Box</string>
+													<reference key="NSSupport" ref="26"/>
+													<reference key="NSBackgroundColor" ref="549434536"/>
+													<object class="NSColor" key="NSTextColor">
+														<int key="NSColorSpace">3</int>
+														<bytes key="NSWhite">MCAwLjgwMDAwMDAxMTkAA</bytes>
+													</object>
+												</object>
+												<reference key="NSContentView" ref="310294706"/>
+												<int key="NSBorderType">1</int>
+												<int key="NSBoxType">0</int>
+												<int key="NSTitlePosition">0</int>
+												<bool key="NSTransparent">NO</bool>
+											</object>
 										</array>
 										<string key="NSFrame">{{10, 33}, {519, 363}}</string>
-										<reference key="NSSuperview" ref="885357800"/>
 										<reference key="NSNextKeyView" ref="809413692"/>
 										<int key="NSViewLayerContentsRedrawPolicy">2</int>
 									</object>
@@ -3928,7 +4113,6 @@
 												<int key="NSvFlags">268</int>
 												<string key="NSFrame">{{406, 10}, {82, 28}}</string>
 												<reference key="NSSuperview" ref="937548105"/>
-												<reference key="NSNextKeyView" ref="459633143"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<string key="NSReuseIdentifierKey">_NS:161</string>
 												<bool key="NSEnabled">YES</bool>
@@ -4410,23 +4594,24 @@
 									<reference key="NSTabView" ref="885357800"/>
 								</object>
 							</array>
-							<reference key="NSSelectedTabViewItem" ref="880817447"/>
+							<reference key="NSSelectedTabViewItem" ref="952964502"/>
 							<reference key="NSFont" ref="904665889"/>
 							<int key="NSTvFlags">0</int>
 							<bool key="NSAllowTruncatedLabels">YES</bool>
 							<bool key="NSDrawsBackground">YES</bool>
 							<array class="NSMutableArray" key="NSSubviews">
-								<reference ref="705135644"/>
+								<reference ref="60655008"/>
 							</array>
 						</object>
 					</array>
 					<string key="NSFrameSize">{601, 517}</string>
 					<reference key="NSSuperview"/>
+					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="607337637"/>
 					<bool key="NSViewIsLayerTreeHost">YES</bool>
 					<int key="NSViewLayerContentsRedrawPolicy">2</int>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMaxSize">{10000000000000, 10000000000000}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
 			</object>
@@ -5320,27 +5505,27 @@
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
+						<string key="label">AbbrandmassA</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="162307410"/>
+					</object>
+					<int key="connectionID">1276</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">AbbrandmassB</string>
+						<reference key="source" ref="1001"/>
+						<reference key="destination" ref="137146658"/>
+					</object>
+					<int key="connectionID">1277</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
 						<string key="label">view</string>
 						<reference key="source" ref="89000448"/>
 						<reference key="destination" ref="434349494"/>
 					</object>
 					<int key="connectionID">495</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBBindingConnection" key="connection">
-						<string key="label">value: title</string>
-						<reference key="source" ref="169024791"/>
-						<reference key="destination" ref="257090948"/>
-						<object class="NSNibBindingConnector" key="connector">
-							<reference key="NSSource" ref="169024791"/>
-							<reference key="NSDestination" ref="257090948"/>
-							<string key="NSLabel">value: title</string>
-							<string key="NSBinding">value</string>
-							<string key="NSKeyPath">title</string>
-							<int key="NSNibBindingConnectorVersion">2</int>
-						</object>
-					</object>
-					<int key="connectionID">553</int>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBBindingConnection" key="connection">
@@ -5530,7 +5715,6 @@
 							<reference ref="315132229"/>
 							<reference ref="650341389"/>
 							<reference ref="711014114"/>
-							<reference ref="897445903"/>
 							<reference ref="848333101"/>
 							<reference ref="515961197"/>
 							<reference ref="510827186"/>
@@ -5540,6 +5724,7 @@
 							<reference ref="169024791"/>
 							<reference ref="875842740"/>
 							<reference ref="889538018"/>
+							<reference ref="897445903"/>
 						</array>
 						<reference key="parent" ref="952964502"/>
 					</object>
@@ -7064,12 +7249,13 @@
 							<reference ref="106496819"/>
 							<reference ref="809413692"/>
 							<reference ref="393030761"/>
-							<reference ref="181205413"/>
-							<reference ref="165305909"/>
 							<reference ref="850142654"/>
 							<reference ref="114913403"/>
+							<reference ref="165305909"/>
+							<reference ref="181205413"/>
 							<reference ref="288227987"/>
 							<reference ref="634966324"/>
+							<reference ref="975708053"/>
 						</array>
 						<reference key="parent" ref="880817447"/>
 					</object>
@@ -8144,6 +8330,69 @@
 						<reference key="object" ref="216308406"/>
 						<reference key="parent" ref="671943998"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1267</int>
+						<reference key="object" ref="975708053"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="162307410"/>
+							<reference ref="137146658"/>
+							<reference ref="888702512"/>
+							<reference ref="433989120"/>
+						</array>
+						<reference key="parent" ref="705135644"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1268</int>
+						<reference key="object" ref="162307410"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="104856367"/>
+						</array>
+						<reference key="parent" ref="975708053"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1269</int>
+						<reference key="object" ref="104856367"/>
+						<reference key="parent" ref="162307410"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1270</int>
+						<reference key="object" ref="137146658"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="884491980"/>
+						</array>
+						<reference key="parent" ref="975708053"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1271</int>
+						<reference key="object" ref="884491980"/>
+						<reference key="parent" ref="137146658"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1272</int>
+						<reference key="object" ref="888702512"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="276680691"/>
+						</array>
+						<reference key="parent" ref="975708053"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1273</int>
+						<reference key="object" ref="276680691"/>
+						<reference key="parent" ref="888702512"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1274</int>
+						<reference key="object" ref="433989120"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="534848981"/>
+						</array>
+						<reference key="parent" ref="975708053"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">1275</int>
+						<reference key="object" ref="534848981"/>
+						<reference key="parent" ref="433989120"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -8292,7 +8541,16 @@
 				<string key="1257.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="1258.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="126.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1267.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1268.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1269.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="127.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1270.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1271.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1272.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1273.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1274.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="1275.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="128.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="129.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="130.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -8553,9 +8811,646 @@
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">1266</int>
+			<int key="maxID">1282</int>
 		</object>
-		<object class="IBClassDescriber" key="IBDocument.Classes"/>
+		<object class="IBClassDescriber" key="IBDocument.Classes">
+			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">NSCollectionViewItem</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="imageView">NSImageView</string>
+						<string key="textField">NSTextField</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="imageView">
+							<string key="name">imageView</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="textField">
+							<string key="name">textField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/NSCollectionViewItem.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">rEinstellungen</string>
+					<string key="superclassName">NSWindowController</string>
+					<dictionary class="NSMutableDictionary" key="actions">
+						<string key="reportBlockEinfuegen:">id</string>
+						<string key="reportCancel:">id</string>
+						<string key="reportClose:">id</string>
+						<string key="reportFigElementAnfangZuEnde:">id</string>
+						<string key="reportFigElementEinfuegen:">id</string>
+						<string key="reportFigElementLoeschen:">id</string>
+						<string key="reportFigElementSpiegelnHorizontal:">id</string>
+						<string key="reportFigElementSpiegelnVertikal:">id</string>
+						<string key="reportForm1Pop:">id</string>
+						<string key="reportForm2Pop:">id</string>
+						<string key="reportFormEinfuegen:">id</string>
+						<string key="reportLagePop:">id</string>
+						<string key="reportLibElementAnfangZuEnde:">id</string>
+						<string key="reportLibElementEinfuegen:">id</string>
+						<string key="reportLibElementLoeschen:">id</string>
+						<string key="reportLibElementSpiegelnHorizontal:">id</string>
+						<string key="reportLibElementSpiegelnVertikal:">id</string>
+						<string key="reportLibPop:">id</string>
+						<string key="reportLinieEinfuegen:">id</string>
+						<string key="reportOberkanteStepper:">id</string>
+						<string key="reportProfilAnfangZuEnde:">id</string>
+						<string key="reportProfilEinfuegen:">id</string>
+						<string key="reportProfilLoeschen:">id</string>
+						<string key="reportProfilPop:">id</string>
+						<string key="reportProfilSpiegelnHorizontal:">id</string>
+						<string key="reportProfilSpiegelnVertikal:">id</string>
+						<string key="reportReadFigur:">id</string>
+						<string key="reportWinkelmatrixknopf:">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="actionInfosByName">
+						<object class="IBActionInfo" key="reportBlockEinfuegen:">
+							<string key="name">reportBlockEinfuegen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportCancel:">
+							<string key="name">reportCancel:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportClose:">
+							<string key="name">reportClose:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportFigElementAnfangZuEnde:">
+							<string key="name">reportFigElementAnfangZuEnde:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportFigElementEinfuegen:">
+							<string key="name">reportFigElementEinfuegen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportFigElementLoeschen:">
+							<string key="name">reportFigElementLoeschen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportFigElementSpiegelnHorizontal:">
+							<string key="name">reportFigElementSpiegelnHorizontal:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportFigElementSpiegelnVertikal:">
+							<string key="name">reportFigElementSpiegelnVertikal:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportForm1Pop:">
+							<string key="name">reportForm1Pop:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportForm2Pop:">
+							<string key="name">reportForm2Pop:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportFormEinfuegen:">
+							<string key="name">reportFormEinfuegen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportLagePop:">
+							<string key="name">reportLagePop:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportLibElementAnfangZuEnde:">
+							<string key="name">reportLibElementAnfangZuEnde:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportLibElementEinfuegen:">
+							<string key="name">reportLibElementEinfuegen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportLibElementLoeschen:">
+							<string key="name">reportLibElementLoeschen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportLibElementSpiegelnHorizontal:">
+							<string key="name">reportLibElementSpiegelnHorizontal:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportLibElementSpiegelnVertikal:">
+							<string key="name">reportLibElementSpiegelnVertikal:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportLibPop:">
+							<string key="name">reportLibPop:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportLinieEinfuegen:">
+							<string key="name">reportLinieEinfuegen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportOberkanteStepper:">
+							<string key="name">reportOberkanteStepper:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportProfilAnfangZuEnde:">
+							<string key="name">reportProfilAnfangZuEnde:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportProfilEinfuegen:">
+							<string key="name">reportProfilEinfuegen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportProfilLoeschen:">
+							<string key="name">reportProfilLoeschen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportProfilPop:">
+							<string key="name">reportProfilPop:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportProfilSpiegelnHorizontal:">
+							<string key="name">reportProfilSpiegelnHorizontal:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportProfilSpiegelnVertikal:">
+							<string key="name">reportProfilSpiegelnVertikal:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportReadFigur:">
+							<string key="name">reportReadFigur:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportWinkelmatrixknopf:">
+							<string key="name">reportWinkelmatrixknopf:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="AbbrandmassA">id</string>
+						<string key="AbbrandmassB">id</string>
+						<string key="AnzahlPunkte">id</string>
+						<string key="AuslaufCheck">id</string>
+						<string key="Auslaufkote">id</string>
+						<string key="Auslauflaenge">id</string>
+						<string key="Auslaufrand">id</string>
+						<string key="Auslauftiefe">id</string>
+						<string key="Blockbreite">id</string>
+						<string key="Blockdicke">id</string>
+						<string key="Blockoberkante">id</string>
+						<string key="BlockoberkanteStepper">id</string>
+						<string key="EinlaufCheck">id</string>
+						<string key="Einlauflaenge">id</string>
+						<string key="Einlaufrand">id</string>
+						<string key="Einlauftiefe">id</string>
+						<string key="Element">id</string>
+						<string key="EndpunktX">id</string>
+						<string key="EndpunktXSlider">id</string>
+						<string key="EndpunktXStepper">id</string>
+						<string key="EndpunktY">id</string>
+						<string key="EndpunktYSlider">id</string>
+						<string key="EndpunktYStepper">id</string>
+						<string key="FigEndpunktX">id</string>
+						<string key="FigEndpunktY">id</string>
+						<string key="FigGraph">id</string>
+						<string key="FigStartpunktX">id</string>
+						<string key="FigStartpunktY">id</string>
+						<string key="FlipHTaste">id</string>
+						<string key="FlipVTaste">id</string>
+						<string key="Form1Pop">id</string>
+						<string key="Form2Pop">id</string>
+						<string key="Graph">id</string>
+						<string key="Laenge">id</string>
+						<string key="LaengeSlider">id</string>
+						<string key="LaengeStepper">id</string>
+						<string key="LagePop">id</string>
+						<string key="LibElement">id</string>
+						<string key="LibElemente">id</string>
+						<string key="LibEndpunktX">id</string>
+						<string key="LibEndpunktY">id</string>
+						<string key="LibGraph">id</string>
+						<string key="LibPop">id</string>
+						<string key="LibStartpunktX">id</string>
+						<string key="LibStartpunktY">id</string>
+						<string key="OberseiteCheck">id</string>
+						<string key="Profil1Tiefe">id</string>
+						<string key="Profil2Tiefe">id</string>
+						<string key="ProfilEinfuegenTaste">id</string>
+						<string key="ProfilEndpunktX">id</string>
+						<string key="ProfilEndpunktY">id</string>
+						<string key="ProfilGraph">id</string>
+						<string key="ProfilPop">id</string>
+						<string key="ProfilStartpunktX">id</string>
+						<string key="ProfilStartpunktY">id</string>
+						<string key="Profile1">id</string>
+						<string key="Profile2">id</string>
+						<string key="Profilstartx">id</string>
+						<string key="Profilstarty">id</string>
+						<string key="ReverseTaste">id</string>
+						<string key="SeiteA1">id</string>
+						<string key="SeiteA2">id</string>
+						<string key="SeiteB1">id</string>
+						<string key="SeiteB2">id</string>
+						<string key="StartpunktX">id</string>
+						<string key="StartpunktXSlider">id</string>
+						<string key="StartpunktXStepper">id</string>
+						<string key="StartpunktY">id</string>
+						<string key="StartpunktYSlider">id</string>
+						<string key="StartpunktYStepper">id</string>
+						<string key="UnterseiteCheck">id</string>
+						<string key="Winkel">id</string>
+						<string key="Winkel1">id</string>
+						<string key="Winkel2">id</string>
+						<string key="WinkelMatrix">id</string>
+						<string key="WinkelSlider">id</string>
+						<string key="WinkelStepper">id</string>
+						<string key="deltaX">id</string>
+						<string key="deltaXSlider">id</string>
+						<string key="deltaXStepper">id</string>
+						<string key="deltaY">id</string>
+						<string key="deltaYSlider">id</string>
+						<string key="deltaYStepper">id</string>
+						<string key="libstartx">id</string>
+						<string key="libstarty">id</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="AbbrandmassA">
+							<string key="name">AbbrandmassA</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="AbbrandmassB">
+							<string key="name">AbbrandmassB</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="AnzahlPunkte">
+							<string key="name">AnzahlPunkte</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="AuslaufCheck">
+							<string key="name">AuslaufCheck</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Auslaufkote">
+							<string key="name">Auslaufkote</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Auslauflaenge">
+							<string key="name">Auslauflaenge</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Auslaufrand">
+							<string key="name">Auslaufrand</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Auslauftiefe">
+							<string key="name">Auslauftiefe</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Blockbreite">
+							<string key="name">Blockbreite</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Blockdicke">
+							<string key="name">Blockdicke</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Blockoberkante">
+							<string key="name">Blockoberkante</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="BlockoberkanteStepper">
+							<string key="name">BlockoberkanteStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="EinlaufCheck">
+							<string key="name">EinlaufCheck</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Einlauflaenge">
+							<string key="name">Einlauflaenge</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Einlaufrand">
+							<string key="name">Einlaufrand</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Einlauftiefe">
+							<string key="name">Einlauftiefe</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Element">
+							<string key="name">Element</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="EndpunktX">
+							<string key="name">EndpunktX</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="EndpunktXSlider">
+							<string key="name">EndpunktXSlider</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="EndpunktXStepper">
+							<string key="name">EndpunktXStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="EndpunktY">
+							<string key="name">EndpunktY</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="EndpunktYSlider">
+							<string key="name">EndpunktYSlider</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="EndpunktYStepper">
+							<string key="name">EndpunktYStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="FigEndpunktX">
+							<string key="name">FigEndpunktX</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="FigEndpunktY">
+							<string key="name">FigEndpunktY</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="FigGraph">
+							<string key="name">FigGraph</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="FigStartpunktX">
+							<string key="name">FigStartpunktX</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="FigStartpunktY">
+							<string key="name">FigStartpunktY</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="FlipHTaste">
+							<string key="name">FlipHTaste</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="FlipVTaste">
+							<string key="name">FlipVTaste</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Form1Pop">
+							<string key="name">Form1Pop</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Form2Pop">
+							<string key="name">Form2Pop</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Graph">
+							<string key="name">Graph</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Laenge">
+							<string key="name">Laenge</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LaengeSlider">
+							<string key="name">LaengeSlider</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LaengeStepper">
+							<string key="name">LaengeStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LagePop">
+							<string key="name">LagePop</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LibElement">
+							<string key="name">LibElement</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LibElemente">
+							<string key="name">LibElemente</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LibEndpunktX">
+							<string key="name">LibEndpunktX</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LibEndpunktY">
+							<string key="name">LibEndpunktY</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LibGraph">
+							<string key="name">LibGraph</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LibPop">
+							<string key="name">LibPop</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LibStartpunktX">
+							<string key="name">LibStartpunktX</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="LibStartpunktY">
+							<string key="name">LibStartpunktY</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="OberseiteCheck">
+							<string key="name">OberseiteCheck</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Profil1Tiefe">
+							<string key="name">Profil1Tiefe</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Profil2Tiefe">
+							<string key="name">Profil2Tiefe</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ProfilEinfuegenTaste">
+							<string key="name">ProfilEinfuegenTaste</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ProfilEndpunktX">
+							<string key="name">ProfilEndpunktX</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ProfilEndpunktY">
+							<string key="name">ProfilEndpunktY</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ProfilGraph">
+							<string key="name">ProfilGraph</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ProfilPop">
+							<string key="name">ProfilPop</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ProfilStartpunktX">
+							<string key="name">ProfilStartpunktX</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ProfilStartpunktY">
+							<string key="name">ProfilStartpunktY</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Profile1">
+							<string key="name">Profile1</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Profile2">
+							<string key="name">Profile2</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Profilstartx">
+							<string key="name">Profilstartx</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Profilstarty">
+							<string key="name">Profilstarty</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="ReverseTaste">
+							<string key="name">ReverseTaste</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="SeiteA1">
+							<string key="name">SeiteA1</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="SeiteA2">
+							<string key="name">SeiteA2</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="SeiteB1">
+							<string key="name">SeiteB1</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="SeiteB2">
+							<string key="name">SeiteB2</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="StartpunktX">
+							<string key="name">StartpunktX</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="StartpunktXSlider">
+							<string key="name">StartpunktXSlider</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="StartpunktXStepper">
+							<string key="name">StartpunktXStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="StartpunktY">
+							<string key="name">StartpunktY</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="StartpunktYSlider">
+							<string key="name">StartpunktYSlider</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="StartpunktYStepper">
+							<string key="name">StartpunktYStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="UnterseiteCheck">
+							<string key="name">UnterseiteCheck</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Winkel">
+							<string key="name">Winkel</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Winkel1">
+							<string key="name">Winkel1</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="Winkel2">
+							<string key="name">Winkel2</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="WinkelMatrix">
+							<string key="name">WinkelMatrix</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="WinkelSlider">
+							<string key="name">WinkelSlider</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="WinkelStepper">
+							<string key="name">WinkelStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="deltaX">
+							<string key="name">deltaX</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="deltaXSlider">
+							<string key="name">deltaXSlider</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="deltaXStepper">
+							<string key="name">deltaXStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="deltaY">
+							<string key="name">deltaY</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="deltaYSlider">
+							<string key="name">deltaYSlider</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="deltaYStepper">
+							<string key="name">deltaYStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="libstartx">
+							<string key="name">libstartx</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="libstarty">
+							<string key="name">libstarty</string>
+							<string key="candidateClassName">id</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/rEinstellungen.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">rFigGraph</string>
+					<string key="superclassName">NSControl</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/rFigGraph.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">rGraph</string>
+					<string key="superclassName">NSControl</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/rGraph.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">rLibGraph</string>
+					<string key="superclassName">NSControl</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/rLibGraph.h</string>
+					</object>
+				</object>
+				<object class="IBPartialClassDescription">
+					<string key="className">rProfilLibGraph</string>
+					<string key="superclassName">NSControl</string>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/rProfilLibGraph.h</string>
+					</object>
+				</object>
+			</array>
+		</object>
 		<int key="IBDocument.localizationMode">0</int>
 		<string key="IBDocument.TargetRuntimeIdentifier">IBCocoaFramework</string>
 		<bool key="IBDocument.PluginDeclaredDependenciesTrackSystemTargetVersion">YES</bool>

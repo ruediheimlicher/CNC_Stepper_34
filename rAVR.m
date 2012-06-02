@@ -213,7 +213,7 @@ return returnInt;
 			if ([Filemanager fileExistsAtPath:PListPfad])
 			{
 				tempPListDic=[NSMutableDictionary dictionaryWithContentsOfFile:PListPfad];
-				//NSLog(@"readCNC_PList: tempPListDic: %@",[tempPListDic description]);
+				NSLog(@"readCNC_PList: tempPListDic: %@",[tempPListDic description]);
             
 				if ([tempPListDic objectForKey:@"koordinatentabelle"])
 				{
@@ -231,6 +231,7 @@ return returnInt;
             {
                [DC_PWM setIntValue:1];
             }
+            
             if ([tempPListDic objectForKey:@"speed"])
             {
                [SpeedFeld setIntValue:[[tempPListDic objectForKey:@"speed"]intValue]];
@@ -240,7 +241,18 @@ return returnInt;
             {
                [SpeedFeld setIntValue:12];
             }
-            
+
+            if ([tempPListDic objectForKey:@"abbranda"])
+            {
+               NSLog(@"abbranda: %2.2f",[[tempPListDic objectForKey:@"abbranda"]floatValue]);
+               [AbbrandFeld setFloatValue:[[tempPListDic objectForKey:@"abbranda"]floatValue]];
+               
+            }
+            else
+            {
+               [AbbrandFeld setFloatValue:1.7];
+            }
+
          }
 			
 		}
@@ -687,8 +699,7 @@ return returnInt;
    [RechtsLinksRadio setSelectedSegment:0];
    [ProfilWrenchEinheitRadio setState:1 atRow:0 column:0];
    
-   [AbbrandFeld setFloatValue:1.0];
-
+   [AbbrandFeld setFormatter:SimpleFormatter];
    
    [DC_PWM setDelegate:self];
    [SpeedFeld setDelegate:self];
@@ -1544,7 +1555,6 @@ return returnInt;
       NSDictionary* tempEinstellungenDic=[NSMutableDictionary dictionaryWithDictionary:[CNC_Eingabe PList]];
       [tempPListDic addEntriesFromDictionary:tempEinstellungenDic];
       [tempPListDic setObject:[NSNumber numberWithInt:[SpeedFeld intValue]] forKey:@"speed"];
-      [tempPListDic setObject:[NSNumber numberWithInt:[DC_PWM intValue]] forKey:@"pwm"];
       [tempPListDic setObject:[NSNumber numberWithInt:[DC_PWM intValue]] forKey:@"pwm"];
       
       //NSLog(@"saveSpeed: gesicherter PListDic: %@",[tempPListDic description]);
@@ -3266,6 +3276,7 @@ return returnInt;
    [datenDic setObject:[NSNumber numberWithInt:[Auslaufrand intValue]] forKey:@"auslaufrand"];
    
    
+   [datenDic setObject:[NSNumber numberWithFloat:[AbbrandFeld floatValue]] forKey:@"abbranda"];
    
    
    
@@ -3285,15 +3296,15 @@ return returnInt;
    //NSLog(@"runModalForWindow");
    
    NSModalSession session = [NSApp beginModalSessionForWindow:[CNC_Eingabe window]];
-   [CNC_Eingabe setDaten:datenDic];
    [CNC_Eingabe setPList:[self readCNC_PList]];
+   [CNC_Eingabe setDaten:datenDic];
+   
    [CNC_Eingabe clearProfilGraphDaten];
 
    
 //   for (;;) 
    {
       
-//      if ([NSApp runModalSession:session] != NSRunContinuesResponse)
       while ([NSApp runModalSession:session] != NSRunContinuesResponse)
       {
        //NSLog(@"Modal break");
@@ -3655,6 +3666,7 @@ return returnInt;
     */
      
    einlauflaenge = [[ProfilDic objectForKey:@"einlauflaenge"]intValue];
+   [Einlaufbreite setIntValue:[[ProfilDic objectForKey:@"einlauflaenge"]intValue]];
    einlauftiefe = [[ProfilDic objectForKey:@"einlauftiefe"]intValue];
    einlaufrand = [[ProfilDic objectForKey:@"einlaufrand"]intValue];
    [Einlaufrand setIntValue:einlaufrand];
@@ -3756,7 +3768,8 @@ return returnInt;
       Profil1Array=[ProfilDic objectForKey:@"profil1array"];
    }
    NSArray* Profil2Array=NULL;
-   if ([ProfilDic objectForKey:@"profil2array"])
+   
+ if ([ProfilDic objectForKey:@"profil2array"])
    {
       Profil2Array=[ProfilDic objectForKey:@"profil2array"];
    }
@@ -4745,9 +4758,9 @@ return returnInt;
       
       //Schneiden an Blockunterkante links - einstichy
       
-      PositionA.x = EckeLinksUnten.x-einstichx -2; // Nicht bis Anschlag fahren
+      PositionA.x = EckeLinksUnten.x-einstichx +1; // Nicht bis Anschlag fahren
       
-      PositionB.x = EckeLinksUnten.x-einstichx -2;
+      PositionB.x = EckeLinksUnten.x-einstichx +1;
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
@@ -5735,7 +5748,7 @@ return returnInt;
    [CNC_Starttaste performClick:NULL];
    
    [self reportNeueLinie:NULL];
-   [CNC_Eingabe doProfil1PopTaskMitProfil:8];
+   [CNC_Eingabe doProfil1PopTaskMitProfil:10];
    
    [CNC_Eingabe setUnterseite:0];
    [CNC_Eingabe doProfilSpiegelnVertikalTask];
@@ -5743,8 +5756,7 @@ return returnInt;
    [CNC_Eingabe doSchliessenTask];
    
    [CNC_BlockKonfigurierenTaste performClick:NULL];
-   [CNC_BlockAnfuegenTaste performClick:NULL];
-   
+   [CNC_BlockAnfuegenTaste performClick:NULL];   
 }
 
 - (IBAction)reportEdgeTask:(id)sender
@@ -5771,8 +5783,6 @@ return returnInt;
    }
    //NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
 
-   
-   
    if (([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:1]intValue] <= 0x7F) || ([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:9]intValue] <= 0x7F))
    {
       [AnschlagLinksIndikator setTransparent:YES];

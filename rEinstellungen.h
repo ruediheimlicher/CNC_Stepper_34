@@ -201,6 +201,8 @@
    IBOutlet id          ReverseTaste;
    IBOutlet id          ProfilEinfuegenTaste;
    
+   IBOutlet id          AbbrandmassA;
+   IBOutlet id          AbbrandmassB;
    
    NSMutableArray*      ProfilLibArray;
    NSString*            Profil1Name;

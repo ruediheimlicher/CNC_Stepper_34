@@ -1067,6 +1067,10 @@
    [Winkel setAlignment:NSRightTextAlignment];
    [Winkel setFormatter:Eingabeformatter];
    
+   [AbbrandmassA  setDelegate:self];
+   [AbbrandmassA setAlignment:NSRightTextAlignment];
+   [AbbrandmassA setFormatter:Eingabeformatter];
+   
    
    //[LaengeSlider setNumberOfTickMarks:101];
    
@@ -1304,7 +1308,7 @@
 
 - (void)setDaten:(NSDictionary*)daten
 {
-   //NSLog(@"setDaten daten: %@",[daten description]);
+   NSLog(@"setDaten daten: %@",[daten description]);
    
    if ([daten objectForKey:@"element"])
    {
@@ -1435,6 +1439,21 @@
       [Auslauftiefe  setIntValue:[[daten objectForKey:@"auslauftiefe"]intValue]];// 
       }
    }
+   
+   if ([daten objectForKey:@"abbranda"])
+   {
+      NSLog(@"abbranda: %2.2f",[[daten objectForKey:@"abbranda"]floatValue]);
+      if ([AbbrandmassA  floatValue] != [[daten objectForKey:@"abbranda"]floatValue])
+      {
+  
+      [AbbrandmassA setFloatValue:[[daten objectForKey:@"abbranda"]floatValue]];
+      }
+   }
+   else 
+   {
+      [AbbrandmassA setFloatValue:1.3];
+   }
+
 
    /*
     if ([daten objectForKey:@"winkel"])
@@ -2881,6 +2900,7 @@
       [PList setObject:[NSNumber numberWithInt:[Auslauflaenge intValue]] forKey:@"auslauflaenge"];
       [PList setObject:[NSNumber numberWithInt:[Auslauftiefe intValue]] forKey:@"auslauftiefe"];
       [PList setObject:[NSNumber numberWithInt:[Auslaufrand intValue]] forKey:@"auslaufrand"];
+      [PList setObject:[NSNumber numberWithFloat:[AbbrandmassA floatValue]] forKey:@"abbranda"];
     
 
       
@@ -3485,6 +3505,15 @@
       [Auslaufrand setIntValue:15];
    }
 
+   if ([PList objectForKey:@"abbranda"])
+   {
+      [AbbrandmassA setFloatValue:[[PList objectForKey:@"abbranda"]floatValue]];
+   }
+   else 
+   {
+      [AbbrandmassA setFloatValue:1.1];
+   }
+   
 
 }
 /*
