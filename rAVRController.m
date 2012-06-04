@@ -218,13 +218,17 @@ private void button4_Click(object sender, EventArgs e)
        // home ist 1 wenn homebutton gedrückt ist
        NSMutableDictionary* timerDic =[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:home],@"home", nil];
        
+       
        if (readTimer)
        {
           if ([readTimer isValid])
           {
              NSLog(@"writeCNCAbschnitt timer inval");
              [readTimer invalidate];
+             
           }
+          [readTimer release];
+          readTimer = NULL;
           
        }
        
@@ -267,7 +271,9 @@ private void button4_Click(object sender, EventArgs e)
 	{	
       
       //sendbuffer = malloc(64);
-		if ([AVR halt])
+      
+      // HALT
+      if ([AVR halt])
 		{
          NSLog(@"writeCNCAbschnitt HALT");
          [AVR setBusy:0];
@@ -280,6 +286,8 @@ private void button4_Click(object sender, EventArgs e)
                NSLog(@"writeCNCAbschnitt HALT timer inval");
                [readTimer invalidate];
             }
+            [readTimer release];
+            readTimer = NULL;
             
          }
          
@@ -379,6 +387,8 @@ private void button4_Click(object sender, EventArgs e)
             NSLog(@"writeCNCAbschnitt timer inval");
             [readTimer invalidate];
          }
+         [readTimer release];
+         readTimer = NULL;
 
       }
 
@@ -395,10 +405,13 @@ private void button4_Click(object sender, EventArgs e)
       {
          NSLog(@"stopTimer timer inval");
          [readTimer invalidate];
-         [AVR setBusy:0];
-         [AVR DC_ON:0];
          
       }
+      [readTimer release];
+      readTimer = NULL;
+      [AVR setBusy:0];
+      [AVR DC_ON:0];
+
       
    }
 
@@ -415,7 +428,8 @@ private void button4_Click(object sender, EventArgs e)
    
    if (Stepperposition ==0)//< [SchnittDatenArray count])
    {
-      [inTimer invalidate];
+      
+      [self stopTimer];
       return;
    }
 	//NSLog(@"readUSB A");
@@ -532,7 +546,7 @@ private void button4_Click(object sender, EventArgs e)
       if ([AbschnittFertig intValue] >= 0xA0) // Code fuer Fertig: AD
       {
          //NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
-         //NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
+         NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
          
          // NSLog(@"AVRController mausistdown: %d abschnittfertig: %d anzrepeat: %d",mausistdown, abschnittfertig,anzrepeat);
          /*
@@ -568,10 +582,13 @@ private void button4_Click(object sender, EventArgs e)
          // Index fuer zu loeschende Daten im Schnittdatenarray
              switch (abschnittfertig)
             {
-               case 0xE1: // Mouseup
+               case 0xE1: // Antwort auf Mouseup
                {
+                  NSLog(@"readUSB  mouseup ");
                   [SchnittDatenArray removeAllObjects];
+                  
                   [AVR setBusy:0];
+                  
                   //[self DC_Aktion:NULL]; // auskopmmentoiert: DC nicht abstellen bei Pfeilaktionen
                   if (readTimer)
                   {
@@ -581,7 +598,10 @@ private void button4_Click(object sender, EventArgs e)
 
                         
                         [readTimer invalidate];
-                     }
+                      }
+                     [readTimer release];
+                     readTimer = NULL;
+
                   }
                   Stepperposition=0;
                   
@@ -809,10 +829,11 @@ private void button4_Click(object sender, EventArgs e)
 - (void)PfeilAktion:(NSNotification*)note
 {
 	//[self reportManDown:NULL];
-	//NSLog(@"AVRController PfeilAktion note: %@",[[note userInfo]description]);
+	NSLog(@"AVRController PfeilAktion note: %@",[[note userInfo]description]);
    
    if ([[note userInfo]objectForKey:@"push"])
    {
+      //pwm = [AVR pwm];
       mausistdown=[[[note userInfo]objectForKey:@"push"]intValue];
       if (mausistdown == 1) // mousedown
       {
@@ -822,7 +843,7 @@ private void button4_Click(object sender, EventArgs e)
       if (mausistdown == 0) // mouseup
       {
          pfeilaktion=1; // in writeCNCAbschnitt wird Datenserie beendet
-        // NSLog(@"PfeilAktion mouseup start");
+         NSLog(@"PfeilAktion mouseup pwm: %d",pwm);
          char*      sendbuffer;
          sendbuffer=malloc(32);
          sendbuffer[16]=0xE0;
@@ -830,6 +851,7 @@ private void button4_Click(object sender, EventArgs e)
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          sendbuffer[16]=0x00;
          free(sendbuffer);
+         [AVR setBusy:0];
         // NSLog(@"PfeilAktion mouseup Stepperposition: %d",Stepperposition);
       }
    }
@@ -902,12 +924,9 @@ private void button4_Click(object sender, EventArgs e)
     // in 32:
    
     sendbuffer[20]=pwm;
-    sendbuffer[0]=0xE2; // code fuer DC 
-
     
-   //sendbuffer[8]=pwm;
-   
    // code fuer Task angeben
+   
    sendbuffer[16]=0xE2; // code fuer DC 
    
    
@@ -919,13 +938,6 @@ private void button4_Click(object sender, EventArgs e)
  //  sendbuffer[8]=0;
    Stepperposition=1;
    free(sendbuffer);
-   if ([readTimer isValid])
-   {
-      
-   }
-   else
-   {
-   }
    
 }
 
@@ -945,7 +957,8 @@ private void button4_Click(object sender, EventArgs e)
    {
       sendbuffer[i] = 0;
    }
-   sendbuffer[8]=ein;
+   sendbuffer[8]=1;
+   sendbuffer[20]=ein;
    // code fuer Task angeben:
    sendbuffer[16]=0xE4; // code fuer Stepperstrom 
    
@@ -954,14 +967,7 @@ private void button4_Click(object sender, EventArgs e)
    sendbuffer[8]=0;
    Stepperposition=1;
    free(sendbuffer);
-   if ([readTimer isValid])
-   {
-      
-   }
-   else
-   {
-   }
-   
+    
 }
 
 

@@ -1308,7 +1308,7 @@
 
 - (void)setDaten:(NSDictionary*)daten
 {
-   NSLog(@"setDaten daten: %@",[daten description]);
+   //NSLog(@"setDaten daten: %@",[daten description]);
    
    if ([daten objectForKey:@"element"])
    {

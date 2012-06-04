@@ -531,9 +531,14 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 
 	[tempArray addObject:[derDatenDic objectForKey:@"indexh"]];
 	[tempArray addObject:[derDatenDic objectForKey:@"indexl"]];
+   
    if ([derDatenDic objectForKey:@"pwm"])
    {
-   [tempArray addObject:[derDatenDic objectForKey:@"pwm"]];
+      [tempArray addObject:[derDatenDic objectForKey:@"pwm"]];
+   }
+   else 
+   {
+      [tempArray addObject:[NSNumber numberWithInt:0]];
    }
    
    //NSLog(@"SchnittdatenVonDic tempArray: %@",[tempArray description]);

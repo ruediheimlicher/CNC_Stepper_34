@@ -44,10 +44,10 @@
    IBOutlet	id					ProfilTiefeFeldA;
    IBOutlet	id					ProfilTiefeFeldB;
 
-   IBOutlet	id					Einlaufbreite;
+   IBOutlet	id					Einlauflaenge;
    IBOutlet	id					Einlauftiefe;
 
-   IBOutlet	id					Auslaufbreite;
+   IBOutlet	id					Auslauflaenge;
    IBOutlet	id					Auslauftiefe;
 
    IBOutlet	id					ProfilBOffsetYFeld;
@@ -232,6 +232,9 @@
    IBOutlet id					HomeTaste;
 
    IBOutlet id					SeitenVertauschenTaste;
+   
+   IBOutlet	id					RechtsLinksOffsetFeld;
+   
    IBOutlet id					RechtsLinksRadio;
 
    NSMutableDictionary*		AnschlagDic;
@@ -308,6 +311,7 @@
 - (void)shiftX:(float)x Y:(float)y Schritt:(int)schritt;
 - (IBAction)reportSeiteVertauschen:(id)sender;
 - (IBAction)reportLinkeRechteSeite:(id)sender;
+- (IBAction)reportLinkeRechteSeiteOffset:(id)sender;
 
 - (IBAction)reportProfilTask:(id)sender;
 - (IBAction)reportEdgeTask:(id)sender;
