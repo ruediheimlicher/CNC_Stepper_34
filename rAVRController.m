@@ -300,6 +300,7 @@ private void button4_Click(object sender, EventArgs e)
          sendbuffer=malloc(32);
          //
          int i;
+         
          pwm = [AVR pwm];
          
          NSMutableArray* tempSchnittdatenArray=(NSMutableArray*)[SchnittDatenArray objectAtIndex:Stepperposition];

@@ -290,6 +290,7 @@
 - (IBAction)reportDauerpfeilTaste:(id)sender;
 - (IBAction)reportOberkanteAnfahren:(id)sender;
 - (IBAction)reportHome:(id)sender;
+- (void)sendDelayedArrayWithDic:(NSDictionary*) schnittdatendic;
 
 - (IBAction)reportElementSichern:(id)sender;
 

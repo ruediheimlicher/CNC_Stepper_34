@@ -790,6 +790,9 @@ void print_all_num(struct Abschnitt* list)
 	{
 		//NSLog(@"savePListAktion: PListPfad: %@ ",PListPfad);
 		
+      
+      
+     
 		NSMutableDictionary* tempPListDic;//=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 		NSFileManager *Filemanager=[NSFileManager defaultManager];
 		if ([Filemanager fileExistsAtPath:PListPfad])

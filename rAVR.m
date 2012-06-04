@@ -5943,6 +5943,7 @@ return returnInt;
    // von 32
    
    int antwort=0;
+   int delayok=0;
    if (![DC_Taste state])
    {
       NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
@@ -5968,14 +5969,20 @@ return returnInt;
       case NSAlertFirstButtonReturn: // Einschalten
       {
          [DC_Taste setState:1];
-         [self DC_ON:[DC_PWM intValue]]; 
+         [self DC_ON:[DC_PWM intValue]];
+         delayok=1;
          //return;
                
       }
       case NSAlertSecondButtonReturn: // Ignorieren
       {
-         
-      }break;
+         int i=0;
+         for (i=0;i<[SchnittdatenArray count];i++)
+         {
+            [[SchnittdatenArray  objectAtIndex:i]replaceObjectAtIndex:20 withObject:[NSNumber numberWithInt:0]];
+         }
+
+      }break; 
       case NSAlertThirdButtonReturn: // Abbrechen
       {
          return;
@@ -6011,14 +6018,32 @@ return returnInt;
    }
    
    [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"art"]; // 
-   //NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
-   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
-
+   NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
+   
+//   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
+   NSLog(@"reportUSB_SendArray delayok: %d",delayok);
+   [SchnittdatenDic setObject:[NSNumber numberWithInt:delayok] forKey:@"delayok"];
+  
+   if (delayok)
+  {
+     
+      [self performSelector:@selector (sendDelayedArrayWithDic:) withObject:SchnittdatenDic afterDelay:3];
+  }
+  else 
+  {
+         [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
+  }
    [self saveSpeed];
    [self savePWM];
    
  }
 
+- (void)sendDelayedArrayWithDic:(NSDictionary*) schnittdatendic
+{
+   NSLog(@"sendDelayedArrayWithDic");
+   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:schnittdatendic];
+}
 
 - (void)USBReadAktion:(NSNotification*)note
 {
