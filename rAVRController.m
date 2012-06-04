@@ -223,7 +223,7 @@ private void button4_Click(object sender, EventArgs e)
        {
           if ([readTimer isValid])
           {
-             NSLog(@"writeCNCAbschnitt timer inval");
+             NSLog(@"USB_SchnittdatenAktion laufender timer inval");
              [readTimer invalidate];
              
           }
@@ -267,6 +267,8 @@ private void button4_Click(object sender, EventArgs e)
 	//NSLog(@"writeCNCAbschnitt Start Stepperposition: %d count: %d",Stepperposition,[SchnittDatenArray count]);
 	//NSLog(@"writeCNCAbschnitt SchnittDatenArray anz: %d\n SchnittDatenArray: %@",[SchnittDatenArray count],[SchnittDatenArray description]);
 
+   
+   
    if (Stepperposition < [SchnittDatenArray count])
 	{	
       
@@ -529,6 +531,7 @@ private void button4_Click(object sender, EventArgs e)
       // NSLog(@"**   outposition NSNumber: %d",[outPosition intValue]);
       //NSLog(@"**readUSB   buffer 6 %d",(UInt8)buffer[6]);
       [NotificationDic setObject:ladePosition forKey:@"outposition"];
+      [NotificationDic setObject:[NSNumber numberWithInt:Stepperposition] forKey:@"stepperposition"];
 
       // cncstatus abfragen
       NSNumber* cncstatus=[NSNumber numberWithInt:(UInt8)buffer[7]];
@@ -871,17 +874,27 @@ private void button4_Click(object sender, EventArgs e)
       mausistdown=[[[note userInfo]objectForKey:@"push"]intValue];
       if (mausistdown == 0) // mouseup
       {
+         NSMutableDictionary* timerDic =[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:0],@"home",[NSNumber numberWithInt:1],@"halt", nil];
+
+         readTimer = [[NSTimer scheduledTimerWithTimeInterval:0.05 
+                                                       target:self 
+                                                     selector:@selector(readUSB:) 
+                                                     userInfo:timerDic repeats:YES]retain];
+
          pfeilaktion=1; // in writeCNCAbschnitt wird Datenserie beendet
          NSLog(@"HaltAktion mouseup start");
          char*      sendbuffer;
          sendbuffer=malloc(32);
          sendbuffer[16]=0xE0;
+         sendbuffer[18]=0; // indexh, indexl ergibt abschnittnummer
+         sendbuffer[19]=0;
          sendbuffer[20]=0; // pwm
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          sendbuffer[16]=0x00;
          free(sendbuffer);
          NSLog(@"HaltAktion senderfolg: %d",senderfolg);
          // NSLog(@"HaltAktion mouseup Stepperposition: %d",Stepperposition);
+      
       }
    }
    else

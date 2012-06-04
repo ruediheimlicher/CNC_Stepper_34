@@ -1227,6 +1227,7 @@ return returnInt;
    //NSLog(@"reportStopKnopf KoordinatenTabelle: %@",[KoordinatenTabelle description]);
    
 	[CNCPositionFeld setIntValue:0];
+   [PositionFeld setStringValue:@""];
 	[CNCStepXFeld setIntValue:[[[CNCDatenArray objectAtIndex:0]objectForKey:@"schrittex"]intValue]];
 	[CNCStepYFeld setIntValue:[[[CNCDatenArray objectAtIndex:0]objectForKey:@"schrittey"]intValue]];
 	
@@ -1348,7 +1349,11 @@ return returnInt;
    else
    {
       [CNC_busySpinner stopAnimation:NULL];
+      [CNC_Halttaste setState:0];
+      [CNC_Halttaste setEnabled:NO];
+
       //[DC_Taste setState:0];
+     
    }
    
 }
@@ -5124,11 +5129,12 @@ return returnInt;
    [PositionFeld setStringValue:@""];
    
    
-   NSMutableDictionary* haltInfoDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
-	[haltInfoDic setObject:[NSNumber numberWithInt:[CNC_Halttaste state]] forKey:@"halt"];
+   //NSMutableDictionary* haltInfoDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+	//[haltInfoDic setObject:[NSNumber numberWithInt:[CNC_Halttaste state]] forKey:@"halt"];
    NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[NotificationDic setObject:[NSNumber numberWithInt:[CNC_Halttaste state]] forKey:@"halt"];
 	[NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"push"];
+   
 	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	
    [nc postNotificationName:@"Halt" object:self userInfo:NotificationDic];
@@ -6025,6 +6031,12 @@ return returnInt;
          [ProfilGraph setStepperposition:[[[note userInfo]objectForKey:@"outposition"]intValue]];
          [ProfilGraph setNeedsDisplay:YES];
       }
+       if ([[[note userInfo]objectForKey:@"stepperposition"]intValue] > [CNCPositionFeld intValue])
+       {
+         [CNCPositionFeld setIntValue:[[[note userInfo]objectForKey:@"stepperposition"]intValue]];
+          //[ProfilGraph setStepperposition:[[[note userInfo]objectForKey:@"stepperposition"]intValue]];
+          //[ProfilGraph setNeedsDisplay:YES];
+       }
    }
    
    int homeanschlagCount=0;
