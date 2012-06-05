@@ -256,12 +256,139 @@ return returnInt;
             {
                [AbbrandFeld setFloatValue:1.7];
             }
+            
+            // Profilname A
+            if ([tempPListDic objectForKey:@"profilnamea"])
+            {
+               NSLog(@"profilnamea: %@",[tempPListDic objectForKey:@"profilnamea"]);
+               [ProfilNameFeldA setStringValue:[tempPListDic objectForKey:@"profilnamea"]];
+               
+            }
+            else
+            {
+               [ProfilNameFeldA setStringValue:@"*"];
+            }
+           
+            // Profilname B
+            if ([tempPListDic objectForKey:@"profilnameb"])
+            {
+               NSLog(@"profilnameb: %@",[tempPListDic objectForKey:@"profilnameb"]);
+               [ProfilNameFeldB setStringValue:[tempPListDic objectForKey:@"profilnameb"]];
+               
+            }
+            else
+            {
+               [ProfilNameFeldB setStringValue:@"*"];
+            }
+            
+
+            // Profiltiefe
+            if ([tempPListDic objectForKey:@"profiltiefea"])
+            {
+               NSLog(@"profiltiefea: %d",[[tempPListDic objectForKey:@"profiltiefea"]intValue]);
+               [ProfilTiefeFeldA setIntValue:[[tempPListDic objectForKey:@"profiltiefea"]intValue]];
+               
+            }
+            else
+            {
+               [ProfilTiefeFeldA setIntValue:101];
+            }
+            
+            if ([tempPListDic objectForKey:@"profiltiefeb"])
+            {
+               NSLog(@"profiltiefeb: %d",[[tempPListDic objectForKey:@"profiltiefeb"]intValue]);
+               [ProfilTiefeFeldB setIntValue:[[tempPListDic objectForKey:@"profiltiefeb"]intValue]];
+               
+            }
+            else
+            {
+               [ProfilTiefeFeldB setIntValue:91];
+            }
+            
+            // Offset Profil B
+            if ([tempPListDic objectForKey:@"profilboffsetx"])
+            {
+               NSLog(@"profilboffsetx: %d",[[tempPListDic objectForKey:@"profilboffsetx"]intValue]);
+               [ProfilBOffsetXFeld setIntValue:[[tempPListDic objectForKey:@"profilboffsetx"]intValue]];
+               
+            }
+            else
+            {
+               [ProfilBOffsetXFeld setIntValue:0];
+            }
+            if ([tempPListDic objectForKey:@"profilboffsety"])
+            {
+               NSLog(@"profilboffsety: %d",[[tempPListDic objectForKey:@"profilboffsety"]intValue]);
+               [ProfilBOffsetYFeld setIntValue:[[tempPListDic objectForKey:@"profilboffsety"]intValue]];
+               
+            }
+            else
+            {
+               [ProfilBOffsetYFeld setIntValue:0];
+            }
+
+            
+            // Wrench Profil B
+            if ([tempPListDic objectForKey:@"profilwrench"])
+            {
+               NSLog(@"profilwrench: %2.2f",[[tempPListDic objectForKey:@"profilwrench"]floatValue]);
+               [ProfilWrenchFeld setFloatValue:[[tempPListDic objectForKey:@"profilwrench"]intValue]];
+               
+            }
+            else
+            {
+               [ProfilWrenchFeld setFloatValue:0];
+            }
+           
+
+            // Geometrie
+            if ([tempPListDic objectForKey:@"einlauflaenge"])
+            {
+               NSLog(@"einlauflaenge: %d",[[tempPListDic objectForKey:@"einlauflaenge"]intValue]);
+               [Einlauflaenge setIntValue:[[tempPListDic objectForKey:@"einlauflaenge"]intValue]];
+               
+            }
+            else
+            {
+               [Einlauflaenge setIntValue:20];
+            }
+
+            if ([tempPListDic objectForKey:@"einlauftiefe"])
+            {
+               NSLog(@"einlauftiefe: %d",[[tempPListDic objectForKey:@"einlauftiefe"]intValue]);
+               [Einlauftiefe setIntValue:[[tempPListDic objectForKey:@"einlauftiefe"]intValue]];
+               
+            }
+            else
+            {
+               [Einlauftiefe setIntValue:16];
+            }
+            
+            if ([tempPListDic objectForKey:@"auslauflaenge"])
+            {
+               NSLog(@"auslauflaenge: %d",[[tempPListDic objectForKey:@"auslauflaenge"]intValue]);
+               [Auslauflaenge setIntValue:[[tempPListDic objectForKey:@"auslauflaenge"]intValue]];
+            }
+            else
+            {
+               [Auslauflaenge setIntValue:20];
+            }
+            
+            if ([tempPListDic objectForKey:@"auslauftiefe"])
+            {
+               NSLog(@"auslauftiefe: %d",[[tempPListDic objectForKey:@"auslauftiefe"]intValue]);
+               [Auslauftiefe setIntValue:[[tempPListDic objectForKey:@"auslauftiefe"]intValue]];
+               
+            }
+            else
+            {
+               [Auslauftiefe setIntValue:16];
+            }
 
             if ([tempPListDic objectForKey:@"basisabstand"])
             {
                NSLog(@"basisabstand: %d",[[tempPListDic objectForKey:@"basisabstand"]intValue]);
                [Basisabstand setIntValue:[[tempPListDic objectForKey:@"basisabstand"]intValue]];
-               
             }
             else
             {
@@ -270,8 +397,8 @@ return returnInt;
 
             if ([tempPListDic objectForKey:@"portalabstand"])
             {
-               NSLog(@"basisabstand: %d",[[tempPListDic objectForKey:@"portalabstand"]intValue]);
-               [Portalabstand setIntValue:[[tempPListDic objectForKey:@"basisabstand"]intValue]];
+               NSLog(@"portalabstand: %d",[[tempPListDic objectForKey:@"portalabstand"]intValue]);
+               [Portalabstand setIntValue:[[tempPListDic objectForKey:@"portalabstand"]intValue]];
                
             }
             else
@@ -281,7 +408,7 @@ return returnInt;
             
             if ([tempPListDic objectForKey:@"spannweite"])
             {
-               NSLog(@"basisabstand: %d",[[tempPListDic objectForKey:@"spannweite"]intValue]);
+               NSLog(@"spannweite: %d",[[tempPListDic objectForKey:@"spannweite"]intValue]);
                [Spannweite setIntValue:[[tempPListDic objectForKey:@"spannweite"]intValue]];
                
             }
@@ -419,8 +546,8 @@ return returnInt;
 
 	CNCdataPfad=[NSHomeDirectory() stringByAppendingPathComponent:@"documents/CNCData"];
 	//NSLog(@"CNCdataPfad: %@",CNCdataPfad);
-   CNC_PList = [[NSMutableDictionary alloc]initWithCapacity:0];
-   [CNC_PList setDictionary: [self readCNC_PList]];
+   //CNC_PList = [[NSMutableDictionary alloc]initWithCapacity:0];
+   
    
 	n=0;
 	aktuellerTag=0;
@@ -491,8 +618,8 @@ return returnInt;
 	}
 	[tempArray addObject:tempDic];
 	
-	
-   CNC_PList = [self readCNC_PList];
+	CNC_PList = [[NSMutableDictionary alloc]initWithDictionary:[self readCNC_PList]];
+   //CNC_PList = [self readCNC_PList];
    
 	int raum;
 	//NSView* RaumView =[[StepperTab tabViewItemAtIndex:0]view];;
@@ -535,10 +662,10 @@ return returnInt;
 	
 	[CNC_Starttaste setState:0];
 	[CNC_Stoptaste setState:0];
-	[ProfilTiefeFeldA setIntValue:100];
-	[ProfilBOffsetYFeld setIntValue:0];
-   [ProfilTiefeFeldB setIntValue:90];
-	[ProfilBOffsetXFeld setIntValue:0];
+	//[ProfilTiefeFeldA setIntValue:100];
+	//[ProfilBOffsetYFeld setIntValue:0];
+   //[ProfilTiefeFeldB setIntValue:90];
+	//[ProfilBOffsetXFeld setIntValue:0];
    
    NSNumberFormatter* SimpleFormatter=[[[NSNumberFormatter alloc] init] autorelease];;
    [SimpleFormatter setFormat:@"###.0;0.0;(##0.0)"];
@@ -1600,6 +1727,20 @@ return returnInt;
       [tempPListDic addEntriesFromDictionary:tempEinstellungenDic];
       [tempPListDic setObject:[NSNumber numberWithInt:[SpeedFeld intValue]] forKey:@"speed"];
       [tempPListDic setObject:[NSNumber numberWithInt:[DC_PWM intValue]] forKey:@"pwm"];
+      
+      // Geometriedaten
+      [tempPListDic setObject:[ProfilNameFeldA stringValue] forKey:@"profilnamea"];
+      [tempPListDic setObject:[ProfilNameFeldB stringValue] forKey:@"profilnameb"];
+      [tempPListDic setObject:[NSNumber numberWithFloat:[ProfilWrenchFeld floatValue]] forKey:@"profilwrench"];
+      [tempPListDic setObject:[NSNumber numberWithInt:[ProfilTiefeFeldA intValue]] forKey:@"profiltiefea"];
+      [tempPListDic setObject:[NSNumber numberWithInt:[ProfilTiefeFeldB intValue]] forKey:@"profiltiefeb"];
+      [tempPListDic setObject:[NSNumber numberWithInt:[ProfilBOffsetXFeld intValue]] forKey:@"profilboffsetx"];
+      [tempPListDic setObject:[NSNumber numberWithInt:[ProfilBOffsetYFeld intValue]] forKey:@"profilboffsetx"];
+      [tempPListDic setObject:[NSNumber numberWithInt:[Basisabstand intValue]] forKey:@"basisabstand"];
+      [tempPListDic setObject:[NSNumber numberWithInt:[Spannweite intValue]] forKey:@"spannweite"];
+      [tempPListDic setObject:[NSNumber numberWithInt:[Portalabstand intValue]] forKey:@"portalabstand"];
+      [tempPListDic setObject:[NSNumber numberWithFloat:[AbbrandFeld floatValue]] forKey:@"abbranda"];
+
       
       //NSLog(@"saveSpeed: gesicherter PListDic: %@",[tempPListDic description]);
       
@@ -3357,7 +3498,10 @@ return returnInt;
    //NSLog(@"runModalForWindow");
    
    NSModalSession session = [NSApp beginModalSessionForWindow:[CNC_Eingabe window]];
-   [CNC_Eingabe setPList:[self readCNC_PList]];
+   NSLog(@"runModalForWindow A");
+   
+   [CNC_Eingabe setPList:CNC_PList];
+   NSLog(@"runModalForWindow B");
    [CNC_Eingabe setDaten:datenDic];
    
    [CNC_Eingabe clearProfilGraphDaten];
@@ -3712,8 +3856,10 @@ return returnInt;
    float TiefeA = ProfiltiefeA + [Basisabstand intValue] * pfeilung;
    float TiefeB = TiefeA - [Portalabstand intValue] * pfeilung;
    
+   float testB = TiefeB + ([Portalabstand intValue] - ([Spannweite intValue]+[Basisabstand intValue] ))*pfeilung;
    
-   NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f",pfeilung,TiefeA,TiefeB);
+   
+   NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f testB: %2.2f",pfeilung,TiefeA,TiefeB, testB);
    /*
    switch ([GleichesProfilRadioKnopf selectedRow])
    {
@@ -4855,6 +5001,7 @@ return returnInt;
 - (IBAction)reportBlockanfuegen:(id)sender
 {
    //NSLog(@"reportBlockanfuegen ");
+   [self reportBlockkonfigurieren:NULL];
    if ([KoordinatenTabelle count])
    {
       if ([BlockKoordinatenTabelle count])
@@ -5940,7 +6087,7 @@ return returnInt;
    //[self reportOberkanteAnfahren:NULL];
    [CNC_Neutaste performClick:NULL];
    [CNC_Starttaste performClick:NULL];
-   [CNC_Starttaste performClick:NULL];
+   [CNC_Starttaste performClick:NULL]; // Startpunkt fixieren
    
    [self reportNeueLinie:NULL];
    [CNC_Eingabe doProfil1PopTaskMitProfil:10];
@@ -5950,7 +6097,7 @@ return returnInt;
    [CNC_Eingabe doProfilEinfuegenTask];
    [CNC_Eingabe doSchliessenTask];
    
-   [CNC_BlockKonfigurierenTaste performClick:NULL];
+//   [CNC_BlockKonfigurierenTaste performClick:NULL];
    [CNC_BlockAnfuegenTaste performClick:NULL];   
 }
 
@@ -6262,6 +6409,7 @@ return returnInt;
 - (int)saveStepperDic
 {
    int erfolg =0;
+   
    
    return erfolg;
 }

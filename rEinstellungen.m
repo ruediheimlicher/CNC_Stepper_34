@@ -3446,7 +3446,7 @@
    [plist retain];
    [PList release];
    PList = (NSMutableDictionary*)plist;
-   //NSLog(@"CNC_Eingabe setPList: %@",[PList description]);
+   NSLog(@"CNC_Eingabe setPList: %@",[PList description]);
  
    
    if ([PList objectForKey:@"einlaufrand"])
