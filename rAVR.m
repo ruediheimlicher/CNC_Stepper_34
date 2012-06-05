@@ -1741,7 +1741,6 @@ return returnInt;
       [tempPListDic setObject:[NSNumber numberWithInt:[Portalabstand intValue]] forKey:@"portalabstand"];
       [tempPListDic setObject:[NSNumber numberWithFloat:[AbbrandFeld floatValue]] forKey:@"abbranda"];
 
-      
       //NSLog(@"saveSpeed: gesicherter PListDic: %@",[tempPListDic description]);
       
       erfolg=[tempPListDic writeToURL:PListURL atomically:YES];
