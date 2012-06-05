@@ -257,6 +257,39 @@ return returnInt;
                [AbbrandFeld setFloatValue:1.7];
             }
 
+            if ([tempPListDic objectForKey:@"basisabstand"])
+            {
+               NSLog(@"basisabstand: %d",[[tempPListDic objectForKey:@"basisabstand"]intValue]);
+               [Basisabstand setIntValue:[[tempPListDic objectForKey:@"basisabstand"]intValue]];
+               
+            }
+            else
+            {
+               [Basisabstand setIntValue:100];
+            }
+
+            if ([tempPListDic objectForKey:@"portalabstand"])
+            {
+               NSLog(@"basisabstand: %d",[[tempPListDic objectForKey:@"portalabstand"]intValue]);
+               [Portalabstand setIntValue:[[tempPListDic objectForKey:@"basisabstand"]intValue]];
+               
+            }
+            else
+            {
+               [Portalabstand setIntValue:1000];
+            }
+            
+            if ([tempPListDic objectForKey:@"spannweite"])
+            {
+               NSLog(@"basisabstand: %d",[[tempPListDic objectForKey:@"spannweite"]intValue]);
+               [Spannweite setIntValue:[[tempPListDic objectForKey:@"spannweite"]intValue]];
+               
+            }
+            else
+            {
+               [Spannweite setIntValue:750];
+            }
+
          }
 			
 		}
@@ -988,8 +1021,10 @@ return returnInt;
 
         	[CNCDatenArray removeAllObjects];
          [CNCTable reloadData];
+         [ProfilGraph setDatenArray:KoordinatenTabelle];
+         
+         [ProfilGraph setNeedsDisplay:YES];
          [SchnittdatenArray removeAllObjects];
- 
          
       }
    //   [DC_Taste setState:0];
@@ -3525,6 +3560,7 @@ return returnInt;
    
 }
 
+
 - (void)LibProfileingabeAktion:(NSNotification*)note
 {
    //NSLog(@"LibProfileingabeAktion note: %@",[[note userInfo] description]);
@@ -3664,9 +3700,20 @@ return returnInt;
    
    //NSLog(@"ProfilDic %@",[ProfilDic description]);
    
+   
+   
    float ProfiltiefeA = [ProfilTiefeFeldA floatValue];
    float ProfiltiefeB = [ProfilTiefeFeldB floatValue];
    
+   
+   
+   float pfeilung = (ProfiltiefeA - ProfiltiefeB)/[Spannweite intValue];
+   
+   float TiefeA = ProfiltiefeA + [Basisabstand intValue] * pfeilung;
+   float TiefeB = TiefeA - [Portalabstand intValue] * pfeilung;
+   
+   
+   NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f",pfeilung,TiefeA,TiefeB);
    /*
    switch ([GleichesProfilRadioKnopf selectedRow])
    {
@@ -5503,7 +5550,8 @@ return returnInt;
    [OffsetArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
    
    // Verschieben um Blockbreite + Einstichx auf Blockoberkante
-   PositionA.y += offset;
+   PositionA.x += offset;
+   PositionB.x += offset;
    //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
    index++;
    [OffsetArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
@@ -5582,7 +5630,7 @@ return returnInt;
 		[OffsetSchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
       
    } // for i
-   //NSLog(@"AnfahrtSchnittdatenArray: %@",[AnfahrtSchnittdatenArray description]);
+   NSLog(@"OffsetSchnittdatenArray: %@",[OffsetSchnittdatenArray description]);
    // Schnittdaten an CNC schicken
    NSMutableDictionary* SchnittdatenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [SchnittdatenDic setObject:OffsetSchnittdatenArray forKey:@"schnittdatenarray"];
@@ -5971,9 +6019,8 @@ return returnInt;
          [DC_Taste setState:1];
          [self DC_ON:[DC_PWM intValue]];
          delayok=1;
-         //return;
-               
-      }
+      }break;
+         
       case NSAlertSecondButtonReturn: // Ignorieren
       {
          int i=0;
@@ -5982,7 +6029,8 @@ return returnInt;
             [[SchnittdatenArray  objectAtIndex:i]replaceObjectAtIndex:20 withObject:[NSNumber numberWithInt:0]];
          }
 
-      }break; 
+      }break;
+         
       case NSAlertThirdButtonReturn: // Abbrechen
       {
          return;
@@ -6018,16 +6066,15 @@ return returnInt;
    }
    
    [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"art"]; // 
-   NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
+   //NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
    
 //   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
    NSLog(@"reportUSB_SendArray delayok: %d",delayok);
    [SchnittdatenDic setObject:[NSNumber numberWithInt:delayok] forKey:@"delayok"];
-  
+   
    if (delayok)
   {
-     
-      [self performSelector:@selector (sendDelayedArrayWithDic:) withObject:SchnittdatenDic afterDelay:3];
+      [self performSelector:@selector (sendDelayedArrayWithDic:) withObject:SchnittdatenDic afterDelay:2];
   }
   else 
   {

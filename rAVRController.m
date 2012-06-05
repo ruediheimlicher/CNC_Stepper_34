@@ -706,6 +706,14 @@ private void button4_Click(object sender, EventArgs e)
                   NSLog(@"Anschlag D home  second");
                }break;
 
+               case 0xD0:
+               {
+                  NSLog(@"letzter Abschnitt");
+                  [NotificationDic setObject:AbschnittFertig forKey:@"abschnittfertig"];
+                  NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+                  [nc postNotificationName:@"usbread" object:self userInfo:NotificationDic];
+                  return;
+               }break;
                   
             }// switch abschnittfertig
          

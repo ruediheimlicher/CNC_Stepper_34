@@ -227,6 +227,10 @@
    IBOutlet id					AnschlagLinksIndikator;
    IBOutlet id					AnschlagUntenIndikator;
    
+   IBOutlet id					Basisabstand; // Abstand CNC zu Block
+   IBOutlet id					Portalabstand; 
+   IBOutlet id					Spannweite; // 
+   
    IBOutlet id					USBKontrolle;
    
    IBOutlet id					HomeTaste;
