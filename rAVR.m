@@ -1227,6 +1227,7 @@ return returnInt;
       float bx = [[tempNowDic objectForKey:@"bx"]floatValue];
       float by = [[tempNowDic objectForKey:@"by"]floatValue];
       
+      
       int nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
       
       if ([tempNowDic objectForKey:@"pwm"])
@@ -3291,12 +3292,12 @@ return returnInt;
 		{
 			case 123: // links
 			{
-				float stepperAXwert=[WertAXFeld floatValue];
-            
+            // Seite 1
+				float stepperAXwert=[WertAXFeld floatValue]; // vorhandener Wert
             if ([ABBindCheck state] || klickseite == 1) // Seiten gekopppelt oder Klick auf Seite 1
             {
-               stepperAXwert -= Pfeiltastenschritt;
-               if (stepperAXwert <0)
+               stepperAXwert -= Pfeiltastenschritt;   // Koord mutieren entsprechend Richtung
+               if (stepperAXwert <0)                  // Keine Kollision mit Rand
                   {stepperAXwert=0;}
             }
             
@@ -3304,7 +3305,7 @@ return returnInt;
 				[WertAXStepper setFloatValue:stepperAXwert];
 				//NSLog(@"stepperAXwert: %2.2F",stepperAXwert);
 
-				
+				// Seite 2
             float stepperBXwert=[WertBXFeld floatValue];
             //NSLog(@"stepperBXwert orig: %2.2F",stepperBXwert);
             if ([ABBindCheck state] || klickseite == 2) // Seiten gekopppelt oder Klick auf Seite 2
@@ -3318,7 +3319,7 @@ return returnInt;
 				//NSLog(@"stepperBXwert bearbeitet: %2.2F",stepperBXwert);
             
             
-           if ([tempZeilenDic objectForKey:@"pwm"]) // pwm angegeben
+           if ([tempZeilenDic objectForKey:@"pwm"]) // pwm angegeben, mitgeben
            {
               NSLog(@"pwm da");
               tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:stepperAXwert], @"ax",
@@ -6024,9 +6025,143 @@ return returnInt;
    
 }
 
-- (IBAction)reportgoOtherSide:(id)sender
+- (IBAction)reportAndereSeiteAnfahren:(id)sender
 {
+   float full_pwm = 1;
+   float red_pwm = 0.3;
+   int aktuellepwm=[DC_PWM intValue];
    
+   int nowpwm =0;
+//   if ([DC_Taste state])
+   {
+      nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
+   }
+   int lage=0;
+   int einstichx = 6;
+   int einstichy = 4;
+
+   
+   NSLog(@"reportOberkanteAnfahren");
+   // von 32
+   [CNC_Lefttaste setEnabled:YES];
+   [AnschlagLinksIndikator setTransparent:YES];
+   
+   [CNC_Downtaste setEnabled:YES];
+   [AnschlagUntenIndikator setTransparent:YES];
+   // anscheinend OK
+   // end von 32
+   int blockbreite = [Blockbreite intValue];
+   int blockhoehe = [Blockdicke intValue];
+
+   
+   NSLog(@"reportAndereSeiteAnfahren blockhoehe: %d blockbreite: %d",blockhoehe,blockbreite);
+   
+   NSMutableArray* AnfahrtArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+
+   // Startpunkt ist Home. Lage: 0: Einlauf 1: Auslauf
+   NSPoint PositionA = NSMakePoint(0, 0);
+   NSPoint PositionB = NSMakePoint(0, 0);
+   int index=0;
+   [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
+   
+   // Hochfahren auf Blockoberkante
+   PositionA.y += blockhoehe + einstichy;
+   PositionB.y += blockhoehe + einstichy;
+   //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+   index++;
+   [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",[NSNumber numberWithInt:full_pwm],@"pwm",nil]];
+   
+   // Fahren Blockbreite
+   PositionA.x += blockbreite + einstichx;
+   PositionB.x += blockbreite + einstichx;
+   //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+   index++;
+   [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
+   
+   // Fahren auf Blockunterkante
+   PositionA.y -= blockhoehe + einstichy;
+   PositionB.y -= blockhoehe + einstichy;
+   //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+   index++;
+   [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
+   
+   // von reportStopKnopf
+   int i=0;
+   int zoomfaktor=1.0;
+   NSMutableArray* AnfahrtSchnittdatenArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+   
+   for (i=0;i<[AnfahrtArray count]-1;i++)
+	{
+		// Seite A
+		NSPoint tempStartPunktA= NSMakePoint([[[AnfahrtArray objectAtIndex:i]objectForKey:@"ax"]floatValue]*zoomfaktor,[[[AnfahrtArray objectAtIndex:i]objectForKey:@"ay"]floatValue]*zoomfaktor);
+		NSString* tempStartPunktAString= NSStringFromPoint(tempStartPunktA);
+		
+		//NSPoint tempEndPunkt= [[KoordinatenTabelle objectAtIndex:i+1]objectForKey:@"punktstring"];
+		NSPoint tempEndPunktA= NSMakePoint([[[AnfahrtArray objectAtIndex:i+1]objectForKey:@"ax"]floatValue]*zoomfaktor,[[[AnfahrtArray objectAtIndex:i+1]objectForKey:@"ay"]floatValue]*zoomfaktor);
+		NSString* tempEndPunktAString= NSStringFromPoint(tempEndPunktA);
+		//NSLog(@"tempStartPunktString: %@ tempEndPunktString: %@",tempStartPunktString,tempEndPunktString);
+      
+      // Seite B
+      NSPoint tempStartPunktB= NSMakePoint([[[AnfahrtArray objectAtIndex:i]objectForKey:@"bx"]floatValue]*zoomfaktor,[[[AnfahrtArray objectAtIndex:i]objectForKey:@"by"]floatValue]*zoomfaktor);
+		NSString* tempStartPunktBString= NSStringFromPoint(tempStartPunktB);
+		
+		NSPoint tempEndPunktB= NSMakePoint([[[AnfahrtArray objectAtIndex:i+1]objectForKey:@"bx"]floatValue]*zoomfaktor,[[[AnfahrtArray objectAtIndex:i+1]objectForKey:@"by"]floatValue]*zoomfaktor);
+      NSString* tempEndPunktBString= NSStringFromPoint(tempEndPunktB);
+      
+      // Dic zusammenstellen
+      NSMutableDictionary* tempDic= [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+      
+      [tempDic setObject:tempStartPunktAString forKey:@"startpunkt"];
+      [tempDic setObject:tempEndPunktAString forKey:@"endpunkt"];
+      
+      // AB
+      [tempDic setObject:tempStartPunktAString forKey:@"startpunkta"];
+      [tempDic setObject:tempStartPunktBString forKey:@"startpunktb"];
+      
+      [tempDic setObject:tempEndPunktAString forKey:@"endpunkta"];
+      [tempDic setObject:tempEndPunktBString forKey:@"endpunktb"];
+      
+      [tempDic setObject:[NSNumber numberWithInt:i] forKey:@"index"];
+      
+      [tempDic setObject:[NSNumber numberWithFloat:zoomfaktor] forKey:@"zoomfaktor"];
+      int code=0;
+      
+      [tempDic setObject:[NSNumber numberWithInt:code] forKey:@"code"];
+      
+      [tempDic setObject:[NSNumber numberWithInt:code] forKey:@"codea"];
+      [tempDic setObject:[NSNumber numberWithInt:code] forKey:@"codeb"];
+      
+      if (nowpwm)
+      {
+       [tempDic setObject:[NSNumber numberWithInt:nowpwm]forKey:@"pwm"];
+      }
+      int position=0;
+      if (i==0)
+      {
+         position |= (1<<FIRST_BIT);
+      }
+      if (i==[AnfahrtArray count]-2)
+      {
+         position |= (1<<LAST_BIT);
+      }
+      [tempDic setObject:[NSNumber numberWithInt:position] forKey:@"position"];
+      
+      
+      NSDictionary* tempSteuerdatenDic=[CNC SteuerdatenVonDic:tempDic];
+      
+      
+		[AnfahrtSchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
+      
+   } // for i
+   //NSLog(@"AnfahrtSchnittdatenArray: %@",[AnfahrtSchnittdatenArray description]);
+   // Schnittdaten an CNC schicken
+   NSMutableDictionary* SchnittdatenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+   [SchnittdatenDic setObject:AnfahrtSchnittdatenArray forKey:@"schnittdatenarray"];
+   [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"cncposition"];
+   
+   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
+
 }
 
 - (IBAction)reportHome:(id)sender

@@ -261,6 +261,7 @@ return sqrt(dX*dX + dY*dY);
       Klickseite = 1;
    }
    
+   // Angeklickte Seite angeben
    [NotificationDic setObject:[NSNumber  numberWithInt:Klickseite]forKey:@"klickseite"];
 
    NSLog(@"mousedown startklickpunkt: %d clickedPunkt: %d",startklickpunkt,Klickpunkt);
@@ -326,9 +327,11 @@ return sqrt(dX*dX + dY*dY);
          
          
       }
+      
+      // Koord Mauspunkt
 		[NotificationDic setObject:NSStringFromPoint(local_point) forKey:@"mauspunkt"];
       
-      
+      // Nummer des angeklickten Punktes
 		[NotificationDic setObject:[NSNumber  numberWithInt:Klickpunkt]forKey:@"klickpunkt"];
       
 		//NSLog(@"mousedown clickedPunkt: %d",klickpunkt);

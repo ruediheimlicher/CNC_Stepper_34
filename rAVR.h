@@ -329,7 +329,7 @@
 - (IBAction)reportSeiteVertauschen:(id)sender;
 - (IBAction)reportLinkeRechteSeite:(id)sender;
 - (IBAction)reportLinkeRechteSeiteOffset:(id)sender;
-- (IBAction)reportgoOtherSide:(id)sender;
+- (IBAction)reportAndereSeiteAnfahren:(id)sender;
 
 - (IBAction)reportProfilTask:(id)sender;
 - (IBAction)reportEdgeTask:(id)sender;
