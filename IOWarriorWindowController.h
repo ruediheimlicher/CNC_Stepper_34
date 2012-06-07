@@ -5,7 +5,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#import "rHexEingabe.h"
+//#import "rHexEingabe.h"
 //#import "rADWandler.h"
 #import "rAVR.h"
 #import "rDump_DS.h"

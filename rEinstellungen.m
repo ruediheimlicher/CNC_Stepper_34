@@ -1308,7 +1308,7 @@
 
 - (void)setDaten:(NSDictionary*)daten
 {
-   //NSLog(@"setDaten daten: %@",[daten description]);
+   NSLog(@"setDaten daten: %@",[daten description]);
    
    if ([daten objectForKey:@"element"])
    {
@@ -1408,7 +1408,7 @@
    
    if ([daten objectForKey:@"einlauftiefe"])
    {
-      
+      NSLog(@"Einlauftiefe vorhanden: %d Einlauftiefe aus Daten: %d",[Einlauftiefe  intValue],[[daten objectForKey:@"einlauftiefe"]intValue]);
       if ([Einlauftiefe  intValue] != [[daten objectForKey:@"einlauftiefe"]intValue])
       {
       [Einlauftiefe  setIntValue:[[daten objectForKey:@"einlauftiefe"]intValue]];// 

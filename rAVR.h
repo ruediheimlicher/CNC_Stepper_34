@@ -197,10 +197,19 @@
    
    IBOutlet id					IndexFeld;
    IBOutlet id					IndexStepper;
-   IBOutlet id					WertXFeld;
-   IBOutlet id					WertXStepper;
-   IBOutlet id					WertYFeld;
-   IBOutlet id					WertYStepper;
+
+   IBOutlet id					WertAXFeld;
+   IBOutlet id					WertAXStepper;
+   IBOutlet id					WertAYFeld;
+   IBOutlet id					WertAYStepper;
+ 
+   IBOutlet id					WertBXFeld;
+   IBOutlet id					WertBXStepper;
+   IBOutlet id					WertBYFeld;
+   IBOutlet id					WertBYStepper;
+   
+   IBOutlet id					ABBindCheck;
+
    IBOutlet id					LagePop;
    IBOutlet id					WinkelFeld;
    IBOutlet id					WinkelStepper;
@@ -281,8 +290,11 @@
 - (IBAction)reportScalePop:(id)sender;
 - (IBAction)reportHaltTaste:(id)sender;
 - (IBAction)reportIndexStepper:(id)sender;
-- (IBAction)reportWertXStepper:(id)sender;
-- (IBAction)reportWertYStepper:(id)sender;
+- (IBAction)reportWertAXStepper:(id)sender;
+- (IBAction)reportWertAYStepper:(id)sender;
+
+- (IBAction)reportWertBXStepper:(id)sender;
+- (IBAction)reportWertBYStepper:(id)sender;
 
 - (IBAction)reportPWMStepper:(id)sender;
 
@@ -317,6 +329,7 @@
 - (IBAction)reportSeiteVertauschen:(id)sender;
 - (IBAction)reportLinkeRechteSeite:(id)sender;
 - (IBAction)reportLinkeRechteSeiteOffset:(id)sender;
+- (IBAction)reportgoOtherSide:(id)sender;
 
 - (IBAction)reportProfilTask:(id)sender;
 - (IBAction)reportEdgeTask:(id)sender;

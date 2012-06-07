@@ -22,6 +22,7 @@
    int         scale; // Massstab fuer die Darstellung. Uebergebene Masse sind in mm
    int         mausistdown;
    int         Klickpunkt;
+   int         Klickseite;
    NSRange     klickrange;
    NSMutableIndexSet* KlicksetA;
    int         startklickpunkt;
