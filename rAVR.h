@@ -332,6 +332,8 @@
 - (IBAction)reportAndereSeiteAnfahren:(id)sender;
 
 - (IBAction)reportProfilTask:(id)sender;
+- (IBAction)reportProfilOberseiteTask:(id)sender;
+- (IBAction)reportProfilUnterseiteTask:(id)sender;
 - (IBAction)reportEdgeTask:(id)sender;
 // SPI
 

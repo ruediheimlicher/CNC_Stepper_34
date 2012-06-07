@@ -6475,6 +6475,50 @@ return returnInt;
    [CNC_BlockAnfuegenTaste performClick:NULL];   
 }
 
+- (IBAction)reportProfilOberseiteTask:(id)sender
+{
+   //[self reportOberkanteAnfahren:NULL];
+   [CNC_Neutaste performClick:NULL];
+   [CNC_Starttaste performClick:NULL];
+   [CNC_Starttaste performClick:NULL]; // Startpunkt fixieren
+   
+   [self reportNeueLinie:NULL];
+   [CNC_Eingabe doProfil1PopTaskMitProfil:10];
+   
+   [CNC_Eingabe setOberseite:1];
+   [CNC_Eingabe setUnterseite:0];
+   [CNC_Eingabe doProfilSpiegelnVertikalTask];
+   [CNC_Eingabe doProfilEinfuegenTask];
+   [CNC_Eingabe doSchliessenTask];
+   
+   //   [CNC_BlockKonfigurierenTaste performClick:NULL];
+   [CNC_BlockAnfuegenTaste performClick:NULL]; 
+   [RechtsLinksRadio setSelectedSegment:1];
+   [RechtsLinksRadio  performClick:NULL]; 
+}
+
+- (IBAction)reportProfilUnterseiteTask:(id)sender
+{
+   //[self reportOberkanteAnfahren:NULL];
+   [CNC_Neutaste performClick:NULL];
+   [CNC_Starttaste performClick:NULL];
+   [CNC_Starttaste performClick:NULL]; // Startpunkt fixieren
+   
+   [self reportNeueLinie:NULL];
+   [CNC_Eingabe doProfil1PopTaskMitProfil:10];
+   
+   [CNC_Eingabe setOberseite:0];
+   [CNC_Eingabe setUnterseite:1];
+   [CNC_Eingabe doProfilEinfuegenTask];
+   [CNC_Eingabe doSchliessenTask];
+   
+   //   [CNC_BlockKonfigurierenTaste performClick:NULL];
+   [CNC_BlockAnfuegenTaste performClick:NULL]; 
+   [RechtsLinksRadio setSelectedSegment:0];
+    
+}
+
+
 - (IBAction)reportEdgeTask:(id)sender
 {
    //[self reportOberkanteAnfahren:NULL];
