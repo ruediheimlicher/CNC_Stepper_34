@@ -240,13 +240,17 @@ private void button4_Click(object sender, EventArgs e)
       [Warnung setAlertStyle:NSWarningAlertStyle];
       
       antwort=[Warnung runModal];
-      
+      [AVR DC_ON:0];
+      [AVR setStepperstrom:0];
+
       // return;
       // NSLog(@"antwort: %d",antwort);
       switch (antwort)
       {
          case NSAlertFirstButtonReturn: // Einschalten
          {
+            [self USBOpen];
+            /*
             int  r;
             
             r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
@@ -263,7 +267,7 @@ private void button4_Click(object sender, EventArgs e)
                [AVR setUSB_Device_Status:1];
             }
             usbstatus=r;
-            
+            */
          }break;
             
          case NSAlertSecondButtonReturn: // Ignorieren

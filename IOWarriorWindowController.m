@@ -747,8 +747,11 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 	NSLog(@"Beenden");
    [AVR DC_ON:0];
    [AVR setStepperstrom:0];
-   
-	[self savePListAktion:NULL];
+//   if (schliessencounter ==0)
+   {
+      NSLog(@"Beenden savePListAktion");
+      [self savePListAktion:NULL];
+   }
 	return YES;
 }
 
@@ -759,13 +762,12 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 	{
 		return;
 	}
-	NSLog(@"Fenster Schliessen");
-	
-	
+//	NSLog(@"Fenster Schliessen");
+		
    if ([[[note object]title]length])
    {
       schliessencounter++;
-      //NSLog(@"hat Title");
+      NSLog(@"hat Title");
       // "New Folder" wird bei 10.6.8 als Titel von open zurueckgegeben. Deshalb ausschliessen(iBook schwarz)
       if (!([[[note object]title]isEqualToString:@"CNC-Eingabe"]||[[[note object]title]isEqualToString:@"New Folder"]))
       {

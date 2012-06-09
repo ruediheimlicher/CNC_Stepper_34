@@ -6772,7 +6772,7 @@ return returnInt;
       [Warnung setAlertStyle:NSWarningAlertStyle];
       
       antwort=[Warnung runModal];
-      
+
       // return;
       // NSLog(@"antwort: %d",antwort);
    }
@@ -6865,6 +6865,8 @@ return returnInt;
       
       antwort=[Warnung runModal];
       [CNC_Stoptaste setState:0];
+      [self DC_ON:0];
+      [self setStepperstrom:0];
 
    }
  }
