@@ -128,12 +128,12 @@ return sqrt(dX*dX + dY*dY);
       
       if ([self mouse:tempPunktA inRect:KlickFeld])//||[self mouse:tempPunktB inRect:KlickFeld])
       {
-         NSLog(@"Seite 1 punkt: %d",i);
+         //NSLog(@"Seite 1 punkt: %d",i);
          return i;
       }
       if ([self mouse:tempPunktB inRect:KlickFeld])
       {
-         NSLog(@"Seite 2 punkt: %d",i);
+         //NSLog(@"Seite 2 punkt: %d",i);
          return i+0xF000;
       }
 
@@ -150,7 +150,7 @@ return sqrt(dX*dX + dY*dY);
 
 - (int)clickedAbschnittvonMaus:(NSPoint)derPunkt
 {
-   NSLog(@"clickedAbschnittvonMaus: x: %2.2f y: %2.2f",derPunkt.x,derPunkt.y);
+   //NSLog(@"clickedAbschnittvonMaus: x: %2.2f y: %2.2f",derPunkt.x,derPunkt.y);
    int index=-1;
    float delta=4;
    //NSRect KlickFeld=NSMakeRect(derPunkt.x-3, derPunkt.y-3, 6, 6);
@@ -213,6 +213,8 @@ return sqrt(dX*dX + dY*dY);
    mausistdown=1;
    NSMutableDictionary* MausDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [MausDic setObject:[NSNumber numberWithInt:1] forKey:@"mausistdown"];
+   [MausDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
+
    [nc postNotificationName:@"mausdaten" object:self userInfo:MausDic];
 
 	float x=local_point.x;
@@ -242,6 +244,8 @@ return sqrt(dX*dX + dY*dY);
          NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
          [NotificationDic setObject:NSStringFromPoint(local_point) forKey:@"mauspunkt"];
          [NotificationDic setObject:[NSNumber  numberWithInt:clickAbschnitt]forKey:@"klickabschnitt"];
+         [NotificationDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
+
          [nc postNotificationName:@"mausklick" object:self userInfo:NotificationDic];
       }
       
@@ -264,7 +268,7 @@ return sqrt(dX*dX + dY*dY);
    // Angeklickte Seite angeben
    [NotificationDic setObject:[NSNumber  numberWithInt:Klickseite]forKey:@"klickseite"];
 
-   NSLog(@"mousedown startklickpunkt: %d clickedPunkt: %d",startklickpunkt,Klickpunkt);
+   //NSLog(@"mousedown startklickpunkt: %d clickedPunkt: %d",startklickpunkt,Klickpunkt);
 	if (Klickpunkt> -1) // Punkt angeklickt
 	{
       
@@ -323,19 +327,25 @@ return sqrt(dX*dX + dY*dY);
          [KlicksetA removeAllIndexes];
          startklickpunkt=Klickpunkt; // Punkt merken
          [NotificationDic setObject:NSStringFromRange(NSMakeRange(0,0)) forKey:@"klickrange"];
+         [NotificationDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
+
          klickrange=NSMakeRange(0,0);
          
          
       }
       
       // Koord Mauspunkt
+      if (Klickseite == 2)
+      {
+         local_point.y -=GraphOffset;
+      }
 		[NotificationDic setObject:NSStringFromPoint(local_point) forKey:@"mauspunkt"];
       
       // Nummer des angeklickten Punktes
 		[NotificationDic setObject:[NSNumber  numberWithInt:Klickpunkt]forKey:@"klickpunkt"];
       
 		//NSLog(@"mousedown clickedPunkt: %d",klickpunkt);
-      NSLog(@"mousedown NotificationDic: %@",[NotificationDic description]);
+      //NSLog(@"mousedown NotificationDic: %@",[NotificationDic description]);
 		//[self setNeedsDisplay:YES];
 		
       [nc postNotificationName:@"mausklick" object:self userInfo:NotificationDic];
@@ -346,6 +356,8 @@ return sqrt(dX*dX + dY*dY);
       //NSLog(@"Profilgraph clickedPunkt -1");
 		NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 		[NotificationDic setObject:NSStringFromPoint(local_point) forKey:@"mauspunkt"];
+      [MausDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
+
 		klickrange=NSMakeRange(0,0);
       startklickpunkt=-1;
 		nc=[NSNotificationCenter defaultCenter];
@@ -358,6 +370,7 @@ return sqrt(dX*dX + dY*dY);
   // NSLog(@"mouseUp:");
    NSMutableDictionary* MausDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [MausDic setObject:[NSNumber numberWithInt:0] forKey:@"mausistdown"];
+   [MausDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
    [nc postNotificationName:@"mausdaten" object:self userInfo:MausDic];
 
@@ -375,6 +388,8 @@ return sqrt(dX*dX + dY*dY);
 	[NotificationDic setObject:[NSNumber  numberWithInt:[derEvent keyCode]]forKey:@"pfeiltaste"];
 	[NotificationDic setObject:[NSNumber  numberWithInt:Klickpunkt]forKey:@"klickpunkt"];
 	[NotificationDic setObject:[NSNumber  numberWithInt:Klickseite]forKey:@"klickseite"];
+   [NotificationDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
+
 	
    NSLog(@"keyDown: %d",[derEvent keyCode]);
 
@@ -444,13 +459,21 @@ return sqrt(dX*dX + dY*dY);
 
 - (void)mouseDragged:(NSEvent *)derEvent
 {
-	//NSLog(@"mouseDown: %@",[derEvent description]);
+	//NSLog(@"mouseDragged: %@",[derEvent description]);
 	NSPoint location = [derEvent locationInWindow];
 	NSPoint local_point = [self convertPoint:location fromView:nil];
 	float x=local_point.x;
 	local_point.x /= scale;
 	float y=local_point.y;
 	local_point.y /= scale;
+   
+   
+   if (Klickseite == 2)
+   {
+      local_point.y -=GraphOffset;
+   }
+   
+   //NSLog(@"mouseDragged Klickseite: %d",Klickseite);
 	if (Klickpunkt >=0 && [DatenArray count]> Klickpunkt)
 	{
 		NSPoint aktivPunkt=NSMakePoint([[[DatenArray objectAtIndex:Klickpunkt]objectForKey:@"ax"]floatValue]*scale, [[[DatenArray objectAtIndex:Klickpunkt]objectForKey:@"ay"]floatValue]*scale);
@@ -461,6 +484,9 @@ return sqrt(dX*dX + dY*dY);
 			NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 			[NotificationDic setObject:NSStringFromPoint(local_point) forKey:@"mauspunkt"];
 			[NotificationDic setObject:[NSNumber numberWithInt:Klickpunkt] forKey:@"klickpunkt"];
+			[NotificationDic setObject:[NSNumber numberWithInt:Klickseite] forKey:@"klickseite"];
+         [NotificationDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
+
 			NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 			[nc postNotificationName:@"mausdrag" object:self userInfo:NotificationDic];
 			
@@ -474,6 +500,7 @@ return sqrt(dX*dX + dY*dY);
 		//NSLog(@"mouseDragged x: %2.2f y: %2.2f",x,y);
 		NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 		[NotificationDic setObject:NSStringFromPoint(local_point) forKey:@"mauspunkt"];
+      [NotificationDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
 		NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 		
 		[nc postNotificationName:@"mauspunkt" object:self userInfo:NotificationDic];

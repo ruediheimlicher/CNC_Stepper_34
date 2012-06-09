@@ -794,7 +794,7 @@ return returnInt;
    
    NSNumberFormatter* Koordinatenformatter=[[[NSNumberFormatter alloc] init] autorelease];;
    [Koordinatenformatter setFormat:@"###.00;0.00;(##0.00)"];
-
+   
    
    [CNCTable setDataSource: self];
    [CNCTable setDelegate: self];
@@ -820,14 +820,36 @@ return returnInt;
     
    [CNCTable setDataSource:self];
    [WertAXFeld setFormatter:Koordinatenformatter];
+   [WertAXFeld setAlignment:NSRightTextAlignment];
    [WertAXFeld setDelegate:self];
-   [WertAXFeld setFloatValue:220];
+//   [WertAXFeld setFloatValue:220];
    [WertAYFeld setFormatter:Koordinatenformatter];
+   [WertAYFeld setAlignment:NSRightTextAlignment];
    [WertAYFeld setDelegate:self];
-   [WertAYFeld setFloatValue:50];
-   [WertAYStepper  rotateByAngle:-90.0];
+//   [WertAYFeld setFloatValue:50];
+   NSRect r=[WertAXStepper frame];
+   r.size.width = r.size.height+5;
+ //  [WertAXStepper setFrame:r];
+//   [WertAXStepper  rotateByAngle:-90.0]; 
+   [WertAXStepper setNeedsDisplay:YES];
    
-   //[ProfilBOffsetYFeld setFloatValue:20];
+  
+   [WertBXFeld setFormatter:Koordinatenformatter];
+   [WertBXFeld setAlignment:NSRightTextAlignment];
+   [WertBXFeld setDelegate:self];
+//   [WertBXFeld setFloatValue:220];
+   [WertBYFeld setFormatter:Koordinatenformatter];
+   [WertBYFeld setAlignment:NSRightTextAlignment];
+   [WertBYFeld setDelegate:self];
+//   [WertBYFeld setFloatValue:50];
+   
+   r=[WertBXStepper frame];
+   r.size.width = r.size.height+5;
+//   [WertBXStepper setFrame:r];
+//   [WertBXStepper  rotateByAngle:-90.0];
+   [WertBXStepper setNeedsDisplay:YES];
+   
+   [PWMFeld setAlignment:NSCenterTextAlignment];
    
    UndoSet = [[NSMutableIndexSet indexSet]retain];
    
@@ -1178,6 +1200,9 @@ return returnInt;
 	}
 	*/
 }
+
+
+
 - (IBAction)reportStopKnopf:(id)sender
 {
    
@@ -1190,18 +1215,35 @@ return returnInt;
 	}
 	else 
 	{
-		
 		GraphEnd=0;
 	}
 	float zoomfaktor=[ProfilTiefeFeldA floatValue]/1000;
 	zoomfaktor=1;
 	//Schnittdaten aus Mausklicktabelle
 	int i;
-	[CNCDatenArray removeAllObjects];
-	[SchnittdatenArray removeAllObjects];
-   
-   if ([KoordinatenTabelle count]==0)
+   [CNCDatenArray removeAllObjects];
+   [CNCDatenArray removeAllObjects];
+   //NSLog(@"reportStopKnopf [KoordinatenTabelle count]: %d",[KoordinatenTabelle count]);
+   if ([KoordinatenTabelle count]<=1)
    {
+      NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+      //[Warnung addButtonWithTitle:@"Einstecken und einschalten"];
+      [Warnung addButtonWithTitle:@"OK"];
+      //	[Warnung addButtonWithTitle:@""];
+      //[Warnung addButtonWithTitle:@"Abbrechen"];
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Zuwenig Elemente"]];
+      
+      NSString* s1=@"";
+      NSString* s2=@"";
+      NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
+      [Warnung setInformativeText:InformationString];
+      [Warnung setAlertStyle:NSWarningAlertStyle];
+      
+      int antwort=[Warnung runModal];
+      [CNC_Stoptaste setState:0];
+      //[CNC_Stoptaste setEnabled:NO];
+     
+
       return;
    }
    
@@ -1217,7 +1259,6 @@ return returnInt;
    int  anzbyminus=0;
    
    //NSLog(@"reportStopKnopf KoordinatenTabelle: %@",[KoordinatenTabelle description]);
-
 	
 	for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
@@ -1226,7 +1267,7 @@ return returnInt;
       float ay = [[tempNowDic objectForKey:@"ay"]floatValue];
       float bx = [[tempNowDic objectForKey:@"bx"]floatValue];
       float by = [[tempNowDic objectForKey:@"by"]floatValue];
-      
+    
       
       int nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
       
@@ -1389,7 +1430,9 @@ return returnInt;
    //  NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
    //NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
    //NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
-	cncposition =0;
+	
+   
+   cncposition =0;
    if (i==0 || i==[KoordinatenTabelle count]-1)
    {
       //NSLog(@"reportStopKnopf SchnittdatenArray: %@",[SchnittdatenArray description]);
@@ -1415,6 +1458,11 @@ return returnInt;
    //[DC_Taste setState:0];
    
 }
+
+   
+
+   
+
 
 - (IBAction)reportDC_Stepper:(id)sender
 {
@@ -1846,9 +1894,7 @@ return returnInt;
 - (IBAction)reportWertAXStepper:(id)sender
 {
    if ([CNCTable numberOfSelectedRows]==0) // keine Zeile aktiviert
-   {
-      return;
-   };
+      {return;};
 
 	[WertAXFeld setStringValue:[NSString stringWithFormat:@"%.2f", [sender floatValue]]];
 	int index=[IndexFeld intValue];
@@ -1863,13 +1909,19 @@ return returnInt;
    {
     wertpwm = [oldDic objectForKey:@"pwm"];
    }
+   
    float deltax = [sender floatValue] - [wertax floatValue]; // Differenz zum vorherigen Wert
    
    wertax = [NSNumber numberWithFloat:[sender floatValue]]; // Neuer Wert fuer wertax
-   wertbx = [NSNumber numberWithFloat:[wertbx floatValue] + deltax]; // Diff zu wertbx hinzufuegen
+   
+   if ([ABBindCheck state])
+   {
+      wertbx = [NSNumber numberWithFloat:[wertbx floatValue] + deltax]; // Diff zu wertbx hinzufuegen
+   }
    
 	//NSLog(@"reportWertAXStepper index: %d wertax: %2.2F wertay: %2.2F wertbx: %2.2F wertby: %2.2F",index, [wertax floatValue], [wertay floatValue],[wertbx floatValue], [wertby floatValue]);
 	
+   
    NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:wertax, @"ax",wertay, @"ay",
                             wertbx, @"bx",wertby, @"by",wertindex,@"index",
                             wertpwm,@"pwm",NULL];
@@ -1909,25 +1961,69 @@ return returnInt;
    {
       wertpwm = [oldDic objectForKey:@"pwm"];
    }
-   float deltay = [sender floatValue] - [wertay floatValue]; // Differenz zum vorherigen Wert
+   float deltay = [sender floatValue] - [wertby floatValue]; // Differenz zum vorherigen Wert
    
    wertay = [NSNumber numberWithFloat:[sender floatValue]]; // Neuer Wert fuer wertax
-   wertby = [NSNumber numberWithFloat:[wertby floatValue] + deltay]; // Diff zu wertby hinzufuegen
+
+   if ([ABBindCheck state])
+   {
+      wertby = [NSNumber numberWithFloat:[wertby floatValue] + deltay]; // Diff zu wertby hinzufuegen
+   }
 
    NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:wertax, @"ax",wertay, @"ay",
                             wertbx, @"bx",wertby, @"by",wertindex,@"index",
                             wertpwm,@"pwm",NULL];
-
 		
 	//NSLog(@"tempDic: %@",[tempDic description]);
-	//NSLog(@"Dic vorher: %@",[[KoordinatenTabelle objectAtIndex:index]description]);
-	
 	[KoordinatenTabelle replaceObjectAtIndex:index withObject:tempDic];
-	//NSLog(@"Dic nachher: %@",[[KoordinatenTabelle objectAtIndex:index]description]);
 
 	[ProfilGraph setDatenArray:KoordinatenTabelle];
 	[ProfilGraph setNeedsDisplay:YES];
 	[CNCTable reloadData];
+}
+
+- (IBAction)reportWertBXStepper:(id)sender
+{
+   if ([CNCTable numberOfSelectedRows]==0) // keine Zeile aktiviert
+   {
+      return;
+   };
+   
+	[WertBXFeld setStringValue:[NSString stringWithFormat:@"%.2f", [sender floatValue]]];
+	int index=[IndexFeld intValue];
+   NSDictionary* oldDic = [KoordinatenTabelle objectAtIndex:index];
+   id wertax = [oldDic objectForKey:@"ax"];
+   id wertay = [oldDic objectForKey:@"ay"];
+   id wertbx = [oldDic objectForKey:@"bx"];
+   id wertby = [oldDic objectForKey:@"by"];
+   id wertindex=[oldDic objectForKey:@"index"];
+   id wertpwm = [NSNumber numberWithInt:[DC_PWM intValue]];
+   if ([oldDic objectForKey:@"pwm"])
+   {
+      wertpwm = [oldDic objectForKey:@"pwm"];
+   }
+   float deltax = [sender floatValue] - [wertbx floatValue]; // Differenz zum vorherigen Wert
+   
+   wertbx = [NSNumber numberWithFloat:[sender floatValue]]; // Neuer Wert fuer wertax
+   if ([ABBindCheck state])
+   {
+      wertax = [NSNumber numberWithFloat:[wertbx floatValue] + deltax]; // Diff zu wertbx hinzufuegen
+   }
+	//NSLog(@"reportWertAXStepper index: %d wertax: %2.2F wertay: %2.2F wertbx: %2.2F wertby: %2.2F",index, [wertax floatValue], [wertay floatValue],[wertbx floatValue], [wertby floatValue]);
+	
+   NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:wertax, @"ax",wertay, @"ay",
+                            wertbx, @"bx",wertby, @"by",wertindex,@"index",
+                            wertpwm,@"pwm",NULL];
+ 	
+   
+	
+	[KoordinatenTabelle replaceObjectAtIndex:index withObject:tempDic];
+	//NSLog(@"Dic nachher: %@",[[KoordinatenTabelle objectAtIndex:index]description]);
+   
+	[ProfilGraph setDatenArray:KoordinatenTabelle];
+	[ProfilGraph setNeedsDisplay:YES];
+	[CNCTable reloadData];
+   
 }
 
 - (IBAction)reportWertBYStepper:(id)sender
@@ -1952,8 +2048,10 @@ return returnInt;
    float deltay = [sender floatValue] - [wertby floatValue]; // Differenz zum vorherigen Wert
    
    wertby = [NSNumber numberWithFloat:[sender floatValue]]; // Neuer Wert fuer wertax
-   wertay = [NSNumber numberWithFloat:[wertay floatValue] + deltay]; // Diff zu wertby hinzufuegen
-   
+   if ([ABBindCheck state])
+   {
+      wertay = [NSNumber numberWithFloat:[wertay floatValue] + deltay]; // Diff zu wertby hinzufuegen
+   }
    NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:wertax, @"ax",wertay, @"ay",
                             wertbx, @"bx",wertby, @"by",wertindex,@"index",
                             wertpwm,@"pwm",NULL];
@@ -3029,6 +3127,15 @@ return returnInt;
    oldMauspunkt=MausPunkt;
 	//NSLog(@"Mausklicktabelle: %@",[KoordinatenTabelle description]);
 	
+   NSDictionary* RahmenDic = [self RahmenDic];
+   float maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
+   float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
+   float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
+   float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
+   //   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+   [AbmessungX setIntValue:maxX - minX];
+   [AbmessungY setIntValue:maxY - minY];
+
 	[ProfilGraph setDatenArray:KoordinatenTabelle];
 	[ProfilGraph setNeedsDisplay:YES];
 	//[ProfilTable reloadData];
@@ -3063,31 +3170,58 @@ return returnInt;
 
 - (void)MausDragAktion:(NSNotification*)note
 {
-
 	//NSLog(@"MausDragAktion note: %@",[[note userInfo]description]);
 	
 	NSPoint MausPunkt = NSPointFromString([[note userInfo]objectForKey:@"mauspunkt"]);
 	int klickIndex= [[[note userInfo] objectForKey:@"klickpunkt"]intValue];
+   int Graphoffset= [[[note userInfo] objectForKey:@"graphoffset"]intValue];
+   //MausPunkt
 	NSDictionary* oldDic= [KoordinatenTabelle objectAtIndex:klickIndex]; // Werte für bx, by uebernehmen
- 
+   int Klickseite = [[[note userInfo] objectForKey:@"klickseite"]intValue];
+   
+   if (Klickseite ==2)
+   {
+      //MausPunkt.y -= Graphoffset;
+   }
+   
    float oldax=[[oldDic objectForKey:@"ax"]floatValue];
    float olday=[[oldDic objectForKey:@"ay"]floatValue];
+   
    float oldbx=[[oldDic objectForKey:@"bx"]floatValue];
    float oldby=[[oldDic objectForKey:@"by"]floatValue];
-
    
-	float deltax = MausPunkt.x- oldax;
-	float deltay = MausPunkt.y- olday;
+   float deltaAX =0;
+   float deltaAY =0;
+   float deltaBX =0;
+   float deltaBY =0;
+   if ([ABBindCheck state] || (Klickseite == 1))
+   {
+      //deltaAX = MausPunkt.x- oldax;
+      //deltaAY = MausPunkt.y- olday;
+      deltaAX = [WertAXFeld floatValue]- oldax;
+      deltaAY = [WertAYFeld floatValue]- olday;
+   }
+   
+   if ([ABBindCheck state] || (Klickseite == 2))
+   {
+      //deltaBX = MausPunkt.x- oldax;
+      //deltaBY = MausPunkt.y- olday;
+      deltaBX = [WertBXFeld floatValue]- oldbx;
+      deltaBY = [WertBYFeld floatValue]- oldby;
+   
+   
+   }
+   
    int seite = [[oldDic objectForKey:@"seite"]intValue];
    
-	//NSLog(@"MausDragAktion deltax %2.2f deltay: %2.2f",deltax, deltay);
-/*
-   NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:MausPunkt.x], @"ax",
-                            [NSNumber numberWithFloat:MausPunkt.y], @"ay",[oldDic objectForKey:@"bx"],@"bx",[oldDic objectForKey:@"by"],@"by",[NSNumber numberWithInt:klickIndex],@"index",NULL];
-*/
+	//NSLog(@"MausDragAktion deltax %2.2f deltay: %2.2f * deltbx: %2.2f deltby: %2.2f",deltaAX, deltaAY,deltaBX,deltaBY);
+   /*
+    NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:MausPunkt.x], @"ax",
+    [NSNumber numberWithFloat:MausPunkt.y], @"ay",[oldDic objectForKey:@"bx"],@"bx",[oldDic objectForKey:@"by"],@"by",[NSNumber numberWithInt:klickIndex],@"index",NULL];
+    */
 	
-   NSMutableDictionary* tempDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:oldax+deltax], @"ax",[NSNumber numberWithFloat:olday + deltay], @"ay",[NSNumber numberWithFloat:oldbx + deltax],@"bx",[NSNumber numberWithFloat:oldby + deltay],@"by",[NSNumber numberWithInt:klickIndex],@"index",NULL];
-
+   NSMutableDictionary* tempDic = [NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:oldax+deltaAX], @"ax",[NSNumber numberWithFloat:olday + deltaAY], @"ay",[NSNumber numberWithFloat:oldbx + deltaBX],@"bx",[NSNumber numberWithFloat:oldby + deltaBY],@"by",[NSNumber numberWithInt:klickIndex],@"index",NULL];
+   
    float oldabrax=0;
    float oldabray=0;
    float oldabrbx=0;
@@ -3100,13 +3234,13 @@ return returnInt;
       oldabrbx=[[oldDic objectForKey:@"abrbx"]floatValue];
       oldabrby=[[oldDic objectForKey:@"abrby"]floatValue];
       
-      [tempDic setObject:[NSNumber numberWithFloat:oldabrax+deltax] forKey:@"abrax"];
-      [tempDic setObject:[NSNumber numberWithFloat:oldabray+deltay] forKey:@"abray"];
-      [tempDic setObject:[NSNumber numberWithFloat:oldabrbx+deltax] forKey:@"abrbx"];
-      [tempDic setObject:[NSNumber numberWithFloat:oldabrby+deltay] forKey:@"abrby"];
-   
+      [tempDic setObject:[NSNumber numberWithFloat:oldabrax+deltaAX] forKey:@"abrax"];
+      [tempDic setObject:[NSNumber numberWithFloat:oldabray+deltaAY] forKey:@"abray"];
+      [tempDic setObject:[NSNumber numberWithFloat:oldabrbx+deltaBX] forKey:@"abrbx"];
+      [tempDic setObject:[NSNumber numberWithFloat:oldabrby+deltaBY] forKey:@"abrby"];
+      
    }
-
+   
    if ([oldDic objectForKey:@"pwm"])
    {
       [tempDic setObject:[oldDic objectForKey:@"pwm"] forKey:@"pwm"];
@@ -3116,13 +3250,13 @@ return returnInt;
    
    [IndexFeld setIntValue:klickIndex];
 	[IndexStepper setIntValue:[IndexFeld intValue]];
-
+   
 	[WertAXFeld setFloatValue:MausPunkt.x];
 	[WertAYFeld setFloatValue:MausPunkt.y];
 	
 	[WertAXStepper setFloatValue:MausPunkt.x];
 	[WertAYStepper setFloatValue:MausPunkt.y];
-
+   
 	[WertBXFeld setFloatValue:MausPunkt.x];
 	[WertBYFeld setFloatValue:MausPunkt.y];
 	
@@ -3130,7 +3264,17 @@ return returnInt;
 	[WertBYStepper setFloatValue:MausPunkt.y];
    
 	[KoordinatenTabelle replaceObjectAtIndex:klickIndex withObject:tempDic];
+   
+   NSDictionary* RahmenDic = [self RahmenDic];
+   float maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
+   float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
+   float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
+   float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
+//   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+   [AbmessungX setIntValue:maxX - minX];
+   [AbmessungY setIntValue:maxY - minY];
 
+   
 	[ProfilGraph setDatenArray:KoordinatenTabelle];
 	[ProfilGraph setNeedsDisplay:YES];
 	[CNCTable reloadData];
@@ -3155,13 +3299,14 @@ return returnInt;
 - (void)MausKlickAktion:(NSNotification*)note
 {
 	[[self window]makeFirstResponder: ProfilGraph];
-	NSLog(@"MausKlickAktion note: %@",[[note userInfo]description]);
+	//NSLog(@"MausKlickAktion note: %@",[[note userInfo]description]);
 	
 	NSPoint MausPunkt = NSPointFromString([[note userInfo]objectForKey:@"mauspunkt"]);
 	int klickIndex= [[[note userInfo] objectForKey:@"klickpunkt"]intValue];
 	if (klickIndex > 0x0FFF)
    {
       klickIndex -= 0xF000;
+      
    }
 //	klickpunkt = klickIndex;
    
@@ -3727,10 +3872,10 @@ return returnInt;
    //NSLog(@"runModalForWindow");
    
    NSModalSession session = [NSApp beginModalSessionForWindow:[CNC_Eingabe window]];
-   NSLog(@"runModalForWindow A");
+   //NSLog(@"runModalForWindow A");
    
    [CNC_Eingabe setPList:CNC_PList];
-   NSLog(@"runModalForWindow B");
+   //NSLog(@"runModalForWindow B");
    [CNC_Eingabe setDaten:datenDic];
    
    [CNC_Eingabe clearProfilGraphDaten];
@@ -3832,7 +3977,15 @@ return returnInt;
    [WertAXFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ax"]floatValue]];
    [WertAYFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ay"]floatValue]];
   
-   
+   NSDictionary* RahmenDic = [self RahmenDic];
+   float maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
+   float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
+   float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
+   float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
+   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+   [AbmessungX setIntValue:maxX - minX];
+   [AbmessungY setIntValue:maxY - minY];
+
 
    
    //NSLog(@"KoordinatenTabelle: %@",[KoordinatenTabelle description]);
@@ -3914,7 +4067,16 @@ return returnInt;
    [WertAXFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ax"]floatValue]];
    [WertAYFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ay"]floatValue]];
    
-   
+   //maximales x finden
+
+   NSDictionary* RahmenDic = [self RahmenDic];
+   float maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
+   float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
+   float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
+   float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
+   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+   [AbmessungX setIntValue:maxX - minX];
+   [AbmessungY setIntValue:maxY - minY];
    
    NSMutableDictionary* StartwertDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[StartwertDic setObject:[[KoordinatenTabelle lastObject]objectForKey:@"ax"] forKey:@"startx"];
@@ -3928,9 +4090,7 @@ return returnInt;
    [ProfilGraph setDatenArray:KoordinatenTabelle];
 	[ProfilGraph setNeedsDisplay:YES];
    [CNCTable reloadData];
-   
-   
-   
+
 }
 
 
@@ -4082,7 +4242,7 @@ return returnInt;
    float pfeilung = (ProfiltiefeA - ProfiltiefeB)/[Spannweite intValue];
    float arc=atan(pfeilung);
    float sinus = sin(arc);
-   NSLog(@"pfeilung: %2.8f arc: %2.8f sinus: %2.8f",pfeilung,arc,sinus);
+   //NSLog(@"pfeilung: %2.8f arc: %2.8f sinus: %2.8f",pfeilung,arc,sinus);
    
    float TiefeA = ProfiltiefeA + [Basisabstand intValue] * pfeilung;
    float TiefeB = TiefeA - [Portalabstand intValue] * pfeilung;
@@ -4094,7 +4254,7 @@ return returnInt;
    float testB = TiefeB + ([Portalabstand intValue] - ([Spannweite intValue]+[Basisabstand intValue] ))*pfeilung;
    
    
-   NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f testB: %2.2f",pfeilung,TiefeA,TiefeB, testB);
+   //NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f testB: %2.2f",pfeilung,TiefeA,TiefeB, testB);
    /*
    switch ([GleichesProfilRadioKnopf selectedRow])
    {
@@ -4468,8 +4628,19 @@ return returnInt;
    }
    
    
+   
    KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrandA:abbranda  mitAbbrandB:abbrandb aufSeite:0 von:von bis:bis];
    
+   
+   NSDictionary* RahmenDic = [self RahmenDic];
+   float maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
+   float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
+   float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
+   float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
+   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+   [AbmessungX setIntValue:maxX - minX];
+   [AbmessungY setIntValue:maxY - minY];
+
    // Startwerte in mm in CNC_Eingabe aktualisieren
    NSMutableDictionary* StartwertDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[StartwertDic setObject:[[KoordinatenTabelle lastObject]objectForKey:@"ax"] forKey:@"startx"];
@@ -4561,7 +4732,15 @@ return returnInt;
    [WertAXFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ax"]floatValue]];
    [WertAYFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ay"]floatValue]];
    
-   
+   NSDictionary* RahmenDic = [self RahmenDic];
+   float maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
+   float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
+   float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
+   float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
+   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+   [AbmessungX setIntValue:maxX - minX];
+   [AbmessungY setIntValue:maxY - minY];
+
    
    NSMutableDictionary* StartwertDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[StartwertDic setObject:[[KoordinatenTabelle lastObject]objectForKey:@"ax"] forKey:@"startx"];
@@ -4651,6 +4830,14 @@ return returnInt;
    [WertAXFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ax"]floatValue]];
    [WertAYFeld setFloatValue:[[[KoordinatenTabelle lastObject]objectForKey:@"ay"]floatValue]];
    
+   NSDictionary* RahmenDic = [self RahmenDic];
+   float maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
+   float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
+   float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
+   float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
+   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+   [AbmessungX setIntValue:maxX - minX];
+   [AbmessungY setIntValue:maxY - minY];
    
    
    NSMutableDictionary* StartwertDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
@@ -4671,7 +4858,7 @@ return returnInt;
 }
 
 
-- (NSDictionary*)Rahmen
+- (NSDictionary*)RahmenDic
 {
    NSMutableDictionary* RahmenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    // Einlauf:
@@ -4685,6 +4872,7 @@ return returnInt;
    float auslaufBX;
    float auslaufBY;
    
+   float maxx=0,minx=MAXFLOAT; // Startwerte fuer Suche nach Rand
    float maxy=0,miny=MAXFLOAT;
    
    if ([KoordinatenTabelle count])
@@ -4701,22 +4889,43 @@ return returnInt;
       int i;
       for (i=0;i<[KoordinatenTabelle count]; i++)
       {
-         
+         // y-werte
+         // max y von Seite a und b
          float tempy = fmax([[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"ay"]floatValue],[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"by"]floatValue]);
          if (tempy > maxy)
          {
             maxy = tempy;
          }
+         
+         // min y von Seite a und b
          tempy = fmin([[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"ay"]floatValue],[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"by"]floatValue]);
          if (tempy < miny)
          {
             miny = tempy;
          }
+         
+         // x-werte
+         float tempx = fmax([[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"ax"]floatValue],[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"bx"]floatValue]);
+         if (tempx > maxx)
+         {
+            maxx = tempx;
+         }
+         tempx = fmin([[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"ax"]floatValue],[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"bx"]floatValue]);
+         if (tempx < minx)
+         {
+            minx = tempx;
+         }
       }
-      NSLog(@"Rahmen maxy: %2.2f miny: %2.2f",maxy,miny);
+      //NSLog(@"Rahmen minx: %2.2f maxx: %2.2f * miny: %2.2f maxy: %2.2f",minx, maxx, miny, maxy);
+      
+      /*
       maxy -=einlaufAY;
       miny -= einlaufAY;
-      NSLog(@"Rahmen maxy: %2.2f miny: %2.2f",maxy,miny);
+      maxx -=einlaufAY;
+      minx -= einlaufAY;
+      */
+      
+      //NSLog(@"Rahmen maxy: %2.2f miny: %2.2f",maxy,miny);
       [RahmenDic setObject:[NSNumber numberWithFloat:einlaufAX] forKey:@"einlaufax"];
       [RahmenDic setObject:[NSNumber numberWithFloat:einlaufAY] forKey:@"einlaufay"];
       [RahmenDic setObject:[NSNumber numberWithFloat:einlaufBX] forKey:@"einlaufbx"];
@@ -4725,6 +4934,8 @@ return returnInt;
       [RahmenDic setObject:[NSNumber numberWithFloat:auslaufAY] forKey:@"auslaufay"];
       [RahmenDic setObject:[NSNumber numberWithFloat:auslaufBX] forKey:@"auslaufbx"];
       [RahmenDic setObject:[NSNumber numberWithFloat:auslaufBY] forKey:@"auslaufby"];
+      [RahmenDic setObject:[NSNumber numberWithFloat:maxx] forKey:@"maxx"];
+      [RahmenDic setObject:[NSNumber numberWithFloat:minx] forKey:@"minx"];
       [RahmenDic setObject:[NSNumber numberWithFloat:maxy] forKey:@"maxy"];
       [RahmenDic setObject:[NSNumber numberWithFloat:miny] forKey:@"miny"];
    }
@@ -5035,7 +5246,7 @@ return returnInt;
       [Auslaufrand setIntValue:auslaufrand];
       
       [Blockbreite setIntValue:maxx+einlaufrand - minx + auslaufrand];
-      [RechtsLinksOffsetFeld setIntValue:[Blockbreite intValue] + einstichx];
+      [AbmessungX setIntValue:[Blockbreite intValue] + einstichx];
       //      NSPoint EckeRechtsOben = NSMakePoint(maxx+rand,fmax(einlaufAY,einlaufBY)+ maxy + zugabeoben);
       //      NSLog(@"reportBlockkonfigurieren EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
       
@@ -5523,6 +5734,13 @@ return returnInt;
    
    [WertAYStepper setFloatValue:0.0];
 	[WertAYStepper setFloatValue:0.0];
+
+   [WertBXFeld setStringValue:@""];
+   [WertBYFeld setStringValue:@""];
+   
+   [WertBYStepper setFloatValue:0.0];
+	[WertBYStepper setFloatValue:0.0];
+
    [IndexStepper setIntValue:0];
   
    [RechtsLinksRadio setSelectedSegment:0];
@@ -5805,35 +6023,12 @@ return returnInt;
    
    //maximales x finden
    float maxX=0;
-   float minX=NSNotFound;
-   for (i=0;i< [tempKoordinatenArray count];i++)
-   {
-      float tempax=[[[tempKoordinatenArray objectAtIndex:i]objectForKey:@"ax"]floatValue];
-      if (tempax > maxX)
-      {
-         maxX = tempax;
-         
-      }
-      if (tempax < minX)
-      {
-         minX = tempax;
-         
-      }
-
-      float tempbx=[[[tempKoordinatenArray objectAtIndex:i]objectForKey:@"bx"]floatValue];
-      if (tempbx > maxX)
-      {
-         maxX = tempbx;
-         
-      }
-      if (tempbx < minX)
-      {
-         minX = tempbx;
-         
-      }
-      
-   }
-   //NSLog(@"maxX: %2.2f",maxX);
+   float minX=MAXFLOAT;
+   NSDictionary* RahmenDic = [self RahmenDic];
+   maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
+   minX = [[RahmenDic objectForKey:@"minx"]floatValue];
+   
+   NSLog(@"maxX: %2.2f minX: %2.2f",maxX,minX);
    // x-Werte spiegeln und maxX addieren
    for (i=0;i< [tempKoordinatenArray count];i++)
    {
@@ -5843,6 +6038,7 @@ return returnInt;
          
         // NSLog(@"tempZeilenDic vor: %@",[[tempKoordinatenArray objectAtIndex:i] description]);
       }
+      
       float tempax=[[tempZeilenDic objectForKey:@"ax"]floatValue]-minX;
       tempax *= -1;
       tempax += maxX;
@@ -5920,7 +6116,7 @@ return returnInt;
    // anscheinend OK
    // end von 32
    
-   float offset = [RechtsLinksOffsetFeld intValue];
+   float offset = [AbmessungX intValue];
    NSMutableArray* OffsetArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    
 //   NSArray* tempLinienArray = [CNC LinieVonPunkt:NSMakePoint(0,0) mitLaenge:blockoberkante mitWinkel:90];
@@ -6072,8 +6268,8 @@ return returnInt;
    [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",[NSNumber numberWithInt:full_pwm],@"pwm",nil]];
    
    // Fahren Blockbreite
-   PositionA.x += blockbreite + einstichx;
-   PositionB.x += blockbreite + einstichx;
+   PositionA.x += blockbreite + 2*einstichx;
+   PositionB.x += blockbreite + 2*einstichx;
    //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
    index++;
    [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
@@ -6158,6 +6354,7 @@ return returnInt;
    NSMutableDictionary* SchnittdatenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [SchnittdatenDic setObject:AnfahrtSchnittdatenArray forKey:@"schnittdatenarray"];
    [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"cncposition"];
+   
    
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
    [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
@@ -6541,6 +6738,8 @@ return returnInt;
       NSLog(@"reportUSB_sendArray SchnittdatenArray leer");
       return;
    }
+   if (AVR_USBStatus)
+   {
    //NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
 
    if (([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:1]intValue] <= 0x7F) || ([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:9]intValue] <= 0x7F))
@@ -6647,7 +6846,27 @@ return returnInt;
   }
    [self saveSpeed];
    [self savePWM];
-   
+   } // if AVR_USBStatus
+   else 
+   {
+      int antwort=0;
+      NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+      [Warnung addButtonWithTitle:@"Einstecken und einschalten"];
+      [Warnung addButtonWithTitle:@"Zurück"];
+      //	[Warnung addButtonWithTitle:@""];
+      //[Warnung addButtonWithTitle:@"Abbrechen"];
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
+      
+      NSString* s1=@"Der USB ist noch nicht eingeschaltet.";
+      NSString* s2=@"";
+      NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
+      [Warnung setInformativeText:InformationString];
+      [Warnung setAlertStyle:NSWarningAlertStyle];
+      
+      antwort=[Warnung runModal];
+      [CNC_Stoptaste setState:0];
+
+   }
  }
 
 - (void)sendDelayedArrayWithDic:(NSDictionary*) schnittdatendic
@@ -6803,7 +7022,7 @@ return returnInt;
    {
       [USBKontrolle setStringValue:@"USB OFF"];
    }
-
+   AVR_USBStatus=status;
 }
 
 // von USB_Interface AVR 5N
@@ -6811,10 +7030,9 @@ return returnInt;
 
 - (IBAction)reportUSB:(id)sender
 {
-   NSDictionary* tempDic=[NSDictionary dictionaryWithObject:@"neu" forKey:@"neu"];
+   NSDictionary* tempDic=[NSDictionary dictionaryWithObject:@"taste" forKey:@"usb"];
 	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	[nc postNotificationName:@"usbopen" object:self userInfo:tempDic];
-
 }
 
 - (IBAction)reportSaveStepperDic:(id)sender

@@ -480,6 +480,8 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
     position // first, last, ...
     indexh
     indexl
+    
+    pwm (pos 20)
     */
 	//NSLog(@"SchnittdatenVonDic derDatenDic: %@",[derDatenDic description]);
    

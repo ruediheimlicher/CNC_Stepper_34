@@ -13,7 +13,8 @@
 
 #import "hid.h"
 
-
+#include <IOKit/hid/IOHIDDevicePlugIn.h>
+#include <IOKit/usb/IOUSBLib.h>
 #define maxLength 32
 
  struct Abschnitt
@@ -95,6 +96,7 @@
 - (void)readPList;
 - (IBAction)terminate:(id)sender;
 - (void) setLastValueRead:(NSData*) inData;
+
 @end
 
 
@@ -107,6 +109,7 @@
 @interface IOWarriorWindowController(rAVRController)
 - (IBAction)showAVR:(id)sender;
 - (IBAction)openProfil:(id)sender;
+- (int)USBOpen;
 - (void)writeCNCAbschnitt;
 - (void)Reset;
 - (void)StartTWI;

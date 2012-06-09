@@ -4,3 +4,6 @@ int rawhid_recv(int num, void *buf, int len, int timeout);
 int rawhid_send(int num, void *buf, int len, int timeout);
 void rawhid_close(int num);
 int rawhid_status(void);
+int usb_present(void);
+const char* get_manu(void);
+const char* get_prod(void);

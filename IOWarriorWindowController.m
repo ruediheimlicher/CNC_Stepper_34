@@ -177,6 +177,29 @@ void print_all_num(struct Abschnitt* list)
 
 }
 
+- (void)observerMethod:(id)note
+{
+   NSLog(@"observerMethod userInfo: %@",[[note userInfo]description]);
+   NSLog(@"observerMethod note: %@",[note description]);
+   
+}
+
+void DeviceAdded(void *refCon, io_iterator_t iterator)
+{
+   NSLog(@"DeviceAdded");
+   NSDictionary* NotDic = [NSDictionary  dictionaryWithObjectsAndKeys:@"neu",@"usb", nil];
+   NSNotificationCenter *nc=[NSNotificationCenter defaultCenter];
+   
+   [nc postNotificationName:@"usbopen" object:NULL userInfo:NotDic];
+   
+}
+void DeviceRemoved(void *refCon, io_iterator_t iterator)
+{
+   NSLog(@"DeviceRemoved");
+   
+}
+
+
 /*" Invoked when the nib file including the window has been loaded. "*/
 - (void) awakeFromNib
 {
@@ -186,215 +209,54 @@ void print_all_num(struct Abschnitt* list)
    struct Abschnitt *first;
    // LinkedList
    first=NULL;
+   
+ // 
    /*
-   curr=malloc(sizeof(struct Abschnitt));
-   curr->num=0;
-   curr->next=NULL;
-   if (first == NULL) // erster Abschnitt
+   NSNotificationCenter *notCenter;
+   notCenter = [[NSWorkspace sharedWorkspace] notificationCenter];
+   [notCenter addObserver:self
+                 selector:@selector(observerMethod:)
+                     name:NSWorkspaceDidMountNotification object:self]; // Register for all notifications
+   
+   kern_return_t kr;
+   mach_port_t masterPort;
+   kr = IOMasterPort (MACH_PORT_NULL, &masterPort);
+   static IONotificationPortRef    gNotifyPort;
+   CFRunLoopSourceRef runLoopSource;
+   
+   CFMutableDictionaryRef  matchingDict =  IOServiceMatching(kIOUSBDeviceClassName); 
+   //NSMutableDictionary* matchingDict = IOServiceMatching(kIOUSBDeviceClassName);
+
+ //  gNotifyPort = IONotificationPortCreate(kIOMasterPortDefault);
+   
+   if (!kr && masterPort)
    {
+      gNotifyPort = IONotificationPortCreate(masterPort);
       
-      first = curr;
-      last = curr;
-      last->next = NULL;
-      curr->prev=NULL;
-   }
-   */
-/*
-   for (i=0;i<4;i++)
-   {
-      cncData[i]=i;
-      cncDataA[i]=i+1;
-      cncDataB[i]=i+2;
-      cncDataC[i]=i+3;
-      cncDataD[i]=i+4;
-   }
-   
-   for (i=0;i<4;i++)
-   {
+      runLoopSource = IONotificationPortGetRunLoopSource (gNotifyPort);
       
-      if ((first == NULL)) // erster Abschnitt
-      {
-         first= init_list(&cncData);
-         first->lage=1;
-         curr=first;             // neuer Abschnitt wird curr
-         
-      }
-      else
-      {
-         
-         //insert_right(struct Abschnitt *list, uint8_t data[32])
-         switch (listcount)
-         {
-            case 0:
-               last=insert_right(curr, &cncDataA);
-               break;
-            case 1:
-               last=insert_right(curr, &cncDataB);
-               break;
-            case 2:
-               last=insert_right(curr, &cncDataC);
-               break;
-            case 3:
-               last=insert_right(curr, &cncDataD);
-               break;
-         }
-         curr = last;
-         //NSLog(@"i: %d last->prev->num: %d",i,last->prev->num);
-         for (i=0;i<listcount;i++)
-         {
-            //NSLog(@" curr->data[%d]: %d",i,curr->data[i]);
-         }
-         listcount++;
-      } // for i
+      CFRunLoopAddSource([[NSRunLoop currentRunLoop] getCFRunLoop],
+                         runLoopSource,
+                         kCFRunLoopDefaultMode);
       
-      NSLog(@"listcount: %d",listcount);
       
+      
+      int usbVendor=0;
+      // kern_return_t kr;
+      io_iterator_t  addedIter;
+           
+//      CFDictionarySetValue (matchingDict, CFSTR(kUSBVendorID), CFNumberCreate(kCFAllocatorDefault, kCFNumberSInt32Type, &usbVendor));
+      
+      // omitting productID here
+      kr = IOServiceAddMatchingNotification (gNotifyPort, kIOFirstMatchNotification, (CFMutableDictionaryRef)matchingDict,
+                                             DeviceAdded, NULL, &addedIter);
+      
+      DeviceAdded(NULL, addedIter);
+      //   mach_port_deallocate (mach_task_self(), masterPort);
    }
-   NSLog(@"nach for-loop:");
-   for (i=0;i<listcount;i++)
-   {
-      NSLog(@" cur->data[%d]: %d",i,curr->data[i]);
-   }
-   struct Abschnitt *result;
-   
-   
-   result=delete_all(curr);
-   NSLog(@"nach delete_all: result->num: %d",result->num);
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-   }
-   curr=result;
-   last=result;
-   
-   result=insert_right(curr, &cncDataC);
-   NSLog(@"nach insert_right: result->num: %d",result->num);
-   last=result;
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-      NSLog(@" result->prev->data[%d]: %d",i,result->prev->data[i]);
-   }
-   
-   result=insert_right(last, &cncDataD);
-   NSLog(@"nach insert_right: result->num: %d",result->num);
-   last=result;
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-      NSLog(@" result->prev->data[%d]: %d",i,result->prev->data[i]);
-   }
-  
-   NSLog(@"vor delete_first:");
-   result=delete_first(curr);
-   first=result;
-   
-   NSLog(@"nach 1.delete_first: neuer firstAbschnitt->num: %d last->num: %d",result->num,last->num);
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-      //NSLog(@" result->prev->data[%d]: %d",i,result->prev->data[i]);
-   }
-*/
-/*
-   NSLog(@"vor delete_last: first->num: %d curr->num: %d last->num: %d",first->num,curr->num,last->num);
-   result= delete_last(first); 
-   last=result;
-   NSLog(@"nach 1.delete_last: lastAbschnitt->num: %d",result->num);
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-   }
-*/
-   
-   //NSLog(@"nach delete_all: lastAbschnitt->num: %d",result->num);
-   
-   /*
-   NSLog(@"vor delete_last: first->num: %d curr->num: %d last->num: %d",first->num,curr->num,last->num);
-   result= delete_last(first); 
-   last=result;
-   NSLog(@"nach 1.delete_last: lastAbschnitt->num: %d",result->num);
-
-   result= delete_last(first); 
-   last=result;
-   NSLog(@"nach 2.delete_last: lastAbschnitt->num: %d",result->num);
-   
-   result= delete_last(first); 
-   last=result;
-   NSLog(@"nach 3.delete_last: lastAbschnitt->num: %d",result->num);
-   
-   result= delete_last(first); 
-   last=result;
-   NSLog(@"nach 4.delete_last: lastAbschnitt->num: %d",result->num);
-
-//   result=delete_all(first);
- //   NSLog(@"nach delete_all: lastAbschnitt->num: %d",result->num);
-   
-  */
-  
-   
-   
-/*   
- NSLog(@"vor delete_first:");
-   result=delete_first(curr);
-   first=result;
-  
-   NSLog(@"nach 1.delete_first: neuer firstAbschnitt->num: %d last->num: %d",result->num,last->num);
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-   }
-
-   result=delete_first(curr);
-   first=result;
-   NSLog(@"nach 2.delete_first: neuer firstAbschnitt->num: %d",result->num);
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-   }
- */ 
-   /*
-   result=delete_first(curr);
-   NSLog(@"nach 3.delete_first: neuer firstAbschnitt->num: %d ",result->num);
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-   }
-   first=result;
-   
-   
-   NSLog(@"vor delete_last: first->num: %d curr->num: %d last->num: %d",first->num,curr->num,last->num);
-   last= delete_last(first); 
-   //last=result;
-   curr=last;
-   NSLog(@"nach 1.delete_last: lastAbschnitt->num: %d",result->num);
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-   }
-  
-   NSLog(@"vor 2.delete_last: first->num: %d curr->num: %d last->num: %d",first->num,curr->num,last->num);
-   last= delete_last(first); 
-   //last=result;
-   curr=last;
-   NSLog(@"nach 1.delete_last: lastAbschnitt->num: %d",result->num);
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" result->data[%d]: %d",i,result->data[i]);
-   }
-
-   
-   curr=delete_first(curr);
-   NSLog(@"nach 3.delete_first: neuer firstAbschnitt->num: %d ",curr->num);
-   for (i=0;i<4;i++)
-   {
-      NSLog(@" curr->data[%d]: %d",i,curr->data[i]);
-   }
-   */
-
-    // ende LinkedList
-   
-	int adresse=0xABCD;
+ //  
+   */ 
+ 	int adresse=0xABCD;
 	adresse = 0xA030;
 	int lbyte=adresse<<8;
 	lbyte &= 0xff00;
@@ -677,17 +539,57 @@ void print_all_num(struct Abschnitt* list)
        //printf("no rawhid device found\n");
        [AVR setUSB_Device_Status:0];
        usbstatus=0;
-       USBStatus=0;
+       //USBStatus=0;
 	}
    else
    {
       NSLog(@"awake found rawhid device");
       [AVR setUSB_Device_Status:1];
       usbstatus=1;
-      USBStatus=1;
+      //USBStatus=1;
       [self StepperstromEinschalten:1];
    }
    
+   
+   //
+   // von http://stackoverflow.com/questions/9918429/how-to-know-when-a-hid-usb-bluetooth-device-is-connected-in-cocoa
+   
+   IONotificationPortRef notificationPort = IONotificationPortCreate(kIOMasterPortDefault);
+   CFRunLoopAddSource(CFRunLoopGetCurrent(), 
+                      IONotificationPortGetRunLoopSource(notificationPort), 
+                      kCFRunLoopDefaultMode);
+   
+   CFMutableDictionaryRef matchingDict2 = IOServiceMatching(kIOUSBDeviceClassName);
+   CFRetain(matchingDict2); // Need to use it twice and IOServiceAddMatchingNotification() consumes a reference
+   
+   
+   io_iterator_t portIterator = 0;
+   // Register for notifications when a serial port is added to the system
+   kern_return_t result = IOServiceAddMatchingNotification(notificationPort,
+                                                           kIOPublishNotification,
+                                                           matchingDict2,
+                                                           DeviceAdded,
+                                                           self,           
+                                                           &portIterator);
+   while (IOIteratorNext(portIterator)) {}; // Run out the iterator or notifications won't start (you can also use it to iterate the available devices).
+   
+   // Also register for removal notifications
+   IONotificationPortRef terminationNotificationPort = IONotificationPortCreate(kIOMasterPortDefault);
+   CFRunLoopAddSource(CFRunLoopGetCurrent(),
+                      IONotificationPortGetRunLoopSource(terminationNotificationPort),
+                      kCFRunLoopDefaultMode);
+   result = IOServiceAddMatchingNotification(terminationNotificationPort,
+                                             kIOTerminatedNotification,
+                                             matchingDict2,
+                                             DeviceRemoved,
+                                             self,         // refCon/contextInfo
+                                             &portIterator);
+   
+   while (IOIteratorNext(portIterator)) {}; // Run out the iterator or notifications won't start (you can also use it to iterate the available devices).
+   
+   //
+
+
 }
 
 
@@ -700,7 +602,6 @@ void print_all_num(struct Abschnitt* list)
 	[lastDataRead release];
     [super dealloc];
 }
-
 
 
 - (void) setLastValueRead:(NSData*) inData
@@ -853,7 +754,7 @@ void print_all_num(struct Abschnitt* list)
 
 - (void) FensterSchliessenAktion:(NSNotification*)note
 {
-   NSLog(@"FensterSchliessenAktion note: %@ schliessencounter: %d",[[note object]title],schliessencounter);
+   //NSLog(@"FensterSchliessenAktion note: %@ schliessencounter: %d",[[note object]title],schliessencounter);
 	if (schliessencounter)
 	{
 		return;

@@ -246,7 +246,8 @@
 
    IBOutlet id					SeitenVertauschenTaste;
    
-   IBOutlet	id					RechtsLinksOffsetFeld;
+   IBOutlet	id					AbmessungX;
+   IBOutlet	id					AbmessungY;
    
    IBOutlet id					RechtsLinksRadio;
 
@@ -272,6 +273,7 @@
 - (IBAction)reportDrehgeber:(id)sender;
 - (IBAction)reportStartKnopf:(id)sender;
 - (IBAction)reportStopKnopf:(id)sender;
+- (NSDictionary*)RahmenDic;
 - (void)DC_ON:(int)pwm;
 - (int)pwm;
 - (int)pwm2save;

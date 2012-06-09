@@ -122,10 +122,6 @@ private void button4_Click(object sender, EventArgs e)
 /* *** I2C Begin ******************************** */
 /* ********************************************** */
 
-
-
-
-
 //
 
 
@@ -152,28 +148,59 @@ private void button4_Click(object sender, EventArgs e)
 - (void)USBAktion:(NSNotification*)note
 {
    NSLog(@"USBAktion usbstatus: %d",usbstatus);
-   if ([[note userInfo]objectForKey:@"neu"])
+   if ([[note userInfo]objectForKey:@"usb"])
    {
-     // free_all_hid();
-      int  r;
-            
-      r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
-      if (r <= 0) 
+      if ([[[note userInfo]objectForKey:@"usb"] isEqualToString:@"taste"])
       {
-         NSLog(@"USBAktion: no rawhid device found");
-         [AVR setUSB_Device_Status:0];
-         
+         // free_all_hid();
+         int e=[self USBOpen];  
+         /*
+          int  r;
+          
+          r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
+          if (r <= 0) 
+          {
+          NSLog(@"USBAktion: no rawhid device found");
+          [AVR setUSB_Device_Status:0];
+          
+          }
+          else
+          {
+          
+          NSLog(@"USBAktion: found rawhid device %d",usbstatus);
+          [AVR setUSB_Device_Status:1];
+          }
+          usbstatus=r;
+          */
       }
-      else
+      else if ([[[note userInfo]objectForKey:@"usb"] isEqualToString:@"neu"])
       {
-         
-         NSLog(@"USBAktion: found rawhid device %d",usbstatus);
-         [AVR setUSB_Device_Status:1];
+         NSLog(@"wait USB");
+         [self performSelector:@selector (USBOpen) withObject:NULL afterDelay:3];
       }
-      usbstatus=r;
+   } 
+}
 
+- (int)USBOpen
+{
+   
+   int  r;
+   
+   r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
+   if (r <= 0) 
+   {
+      NSLog(@"USBAktion: no rawhid device found");
+      [AVR setUSB_Device_Status:0];
    }
-      
+   else
+   {
+      NSLog(@"USBAktion: found rawhid device %d",usbstatus);
+      [AVR setUSB_Device_Status:1];
+   }
+   usbstatus=r;
+   
+
+   return r;
 }
 
 /*******************************************************************/
@@ -181,7 +208,77 @@ private void button4_Click(object sender, EventArgs e)
 /*******************************************************************/
 - (void)USB_SchnittdatenAktion:(NSNotification*)note
 {
-   [SchnittDatenArray setArray:[NSArray array]];
+   NSLog(@"USB_SchnittdatenAktion usbstatus: %d",usbstatus);
+   int antwort=0;
+   int delayok=0;
+   
+   int usb_da=usb_present();
+   NSLog(@"usb_da: %d",usb_da);
+   
+   const char* manu = get_manu();
+   fprintf(stderr,"manu: %s\n",manu);
+   NSString* Manu = [NSString stringWithUTF8String:manu];
+   
+   const char* prod = get_prod();
+   fprintf(stderr,"prod: %s\n",prod);
+   NSString* Prod = [NSString stringWithUTF8String:prod];
+   NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
+   
+   if (usbstatus == 0)
+   {
+      NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+      [Warnung addButtonWithTitle:@"Einstecken und einschalten"];
+      [Warnung addButtonWithTitle:@"Zurück"];
+      //	[Warnung addButtonWithTitle:@""];
+      //[Warnung addButtonWithTitle:@"Abbrechen"];
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
+      
+      NSString* s1=@"Der USB ist noch nicht eingeschaltet.";
+      NSString* s2=@"";
+      NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
+      [Warnung setInformativeText:InformationString];
+      [Warnung setAlertStyle:NSWarningAlertStyle];
+      
+      antwort=[Warnung runModal];
+      
+      // return;
+      // NSLog(@"antwort: %d",antwort);
+      switch (antwort)
+      {
+         case NSAlertFirstButtonReturn: // Einschalten
+         {
+            int  r;
+            
+            r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
+            if (r <= 0) 
+            {
+               NSLog(@"USBAktion: no rawhid device found");
+               [AVR setUSB_Device_Status:0];
+               return;
+            }
+            else
+            {
+               
+               NSLog(@"USBAktion: found rawhid device %d",usbstatus);
+               [AVR setUSB_Device_Status:1];
+            }
+            usbstatus=r;
+            
+         }break;
+            
+         case NSAlertSecondButtonReturn: // Ignorieren
+         {
+            return;
+         }break;
+            
+         case NSAlertThirdButtonReturn: // Abbrechen
+         {
+            return;
+         }break;
+      }
+
+   }
+    [SchnittDatenArray setArray:[NSArray array]];
    //NSLog(@"USB_SchnittdatenAktion SchnittDatenArray vor: %@",[SchnittDatenArray description]);
    //NSLog(@"USB_SchnittdatenAktion SchnittDatenArray Stepperposition: %d",Stepperposition);
 	//NSLog(@"USB_SchnittdatenAktion note: %@",[[note userInfo]description]);
@@ -550,7 +647,7 @@ private void button4_Click(object sender, EventArgs e)
       if ([AbschnittFertig intValue] >= 0xA0) // Code fuer Fertig: AD
       {
          //NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
-         NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
+         //NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
          
          // NSLog(@"AVRController mausistdown: %d abschnittfertig: %d anzrepeat: %d",mausistdown, abschnittfertig,anzrepeat);
          /*

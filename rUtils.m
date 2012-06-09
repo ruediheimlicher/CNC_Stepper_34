@@ -160,7 +160,6 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    
 	NSArray* tempArray=[ProfilString componentsSeparatedByString:stringterm];
    
-   NSLog(@"tempArray count: %d",[tempArray count]);
    
 	NSString* firstString = [tempArray objectAtIndex:0];
 	//NSLog(@"firstString: %@",firstString );

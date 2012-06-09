@@ -12,6 +12,7 @@
 #include <unistd.h>
 #include <IOKit/IOKitLib.h>
 #include <IOKit/hid/IOHIDLib.h>
+#include <IOKit/usb/IOUSBLib.h>
 
 #include "hid.h"
 
@@ -20,7 +21,7 @@
 #define printf(...) // comment this out to get lots of info printed
 
 static IONotificationPortRef    gNotifyPort;
-
+static io_iterator_t             gAddedIter;
 
 int rawhid_recv(int num, void *buf, int len, int timeout);
 
@@ -113,7 +114,20 @@ static void add_hid(hid_t *h)
 {
 
    fprintf(stderr, "add_hid\n");
-	if (!first_hid || !last_hid) {
+   //IOHIDDeviceRef* r= &h->ref;
+   
+   CFTypeRef prod = IOHIDDeviceGetProperty(h->ref, CFSTR(kIOHIDProductKey));
+   const char* prodstr = CFStringGetCStringPtr(prod, kCFStringEncodingMacRoman);
+   fprintf(stderr,"prodstr: %s\n",prodstr);
+   
+  
+   CFTypeRef prop= IOHIDDeviceGetProperty(h->ref,CFSTR(kIOHIDManufacturerKey));
+   //CFStringRef manu = (CFStringRef)prop;
+   const char* manustr = CFStringGetCStringPtr(prop, kCFStringEncodingMacRoman);
+   fprintf(stderr,"manustr: %s\n",manustr);
+   
+	if (!first_hid || !last_hid) 
+   {
 		first_hid = last_hid = h;
 		h->next = h->prev = NULL;
 		return;
@@ -149,6 +163,42 @@ static void free_all_hid(void)
 	first_hid = last_hid = NULL;
 }
 
+const char* get_manu()
+{
+   hid_t * cnc = get_hid(0);
+   if (cnc)
+   {
+   CFTypeRef manu= IOHIDDeviceGetProperty(cnc->ref,CFSTR(kIOHIDManufacturerKey));
+   //CFStringRef manu = (CFStringRef)prop;
+      
+   const char* manustr = CFStringGetCStringPtr(manu, kCFStringEncodingMacRoman);
+   //fprintf(stderr,"manustr: %s\n",manustr);   
+   return  manustr; 
+   }
+   else 
+   {
+      return "Kein USB-Device vorhanden\n";
+   }
+
+}
+
+const char* get_prod()
+{
+   hid_t * cnc = get_hid(0);
+   if (cnc)
+   {
+   CFTypeRef prod= IOHIDDeviceGetProperty(cnc->ref,CFSTR(kIOHIDProductKey));
+   //CFStringRef manu = (CFStringRef)prop;
+   const char* prodstr = CFStringGetCStringPtr(prod, kCFStringEncodingMacRoman);
+   //fprintf(stderr,"prodstr: %s\n",prodstr);
+   
+   return  prodstr; 
+   }
+   else 
+   {
+      return "*\n";
+   }
+}
 
 
 //  rawhid_send - send a packet
@@ -162,7 +212,7 @@ static void free_all_hid(void)
 //
 int rawhid_send(int num, void *buf, int len, int timeout)
 {
-   printf("rawhid_send\n");
+   //fprintf(stderr,"rawhid_send num: %d\n",num);
 	hid_t *hid;
 	int result=-100;
    
@@ -188,11 +238,12 @@ int rawhid_send(int num, void *buf, int len, int timeout)
                                     0, buf, len, (double)timeout / 1000.0, output_callback, &result);
 	while (1) 
    {
-		printf("enter run loop (send)\n");
+		//fprintf(stderr,"enter run loop (send)\n");
 		CFRunLoopRun();
-		printf("leave run loop (send)\n");
+		fprintf(stderr,"leave run loop (send)\n");
 		if (result > -100) break;
-		if (!hid->open) {
+		if (!hid->open) 
+      {
 			result = -1;
 			break;
 		}
@@ -218,7 +269,7 @@ int rawhid_open(int max, int vid, int pid, int usage_page, int usage)
    //***
    kern_return_t           result;
    mach_port_t             masterPort;
-   CFMutableDictionaryRef  matchingDict;
+   CFMutableDictionaryRef  matchingDict = NULL;
    CFRunLoopSourceRef      runLoopSource;
    
    
@@ -236,7 +287,7 @@ int rawhid_open(int max, int vid, int pid, int usage_page, int usage)
    CFRunLoopAddSource(CFRunLoopGetCurrent(), runLoopSource,
                       kCFRunLoopDefaultMode);
    // ***
-   /*
+  /* 
    IOServiceAddMatchingNotification(
                                     gNotifyPort,
                                     kIOFirstMatchNotification,
@@ -431,7 +482,6 @@ static void attach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDevic
 	add_hid(h);
    usbstatus=1; 
    
-   
    /*
    r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
    if (r <= 0) 
@@ -447,5 +497,39 @@ static void attach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDevic
 
 }
 
-
-
+int usb_present()
+{
+   CFMutableDictionaryRef matchingDict;
+   io_iterator_t iter;
+   kern_return_t kr;
+   io_service_t device;
+   int anzahl=0;
+   
+   /* set up a matching dictionary for the class */
+   matchingDict = IOServiceMatching(kIOUSBDeviceClassName);
+   if (matchingDict == NULL)
+   {
+      return -1; // fail
+   }
+   
+   /* Now we have a dictionary, get an iterator.*/
+   kr = IOServiceGetMatchingServices(kIOMasterPortDefault, matchingDict, &iter);
+   if (kr != KERN_SUCCESS)
+   {
+      return -1;
+   }
+   
+   /* iterate */
+   while ((device = IOIteratorNext(iter)))
+   {
+      /* do something with device, eg. check properties */
+      /* ... */
+      /* And free the reference taken before continuing to the next item */
+      IOObjectRelease(device);
+      anzahl++;
+   }
+   
+   /* Done, release the iterator */
+//   IOObjectRelase(iter);
+   return anzahl;
+}

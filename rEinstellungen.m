@@ -1308,7 +1308,7 @@
 
 - (void)setDaten:(NSDictionary*)daten
 {
-   NSLog(@"setDaten daten: %@",[daten description]);
+   //NSLog(@"setDaten daten: %@",[daten description]);
    
    if ([daten objectForKey:@"element"])
    {
@@ -1408,7 +1408,7 @@
    
    if ([daten objectForKey:@"einlauftiefe"])
    {
-      NSLog(@"Einlauftiefe vorhanden: %d Einlauftiefe aus Daten: %d",[Einlauftiefe  intValue],[[daten objectForKey:@"einlauftiefe"]intValue]);
+      //NSLog(@"Einlauftiefe vorhanden: %d Einlauftiefe aus Daten: %d",[Einlauftiefe  intValue],[[daten objectForKey:@"einlauftiefe"]intValue]);
       if ([Einlauftiefe  intValue] != [[daten objectForKey:@"einlauftiefe"]intValue])
       {
       [Einlauftiefe  setIntValue:[[daten objectForKey:@"einlauftiefe"]intValue]];// 
@@ -2152,7 +2152,7 @@
       return;
    }
    
-   NSLog(@"reportProfilSpiegelnVertikal");
+   //NSLog(@"reportProfilSpiegelnVertikal");
    int i;
    flipV = [FlipVTaste state];
    for (i=0;i< [Profil1Array count];i++)
@@ -2955,7 +2955,7 @@
    {
       return;
    }
-   NSLog(@"reportProfilSpiegelnVertikal");
+   //NSLog(@"reportProfilSpiegelnVertikal");
    int i;
    flipV = [sender state];
    for (i=0;i< [Profil1Array count];i++)
@@ -3446,7 +3446,7 @@
    [plist retain];
    [PList release];
    PList = (NSMutableDictionary*)plist;
-   NSLog(@"CNC_Eingabe setPList: %@",[PList description]);
+   //NSLog(@"CNC_Eingabe setPList: %@",[PList description]);
  
    
    if ([PList objectForKey:@"einlaufrand"])
