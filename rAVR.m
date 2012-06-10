@@ -6740,112 +6740,112 @@ return returnInt;
    }
    if (AVR_USBStatus)
    {
-   //NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
-
-   if (([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:1]intValue] <= 0x7F) || ([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:9]intValue] <= 0x7F))
-   {
-      [AnschlagLinksIndikator setTransparent:YES];
-   }
-   
-   if (([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:3]intValue] <= 0x7F) || ([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:11]intValue] <= 0x7F))
-   {
-      [AnschlagUntenIndikator setTransparent:YES];
-   }
-  
-   // von 32
-   
-   int antwort=0;
-   int delayok=0;
-   if (![DC_Taste state])
-   {
-      NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
-      [Warnung addButtonWithTitle:@"Einschalten"];
-      [Warnung addButtonWithTitle:@"Ignorieren"];
-      //	[Warnung addButtonWithTitle:@""];
-      [Warnung addButtonWithTitle:@"Abbrechen"];
-      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
+      //NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
       
-      NSString* s1=@"Der Heizdraht ist noch nicht eingeschaltet.";
-      NSString* s2=@"Nach dem Einschalten den Vorgang erneut starten.";
-      NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
-      [Warnung setInformativeText:InformationString];
-      [Warnung setAlertStyle:NSWarningAlertStyle];
-      
-      antwort=[Warnung runModal];
-
-      // return;
-      // NSLog(@"antwort: %d",antwort);
-   }
-   switch (antwort)
-   {
-      case NSAlertFirstButtonReturn: // Einschalten
+      if (([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:1]intValue] <= 0x7F) || ([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:9]intValue] <= 0x7F))
       {
-         [DC_Taste setState:1];
-         [self DC_ON:[DC_PWM intValue]];
-         delayok=1;
-      }break;
+         [AnschlagLinksIndikator setTransparent:YES];
+      }
+      
+      if (([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:3]intValue] <= 0x7F) || ([[[SchnittdatenArray objectAtIndex:0]objectAtIndex:11]intValue] <= 0x7F))
+      {
+         [AnschlagUntenIndikator setTransparent:YES];
+      }
+      
+      // von 32
+      
+      int antwort=0;
+      int delayok=0;
+      if (![DC_Taste state])
+      {
+         NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+         [Warnung addButtonWithTitle:@"Einschalten"];
+         [Warnung addButtonWithTitle:@"Ignorieren"];
+         //	[Warnung addButtonWithTitle:@""];
+         [Warnung addButtonWithTitle:@"Abbrechen"];
+         [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
          
-      case NSAlertSecondButtonReturn: // Ignorieren
+         NSString* s1=@"Der Heizdraht ist noch nicht eingeschaltet.";
+         NSString* s2=@"Nach dem Einschalten den Vorgang erneut starten.";
+         NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
+         [Warnung setInformativeText:InformationString];
+         [Warnung setAlertStyle:NSWarningAlertStyle];
+         
+         antwort=[Warnung runModal];
+         
+         // return;
+         // NSLog(@"antwort: %d",antwort);
+      }
+      switch (antwort)
       {
-         int i=0;
-         for (i=0;i<[SchnittdatenArray count];i++)
+         case NSAlertFirstButtonReturn: // Einschalten
          {
-            [[SchnittdatenArray  objectAtIndex:i]replaceObjectAtIndex:20 withObject:[NSNumber numberWithInt:0]];
-         }
-
-      }break;
-         
-      case NSAlertThirdButtonReturn: // Abbrechen
+            [DC_Taste setState:1];
+            [self DC_ON:[DC_PWM intValue]];
+            delayok=1;
+         }break;
+            
+         case NSAlertSecondButtonReturn: // Ignorieren
+         {
+            int i=0;
+            for (i=0;i<[SchnittdatenArray count];i++)
+            {
+               [[SchnittdatenArray  objectAtIndex:i]replaceObjectAtIndex:20 withObject:[NSNumber numberWithInt:0]];
+            }
+            
+         }break;
+            
+         case NSAlertThirdButtonReturn: // Abbrechen
+         {
+            return;
+         }break;
+      }
+      
+      // end von 32
+      
+      //NSLog(@"AVR  reportUSB_sendArray cncposition: %d\n\n",cncposition);
+      [CNC_Halttaste setEnabled:YES];
+      [CNC_Stoptaste setState:0];
+      [PositionFeld setIntValue:0];
+      [ProfilGraph setStepperposition:0];
+      
+      //NSLog(@"reportUSB_sendArray cncposition: %d \nSchnittdatenArray: %@",cncposition,[[SchnittdatenArray objectAtIndex:0]description]);
+      // Array an USB schicken
+      NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+      NSMutableDictionary* SchnittdatenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+      [SchnittdatenDic setObject:[NSNumber numberWithInt:[self pwm]] forKey:@"pwm"];
+      
+      [SchnittdatenDic setObject:SchnittdatenArray forKey:@"schnittdatenarray"];
+      [SchnittdatenDic setObject:[NSNumber numberWithInt:cncposition] forKey:@"cncposition"];
+      
+      if ([HomeTaste state])
       {
-         return;
-      }break;
-   }
-
-   // end von 32
-   
-	//NSLog(@"AVR  reportUSB_sendArray cncposition: %d\n\n",cncposition);
-	[CNC_Halttaste setEnabled:YES];
-	[CNC_Stoptaste setState:0];
-   [PositionFeld setIntValue:0];
-   [ProfilGraph setStepperposition:0];
-   
-   //NSLog(@"reportUSB_sendArray cncposition: %d \nSchnittdatenArray: %@",cncposition,[[SchnittdatenArray objectAtIndex:0]description]);
-    // Array an USB schicken
-    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
-    NSMutableDictionary* SchnittdatenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
-   [SchnittdatenDic setObject:[NSNumber numberWithInt:[self pwm]] forKey:@"pwm"];
-
-   [SchnittdatenDic setObject:SchnittdatenArray forKey:@"schnittdatenarray"];
-   [SchnittdatenDic setObject:[NSNumber numberWithInt:cncposition] forKey:@"cncposition"];
-   
-   if ([HomeTaste state])
-   {
-      [SchnittdatenDic setObject:[NSNumber numberWithInt:1] forKey:@"home"]; // Home anfahren
-
-   }
-   else
-   {
-      [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"home"]; // 
-
-   }
-   
-   [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"art"]; // 
-   //NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
-   
-//   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
-   NSLog(@"reportUSB_SendArray delayok: %d",delayok);
-   [SchnittdatenDic setObject:[NSNumber numberWithInt:delayok] forKey:@"delayok"];
-   
-   if (delayok)
-  {
-      [self performSelector:@selector (sendDelayedArrayWithDic:) withObject:SchnittdatenDic afterDelay:2];
-  }
-  else 
-  {
+         [SchnittdatenDic setObject:[NSNumber numberWithInt:1] forKey:@"home"]; // Home anfahren
+         
+      }
+      else
+      {
+         [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"home"]; // 
+         
+      }
+      
+      [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"art"]; // 
+      //NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
+      
+      //   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
+      NSLog(@"reportUSB_SendArray delayok: %d",delayok);
+      [SchnittdatenDic setObject:[NSNumber numberWithInt:delayok] forKey:@"delayok"];
+      
+      if (delayok)
+      {
+         [self performSelector:@selector (sendDelayedArrayWithDic:) withObject:SchnittdatenDic afterDelay:2];
+      }
+      else 
+      {
          [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
-  }
-   [self saveSpeed];
-   [self savePWM];
+      }
+      [self saveSpeed];
+      [self savePWM];
    } // if AVR_USBStatus
    else 
    {
@@ -6857,7 +6857,7 @@ return returnInt;
       //[Warnung addButtonWithTitle:@"Abbrechen"];
       [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
       
-      NSString* s1=@"Der USB ist noch nicht eingeschaltet.";
+      NSString* s1=@"USB ist noch nicht eingesteckt.";
       NSString* s2=@"";
       NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
       [Warnung setInformativeText:InformationString];
@@ -6867,9 +6867,9 @@ return returnInt;
       [CNC_Stoptaste setState:0];
       [self DC_ON:0];
       [self setStepperstrom:0];
-
+      
    }
- }
+}
 
 - (void)sendDelayedArrayWithDic:(NSDictionary*) schnittdatendic
 {

@@ -96,7 +96,7 @@
 - (void)readPList;
 - (IBAction)terminate:(id)sender;
 - (void) setLastValueRead:(NSData*) inData;
-
+- (int)USBOpen;
 @end
 
 
@@ -109,7 +109,7 @@
 @interface IOWarriorWindowController(rAVRController)
 - (IBAction)showAVR:(id)sender;
 - (IBAction)openProfil:(id)sender;
-- (int)USBOpen;
+//- (int)USBOpen;
 - (void)writeCNCAbschnitt;
 - (void)Reset;
 - (void)StartTWI;

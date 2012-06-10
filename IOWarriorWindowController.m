@@ -199,6 +199,29 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    
 }
 
+- (int)USBOpen
+{
+   
+   int  r;
+   
+   r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
+   if (r <= 0) 
+   {
+      NSLog(@"USBOpen: no rawhid device found");
+      [AVR setUSB_Device_Status:0];
+   }
+   else
+   {
+      NSLog(@"USBOpen: found rawhid device %d",usbstatus);
+      [AVR setUSB_Device_Status:1];
+   }
+   usbstatus=r;
+   
+   
+   return r;
+}
+
+
 
 /*" Invoked when the nib file including the window has been loaded. "*/
 - (void) awakeFromNib
@@ -530,8 +553,67 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    
    pwm=0;
 	int  r;
-	char buf[64];
-    
+	//char buf[64];
+   r = [self USBOpen];
+   if (usbstatus==0)
+   {
+      NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+      [Warnung addButtonWithTitle:@"Einstecken und einschalten"];
+      [Warnung addButtonWithTitle:@"Weiter"];
+      //	[Warnung addButtonWithTitle:@""];
+      //[Warnung addButtonWithTitle:@"Abbrechen"];
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC-Programm starten"]];
+      
+      NSString* s1=@"USB ist noch nicht eingesteckt.";
+      NSString* s2=@"";
+      NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
+      [Warnung setInformativeText:InformationString];
+      [Warnung setAlertStyle:NSWarningAlertStyle];
+      
+      int antwort=[Warnung runModal];
+      [AVR DC_ON:0];
+      [AVR setStepperstrom:0];
+      
+      // return;
+      // NSLog(@"antwort: %d",antwort);
+      switch (antwort)
+      {
+         case NSAlertFirstButtonReturn: // Einschalten
+         {
+            [self USBOpen];
+            /*
+             int  r;
+             
+             r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
+             if (r <= 0) 
+             {
+             NSLog(@"USBAktion: no rawhid device found");
+             [AVR setUSB_Device_Status:0];
+             return;
+             }
+             else
+             {
+             
+             NSLog(@"USBAktion: found rawhid device %d",usbstatus);
+             [AVR setUSB_Device_Status:1];
+             }
+             usbstatus=r;
+             */
+         }break;
+            
+         case NSAlertSecondButtonReturn: // Ignorieren
+         {
+            return;
+         }break;
+            
+         case NSAlertThirdButtonReturn: // Abbrechen
+         {
+            return;
+         }break;
+      }
+ 
+   }
+   /*
 	r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
 	if (r <= 0) 
     {
@@ -549,7 +631,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
       //USBStatus=1;
       [self StepperstromEinschalten:1];
    }
-   
+   */
    
    //
    // von http://stackoverflow.com/questions/9918429/how-to-know-when-a-hid-usb-bluetooth-device-is-connected-in-cocoa

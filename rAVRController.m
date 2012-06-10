@@ -180,7 +180,7 @@ private void button4_Click(object sender, EventArgs e)
       }
    } 
 }
-
+/*
 - (int)USBOpen
 {
    
@@ -202,7 +202,7 @@ private void button4_Click(object sender, EventArgs e)
 
    return r;
 }
-
+*/
 /*******************************************************************/
 // CNC
 /*******************************************************************/
@@ -233,7 +233,7 @@ private void button4_Click(object sender, EventArgs e)
       //[Warnung addButtonWithTitle:@"Abbrechen"];
       [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
       
-      NSString* s1=@"Der USB ist noch nicht eingeschaltet.";
+      NSString* s1=@"USB ist noch nicht eingesteckt.";
       NSString* s2=@"";
       NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
       [Warnung setInformativeText:InformationString];
@@ -482,7 +482,7 @@ private void button4_Click(object sender, EventArgs e)
       NSLog(@"writeCNCAbschnitt >count\n*\n\n");
       //NSLog(@"writeCNCAbschnitt timer inval");
       [AVR setBusy:0];
-//      [self DC_Aktion:NULL];
+      [self DC_Aktion:NULL];
 
       if (readTimer)
       {
@@ -515,7 +515,7 @@ private void button4_Click(object sender, EventArgs e)
       readTimer = NULL;
       [AVR setBusy:0];
       [AVR DC_ON:0];
-
+      [self DC_Aktion:NULL];
       
    }
 
