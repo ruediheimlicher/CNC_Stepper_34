@@ -264,6 +264,8 @@
    rEinstellungen*			CNC_Eingabe;
   
    int                     AVR_USBStatus;
+   IBOutlet id					ManufactorerFeld;
+   IBOutlet id					ProductFeld;
 }
 - (NSMutableDictionary*)readCNC_PList;
 - (IBAction)reportUSB:(id)sender;
@@ -282,6 +284,10 @@
 - (int)speed;
 - (int)saveSpeed;
 - (int)saveProfileinstellungen;
+- (void)setUSBDaten:(NSDictionary*)datendic;
+
+
+
 - (IBAction)reportSpeedStepper:(id)sender;
 
 - (IBAction)reportCNCKnopf:(id)sender;

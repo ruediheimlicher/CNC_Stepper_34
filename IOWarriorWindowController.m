@@ -633,6 +633,18 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    }
    */
    
+   const char* manu = get_manu();
+   //fprintf(stderr,"manu: %s\n",manu);
+   NSString* Manu = [NSString stringWithUTF8String:manu];
+   
+   const char* prod = get_prod();
+   //fprintf(stderr,"prod: %s\n",prod);
+   NSString* Prod = [NSString stringWithUTF8String:prod];
+   NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
+   NSDictionary* USBDatenDic = [NSDictionary dictionaryWithObjectsAndKeys:Prod,@"prod",Manu,@"manu", nil];
+   [AVR setUSBDaten:USBDatenDic];
+
+   
    //
    // von http://stackoverflow.com/questions/9918429/how-to-know-when-a-hid-usb-bluetooth-device-is-connected-in-cocoa
    

@@ -1108,6 +1108,20 @@ return returnInt;
    return LibElementArray;
 }
 
+- (void)setUSBDaten:(NSDictionary*)datendic
+{
+   if ([datendic objectForKey:@"prod"] && [[datendic objectForKey:@"prod"]length])
+   {
+   [ProductFeld setStringValue:[datendic objectForKey:@"prod"]];
+   }
+   else 
+   {
+      NSLog(@"kein prod");
+      [ProductFeld setStringValue:@"-"];
+   }
+   [ManufactorerFeld setStringValue:[datendic objectForKey:@"manu"]];
+}
+
 - (IBAction)reportHorizontalSchieber:(id)sender
 {
 	NSLog(@"reportHorizontalSchieber pos: %d",[sender intValue]);
@@ -3903,7 +3917,7 @@ return returnInt;
 
 - (void)ElementeingabeAktion:(NSNotification*)note
 {
-   //NSLog(@"ElementeingabeAktion note: %@",[[note userInfo] description]);
+   NSLog(@"ElementeingabeAktion note: %@",[[note userInfo] description]);
    //NSLog(@"KoordinatenTabelle vor: %@",[KoordinatenTabelle description]);
    float origpwm=[DC_PWM intValue];
    
@@ -5309,7 +5323,7 @@ return returnInt;
       
       
       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*red_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       
       
