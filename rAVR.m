@@ -420,7 +420,7 @@ return returnInt;
          }
 			
 		}
-      NSLog(@"readCNC_PList: pwm: %d speed: %d",[DC_PWM intValue],[SpeedFeld  intValue]);
+      NSLog(@"readCNC_PList: pwm: %d speed: %d",[DC_PWM floatValue],[SpeedFeld  intValue]);
 		//	NSLog(@"PListOK: %d",PListOK);
 		
 	}//USBDatenDa
@@ -1148,7 +1148,8 @@ return returnInt;
    NSArray* tempLinienArray = [CNC LinieVonPunkt:NSMakePoint(25,25) mitLaenge:15 mitWinkel:30];
    //NSLog(@"tempLinienArray: %@",tempLinienArray);
    	//NSLog(@"reportStartKnopf state: %d",[sender state]);
-	if ([sender state])
+	
+   if ([sender state])
 	{
 	
 	}
@@ -1159,13 +1160,13 @@ return returnInt;
       {
          //NSLog(@"reportStartKnopf count 0");
          NSPoint tempStartPunkt=NSMakePoint(0, 0);
-         [WertAXFeld setFloatValue:(15.0+ einlauflaenge)];
+         [WertAXFeld setFloatValue:(10.0+ einlauflaenge)];
          [WertAYFeld setFloatValue:50.0];
          
          [WertAXStepper setFloatValue:[WertAXFeld intValue]];
          [WertAYStepper setFloatValue:[WertAYFeld intValue]];
 
-         [WertBXFeld setFloatValue:(15.0+ einlauflaenge)];
+         [WertBXFeld setFloatValue:(10.0+ einlauflaenge)];
          [WertBYFeld setFloatValue:50.0];
          
          [WertBXStepper setFloatValue:[WertBXFeld intValue]];
@@ -1237,6 +1238,10 @@ return returnInt;
 	int i;
    [CNCDatenArray removeAllObjects];
    [CNCDatenArray removeAllObjects];
+   [HomeTaste setState:0];
+   [DC_Taste setState:0];
+   [CNC setSpeed:[SpeedFeld intValue]];
+
    //NSLog(@"reportStopKnopf [KoordinatenTabelle count]: %d",[KoordinatenTabelle count]);
    if ([KoordinatenTabelle count]<=1)
    {
@@ -1273,14 +1278,32 @@ return returnInt;
    int  anzbyminus=0;
    
    //NSLog(@"reportStopKnopf KoordinatenTabelle: %@",[KoordinatenTabelle description]);
+
+   NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:0];
+float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
+   float firstay = [[tempNowDic objectForKey:@"ay"]floatValue];
+   float firstbx = [[tempNowDic objectForKey:@"bx"]floatValue];
+   float firstby = [[tempNowDic objectForKey:@"by"]floatValue];
+
 	
-	for (i=0;i<[KoordinatenTabelle count]-1;i++)
+   for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
+      // Dic des aktuellen Datensatzes
       NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i];
-      float ax = [[tempNowDic objectForKey:@"ax"]floatValue];
-      float ay = [[tempNowDic objectForKey:@"ay"]floatValue];
-      float bx = [[tempNowDic objectForKey:@"bx"]floatValue];
-      float by = [[tempNowDic objectForKey:@"by"]floatValue];
+      float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
+      float noway = [[tempNowDic objectForKey:@"ay"]floatValue];
+      float nowbx = [[tempNowDic objectForKey:@"bx"]floatValue];
+      float nowby = [[tempNowDic objectForKey:@"by"]floatValue];
+
+      // Dic des naechsten Datensatzes
+      NSDictionary* tempNextDic=[KoordinatenTabelle objectAtIndex:i+1];
+      float nextax = [[tempNowDic objectForKey:@"ax"]floatValue];
+      float nextay = [[tempNowDic objectForKey:@"ay"]floatValue];
+      float nextbx = [[tempNowDic objectForKey:@"bx"]floatValue];
+      float nextby = [[tempNowDic objectForKey:@"by"]floatValue];
+      
+      float distA = hypot(nextax-nowax,nextay-noway);
+      float distB = hypot(nextbx-nowbx,nextby-nowby);
     
       
       int nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
@@ -1291,7 +1314,7 @@ return returnInt;
       }
       
       //fprintf(stderr,"%d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,ax,ay,bx,by);
-      NSDictionary* tempNextDic=[KoordinatenTabelle objectAtIndex:i+1];
+      
       NSPoint tempStartPunktA= NSMakePoint(0,0);
       NSPoint tempStartPunktB= NSMakePoint(0,0);
       NSPoint tempEndPunktA= NSMakePoint(0,0);
@@ -1336,7 +1359,9 @@ return returnInt;
 		//NSLog(@"tempStartPunktString: %@ tempEndPunktString: %@",tempStartPunktString,tempEndPunktString);
 		//NSPoint tempEndPunkt= [[KoordinatenTabelle objectAtIndex:i+1]objectForKey:@"punktstring"];
       
-		NSString* tempStartPunktAString= NSStringFromPoint(tempStartPunktA);
+		
+      
+      NSString* tempStartPunktAString= NSStringFromPoint(tempStartPunktA);
 		NSString* tempEndPunktAString= NSStringFromPoint(tempEndPunktA);
       
 		NSString* tempStartPunktBString= NSStringFromPoint(tempStartPunktB);      
@@ -1423,15 +1448,12 @@ return returnInt;
          anzbyminus += [[tempSteuerdatenDic objectForKey:@"anzbyminus"]intValue];
       }
       
-      
       if (i==0 || i==[KoordinatenTabelle count]-1)
       {
          //NSLog(@"reportStop i: %d \ntempSteuerdatenDic: %@",i,[tempSteuerdatenDic description]);
       }
 		
-      
       [CNCDatenArray addObject:tempSteuerdatenDic];
-      
       
 		[SchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
       //NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
@@ -1440,10 +1462,10 @@ return returnInt;
    //anzaxminus,anzayminus ,anzbxminus, anzbyminus;
    //anzaxplus,anzayplus ,anzbxplus, anzbyplus;
    
-   //  NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
-   //  NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
-   //NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
-   //NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
+     NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
+     NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
+     NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
+     NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
 	
    
    cncposition =0;
@@ -3006,7 +3028,7 @@ return returnInt;
    float olday=MausPunkt.y;
    float oldbx=oldax + offsetx;
    float oldby=olday + offsety;
-   float oldpwm = [DC_PWM intValue];
+   float oldpwm = [DC_PWM floatValue];
    
    if ([KoordinatenTabelle count])
    {
@@ -3018,7 +3040,7 @@ return returnInt;
       if ([[KoordinatenTabelle lastObject]objectForKey:@"pwm"])
       {
          //NSLog(@"oldpwm VOR: %d",oldpwm);
-         int temppwm = [[[KoordinatenTabelle lastObject]objectForKey:@"pwm"]intValue];
+         float temppwm = [[[KoordinatenTabelle lastObject]objectForKey:@"pwm"]floatValue];
          if (temppwm == oldpwm)
          {
             oldpwm = temppwm;
@@ -3032,8 +3054,8 @@ return returnInt;
       //oldby += offsety;
    }
    
-   [PWMStepper setIntValue:oldpwm];
-   [PWMFeld setIntValue:oldpwm];
+   [PWMStepper setFloatValue:oldpwm];
+   [PWMFeld setFloatValue:oldpwm];
    
    //NSLog(@"oldax: %1.1f olday: %1.1f",oldax,olday);
    
@@ -3082,13 +3104,13 @@ return returnInt;
 	}
 	else if ([CNC_Stoptaste state])
 	{
-		[[StopKoordinate cellAtIndex:0]setIntValue:MausPunkt.x];
-		[[StopKoordinate cellAtIndex:1]setIntValue:MausPunkt.y];
+		[[StopKoordinate cellAtIndex:0]setFloatValue:MausPunkt.x];
+		[[StopKoordinate cellAtIndex:1]setFloatValue:MausPunkt.y];
 		
 		NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:MausPunkt.x], @"ax",
 										 [NSNumber numberWithFloat:MausPunkt.y], @"ay",[NSNumber numberWithFloat:MausPunkt.x + offsetx], @"bx",
 										 [NSNumber numberWithFloat:MausPunkt.y + offsety], @"by",[NSNumber numberWithInt:[KoordinatenTabelle count]],@"index",[NSNumber numberWithInt:oldpwm],@"pwm",NULL];
-		//NSLog(@"tempDic: %@",[tempDic description]);
+		NSLog(@"if CNC_Stoptaste state tempDic: %@",[tempDic description]);
       if ([KoordinatenTabelle count]>1)
 		{
 			//[KoordinatenTabelle replaceObjectAtIndex:[KoordinatenTabelle count]-1 withObject:tempDic];
@@ -5019,6 +5041,7 @@ return returnInt;
    [AnschlagLinksIndikator setTransparent:YES];
    
    [CNC_Downtaste setEnabled:YES];
+   [CNC_Halttaste setEnabled:YES];
    [AnschlagUntenIndikator setTransparent:YES];
    // anscheinend OK
    // end von 32
@@ -5718,7 +5741,6 @@ return returnInt;
 
    
 	//[CNC_Starttaste setEnabled:NO];
-	[CNC_Halttaste setState:0];
 	[CNC_Terminatetaste setEnabled:NO];
    [HomeTaste setState:0];
    [DC_Taste setState:0];
@@ -6253,6 +6275,7 @@ return returnInt;
    
    NSLog(@"reportOberkanteAnfahren");
    // von 32
+   [CNC_Halttaste setEnabled:YES];
    [CNC_Lefttaste setEnabled:YES];
    [AnschlagLinksIndikator setTransparent:YES];
    
@@ -6670,10 +6693,12 @@ return returnInt;
 - (IBAction)reportProfilTask:(id)sender
 {
    //[self reportOberkanteAnfahren:NULL];
+   [CNC_Stoptaste setState:0];
    [CNC_Neutaste performClick:NULL];
    [CNC_Starttaste performClick:NULL];
    [CNC_Starttaste performClick:NULL]; // Startpunkt fixieren
-   
+   [RechtsLinksRadio setSelectedSegment:0];
+
    [self reportNeueLinie:NULL];
    [CNC_Eingabe doProfil1PopTaskMitProfil:10];
    
@@ -6688,6 +6713,7 @@ return returnInt;
 
 - (IBAction)reportProfilOberseiteTask:(id)sender
 {
+   [CNC_Stoptaste setState:0];
    //[self reportOberkanteAnfahren:NULL];
    [CNC_Neutaste performClick:NULL];
    [CNC_Starttaste performClick:NULL];

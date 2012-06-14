@@ -170,6 +170,11 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 	float Distanz= sqrt(pow(DistanzX,2)+ pow(DistanzY,2));	// effektive Distanz
 	float DistanzA= hypotf(DistanzAX,DistanzAY);	// effektive Distanz A
 	float DistanzB= hypotf(DistanzBX,DistanzBY);	// effektive Distanz B
+   
+   if (DistanzA< 0.5 || DistanzB < 0.5)
+   {
+   //   NSLog(@"i:  DistanzA: %2.2f DistanzB: %2.2f",DistanzA,DistanzB);
+   }
 	
    float Zeit = Distanz/speed;												//	Schnittzeit für Distanz
    float ZeitA = DistanzA/speed;												//	Schnittzeit für Distanz A
@@ -184,7 +189,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 	int SchritteX=steps*DistanzX;													//	Schritte in X-Richtung
 	int SchritteAX=steps*DistanzAX;													//	Schritte in X-Richtung A
 	int SchritteBX=steps*DistanzBX;													//	Schritte in X-Richtung B
-
+  
 	/*
     int  anzayplus=0;
     int  anzayminus=0;
@@ -208,12 +213,18 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 	int SchritteAY=steps*DistanzAY;	//	Schritte in Y-Richtung A
 	int SchritteBY=steps*DistanzBY;	//	Schritte in Y-Richtung B
    
+   if (DistanzA< 0.5 || DistanzB < 0.5)
+   {
+      NSLog(@"DistanzA: %2.2f DistanzB: %2.2f * SchritteAX: %d SchritteAY: %d * SchritteBX: %d SchritteBY: %d",DistanzAX,DistanzAY,SchritteAX,SchritteAY,SchritteBX,SchritteBY);
+   }
+
    
 	[tempDatenDic setObject:[NSNumber numberWithFloat:(float)SchritteY] forKey: @"schrittey"];
 	[tempDatenDic setObject:[NSNumber numberWithFloat:(float)SchritteAY] forKey: @"schritteay"];
 	[tempDatenDic setObject:[NSNumber numberWithFloat:(float)SchritteBY] forKey: @"schritteby"];
    
-	//NSLog(@"SchritteY raw %d",SchritteY);
+	
+   //NSLog(@"SchritteY raw %d",SchritteY);
 	
 	if (SchritteX < 0) // negative Zahl
 	{
@@ -365,7 +376,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
    [tempDatenDic setObject:[NSNumber numberWithInt:(index & 0xFF)] forKey: @"indexl"];
 	[tempDatenDic setObject:[NSNumber numberWithInt:((index >> 8) & 0xFF)] forKey: @"indexh"];
    //NSLog(@"SteuerdatenVonDic index: %d indexl: %d indexh: %d", index, indexl, indexh);
-   NSLog(@"SteuerdatenVonDic ZeitA: %1.5f  ZeitB: %1.5f relSeite: %d code: %d",ZeitA,ZeitB,relevanteSeite,code);
+   //NSLog(@"SteuerdatenVonDic ZeitA: %1.5f  ZeitB: %1.5f relSeite: %d code: %d",ZeitA,ZeitB,relevanteSeite,code);
 	//NSLog(@"SteuerdatenVonDic tempDatenDic: %@",[tempDatenDic description]);
 	return tempDatenDic;
 }
