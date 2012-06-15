@@ -1554,7 +1554,7 @@ return returnInt;
       [CNCDatenArray addObject:tempSteuerdatenDic];
       
 		[SchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
-      //NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
+      NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
       
    }
    //anzaxminus,anzayminus ,anzbxminus, anzbyminus;
@@ -1579,6 +1579,7 @@ return returnInt;
    
 	[CNCPositionFeld setIntValue:0];
    [PositionFeld setStringValue:@""];
+   
 	[CNCStepXFeld setIntValue:[[[CNCDatenArray objectAtIndex:0]objectForKey:@"schrittex"]intValue]];
 	[CNCStepYFeld setIntValue:[[[CNCDatenArray objectAtIndex:0]objectForKey:@"schrittey"]intValue]];
 	
@@ -1595,9 +1596,16 @@ return returnInt;
    //NSLog(@"reportStopKnopf tempKoordinatenTabelle: %@ count: %d ",[tempKoordinatenTabelle description],[tempKoordinatenTabelle count]);
    NSLog(@"reportStopKnopf tempKoordinatenTabelle count: %d ",[tempKoordinatenTabelle count]);
    NSLog(@"reportStopKnopf KoordinatenTabelle count: %d",[KoordinatenTabelle count]);
-   [KoordinatenTabelle setArray:tempKoordinatenTabelle];
-   [self updateIndex];
- 
+//   [KoordinatenTabelle setArray:tempKoordinatenTabelle];
+//   [self updateIndex];
+   NSLog(@"reportStopKnopf KoordinatenTabelle neu count: %d",[KoordinatenTabelle count]);
+   int anzDaten=[KoordinatenTabelle count]-1;
+   NSLog(@"reportStopKnopf anzDaten: %d",anzDaten);
+   //[PositionFeld setIntValue:[KoordinatenTabelle count]-1];
+   [IndexFeld setIntValue:anzDaten];
+   [IndexStepper setIntValue:anzDaten];
+
+   NSLog(@"reportStopKnopf KoordinatenTabelle count: %d",[KoordinatenTabelle count]);
 }
 
    
