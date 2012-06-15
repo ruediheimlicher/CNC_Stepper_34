@@ -892,7 +892,7 @@ return returnInt;
 //   [SpeedStepper setIntValue:12];
     [PWMFeld setDelegate:self];
    
-   
+   minimaldistanz = 0.3;
 }
 
 
@@ -1310,7 +1310,7 @@ return returnInt;
    [tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:0]];
 	
    //   for (i=0;i<[KoordinatenTabelle count]-1;i++)
-   for (i=1;i<[KoordinatenTabelle count]-1;i++)
+   for (i=1;i<[KoordinatenTabelle count];i++)
 	{
       // Dic des aktuellen Datensatzes
       NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i];
@@ -1318,10 +1318,18 @@ return returnInt;
       float noway = [[tempNowDic objectForKey:@"ay"]floatValue];
       float nowbx = [[tempNowDic objectForKey:@"bx"]floatValue];
       float nowby = [[tempNowDic objectForKey:@"by"]floatValue];
-      
+ 
+      if ([tempNowDic objectForKey:@"abrax"])
+            {
+         nowabrax=[[tempNowDic objectForKey:@"abrax"]floatValue];
+         nowabray=[[tempNowDic objectForKey:@"abray"]floatValue];
+         nowabrbx=[[tempNowDic objectForKey:@"abrbx"]floatValue];
+         nowabrby=[[tempNowDic objectForKey:@"abrby"]floatValue];
+         
+      }
       // Dic des naechsten Datensatzes
-      
-      NSDictionary* tempNextDic=[KoordinatenTabelle objectAtIndex:i+1];
+
+//      NSDictionary* tempNextDic=[KoordinatenTabelle objectAtIndex:i+1];
       
       /*
        
@@ -1334,16 +1342,47 @@ return returnInt;
       // Distanzen zum vorherigen Punkt
       float distA = hypot(nowax-prevax,noway-prevay); 
       float distB = hypot(nowbx-prevbx,nowby-prevby);
+
+      float distabrA = hypot(nowabrax-prevabrax,nowabray-prevabray); 
+      float distabrB = hypot(nowabrbx-prevabrbx,nowabrby-prevabrby);
+      
+      fprintf(stderr,"%d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,distA,distB,distabrA,distabrB);
       
       NSPoint tempStartPunktA= NSMakePoint(0,0);
       NSPoint tempStartPunktB= NSMakePoint(0,0);
       NSPoint tempEndPunktA= NSMakePoint(0,0);
       NSPoint tempEndPunktB= NSMakePoint(0,0);
       
+      // Soll der Datensatz geladen werden?
+      int datensatzok = 0;
       
-      if (distA > 0.3 || distB > 0.3) // Eine der Distanzen ist genügend gross
+      if (distA > minimaldistanz || distB > minimaldistanz) // Eine der Distanzen ist genügend gross
       {
-         [tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
+         datensatzok = 1;
+         //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
+      }
+
+      if ([AbbrandCheckbox state])
+      {
+         if ([tempPrevDic objectForKey:@"abrax"])
+         {
+            if(distabrA > minimaldistanz || distabrB > minimaldistanz) // Eine der Distanzen ist genügend gross
+            {
+               datensatzok =1;
+            }
+            else 
+            {
+               NSLog(@"i: %d abbrandistanz zu kurz",i);
+               datensatzok = 0;
+            }
+         }
+      }
+
+      
+      
+      if (datensatzok)
+      {
+          [tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
       }
       else 
       {
@@ -1351,6 +1390,8 @@ return returnInt;
          
          continue;
       }
+      
+       
       
       int nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
       
@@ -1367,10 +1408,10 @@ return returnInt;
       {
          // Seite A
          //tempStartPunktA= NSMakePoint([[tempNowDic objectForKey:@"abrax"]floatValue]*zoomfaktor,[[tempNowDic objectForKey:@"abray"]floatValue]*zoomfaktor);
-         tempStartPunktA= NSMakePoint(prevabrax, prevabray);
+         tempStartPunktA= NSMakePoint(prevabrax*zoomfaktor, prevabray*zoomfaktor);
          // Seite B
          //tempStartPunktB= NSMakePoint([[tempNowDic objectForKey:@"abrbx"]floatValue]*zoomfaktor,[[tempNowDic objectForKey:@"abrby"]floatValue]*zoomfaktor);
-         tempStartPunktB= NSMakePoint(prevabrbx, prevabrby);
+         tempStartPunktB= NSMakePoint(prevabrbx*zoomfaktor, prevabrby*zoomfaktor);
       }
       else
       {
@@ -1383,7 +1424,7 @@ return returnInt;
          tempStartPunktB= NSMakePoint(prevbx, prevby);
       }
       
-      if ([AbbrandCheckbox state]&& [tempNextDic objectForKey:@"abrax"])
+      if ([AbbrandCheckbox state]&& [tempNowDic objectForKey:@"abrax"])
       {
          // Seite A
          // tempEndPunktA= NSMakePoint([[tempNextDic objectForKey:@"abrax"]floatValue]*zoomfaktor,[[tempNextDic objectForKey:@"abray"]floatValue]*zoomfaktor);
@@ -1406,7 +1447,12 @@ return returnInt;
       prevay = noway;
       prevbx = nowbx;
       prevby = nowby;
-      
+
+      prevabrax = nowabrax;
+      prevabray = nowabray;
+      prevabrbx = nowabrbx;
+      prevabrby = nowabrby;
+
       
 		//NSLog(@"tempStartPunktString: %@ tempEndPunktString: %@",tempStartPunktString,tempEndPunktString);
 		//NSPoint tempEndPunkt= [[KoordinatenTabelle objectAtIndex:i+1]objectForKey:@"punktstring"];
