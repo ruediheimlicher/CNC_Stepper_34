@@ -1241,7 +1241,7 @@ return returnInt;
    [HomeTaste setState:0];
    [DC_Taste setState:0];
    [CNC setSpeed:[SpeedFeld intValue]];
-
+   
    //NSLog(@"reportStopKnopf [KoordinatenTabelle count]: %d",[KoordinatenTabelle count]);
    if ([KoordinatenTabelle count]<=1)
    {
@@ -1261,10 +1261,12 @@ return returnInt;
       int antwort=[Warnung runModal];
       [CNC_Stoptaste setState:0];
       //[CNC_Stoptaste setEnabled:NO];
-     
-
+      
+      
       return;
    }
+   
+   NSMutableArray* tempKoordinatenTabelle = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    
    [CNC setSpeed:[SpeedFeld intValue]];
    int  anzaxplus=0;
@@ -1278,15 +1280,37 @@ return returnInt;
    int  anzbyminus=0;
    
    //NSLog(@"reportStopKnopf KoordinatenTabelle: %@",[KoordinatenTabelle description]);
-
-   NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:0];
-float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
-   float firstay = [[tempNowDic objectForKey:@"ay"]floatValue];
-   float firstbx = [[tempNowDic objectForKey:@"bx"]floatValue];
-   float firstby = [[tempNowDic objectForKey:@"by"]floatValue];
-
+   
+   // Werte des ersten Datensatzes
+   NSDictionary* tempPrevDic=[KoordinatenTabelle objectAtIndex:0];
+   float prevax = [[tempPrevDic objectForKey:@"ax"]floatValue];
+   float prevay = [[tempPrevDic objectForKey:@"ay"]floatValue];
+   float prevbx = [[tempPrevDic objectForKey:@"bx"]floatValue];
+   float prevby = [[tempPrevDic objectForKey:@"by"]floatValue];
+   
+   float prevabrax=0;
+   float prevabray=0;
+   float prevabrbx=0;
+   float prevabrby=0;
+   
+   float nowabrax=0;
+   float nowabray=0;
+   float nowabrbx=0;
+   float nowabrby=0;
+   
+   if ([tempPrevDic objectForKey:@"abrax"])
+   {
+      prevabrax=[[tempPrevDic objectForKey:@"abrax"]floatValue];
+      prevabray=[[tempPrevDic objectForKey:@"abray"]floatValue];
+      prevabrbx=[[tempPrevDic objectForKey:@"abrbx"]floatValue];
+      prevabrby=[[tempPrevDic objectForKey:@"abrby"]floatValue];
+      
+   }
+   
+   [tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:0]];
 	
-   for (i=0;i<[KoordinatenTabelle count]-1;i++)
+   //   for (i=0;i<[KoordinatenTabelle count]-1;i++)
+   for (i=1;i<[KoordinatenTabelle count]-1;i++)
 	{
       // Dic des aktuellen Datensatzes
       NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i];
@@ -1294,17 +1318,39 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       float noway = [[tempNowDic objectForKey:@"ay"]floatValue];
       float nowbx = [[tempNowDic objectForKey:@"bx"]floatValue];
       float nowby = [[tempNowDic objectForKey:@"by"]floatValue];
-
-      // Dic des naechsten Datensatzes
-      NSDictionary* tempNextDic=[KoordinatenTabelle objectAtIndex:i+1];
-      float nextax = [[tempNowDic objectForKey:@"ax"]floatValue];
-      float nextay = [[tempNowDic objectForKey:@"ay"]floatValue];
-      float nextbx = [[tempNowDic objectForKey:@"bx"]floatValue];
-      float nextby = [[tempNowDic objectForKey:@"by"]floatValue];
       
-      float distA = hypot(nextax-nowax,nextay-noway);
-      float distB = hypot(nextbx-nowbx,nextby-nowby);
-    
+      // Dic des naechsten Datensatzes
+      
+      NSDictionary* tempNextDic=[KoordinatenTabelle objectAtIndex:i+1];
+      
+      /*
+       
+       float nextax = [[tempNowDic objectForKey:@"ax"]floatValue];
+       float nextay = [[tempNowDic objectForKey:@"ay"]floatValue];
+       float nextbx = [[tempNowDic objectForKey:@"bx"]floatValue];
+       float nextby = [[tempNowDic objectForKey:@"by"]floatValue];
+       */
+      
+      // Distanzen zum vorherigen Punkt
+      float distA = hypot(nowax-prevax,noway-prevay); 
+      float distB = hypot(nowbx-prevbx,nowby-prevby);
+      
+      NSPoint tempStartPunktA= NSMakePoint(0,0);
+      NSPoint tempStartPunktB= NSMakePoint(0,0);
+      NSPoint tempEndPunktA= NSMakePoint(0,0);
+      NSPoint tempEndPunktB= NSMakePoint(0,0);
+      
+      
+      if (distA > 0.3 || distB > 0.3) // Eine der Distanzen ist genügend gross
+      {
+         [tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
+      }
+      else 
+      {
+         NSLog(@"i: %d distanz zu kurz",i);
+         
+         continue;
+      }
       
       int nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
       
@@ -1315,45 +1361,51 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       
       //fprintf(stderr,"%d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,ax,ay,bx,by);
       
-      NSPoint tempStartPunktA= NSMakePoint(0,0);
-      NSPoint tempStartPunktB= NSMakePoint(0,0);
-      NSPoint tempEndPunktA= NSMakePoint(0,0);
-      NSPoint tempEndPunktB= NSMakePoint(0,0);
       
       // Abbrandpunkt einfuegen sofern vorhanden
       if ([AbbrandCheckbox state]&& [tempNowDic objectForKey:@"abrax"])
       {
          // Seite A
-         tempStartPunktA= NSMakePoint([[tempNowDic objectForKey:@"abrax"]floatValue]*zoomfaktor,[[tempNowDic objectForKey:@"abray"]floatValue]*zoomfaktor);
+         //tempStartPunktA= NSMakePoint([[tempNowDic objectForKey:@"abrax"]floatValue]*zoomfaktor,[[tempNowDic objectForKey:@"abray"]floatValue]*zoomfaktor);
+         tempStartPunktA= NSMakePoint(prevabrax, prevabray);
          // Seite B
-         tempStartPunktB= NSMakePoint([[tempNowDic objectForKey:@"abrbx"]floatValue]*zoomfaktor,[[tempNowDic objectForKey:@"abrby"]floatValue]*zoomfaktor);
-         
+         //tempStartPunktB= NSMakePoint([[tempNowDic objectForKey:@"abrbx"]floatValue]*zoomfaktor,[[tempNowDic objectForKey:@"abrby"]floatValue]*zoomfaktor);
+         tempStartPunktB= NSMakePoint(prevabrbx, prevabrby);
       }
       else
       {
          // Seite A
-         tempStartPunktA= NSMakePoint([[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"ax"]floatValue]*zoomfaktor,[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"ay"]floatValue]*zoomfaktor);
-         // Seite B
-         tempStartPunktB= NSMakePoint([[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"bx"]floatValue]*zoomfaktor,[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"by"]floatValue]*zoomfaktor);
+         //tempStartPunktA= NSMakePoint([[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"ax"]floatValue]*zoomfaktor,[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"ay"]floatValue]*zoomfaktor);
+         tempStartPunktA= NSMakePoint(prevax, prevay);
          
+         // Seite B
+         //tempStartPunktB= NSMakePoint([[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"bx"]floatValue]*zoomfaktor,[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"by"]floatValue]*zoomfaktor);
+         tempStartPunktB= NSMakePoint(prevbx, prevby);
       }
       
       if ([AbbrandCheckbox state]&& [tempNextDic objectForKey:@"abrax"])
       {
          // Seite A
-         tempEndPunktA= NSMakePoint([[tempNextDic objectForKey:@"abrax"]floatValue]*zoomfaktor,[[tempNextDic objectForKey:@"abray"]floatValue]*zoomfaktor);
+         // tempEndPunktA= NSMakePoint([[tempNextDic objectForKey:@"abrax"]floatValue]*zoomfaktor,[[tempNextDic objectForKey:@"abray"]floatValue]*zoomfaktor);
+         tempEndPunktA= NSMakePoint(nowabrax, nowabray);
          // Seite B
-         tempEndPunktB= NSMakePoint([[tempNextDic objectForKey:@"abrbx"]floatValue]*zoomfaktor,[[tempNextDic objectForKey:@"abrby"]floatValue]*zoomfaktor);
-         
+         //tempEndPunktB= NSMakePoint([[tempNextDic objectForKey:@"abrbx"]floatValue]*zoomfaktor,[[tempNextDic objectForKey:@"abrby"]floatValue]*zoomfaktor);
+         tempEndPunktB= NSMakePoint(nowabrbx, nowabrby);
       }
       else
       {
          // Seite A
-         tempEndPunktA= NSMakePoint([[tempNextDic objectForKey:@"ax"]floatValue]*zoomfaktor,[[tempNextDic objectForKey:@"ay"]floatValue]*zoomfaktor);
+         //tempEndPunktA= NSMakePoint([[tempNextDic objectForKey:@"ax"]floatValue]*zoomfaktor,[[tempNextDic objectForKey:@"ay"]floatValue]*zoomfaktor);
+         tempEndPunktA= NSMakePoint(nowax, noway);
          // Seite B
-         tempEndPunktB= NSMakePoint([[tempNextDic objectForKey:@"bx"]floatValue]*zoomfaktor,[[tempNextDic objectForKey:@"by"]floatValue]*zoomfaktor);
-         
+         //tempEndPunktB= NSMakePoint([[tempNextDic objectForKey:@"bx"]floatValue]*zoomfaktor,[[tempNextDic objectForKey:@"by"]floatValue]*zoomfaktor);
+         tempEndPunktB= NSMakePoint(nowbx, nowby);
       }
+      
+      prevax = nowax;
+      prevay = noway;
+      prevbx = nowbx;
+      prevby = nowby;
       
       
 		//NSLog(@"tempStartPunktString: %@ tempEndPunktString: %@",tempStartPunktString,tempEndPunktString);
@@ -1413,27 +1465,27 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
          //NSLog(@"reportStop i: %d \ntempDic: %@",i,[tempDic description]);
       }
       
- //     if ([DC_Taste state])
+      //     if ([DC_Taste state])
       {
          
          [tempDic setObject:[NSNumber numberWithInt:nowpwm]forKey:@"pwm"];
       }
-//      else
-//      {
-//         [tempDic setObject:[NSNumber numberWithInt:0]forKey:@"pwm"];
-//      }
-     if (i<5)
-     {
-      //NSLog(@"reportStop i: %d \ntempDic: %@",i,[tempDic description]);
-     }
+      //      else
+      //      {
+      //         [tempDic setObject:[NSNumber numberWithInt:0]forKey:@"pwm"];
+      //      }
+      if (i<5)
+      {
+         //NSLog(@"reportStop i: %d \ntempDic: %@",i,[tempDic description]);
+      }
       
       NSDictionary* tempSteuerdatenDic=[CNC SteuerdatenVonDic:tempDic];
       
       if (i<5)
       {
-      //NSLog(@"reportStop i: %d \ntempSteuerdatenDic: %@",i,[tempSteuerdatenDic description]);
+         //NSLog(@"reportStop i: %d \ntempSteuerdatenDic: %@",i,[tempSteuerdatenDic description]);
       }
-       
+      
       
       if([tempSteuerdatenDic objectForKey:@"anzaxplus"])
       {
@@ -1462,10 +1514,10 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
    //anzaxminus,anzayminus ,anzbxminus, anzbyminus;
    //anzaxplus,anzayplus ,anzbxplus, anzbyplus;
    
-     NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
-     NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
-     NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
-     NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
+   NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
+   NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
+   NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
+   NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
 	
    
    cncposition =0;
@@ -1477,6 +1529,7 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
 	//NSLog(@"reportStopKnopf CNCDatenArray: %@",[CNCDatenArray description]);
 	//NSLog(@"reportStopKnopf SchnittdatenArray: %@",[SchnittdatenArray description]);
    //NSLog(@"reportStopKnopf KoordinatenTabelle: %@",[KoordinatenTabelle description]);
+   
    
 	[CNCPositionFeld setIntValue:0];
    [PositionFeld setStringValue:@""];
@@ -1493,6 +1546,12 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
 	[self setStepperstrom:0];
    //[DC_Taste setState:0];
    
+   //NSLog(@"reportStopKnopf tempKoordinatenTabelle: %@ count: %d ",[tempKoordinatenTabelle description],[tempKoordinatenTabelle count]);
+   NSLog(@"reportStopKnopf tempKoordinatenTabelle count: %d ",[tempKoordinatenTabelle count]);
+   NSLog(@"reportStopKnopf KoordinatenTabelle count: %d",[KoordinatenTabelle count]);
+   [KoordinatenTabelle setArray:tempKoordinatenTabelle];
+   [self updateIndex];
+ 
 }
 
    
