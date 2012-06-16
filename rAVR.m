@@ -1280,7 +1280,7 @@ return returnInt;
    //NSLog(@"reportStopKnopf KoordinatenTabelle: %@",[KoordinatenTabelle description]);
 
    NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:0];
-float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
+   float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
    float firstay = [[tempNowDic objectForKey:@"ay"]floatValue];
    float firstbx = [[tempNowDic objectForKey:@"bx"]floatValue];
    float firstby = [[tempNowDic objectForKey:@"by"]floatValue];
@@ -1456,9 +1456,10 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       [CNCDatenArray addObject:tempSteuerdatenDic];
       
 		[SchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
-      //NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
+      NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
       
    }
+   
    //anzaxminus,anzayminus ,anzbxminus, anzbyminus;
    //anzaxplus,anzayplus ,anzbxplus, anzbyplus;
    
@@ -1492,6 +1493,7 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
 	[CNC_Terminatetaste setEnabled:YES];
 	[self setStepperstrom:0];
    //[DC_Taste setState:0];
+   
    
 }
 
