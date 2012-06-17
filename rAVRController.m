@@ -178,6 +178,12 @@ private void button4_Click(object sender, EventArgs e)
          NSLog(@"wait USB");
          [self performSelector:@selector (USBOpen) withObject:NULL afterDelay:3];
       }
+      else if ([[[note userInfo]objectForKey:@"usb"] isEqualToString:@"removed"])
+      {
+         NSLog(@"USB removed");
+         [AVR setUSB_Device_Status:0];
+      }
+
    } 
 }
 /*
