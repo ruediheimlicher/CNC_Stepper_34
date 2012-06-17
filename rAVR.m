@@ -1285,6 +1285,7 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
    float firstbx = [[tempNowDic objectForKey:@"bx"]floatValue];
    float firstby = [[tempNowDic objectForKey:@"by"]floatValue];
 
+   int minimalabstand=0.1;
 	
    for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
