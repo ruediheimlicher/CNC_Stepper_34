@@ -1230,7 +1230,6 @@
 														<int key="NSvFlags">274</int>
 														<string key="NSFrame">{{1, 1}, {1192, 8}}</string>
 														<reference key="NSSuperview" ref="996991511"/>
-														<reference key="NSNextKeyView"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:632</string>
 													</object>
