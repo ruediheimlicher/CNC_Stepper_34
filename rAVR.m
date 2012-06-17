@@ -1403,12 +1403,12 @@ return returnInt;
       
       int nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
       
-      if ([tempNowDic objectForKey:@"pwm"])
+      if ([tempPrevDic objectForKey:@"pwm"])
       {
-         nowpwm = [[tempNowDic objectForKey:@"pwm"]intValue];
+         nowpwm = [[tempPrevDic objectForKey:@"pwm"]intValue];
       }
       
-      //      fprintf(stderr,"akzeptiert %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,nowax,noway,nowbx,nowby);
+      fprintf(stderr,"akzeptiert %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\t%d\n",i,nowax,noway,nowbx,nowby,nowpwm);
       
       
       // Abbrandpunkt einfuegen sofern vorhanden
@@ -1572,6 +1572,10 @@ return returnInt;
       //NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
       cncindex++;
    }
+   NSLog(@"CNCDatenArray: %@",[CNCDatenArray description]);
+
+   
+   
    
    //anzaxminus,anzayminus ,anzbxminus, anzbyminus;
    //anzaxplus,anzayplus ,anzbxplus, anzbyplus;
@@ -1632,7 +1636,7 @@ return returnInt;
    [IndexFeld setIntValue:anzDaten];
    [IndexStepper setIntValue:anzDaten];
    
-   NSLog(@"reportStopKnopf KoordinatenTabelle count: %d",[KoordinatenTabelle count]);
+   //NSLog(@"reportStopKnopf KoordinatenTabelle count: %d",[KoordinatenTabelle count]);
 }
 
    
@@ -2567,7 +2571,7 @@ return returnInt;
    {
       return;
    }
-   NSLog(@"reportManRight: %d",[sender tag]);
+   //NSLog(@"reportManRight: %d",[sender tag]);
    return;
    
    //NSPoint Startpunkt = NSMakePoint([WertAXFeld floatValue], [WertAYFeld floatValue]);
@@ -5965,6 +5969,11 @@ return returnInt;
 
 }
 
+- (IBAction)reportResetTaste:(id)sender
+{
+   
+}
+
 - (IBAction)reportShiftLeft:(id)sender
 {
    //NSLog(@"AVR shiftLeft");
@@ -6189,7 +6198,7 @@ return returnInt;
 
 - (IBAction)reportLinkeRechteSeite:(id)sender
 {
-   NSLog(@"AVR  reportLinkeRechteSeite %d",[sender selectedSegment]);
+   //NSLog(@"AVR  reportLinkeRechteSeite %d",[sender selectedSegment]);
    if ([KoordinatenTabelle count]==0)
    {
       return;
@@ -7016,7 +7025,7 @@ return returnInt;
       //NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
       
       //   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
-      NSLog(@"reportUSB_SendArray delayok: %d",delayok);
+      //NSLog(@"reportUSB_SendArray delayok: %d",delayok);
       [SchnittdatenDic setObject:[NSNumber numberWithInt:delayok] forKey:@"delayok"];
       
       if (delayok)
@@ -7056,7 +7065,7 @@ return returnInt;
 
 - (void)sendDelayedArrayWithDic:(NSDictionary*) schnittdatendic
 {
-   NSLog(@"sendDelayedArrayWithDic");
+   //NSLog(@"sendDelayedArrayWithDic");
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
    [nc postNotificationName:@"usbschnittdaten" object:self userInfo:schnittdatendic];
 }

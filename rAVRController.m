@@ -353,7 +353,7 @@ private void button4_Click(object sender, EventArgs e)
 
 {
    //NSLog(@"***");
-   //NSLog(@"SlaveResetAktion");
+   NSLog(@"SlaveResetAktion");
    char*      sendbuffer;
    sendbuffer=malloc(32);
    int i;
@@ -361,12 +361,22 @@ private void button4_Click(object sender, EventArgs e)
    {
       sendbuffer[i] = 0;
    }
+//   NSMutableDictionary* timerDic =[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:1],@"reset", nil];
+
+   /*
+   readTimer = [[NSTimer scheduledTimerWithTimeInterval:0.1
+                                                 target:self 
+                                               selector:@selector(readUSB:) 
+                                               userInfo:timerDic repeats:YES]retain];
+*/
    sendbuffer[16] = 0xF1;
-//   int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
+   sendbuffer[20] = 0x00;
+   int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
 
    free(sendbuffer);
    
    [HomeAnschlagSet removeAllIndexes];
+
 }
 
 - (void)writeCNCAbschnitt
@@ -470,8 +480,7 @@ private void button4_Click(object sender, EventArgs e)
          }
          
          
-         
-         
+         NSLog(@"writeCNCAbschnitt  Stepperposition: %d pwm: %d",Stepperposition,sendbuffer[20]);         
          
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          
@@ -695,7 +704,7 @@ private void button4_Click(object sender, EventArgs e)
             {
                case 0xE1: // Antwort auf Mouseup
                {
-                  NSLog(@"readUSB  mouseup ");
+                  //NSLog(@"readUSB  mouseup ");
                   [SchnittDatenArray removeAllObjects];
                   
                   [AVR setBusy:0];
@@ -705,7 +714,7 @@ private void button4_Click(object sender, EventArgs e)
                   {
                      if ([readTimer isValid])
                      {
-                        NSLog(@"readUSB  mouseup timer inval");
+                        //NSLog(@"readUSB  mouseup timer inval");
 
                         
                         [readTimer invalidate];
@@ -822,6 +831,12 @@ private void button4_Click(object sender, EventArgs e)
                   return;
                }break;
                   
+               case 0xF2:
+               {
+                  NSLog(@"reset");
+               }break;
+
+            
             }// switch abschnittfertig
          
          
@@ -948,7 +963,7 @@ private void button4_Click(object sender, EventArgs e)
 - (void)PfeilAktion:(NSNotification*)note
 {
 	//[self reportManDown:NULL];
-	NSLog(@"AVRController PfeilAktion note: %@",[[note userInfo]description]);
+	//NSLog(@"AVRController PfeilAktion note: %@",[[note userInfo]description]);
    
    if ([[note userInfo]objectForKey:@"push"])
    {
@@ -962,7 +977,7 @@ private void button4_Click(object sender, EventArgs e)
       if (mausistdown == 0) // mouseup
       {
          pfeilaktion=1; // in writeCNCAbschnitt wird Datenserie beendet
-         NSLog(@"PfeilAktion mouseup pwm: %d",pwm);
+         //NSLog(@"PfeilAktion mouseup pwm: %d",pwm);
          char*      sendbuffer;
          sendbuffer=malloc(32);
          sendbuffer[16]=0xE0;

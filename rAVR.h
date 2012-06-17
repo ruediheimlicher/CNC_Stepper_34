@@ -277,6 +277,7 @@
 - (IBAction)reportDrehgeber:(id)sender;
 - (IBAction)reportStartKnopf:(id)sender;
 - (IBAction)reportStopKnopf:(id)sender;
+
 - (NSDictionary*)RahmenDic;
 - (void)DC_ON:(int)pwm;
 - (int)pwm;
@@ -299,6 +300,7 @@
 - (IBAction)reportClearProfilTabelle:(id)sender;
 - (IBAction)reportScalePop:(id)sender;
 - (IBAction)reportHaltTaste:(id)sender;
+- (IBAction)reportResetTaste:(id)sender;
 - (IBAction)reportIndexStepper:(id)sender;
 - (IBAction)reportWertAXStepper:(id)sender;
 - (IBAction)reportWertAYStepper:(id)sender;
