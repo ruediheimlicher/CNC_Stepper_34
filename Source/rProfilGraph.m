@@ -110,7 +110,19 @@ return sqrt(dX*dX + dY*dY);
 
 - (void)setStepperposition:(int)pos
 {
-   stepperposition = pos;
+   if ([DatenArray count])
+   {
+      stepperposition = pos;
+      NSPoint PunktA=NSMakePoint([[[DatenArray objectAtIndex:pos]objectForKey:@"ax"]floatValue]*scale,[[[DatenArray objectAtIndex:pos]objectForKey:@"ay"]floatValue]*scale);
+      //NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
+      NSRect tempMarkARect=NSMakeRect(PunktA.x-4.1, PunktA.y-4.1, 8.1, 8.1);
+      [self setNeedsDisplayInRect:tempMarkARect];
+      
+      NSPoint PunktB=NSMakePoint([[[DatenArray objectAtIndex:pos]objectForKey:@"bx"]floatValue]*scale,([[[DatenArray objectAtIndex:pos]objectForKey:@"by"]floatValue]+GraphOffset)*scale);
+      //NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
+      NSRect tempMarkBRect=NSMakeRect(PunktB.x-4.1, PunktB.y-4.1, 8.1, 8.1);
+      [self setNeedsDisplayInRect:tempMarkBRect];
+   }
 }
 
 - (int)clickedPunktvonMaus:(NSPoint)derPunkt
