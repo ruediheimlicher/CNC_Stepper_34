@@ -1312,10 +1312,10 @@ return returnInt;
    
    int cncindex=0;
    
-   for (i=1;i<[KoordinatenTabelle count];i++)
+   for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
       // Dic des aktuellen Datensatzes
-      NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i];
+      NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i+1];
       float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       float noway = [[tempNowDic objectForKey:@"ay"]floatValue];
       float nowbx = [[tempNowDic objectForKey:@"bx"]floatValue];
@@ -1389,7 +1389,7 @@ return returnInt;
       
       if (datensatzok)
       {
-         NSMutableDictionary* tempOKDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i]];
+         NSMutableDictionary* tempOKDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i+1]];
          [tempKoordinatenTabelle addObject:tempOKDic];
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
       }
