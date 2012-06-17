@@ -6266,14 +6266,14 @@ return returnInt;
    int aktuellepwm=[DC_PWM intValue];
    
    int nowpwm =0;
-//   if ([DC_Taste state])
+   if ([DC_Taste state])
    {
       nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
    }
    int lage=0;
    int einstichx = 6;
    int einstichy = 4;
-
+   
    
    NSLog(@"reportOberkanteAnfahren");
    // von 32
@@ -6287,12 +6287,12 @@ return returnInt;
    // end von 32
    int blockbreite = [Blockbreite intValue];
    int blockhoehe = [Blockdicke intValue];
-
    
-   NSLog(@"reportAndereSeiteAnfahren blockhoehe: %d blockbreite: %d",blockhoehe,blockbreite);
+   
+   NSLog(@"reportAndereSeiteAnfahren blockhoehe: %d blockbreite: %d nowpwm: %d",blockhoehe,blockbreite,nowpwm);
    
    NSMutableArray* AnfahrtArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
-
+   
    // Startpunkt ist Home. Lage: 0: Einlauf 1: Auslauf
    NSPoint PositionA = NSMakePoint(0, 0);
    NSPoint PositionB = NSMakePoint(0, 0);
@@ -6368,8 +6368,9 @@ return returnInt;
       
       if (nowpwm)
       {
-       [tempDic setObject:[NSNumber numberWithInt:nowpwm]forKey:@"pwm"];
+         [tempDic setObject:[NSNumber numberWithInt:nowpwm]forKey:@"pwm"];
       }
+      
       int position=0;
       if (i==0)
       {
@@ -6388,7 +6389,7 @@ return returnInt;
 		[AnfahrtSchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
       
    } // for i
-   //NSLog(@"AnfahrtSchnittdatenArray: %@",[AnfahrtSchnittdatenArray description]);
+   NSLog(@"AnfahrtSchnittdatenArray: %@",[AnfahrtSchnittdatenArray description]);
    // Schnittdaten an CNC schicken
    NSMutableDictionary* SchnittdatenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [SchnittdatenDic setObject:AnfahrtSchnittdatenArray forKey:@"schnittdatenarray"];
@@ -6397,7 +6398,7 @@ return returnInt;
    
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
    [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
-
+   
 }
 
 - (IBAction)reportHome:(id)sender
@@ -6929,7 +6930,7 @@ return returnInt;
       {
          [PositionFeld setIntValue:[[[note userInfo]objectForKey:@"outposition"]intValue]];
          [ProfilGraph setStepperposition:[[[note userInfo]objectForKey:@"outposition"]intValue]];
-         [ProfilGraph setNeedsDisplay:YES];
+         //[ProfilGraph setNeedsDisplay:YES];
       }
        if ([[[note userInfo]objectForKey:@"stepperposition"]intValue] > [CNCPositionFeld intValue])
        {
