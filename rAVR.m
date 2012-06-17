@@ -5056,7 +5056,7 @@ return returnInt;
    NSMutableArray* AnfahrtArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    
    NSArray* tempLinienArray = [CNC LinieVonPunkt:NSMakePoint(0,0) mitLaenge:blockoberkante mitWinkel:90];
-
+   
    // Startpunkt ist Home. Lage: 0: Einlauf 1: Auslauf
    NSPoint PositionA = NSMakePoint(0, 0);
    NSPoint PositionB = NSMakePoint(0, 0);
@@ -5069,19 +5069,19 @@ return returnInt;
    //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
    index++;
    [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
-/*   
-   // Anfahren Rahmen 5 mm
-   PositionA.x +=5;
-   PositionB.x +=5;
-   //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-   index++;
-   [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
-*/
+   /*   
+    // Anfahren Rahmen 5 mm
+    PositionA.x +=5;
+    PositionB.x +=5;
+    //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+    index++;
+    [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
+    */
    // von reportStopKnopf
    int i=0;
    int zoomfaktor=1.0;
    NSMutableArray* AnfahrtSchnittdatenArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
-
+   
    for (i=0;i<[AnfahrtArray count]-1;i++)
 	{
 		// Seite A
@@ -5102,7 +5102,7 @@ return returnInt;
       
       // Dic zusammenstellen
       NSMutableDictionary* tempDic= [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
-     
+      
       [tempDic setObject:tempStartPunktAString forKey:@"startpunkt"];
       [tempDic setObject:tempEndPunktAString forKey:@"endpunkt"];
       
@@ -5142,7 +5142,7 @@ return returnInt;
       
       
 		[AnfahrtSchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
-     
+      
    } // for i
    //NSLog(@"AnfahrtSchnittdatenArray: %@",[AnfahrtSchnittdatenArray description]);
    // Schnittdaten an CNC schicken
@@ -5152,7 +5152,7 @@ return returnInt;
    
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
    [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
-
+   
    
    
 }
