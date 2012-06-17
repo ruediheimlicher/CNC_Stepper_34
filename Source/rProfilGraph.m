@@ -635,21 +635,27 @@ return sqrt(dX*dX + dY*dY);
          
 			if (i==Klickpunkt)
 			{
+             NSRect tempMarkBRect=NSMakeRect(PunktB.x-1.5, PunktB.y-1.5, 3.1, 3.1);
+				tempMarkB=[NSBezierPath bezierPathWithOvalInRect:tempMarkBRect];
+				[[NSColor redColor]set];
+				[tempMarkB stroke];
+           
 				//NSLog(@"klickpunkt i: %d",i);
 				NSRect tempMarkARect=NSMakeRect(PunktA.x-4.1, PunktA.y-4.1, 8.1, 8.1);
 				tempMarkA=[NSBezierPath bezierPathWithOvalInRect:tempMarkARect];
 				[[NSColor grayColor]set];
 				[tempMarkA stroke];
             
-            NSRect tempMarkBRect=NSMakeRect(PunktB.x-1.5, PunktB.y-1.5, 3.1, 3.1);
-				tempMarkB=[NSBezierPath bezierPathWithOvalInRect:tempMarkBRect];
-				[[NSColor redColor]set];
-				[tempMarkB stroke];
             
             
          }
 			else 
-			{
+			{            
+            NSRect tempMarkBRect=NSMakeRect(PunktB.x-1.5, PunktB.y-1.5, 3.1, 3.1);
+				tempMarkB=[NSBezierPath bezierPathWithOvalInRect:tempMarkBRect];
+				[[NSColor grayColor]set];
+				[tempMarkB stroke];
+
 				NSRect tempMarkARect=NSMakeRect(PunktA.x-2.5, PunktA.y-2.5, 5.1, 5.1);
 				tempMarkA=[NSBezierPath bezierPathWithOvalInRect:tempMarkARect];
 				
@@ -667,11 +673,6 @@ return sqrt(dX*dX + dY*dY);
                [tempMarkA stroke];
             }
             
-            
-            NSRect tempMarkBRect=NSMakeRect(PunktB.x-1.5, PunktB.y-1.5, 3.1, 3.1);
-				tempMarkB=[NSBezierPath bezierPathWithOvalInRect:tempMarkBRect];
-				[[NSColor grayColor]set];
-				[tempMarkB stroke];
             
 			}
 			//NSLog(@"in klickset i: %d Desc: %@",i,[klickset description]);
@@ -731,11 +732,12 @@ return sqrt(dX*dX + dY*dY);
          
 		}//for i
       
+      [[NSColor grayColor]set];
+		[LinieB stroke];
+      
 		[[NSColor blueColor]set];
 		[LinieA stroke];
       
-      [[NSColor grayColor]set];
-		[LinieB stroke];
       
       if ([KlickLinieA isEmpty])
       {
@@ -748,8 +750,9 @@ return sqrt(dX*dX + dY*dY);
       }
       
       [[NSColor grayColor]set];
-      [AbbrandLinieA stroke];
       [AbbrandLinieB stroke];
+      [AbbrandLinieA stroke];
+
       
       
 	} // if Datenarray count
