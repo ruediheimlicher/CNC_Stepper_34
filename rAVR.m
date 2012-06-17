@@ -6542,9 +6542,11 @@ return returnInt;
 - (IBAction)reportHome:(id)sender
 {
    NSLog(@"AVR  reportHome");
-   
+   [CNC_Halttaste setState:0];
+   [CNC_Halttaste setEnabled:YES];
    if ((cncstatus)|| !([CNC_Seite1Check state] || [CNC_Seite2Check state]))
    {
+      NSLog(@"return wegen ((cncstatus)|| !([CNC_Seite1Check state] || [CNC_Seite2Check state]))");
       return;
    }
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
