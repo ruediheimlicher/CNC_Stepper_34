@@ -1572,7 +1572,7 @@ return returnInt;
       //NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
       cncindex++;
    }
-   NSLog(@"CNCDatenArray: %@",[CNCDatenArray description]);
+//   NSLog(@"CNCDatenArray: %@",[CNCDatenArray description]);
 
    
    
@@ -1583,8 +1583,7 @@ return returnInt;
    // code am Anfang und Schluss einfuegen
    int lastposition = 0;
    lastposition |= (1<<LAST_BIT);
-   //   NSMutableDictionary * tempCodeDic = [NSMutableDictionary dictionaryWithDictionary:[tempKoordinatenTabelle objectAtIndex:0]];
-   //   [[tempKoordinatenTabelle objectAtIndex:[tempKoordinatenTabelle count]-1] setObject:[NSNumber numberWithInt:lastposition] forKey:@"position"];
+
    [[SchnittdatenArray lastObject]replaceObjectAtIndex:17 withObject: [NSNumber numberWithInt:lastposition]];
    
    
