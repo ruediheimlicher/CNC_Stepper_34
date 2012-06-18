@@ -110,7 +110,24 @@ return sqrt(dX*dX + dY*dY);
 
 - (void)setStepperposition:(int)pos
 {
-   stepperposition = pos;
+   if ([DatenArray count])
+   {
+      stepperposition = pos;
+      NSPoint PunktA=NSMakePoint([[[DatenArray objectAtIndex:pos]objectForKey:@"ax"]floatValue]*scale,[[[DatenArray objectAtIndex:pos]objectForKey:@"ay"]floatValue]*scale);
+      //NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
+      NSRect tempMarkARect=NSMakeRect(PunktA.x-4.1, PunktA.y-4.1, 8.1, 8.1);
+      [self setNeedsDisplayInRect:tempMarkARect];
+      //[self displayIfNeededInRect:tempMarkARect];
+      
+      /*
+       NSPoint PunktB=NSMakePoint([[[DatenArray objectAtIndex:pos]objectForKey:@"bx"]floatValue]*scale,([[[DatenArray objectAtIndex:pos]objectForKey:@"by"]floatValue]+GraphOffset)*scale);
+       //NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
+       NSRect tempMarkBRect=NSMakeRect(PunktB.x-4.1, PunktB.y-4.1, 8.1, 8.1);
+       [self setNeedsDisplayInRect:tempMarkBRect];
+       //[self displayIfNeededInRect:tempMarkBRect];
+       */
+      
+   }
 }
 
 - (int)clickedPunktvonMaus:(NSPoint)derPunkt
@@ -547,23 +564,23 @@ return sqrt(dX*dX + dY*dY);
       
       
       
+      NSRect StartMarkBRect=NSMakeRect(StartPunktB.x-1.5, StartPunktB.y-1, 3, 3);
+		NSBezierPath* StartMarkB=[NSBezierPath bezierPathWithOvalInRect:StartMarkBRect];
+		[[NSColor grayColor]set];
+		[StartMarkB stroke];
+		NSBezierPath* LinieB=[NSBezierPath bezierPath];
+      NSBezierPath* KlickLinieB=[NSBezierPath bezierPath];
+		[LinieB moveToPoint:StartPunktB];
       
-		NSRect StartMarkARect=NSMakeRect(StartPunktA.x-1, StartPunktA.y-1, 3, 3);
+		NSRect StartMarkARect=NSMakeRect(StartPunktA.x-1.5, StartPunktA.y-1, 3, 3);
 		NSBezierPath* StartMarkA=[NSBezierPath bezierPathWithOvalInRect:StartMarkARect];
 		[[NSColor blueColor]set];
 		[StartMarkA stroke];
 		NSBezierPath* LinieA=[NSBezierPath bezierPath];
       NSBezierPath* KlickLinieA=[NSBezierPath bezierPath];
 		[LinieA moveToPoint:StartPunktA];
-
-      NSRect StartMarkBRect=NSMakeRect(StartPunktB.x-1, StartPunktB.y-1, 3, 3);
-		NSBezierPath* StartMarkB=[NSBezierPath bezierPathWithOvalInRect:StartMarkBRect];
-		[[NSColor blueColor]set];
-		[StartMarkB stroke];
-		NSBezierPath* LinieB=[NSBezierPath bezierPath];
-      NSBezierPath* KlickLinieB=[NSBezierPath bezierPath];
-		[LinieB moveToPoint:StartPunktB];
-
+      
+      
 		
       // Abbrand
       // Seite 1
