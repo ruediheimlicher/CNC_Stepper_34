@@ -454,7 +454,40 @@ private void button4_Click(object sender, EventArgs e)
                  sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19],
                  sendbuffer[20],sendbuffer[21],sendbuffer[22],sendbuffer[23]);
           */
-         
+         /*
+          dataH &= (0x7F);
+          StepCounterA= dataH;		// HByte
+          StepCounterA <<= 8;		// shift 8
+          StepCounterA += dataL;	// +LByte
+
+          */
+         int schritteax = sendbuffer[1];
+         int negativ=1;
+         if (schritteax & 0x80)
+         {
+            negativ = -1;
+         }
+         schritteax &= 0x7F;
+         schritteax <<= 8;
+         schritteax += (sendbuffer[0] & 0xFF);
+         schritteax *= negativ;         
+         negativ = 1;
+         int schritteay = sendbuffer[3];
+         if (schritteay & 0x80)
+         {
+            negativ = -1;
+         }
+         schritteay &= 0x7F;
+         schritteay <<= 8;
+         schritteay += sendbuffer[2] & 0xFF;
+         schritteay *= negativ;
+         fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+                 schritteax,schritteay,sendbuffer[20],
+                 sendbuffer[4],sendbuffer[5],sendbuffer[6],sendbuffer[7],
+                 sendbuffer[8],sendbuffer[9],sendbuffer[10],sendbuffer[11],
+                 sendbuffer[12],sendbuffer[13],sendbuffer[14],sendbuffer[15],
+                 sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19]);
+        
          
          // Rest auffüllen
          for (i=[tempSchnittdatenArray count];i<32;i++)

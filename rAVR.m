@@ -1458,16 +1458,20 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       
 		[SchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
       //NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
+      NSLog(@"tempSteuerdatenDic i: %d schritteax: %d schritteay: %d pwm: %d ",i,[[tempSteuerdatenDic objectForKey:@"schritteax"]intValue],[[tempSteuerdatenDic objectForKey:@"schritteay"]intValue],[[tempSteuerdatenDic objectForKey:@"pwm"]intValue]);
+      NSArray* tempSchnittdatenArray = [CNC SchnittdatenVonDic:tempSteuerdatenDic];
+      //NSLog(@"tempCNCArray i: %d index: %d pwm: %d ",i,[[tempSchnittdatenArray objectAtIndex:19]intValue],[[tempSchnittdatenArray objectAtIndex:20]intValue]);
+
       
    }
    //anzaxminus,anzayminus ,anzbxminus, anzbyminus;
    //anzaxplus,anzayplus ,anzbxplus, anzbyplus;
    
-     NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
-     NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
-     NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
+//     NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
+//     NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
+//     NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
      NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
-	
+//	NSLog(@"CNCDatenArray: %@",[CNCDatenArray description]);
    
    cncposition =0;
    if (i==0 || i==[KoordinatenTabelle count]-1)
@@ -1609,6 +1613,7 @@ float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       [CNC_busySpinner stopAnimation:NULL];
       [CNC_Halttaste setState:0];
       [CNC_Halttaste setEnabled:NO];
+      
 
       //[DC_Taste setState:0];
      
