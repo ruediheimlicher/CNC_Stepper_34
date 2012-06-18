@@ -670,8 +670,13 @@ return sqrt(dX*dX + dY*dY);
             {
                
                [[NSColor redColor]set];
-               [tempMarkA fill];
-               [tempMarkA stroke];
+               //[tempMarkA fill];
+               //[tempMarkA stroke];
+               [NSBezierPath strokeLineFromPoint:NSMakePoint(PunktA.x-4.1, PunktA.y-4.1)
+                                         toPoint:NSMakePoint(PunktA.x+4.1, PunktA.y+4.1)];
+               [NSBezierPath strokeLineFromPoint:NSMakePoint(PunktA.x+4.1, PunktA.y-4.1)
+                                         toPoint:NSMakePoint(PunktA.x-4.1, PunktA.y+4.1)];
+
             }
             
             
