@@ -1315,7 +1315,7 @@ return returnInt;
    for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
       // Dic des aktuellen Datensatzes
-      NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i+1];
+      NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:cncindex+1];
       float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       float noway = [[tempNowDic objectForKey:@"ay"]floatValue];
       float nowbx = [[tempNowDic objectForKey:@"bx"]floatValue];
@@ -1389,7 +1389,7 @@ return returnInt;
       
       if (datensatzok)
       {
-         NSMutableDictionary* tempOKDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i+1]];
+         NSMutableDictionary* tempOKDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:cncindex+1]];
          [tempKoordinatenTabelle addObject:tempOKDic];
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
       }
@@ -1408,8 +1408,10 @@ return returnInt;
          nowpwm = [[tempPrevDic objectForKey:@"pwm"]intValue];
       }
       
-      fprintf(stderr,"akzeptiert %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\t%d\n",i,nowax,noway,nowbx,nowby,nowpwm);
-      
+      if (i<10)
+      {
+         //fprintf(stderr,"akzeptiert %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\t%d\n",i,nowax,noway,nowbx,nowby,nowpwm);
+      }
       
       // Abbrandpunkt einfuegen sofern vorhanden
       if ([AbbrandCheckbox state]&& [tempPrevDic objectForKey:@"abrax"]) //
