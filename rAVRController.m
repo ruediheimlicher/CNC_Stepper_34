@@ -371,7 +371,7 @@ private void button4_Click(object sender, EventArgs e)
 */
    sendbuffer[16] = 0xF1;
    sendbuffer[20] = 0x00;
-   int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
+//   int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
 
    free(sendbuffer);
    
