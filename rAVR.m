@@ -1591,10 +1591,10 @@ return returnInt;
    
    
    //   [self updateIndex];
-   NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
-   NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
-   NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
-   NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
+   //NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
+   //NSLog(@"Seite B: anzbxplus:%d anzbxminus:%d anzbyplus:%d anzbyminus:%d",anzbxplus, anzbxminus, anzbyplus, anzbyminus);
+   //NSLog(@"Diff A x: %d y: %d",anzaxplus+anzaxminus,anzayplus+anzayminus);
+   //NSLog(@"Diff B x: %d y: %d",anzbxplus+anzbxminus,anzbyplus + anzbyminus);
 	
    
    cncposition =0;
@@ -4084,7 +4084,7 @@ return returnInt;
 
 - (void)ElementeingabeAktion:(NSNotification*)note
 {
-   NSLog(@"ElementeingabeAktion note: %@",[[note userInfo] description]);
+   //NSLog(@"ElementeingabeAktion note: %@",[[note userInfo] description]);
    //NSLog(@"KoordinatenTabelle vor: %@",[KoordinatenTabelle description]);
    float origpwm=[DC_PWM intValue];
    
@@ -4163,7 +4163,7 @@ return returnInt;
    float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
    float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
    float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
-   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+//   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
    [AbmessungX setIntValue:maxX - minX];
    [AbmessungY setIntValue:maxY - minY];
 
@@ -4285,6 +4285,8 @@ return returnInt;
     30:  Unterseite, rueckwaerts eingesetzt
     40:  Nasenleisteauslauf
     */
+   NSLog(@"LibProfileingabeAktion start [KoordinatenTabelle count] beim Start: %d",[KoordinatenTabelle count]);;
+
 	NSString* ProfilName;
    NSString* Profil1Name;
    NSString* Profil2Name;
@@ -4428,7 +4430,7 @@ return returnInt;
    float TiefeA = ProfiltiefeA + [Basisabstand intValue] * pfeilung;
    float TiefeB = TiefeA - [Portalabstand intValue] * pfeilung;
    
-   TiefeA += abbranda;
+   TiefeA += abbranda; // Korrektur wegen Abbrand an Ende und Nase
    TiefeB += abbrandb;
    
    
@@ -4587,7 +4589,7 @@ return returnInt;
    
    ProfilArrayB = [ProfilpunktDicB objectForKey:@"profilpunktarray"];
    
-   NSLog(@"wrench: %2.2f",[ProfilWrenchFeld floatValue]);
+   //NSLog(@"wrench: %2.2f",[ProfilWrenchFeld floatValue]);
 
    //NSLog(@"wrench: %2.2f ProfilArrayB %@",[ProfilWrenchFeld floatValue],[ProfilArrayB description]);
 
@@ -4606,7 +4608,7 @@ return returnInt;
       [KoordinatenTabelle removeObjectAtIndex:[KoordinatenTabelle count]-1]; // Letzen Punkt entfernen
    }
    [self updateIndex];
-   
+   NSLog(@"[KoordinatenTabelle count] beim Start: %d",[KoordinatenTabelle count]);;
    
    int index=0;
    int profilstartindex=0;
@@ -4789,8 +4791,10 @@ return returnInt;
    int von=0;
    int bis=[KoordinatenTabelle count];
    
-   if ((mitUnterseite ||  mitOberseite) &&! (mitOberseite && mitUnterseite)) // nur eine Seite
+ //  if ((mitUnterseite ||  mitOberseite) &&! (mitOberseite && mitUnterseite)) // nur eine Seite
+  if ((mitUnterseite ^  mitOberseite) ) // nur eine Seite
        {
+          NSLog(@"nur eine Seite");
           if (mitEinlauf)
           {
              von=2;
@@ -5191,6 +5195,11 @@ return returnInt;
    // anscheinend OK
    // end von 32
    
+   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+   NSDictionary* tempDic=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:OBERKANTEANFAHREN] forKey:@"usb"];
+	[nc postNotificationName:@"usbopen" object:self userInfo:tempDic];
+   int lastSpeed = [CNC speed];
+   [CNC setSpeed:14];
    float breite = [Blockbreite floatValue];
    float rand=[Einlaufrand floatValue];
    
@@ -5293,10 +5302,10 @@ return returnInt;
    [SchnittdatenDic setObject:AnfahrtSchnittdatenArray forKey:@"schnittdatenarray"];
    [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"cncposition"];
    
-   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+//   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
    [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
    
-   
+   [CNC setSpeed:lastSpeed];
    
 }
 
@@ -5939,6 +5948,10 @@ return returnInt;
    
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	[nc postNotificationName:@"slavereset" object:self userInfo:NULL];
+//   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+   NSDictionary* tempDic=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:NEUTASTE] forKey:@"usb"];
+	[nc postNotificationName:@"usbopen" object:self userInfo:tempDic];
+
    //[self setStepperstrom:0];
 
 }
@@ -6409,17 +6422,26 @@ return returnInt;
 
 - (IBAction)reportAndereSeiteAnfahren:(id)sender
 {
+   NSDictionary* tempDic=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:ANDERESEITEANFAHREN] forKey:@"usb"];
+	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+	[nc postNotificationName:@"usbopen" object:self userInfo:tempDic];
+
    float full_pwm = 1;
    float red_pwm = 0.3;
    int aktuellepwm=[DC_PWM intValue];
-   
+   int lastSpeed = [CNC speed];
    int nowpwm =0;
    if ([DC_Taste state])
    {
       nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
    }
+   else 
+   {
+      [CNC setSpeed:14]; // Schnellgang ohne Schnitt
+
+   }
    int lage=0;
-   int einstichx = 6;
+   int einstichx = 4;
    int einstichy = 4;
    
    
@@ -6455,8 +6477,8 @@ return returnInt;
    [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",[NSNumber numberWithInt:full_pwm],@"pwm",nil]];
    
    // Fahren Blockbreite
-   PositionA.x += blockbreite + 2*einstichx;
-   PositionB.x += blockbreite + 2*einstichx;
+   PositionA.x += blockbreite + 3*einstichx;
+   PositionB.x += blockbreite + 3*einstichx;
    //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
    index++;
    [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
@@ -6544,9 +6566,9 @@ return returnInt;
    [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"cncposition"];
    
    
-   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+//   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
    [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
-   
+   [CNC setSpeed:lastSpeed];
 }
 
 - (IBAction)reportHome:(id)sender
@@ -6560,6 +6582,9 @@ return returnInt;
       return;
    }
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+   NSDictionary* tempDic=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:HOMETASTE] forKey:@"usb"];
+	[nc postNotificationName:@"usbopen" object:self userInfo:tempDic];
+
 	[nc postNotificationName:@"slavereset" object:self userInfo:NULL];
 
    NSLog(@"Horizontal bis Anschlag");
@@ -7031,10 +7056,12 @@ return returnInt;
       
       if (delayok)
       {
+         NSLog(@"mit delay");
          [self performSelector:@selector (sendDelayedArrayWithDic:) withObject:SchnittdatenDic afterDelay:2];
       }
       else 
       {
+         NSLog(@"ohne delay");
          [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
       }
       [self saveSpeed];
@@ -7225,7 +7252,7 @@ return returnInt;
 
 - (IBAction)reportUSB:(id)sender
 {
-   NSDictionary* tempDic=[NSDictionary dictionaryWithObject:@"taste" forKey:@"usb"];
+   NSDictionary* tempDic=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:USBTASTE] forKey:@"usb"];
 	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	[nc postNotificationName:@"usbopen" object:self userInfo:tempDic];
 }

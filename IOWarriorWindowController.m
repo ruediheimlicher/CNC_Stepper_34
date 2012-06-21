@@ -187,7 +187,7 @@ void print_all_num(struct Abschnitt* list)
 void DeviceAdded(void *refCon, io_iterator_t iterator)
 {
    NSLog(@"IOWWindowController DeviceAdded");
-   NSDictionary* NotDic = [NSDictionary  dictionaryWithObjectsAndKeys:@"neu",@"usb", nil];
+   NSDictionary* NotDic = [NSDictionary  dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:USBATTACHED],@"usb", nil];
    NSNotificationCenter *nc=[NSNotificationCenter defaultCenter];
    
    [nc postNotificationName:@"usbopen" object:NULL userInfo:NotDic];
@@ -196,7 +196,7 @@ void DeviceAdded(void *refCon, io_iterator_t iterator)
 void DeviceRemoved(void *refCon, io_iterator_t iterator)
 {
    NSLog(@"IOWWindowController DeviceRemoved");
-   NSDictionary* NotDic = [NSDictionary  dictionaryWithObjectsAndKeys:@"removed",@"usb", nil];
+   NSDictionary* NotDic = [NSDictionary  dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:USBREMOVED],@"usb", nil];
    NSNotificationCenter *nc=[NSNotificationCenter defaultCenter];
    
    [nc postNotificationName:@"usbopen" object:NULL userInfo:NotDic];

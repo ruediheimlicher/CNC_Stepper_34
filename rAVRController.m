@@ -150,39 +150,50 @@ private void button4_Click(object sender, EventArgs e)
    NSLog(@"USBAktion usbstatus: %d",usbstatus);
    if ([[note userInfo]objectForKey:@"usb"])
    {
-      if ([[[note userInfo]objectForKey:@"usb"] isEqualToString:@"taste"])
+      switch ([[[note userInfo]objectForKey:@"usb"]intValue]) 
       {
-         // free_all_hid();
-         int e=[self USBOpen];  
-         /*
-          int  r;
-          
-          r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
-          if (r <= 0) 
-          {
-          NSLog(@"USBAktion: no rawhid device found");
-          [AVR setUSB_Device_Status:0];
-          
-          }
-          else
-          {
-          
-          NSLog(@"USBAktion: found rawhid device %d",usbstatus);
-          [AVR setUSB_Device_Status:1];
-          }
-          usbstatus=r;
-          */
+         case NEUTASTE:
+         {
+            NSLog(@"wait USB");
+            [self performSelector:@selector (USBOpen) withObject:NULL afterDelay:3];
+
+         }break;
+         case ANDERESEITEANFAHREN:
+         case OBERKANTEANFAHREN:
+         case HOMETASTE:
+         {
+            [self USBOpen];
+            if (usbstatus==0)
+            {
+               /*
+               NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+               //[Warnung addButtonWithTitle:@"Einstecken und einschalten"];
+               [Warnung addButtonWithTitle:@"Zurück"];
+               //	[Warnung addButtonWithTitle:@""];
+               //[Warnung addButtonWithTitle:@"Abbrechen"];
+               [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"USB ist nicht aktiv."]];
+               
+               NSString* s1=@"";
+               NSString* s2=@"";
+               NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
+               [Warnung setInformativeText:InformationString];
+               [Warnung setAlertStyle:NSWarningAlertStyle];
+               
+               int antwort=[Warnung runModal];
+                */
+            }
+         }  break;
+         case USBREMOVED:
+         {
+            NSLog(@"USB removed");
+            [AVR setUSB_Device_Status:0];
+
+         }break;
+         default:
+            break;
       }
-      else if ([[[note userInfo]objectForKey:@"usb"] isEqualToString:@"neu"])
-      {
-         NSLog(@"wait USB");
-         [self performSelector:@selector (USBOpen) withObject:NULL afterDelay:3];
-      }
-      else if ([[[note userInfo]objectForKey:@"usb"] isEqualToString:@"removed"])
-      {
-         NSLog(@"USB removed");
-         [AVR setUSB_Device_Status:0];
-      }
+      
+      
 
    } 
 }
@@ -214,21 +225,21 @@ private void button4_Click(object sender, EventArgs e)
 /*******************************************************************/
 - (void)USB_SchnittdatenAktion:(NSNotification*)note
 {
-   NSLog(@"USB_SchnittdatenAktion usbstatus: %d",usbstatus);
+   NSLog(@"USB_SchnittdatenAktion usbstatus: %d usb_present: %d",usbstatus,usb_present());
    int antwort=0;
    int delayok=0;
    
    int usb_da=usb_present();
-   NSLog(@"usb_da: %d",usb_da);
+   //NSLog(@"usb_da: %d",usb_da);
    
    const char* manu = get_manu();
-   fprintf(stderr,"manu: %s\n",manu);
+   //fprintf(stderr,"manu: %s\n",manu);
    NSString* Manu = [NSString stringWithUTF8String:manu];
    
    const char* prod = get_prod();
-   fprintf(stderr,"prod: %s\n",prod);
+   //fprintf(stderr,"prod: %s\n",prod);
    NSString* Prod = [NSString stringWithUTF8String:prod];
-   NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
+   //NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
    
    if (usbstatus == 0)
    {
@@ -354,6 +365,7 @@ private void button4_Click(object sender, EventArgs e)
 {
    //NSLog(@"***");
    NSLog(@"SlaveResetAktion");
+   
    char*      sendbuffer;
    sendbuffer=malloc(32);
    int i;
@@ -383,14 +395,10 @@ private void button4_Click(object sender, EventArgs e)
 {
 	//NSLog(@"writeCNCAbschnitt Start Stepperposition: %d count: %d",Stepperposition,[SchnittDatenArray count]);
 	//NSLog(@"writeCNCAbschnitt SchnittDatenArray anz: %d\n SchnittDatenArray: %@",[SchnittDatenArray count],[SchnittDatenArray description]);
-
-   
    
    if (Stepperposition < [SchnittDatenArray count])
 	{	
-      
-      //sendbuffer = malloc(64);
-      
+       
       // HALT
       if ([AVR halt])
 		{
@@ -418,7 +426,7 @@ private void button4_Click(object sender, EventArgs e)
          //
          int i;
          
-         pwm = [AVR pwm];
+ //        pwm = [AVR pwm];
          
          NSMutableArray* tempSchnittdatenArray=(NSMutableArray*)[SchnittDatenArray objectAtIndex:Stepperposition];
          //[tempSchnittdatenArray addObject:[NSNumber numberWithInt:[AVR pwm]]];
@@ -430,7 +438,7 @@ private void button4_Click(object sender, EventArgs e)
          for (i=0;i<[tempSchnittdatenArray count];i++)
          {
             
-           if (i<5)
+           //if (i<5)
            {
               //NSLog(@"WriteCNCAbschnitt i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
            }
@@ -470,7 +478,44 @@ private void button4_Click(object sender, EventArgs e)
                  sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19],
                  sendbuffer[20],sendbuffer[21],sendbuffer[22],sendbuffer[23]);
           */
+         int schritteax = sendbuffer[1];
+         int negativ=1;
+         if (schritteax & 0x80)
+         {
+            negativ = -1;
+         }
+         schritteax &= 0x7F;
+         schritteax <<= 8;
+         schritteax += (sendbuffer[0] & 0xFF);
+         schritteax *= negativ;         
+         negativ = 1;
+         int schritteay = sendbuffer[3];
+         if (schritteay & 0x80)
+         {
+            negativ = -1;
+         }
+         schritteay &= 0x7F;
+         schritteay <<= 8;
+         schritteay += sendbuffer[2] & 0xFF;
+         schritteay *= negativ;
          
+         int delayax = sendbuffer[5];
+         delayax &= 0x7F;
+         delayax <<= 8;
+         delayax += (sendbuffer[4] & 0xFF);
+
+         int delayay = sendbuffer[7];
+         delayay &= 0x7F;
+         delayay <<= 8;
+         delayay += (sendbuffer[6] & 0xFF);
+
+         fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
+                 Stepperposition,schritteax,schritteay,delayax,delayay,sendbuffer[20],
+                 sendbuffer[6],sendbuffer[7],
+                 sendbuffer[8],sendbuffer[9],sendbuffer[10],sendbuffer[11],
+                 sendbuffer[12],sendbuffer[13],sendbuffer[14],sendbuffer[15],
+                 sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19]);
+
          
          // Rest auffüllen
          for (i=[tempSchnittdatenArray count];i<32;i++)
@@ -480,7 +525,7 @@ private void button4_Click(object sender, EventArgs e)
          }
          
          
-         NSLog(@"writeCNCAbschnitt  Stepperposition: %d pwm: %d",Stepperposition,sendbuffer[20]);         
+         //NSLog(@"writeCNCAbschnitt  Stepperposition: %d ax: %2.2f ay: %2.2fpwm: %d",Stepperposition,sendbuffer[20]);         
          
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          
@@ -704,7 +749,7 @@ private void button4_Click(object sender, EventArgs e)
             {
                case 0xE1: // Antwort auf Mouseup
                {
-                  //NSLog(@"readUSB  mouseup ");
+                  NSLog(@"readUSB  mouseup ");
                   [SchnittDatenArray removeAllObjects];
                   
                   [AVR setBusy:0];

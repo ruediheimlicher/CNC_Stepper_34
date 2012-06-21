@@ -14,6 +14,15 @@
 #import "datum.c"
 #import "version.c"
 #import "rEinstellungen.h"
+
+#define USBTASTE              1
+#define NEUTASTE              2
+#define OBERKANTEANFAHREN     3
+#define HOMETASTE             4
+#define USBATTACHED           5
+#define USBREMOVED            6
+#define ANDERESEITEANFAHREN   10
+
 /*
 @interface rPfeiltasteCell : NSButtonCell 
 {
@@ -223,6 +232,8 @@
    IBOutlet id					WertFeld;
    
    IBOutlet id					PositionFeld;
+   IBOutlet id					PositionXFeld;
+   IBOutlet id					PositionYFeld;
    
    IBOutlet id					SaveChangeTaste;
    IBOutlet id					ShiftAllTaste;

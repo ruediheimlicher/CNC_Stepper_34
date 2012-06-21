@@ -83,7 +83,7 @@
    int               mausistdown;
    int               anzrepeat;
    int               pfeilaktion;
-   
+   int               HALTStatus;
     int              USBStatus;
    int               pwm;
     NSMutableIndexSet* HomeAnschlagSet;
