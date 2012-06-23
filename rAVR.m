@@ -416,6 +416,17 @@ return returnInt;
             {
                [Spannweite setIntValue:750];
             }
+            
+            if ([tempPListDic objectForKey:@"minimaldistanz"])
+            {
+               //NSLog(@"minimaldistanz: %d",[[tempPListDic objectForKey:@"minimaldistanz"]floatValue]);
+               //[Spannweite setIntValue:[[tempPListDic objectForKey:@"minimaldistanz"]intValue]];
+               minimaldistanz = [[tempPListDic objectForKey:@"minimaldistanz"]floatValue];
+            }
+            else
+            {
+               minimaldistanz = 0.2;
+            }
 
          }
 			
@@ -1311,11 +1322,12 @@ return returnInt;
    //   for (i=0;i<[KoordinatenTabelle count]-1;i++)
    
    int cncindex=0;
-   
+   NSLog(@"minimaldistanz: %2.2f",minimaldistanz);
+
    for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
       // Dic des aktuellen Datensatzes
-      NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:cncindex+1];
+      NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i+1];
       float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       float noway = [[tempNowDic objectForKey:@"ay"]floatValue];
       float nowbx = [[tempNowDic objectForKey:@"bx"]floatValue];
@@ -1362,11 +1374,15 @@ return returnInt;
       
       // Soll der Datensatz geladen werden?
       int datensatzok = 0;
-      
       if (distA > minimaldistanz || distB > minimaldistanz) // Eine der Distanzen ist genügend gross
       {
          datensatzok = 1;
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
+      
+      }
+      else {
+         NSLog(@"cncindex: %d distanz zu kurz. distA: %2.2f distB: %2.2f",cncindex,distA,distB);
+
       }
       
       if ([AbbrandCheckbox state])
@@ -1379,7 +1395,7 @@ return returnInt;
             }
             else 
             {
-               NSLog(@"cncindex: %d abbrandistanz zu kurz",cncindex);
+               NSLog(@"cncindex: %d abbrandistanz zu kurz. distabrA: %2.2f distabrB: %2.2f",cncindex,distabrA,distabrB);
                datensatzok = 0;
             }
          }
@@ -1389,7 +1405,7 @@ return returnInt;
       
       if (datensatzok)
       {
-         NSMutableDictionary* tempOKDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:cncindex+1]];
+         NSMutableDictionary* tempOKDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i+1]];
          [tempKoordinatenTabelle addObject:tempOKDic];
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
       }
@@ -4286,7 +4302,7 @@ return returnInt;
     40:  Nasenleisteauslauf
     */
    NSLog(@"LibProfileingabeAktion start [KoordinatenTabelle count] beim Start: %d",[KoordinatenTabelle count]);;
-
+   int startindexoffset = [KoordinatenTabelle count]-1;
 	NSString* ProfilName;
    NSString* Profil1Name;
    NSString* Profil2Name;
@@ -4797,7 +4813,7 @@ return returnInt;
           NSLog(@"nur eine Seite");
           if (mitEinlauf)
           {
-             von=2;
+             von=startindexoffset + 2;
           }
           if (mitAuslauf)
           {
@@ -4833,7 +4849,6 @@ return returnInt;
 	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	[nc postNotificationName:@"eingabedaten" object:self userInfo:StartwertDic];
 
-   
    [CNCTable scrollRowToVisible:[KoordinatenTabelle count] - 1];
    [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:[KoordinatenTabelle count]-1] byExtendingSelection:NO];
    
@@ -4841,7 +4856,6 @@ return returnInt;
 	[ProfilGraph setNeedsDisplay:YES];
    [CNCTable reloadData];
    [self saveProfileinstellungen];
-   
 
 //   [self Blockeinfuegen];
 }
@@ -4904,9 +4918,6 @@ return returnInt;
       NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:oldax+d1x],@"ax",[NSNumber numberWithFloat:olday+d1y],@"ay",[NSNumber numberWithFloat:oldbx+d2x],@"bx",[NSNumber numberWithFloat:oldby+d2y],@"by",[NSNumber numberWithInt:i],@"index", nil];
       
       [KoordinatenTabelle addObject: tempDic];
-      
-      
-      
    }
    //NSLog(@"LibElementeingabeAktion Koordinatentabelle count: %d numberOfRows: %d ",[KoordinatenTabelle count],[CNCTable numberOfRows]);
    
@@ -5494,24 +5505,25 @@ return returnInt;
       index++;
       
       
+      
+      
+      // Einstich  zum Blockrand
+      PositionA.x +=einstichx;       
+      PositionB.x +=einstichx;
+      //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      index++;
+
+      
       // weg vom Anschlag einstichy nach oben    
       PositionA.y +=einstichy;
       PositionB.y +=einstichy;
       
-      
       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       
-      
-      
-      // Einstich  zum Blockrand
-      PositionA.x +=einstichx;       PositionB.x +=einstichx;
-      //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
-      index++;
-      
-      
+     
       /*    
        // Blockrand senkrecht nach unten schneiden
        PositionA.y -=dicke;
@@ -5619,14 +5631,10 @@ return returnInt;
       //Schneiden an Blockunterkante links - einstichy
       
       PositionA.x = EckeLinksUnten.x-einstichx; // Nicht bis Anschlag fahren
-      
       PositionB.x = EckeLinksUnten.x-einstichx;
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
-      
-      
-      
       
    } // if count
    else

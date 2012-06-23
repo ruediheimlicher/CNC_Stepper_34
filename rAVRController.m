@@ -303,6 +303,7 @@ private void button4_Click(object sender, EventArgs e)
    //NSLog(@"USB_SchnittdatenAktion SchnittDatenArray vor: %@",[SchnittDatenArray description]);
    //NSLog(@"USB_SchnittdatenAktion SchnittDatenArray Stepperposition: %d",Stepperposition);
 	//NSLog(@"USB_SchnittdatenAktion note: %@",[[note userInfo]description]);
+   pwm = 0;
    
    if ([[note userInfo]objectForKey:@"pwm"])
    {
@@ -331,7 +332,7 @@ private void button4_Click(object sender, EventArgs e)
        [self writeCNCAbschnitt];
        //int result = rawhid_recv(0, receivebuffer, 64, 200);
        //NSLog(@"result: %d receivebuffer: %d",result, receivebuffer[0]);
-       //NSLog(@"readUSB Start Timer");
+       NSLog(@"readUSB Start Timer");
        
        // home ist 1 wenn homebutton gedrückt ist
        NSMutableDictionary* timerDic =[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:home],@"home", nil];
@@ -710,7 +711,7 @@ private void button4_Click(object sender, EventArgs e)
       
       if ([AbschnittFertig intValue] >= 0xA0) // Code fuer Fertig: AD
       {
-         //NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
+         NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
          //NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
          
          // NSLog(@"AVRController mausistdown: %d abschnittfertig: %d anzrepeat: %d",mausistdown, abschnittfertig,anzrepeat);

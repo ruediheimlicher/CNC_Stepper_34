@@ -238,7 +238,7 @@
 											<object class="NSCustomView" id="548292517">
 												<reference key="NSNextResponder" ref="689186444"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{14, 24}, {1191, 364}}</string>
+												<string key="NSFrame">{{14, 24}, {1191, 362}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
 												<reference key="NSNextKeyView" ref="996991511"/>
@@ -4297,7 +4297,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<reference key="NSWindow"/>
 					<reference key="NSNextKeyView" ref="751885620"/>
 				</object>
-				<string key="NSScreenRect">{{0, 0}, {1680, 1028}}</string>
+				<string key="NSScreenRect">{{0, 0}, {1280, 778}}</string>
 				<string key="NSMinSize">{1238, 772}</string>
 				<string key="NSMaxSize">{1275, 772}</string>
 				<bool key="NSWindowIsRestorable">YES</bool>
@@ -8512,6 +8512,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="PWMStepper">id</string>
 						<string key="Portalabstand">id</string>
 						<string key="PositionFeld">id</string>
+						<string key="PositionXFeld">id</string>
+						<string key="PositionYFeld">id</string>
 						<string key="ProductFeld">id</string>
 						<string key="ProfilBOffsetXFeld">id</string>
 						<string key="ProfilBOffsetYFeld">id</string>
@@ -8813,6 +8815,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 						<object class="IBToOneOutletInfo" key="PositionFeld">
 							<string key="name">PositionFeld</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="PositionXFeld">
+							<string key="name">PositionXFeld</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="PositionYFeld">
+							<string key="name">PositionYFeld</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="ProductFeld">
