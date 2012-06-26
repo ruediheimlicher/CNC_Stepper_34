@@ -1704,7 +1704,6 @@ PortA=vs[n & 3]; warte10ms(); n++;
    NSArray* tempEinlaufArray3 = [NSArray arrayWithObjects:[NSNumber numberWithFloat:Endpunkt.x],[NSNumber numberWithFloat:Endpunkt.y],[NSNumber numberWithFloat:red_pwm], nil];
    [AuslaufpunkteArray addObject:tempEinlaufArray3];
    
-   
    return AuslaufpunkteArray;
 }
 

@@ -168,18 +168,18 @@ const char* get_manu()
    hid_t * cnc = get_hid(0);
    if (cnc)
    {
-   CFTypeRef manu= IOHIDDeviceGetProperty(cnc->ref,CFSTR(kIOHIDManufacturerKey));
-   //CFStringRef manu = (CFStringRef)prop;
+      CFTypeRef manu= IOHIDDeviceGetProperty(cnc->ref,CFSTR(kIOHIDManufacturerKey));
+      //CFStringRef manu = (CFStringRef)prop;
       
-   const char* manustr = CFStringGetCStringPtr(manu, kCFStringEncodingMacRoman);
-   //fprintf(stderr,"manustr: %s\n",manustr);   
-   return  manustr; 
+      const char* manustr = CFStringGetCStringPtr(manu, kCFStringEncodingMacRoman);
+      //fprintf(stderr,"manustr: %s\n",manustr);   
+      return  manustr; 
    }
    else 
    {
       return "Kein USB-Device vorhanden\n";
    }
-
+   
 }
 
 const char* get_prod()
@@ -187,12 +187,12 @@ const char* get_prod()
    hid_t * cnc = get_hid(0);
    if (cnc)
    {
-   CFTypeRef prod= IOHIDDeviceGetProperty(cnc->ref,CFSTR(kIOHIDProductKey));
-   //CFStringRef manu = (CFStringRef)prop;
-   const char* prodstr = CFStringGetCStringPtr(prod, kCFStringEncodingMacRoman);
-   //fprintf(stderr,"prodstr: %s\n",prodstr);
-   
-   return  prodstr; 
+      CFTypeRef prod= IOHIDDeviceGetProperty(cnc->ref,CFSTR(kIOHIDProductKey));
+      //CFStringRef manu = (CFStringRef)prop;
+      const char* prodstr = CFStringGetCStringPtr(prod, kCFStringEncodingMacRoman);
+      //fprintf(stderr,"prodstr: %s\n",prodstr);
+      
+      return  prodstr; 
    }
    else 
    {

@@ -488,6 +488,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    double* d=malloc(l*sizeof(double));
    double* x=malloc(l*sizeof(double));
    double* y=malloc(l*sizeof(double));
+   
    double* h=malloc(l*sizeof(double));
    double* e=malloc(l*sizeof(double));
    double* r=malloc(l*sizeof(double));
@@ -593,8 +594,14 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
       d[i] = y[i];
       
   //    fprintf(stderr, "%d\t%f\t%f\t%f\t%f\t%f\t%f\t%f\n",i, x[i], y[i], kappa[i], a[i], b[i], c[i], d[i]);
-   }  
+   } 
    
+   free(a);
+    free(b);
+    free(c);
+    free(d);
+    free(x);
+    free(y);
    free(h);
    free(e);
    free(r);

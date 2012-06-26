@@ -153,6 +153,7 @@ private void button4_Click(object sender, EventArgs e)
       switch ([[[note userInfo]objectForKey:@"usb"]intValue]) 
       {
          case NEUTASTE:
+         case USBTASTE:
          {
             NSLog(@"wait USB");
             [self performSelector:@selector (USBOpen) withObject:NULL afterDelay:3];
@@ -161,6 +162,7 @@ private void button4_Click(object sender, EventArgs e)
          case ANDERESEITEANFAHREN:
          case OBERKANTEANFAHREN:
          case HOMETASTE:
+            
          {
             [self USBOpen];
             if (usbstatus==0)
@@ -225,10 +227,11 @@ private void button4_Click(object sender, EventArgs e)
 /*******************************************************************/
 - (void)USB_SchnittdatenAktion:(NSNotification*)note
 {
-   NSLog(@"USB_SchnittdatenAktion usbstatus: %d usb_present: %d",usbstatus,usb_present());
+   //NSLog(@"USB_SchnittdatenAktion usbstatus: %d usb_present: %d",usbstatus,usb_present());
    int antwort=0;
    int delayok=0;
    
+   /*
    int usb_da=usb_present();
    //NSLog(@"usb_da: %d",usb_da);
    
@@ -240,7 +243,7 @@ private void button4_Click(object sender, EventArgs e)
    //fprintf(stderr,"prod: %s\n",prod);
    NSString* Prod = [NSString stringWithUTF8String:prod];
    //NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
-   
+   */
    if (usbstatus == 0)
    {
       NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
@@ -332,7 +335,7 @@ private void button4_Click(object sender, EventArgs e)
        [self writeCNCAbschnitt];
        //int result = rawhid_recv(0, receivebuffer, 64, 200);
        //NSLog(@"result: %d receivebuffer: %d",result, receivebuffer[0]);
-       NSLog(@"readUSB Start Timer");
+       //NSLog(@"readUSB Start Timer");
        
        // home ist 1 wenn homebutton gedrückt ist
        NSMutableDictionary* timerDic =[NSMutableDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:home],@"home", nil];
@@ -401,7 +404,9 @@ private void button4_Click(object sender, EventArgs e)
 	{	
        
       // HALT
-      if ([AVR halt])
+      //if ([AVR halt])
+         
+      if (halt)
 		{
          NSLog(@"writeCNCAbschnitt HALT");
          [AVR setBusy:0];
@@ -479,6 +484,8 @@ private void button4_Click(object sender, EventArgs e)
                  sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19],
                  sendbuffer[20],sendbuffer[21],sendbuffer[22],sendbuffer[23]);
           */
+         
+         /*
          int schritteax = sendbuffer[1];
          int negativ=1;
          if (schritteax & 0x80)
@@ -510,18 +517,18 @@ private void button4_Click(object sender, EventArgs e)
          delayay <<= 8;
          delayay += (sendbuffer[6] & 0xFF);
 
+         
          fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
                  Stepperposition,schritteax,schritteay,delayax,delayay,sendbuffer[20],
                  sendbuffer[6],sendbuffer[7],
                  sendbuffer[8],sendbuffer[9],sendbuffer[10],sendbuffer[11],
                  sendbuffer[12],sendbuffer[13],sendbuffer[14],sendbuffer[15],
                  sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19]);
-
+          */
          
          // Rest auffüllen
          for (i=[tempSchnittdatenArray count];i<32;i++)
          {
-            
             sendbuffer[i] = 0;
          }
          
@@ -593,7 +600,6 @@ private void button4_Click(object sender, EventArgs e)
    
    if (Stepperposition ==0)//< [SchnittDatenArray count])
    {
-      
       [self stopTimer];
       return;
    }
@@ -651,7 +657,7 @@ private void button4_Click(object sender, EventArgs e)
    else
    {
       [self setLastValueRead:dataRead];
-       int abschnittfertig=(UInt8)buffer[0];     // code fuer Art des Pakets
+      int abschnittfertig=(UInt8)buffer[0];     // code fuer Art des Pakets
       if (abschnittfertig==0)
       {
          return;
@@ -670,14 +676,14 @@ private void button4_Click(object sender, EventArgs e)
        
       
       int i=0;
-      for (i=0; i<10;i++)
-      {
+     // for (i=0; i<10;i++)
+     // {
          //NSLog(@"i: %d char: %x data: %d",i,buffer[i],[[NSNumber numberWithInt:(UInt8)buffer[i]]intValue]);
-      }
+     // }
       NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
       
        //NSLog(@"**");
-      NSNumber* curr_num=[NSNumber numberWithInt:(UInt8)buffer[1]];
+      //NSNumber* curr_num=[NSNumber numberWithInt:(UInt8)buffer[1]];
       //NSLog(@"**   AbschnittCounter: %@",curr_num);
       
       //int abschnittfertig=(UInt8)buffer[0];     // code fuer Art des Pakets
@@ -697,8 +703,7 @@ private void button4_Click(object sender, EventArgs e)
       [NotificationDic setObject:[NSNumber numberWithInt:Stepperposition] forKey:@"stepperposition"];
 
       // cncstatus abfragen
-      NSNumber* cncstatus=[NSNumber numberWithInt:(UInt8)buffer[7]];
-
+      //NSNumber* cncstatus=[NSNumber numberWithInt:(UInt8)buffer[7]];
       
       [NotificationDic setObject:[NSNumber numberWithInt:mausistdown] forKey:@"mausistdown"];
       //NSLog(@"readUSB \nAbschnittFertig: %X  \n[5]: %d \n[6]: %d  \n[7]: %d \nStepperposition: %d",[AbschnittFertig intValue],(UInt8)buffer[5] , (UInt8)buffer[6],(UInt8)buffer[7], Stepperposition);
@@ -711,7 +716,7 @@ private void button4_Click(object sender, EventArgs e)
       
       if ([AbschnittFertig intValue] >= 0xA0) // Code fuer Fertig: AD
       {
-         NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
+         //NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
          //NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
          
          // NSLog(@"AVRController mausistdown: %d abschnittfertig: %d anzrepeat: %d",mausistdown, abschnittfertig,anzrepeat);
@@ -1148,7 +1153,7 @@ private void button4_Click(object sender, EventArgs e)
       sendbuffer[i] = 0;
    }
    sendbuffer[8]=1;
-   sendbuffer[20]=ein;
+   sendbuffer[20]=0;
    // code fuer Task angeben:
    sendbuffer[16]=0xE4; // code fuer Stepperstrom 
    

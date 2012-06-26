@@ -198,7 +198,6 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    NSLog(@"IOWWindowController DeviceRemoved");
    NSDictionary* NotDic = [NSDictionary  dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:USBREMOVED],@"usb", nil];
    NSNotificationCenter *nc=[NSNotificationCenter defaultCenter];
-   
    [nc postNotificationName:@"usbopen" object:NULL userInfo:NotDic];
 }
 
@@ -217,6 +216,21 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    {
       NSLog(@"USBOpen: found rawhid device %d",usbstatus);
       [AVR setUSB_Device_Status:1];
+      const char* manu = get_manu();
+      //fprintf(stderr,"manu: %s\n",manu);
+      NSString* Manu = [NSString stringWithUTF8String:manu];
+      
+      const char* prod = get_prod();
+      //fprintf(stderr,"prod: %s\n",prod);
+      NSString* Prod = [NSString stringWithUTF8String:prod];
+      NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
+      NSDictionary* USBDatenDic = [NSDictionary dictionaryWithObjectsAndKeys:Prod,@"prod",Manu,@"manu", nil];
+      [AVR setUSBDaten:USBDatenDic];
+    //  NSNotificationCenter *nc=[NSNotificationCenter defaultCenter];
+      
+    //  [nc postNotificationName:@"usbopen" object:NULL userInfo:NotDic];
+
+      
    }
    usbstatus=r;
    
@@ -224,14 +238,17 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    return r;
 }
 
-
+- (void)setHalt:(int)haltstatus
+{
+   halt = haltstatus;
+}
 
 /*" Invoked when the nib file including the window has been loaded. "*/
 - (void) awakeFromNib
 {
    mausistdown=0;
    anzrepeat=0;
-   int i,listcount=0;
+   int listcount=0;
    struct Abschnitt *first;
    // LinkedList
    first=NULL;
@@ -282,10 +299,10 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    }
  //  
    */ 
- 	int adresse=0xABCD;
-	adresse = 0xA030;
-	int lbyte=adresse<<8;
-	lbyte &= 0xff00;
+ 	//int adresse=0xABCD;
+	//adresse = 0xA030;
+	//int lbyte=adresse<<8;
+	//lbyte &= 0xff00;
 	//lbyte >>=8;
 	//int hbyte=adresse>>8;
 	//int lbyte=adresse%0x100;
@@ -353,6 +370,8 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 	logEntries = [[NSMutableArray alloc] init];
 	[logTable setTarget:self];
 	[logTable setDoubleAction:@selector(logTableDoubleClicked)];
+   
+   halt=0;
 	
 	NSNotificationCenter * nc;
 	nc=[NSNotificationCenter defaultCenter];
@@ -821,7 +840,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 		
 	}
 	//	NSLog(@"PListOK: %d",PListOK);
-	
+	[USBPfad release];
 	//[tempUserInfo release];
 }
 

@@ -86,6 +86,7 @@
    int               HALTStatus;
     int              USBStatus;
    int               pwm;
+   int               halt;
     NSMutableIndexSet* HomeAnschlagSet;
 }
 
@@ -97,6 +98,7 @@
 - (IBAction)terminate:(id)sender;
 - (void) setLastValueRead:(NSData*) inData;
 - (int)USBOpen;
+- (void)setHalt:(int)haltstatus;
 @end
 
 

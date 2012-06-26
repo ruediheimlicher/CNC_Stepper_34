@@ -199,24 +199,28 @@ return returnInt;
 	BOOL istOrdner;
 	NSFileManager *Filemanager = [NSFileManager defaultManager];
 	NSString* USBPfad=[[NSHomeDirectory() stringByAppendingFormat:@"%@%@",@"/Documents",@"/CNCDaten"]retain];
-	CNCDatenDa= ([Filemanager fileExistsAtPath:USBPfad isDirectory:&istOrdner]&&istOrdner);
+   NSString* PListName=@"CNC.plist";
+   NSString* PListPfad;
+   PListPfad=[USBPfad stringByAppendingPathComponent:PListName];
+
+   
+   CNCDatenDa= ([Filemanager fileExistsAtPath:USBPfad isDirectory:&istOrdner]&&istOrdner);
 	//NSLog(@"mountedVolume:    USBPfad: %@",USBPfad);	
-	NSMutableDictionary* tempPListDic = [[NSMutableDictionary alloc]initWithCapacity:0];
    if (CNCDatenDa)
 	{
+
 		
-		
-		NSString* PListName=@"CNC.plist";
-		NSString* PListPfad;
 		//NSLog(@"\n\n");
-		PListPfad=[USBPfad stringByAppendingPathComponent:PListName];
 		//NSLog(@"readCNC_PList: PListPfad: %@ ",PListPfad);
 		if (PListPfad)		
 		{
+         //NSMutableDictionary* tempPListDic;// = [[NSMutableDictionary alloc]initWithCapacity:0];
+
 			//=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 			if ([Filemanager fileExistsAtPath:PListPfad])
 			{
-				tempPListDic=[NSMutableDictionary dictionaryWithContentsOfFile:PListPfad];
+            
+				NSMutableDictionary* tempPListDic=[NSMutableDictionary dictionaryWithContentsOfFile:PListPfad];
 				//NSLog(@"readCNC_PList: tempPListDic: %@",[tempPListDic description]);
             
 				if ([tempPListDic objectForKey:@"koordinatentabelle"])
@@ -425,18 +429,24 @@ return returnInt;
             }
             else
             {
-               minimaldistanz = 0.2;
+               minimaldistanz = 0.5;
             }
-
+            return tempPListDic;
+            [tempPListDic release];
          }
-			
-		}
-      NSLog(@"readCNC_PList: pwm: %d speed: %d",[DC_PWM floatValue],[SpeedFeld  intValue]);
+         
+		
+      }    
+      
+
+      NSLog(@"readCNC_PList: pwm: %2.2f speed: %d",[DC_PWM floatValue],[SpeedFeld  intValue]);
 		//	NSLog(@"PListOK: %d",PListOK);
 		
-	}//USBDatenDa
+	
+   }//USBDatenDa
    [USBPfad release];
-   return tempPListDic;
+//   
+   return NULL;
 }
 
 
@@ -641,8 +651,8 @@ return returnInt;
 	int RaumTitelfeldhoehe=10;
 	int RaumTagbalkenhoehe=32;				//Hoehe eines Tagbalkens
 	int RaumTagplanhoehe=(RaumTagbalkenhoehe)+RaumTitelfeldhoehe;	// Hoehe des Tagplanfeldes mit den (AnzRaumobjekte) Tagbalken
-	int RaumTagplanAbstand=RaumTagplanhoehe+10;	// Abstand zwischen den Ecken der Tagplanfelder
-	int RaumKopfbereich=50;	// Bereich ueber dem Scroller
+//	int RaumTagplanAbstand=RaumTagplanhoehe+10;	// Abstand zwischen den Ecken der Tagplanfelder
+//	int RaumKopfbereich=50;	// Bereich ueber dem Scroller
 	
 	NSRect RaumScrollerFeld=RaumViewFeld;	//	Feld fuer Scroller, in dem der RaumView liegt
 	
@@ -1130,7 +1140,10 @@ return returnInt;
       NSLog(@"kein prod");
       [ProductFeld setStringValue:@"-"];
    }
-   [ManufactorerFeld setStringValue:[datendic objectForKey:@"manu"]];
+   if ([datendic objectForKey:@"manu"] && [[datendic objectForKey:@"manu"]length])
+   {
+      [ManufactorerFeld setStringValue:[datendic objectForKey:@"manu"]];
+   }
 }
 
 - (IBAction)reportHorizontalSchieber:(id)sender
@@ -1156,7 +1169,7 @@ return returnInt;
 - (IBAction)reportStartKnopf:(id)sender
 {
    
-   NSArray* tempLinienArray = [CNC LinieVonPunkt:NSMakePoint(25,25) mitLaenge:15 mitWinkel:30];
+   //NSArray* tempLinienArray = [CNC LinieVonPunkt:NSMakePoint(25,25) mitLaenge:15 mitWinkel:30];
    //NSLog(@"tempLinienArray: %@",tempLinienArray);
    	//NSLog(@"reportStartKnopf state: %d",[sender state]);
 	
@@ -1169,7 +1182,7 @@ return returnInt;
       //NSLog(@"reportStartKnopf start: %@",[KoordinatenTabelle description]);
       if ([KoordinatenTabelle count]==0)
       {
-         //NSLog(@"reportStartKnopf count 0");
+         NSLog(@"reportStartKnopf count 0");
          NSPoint tempStartPunkt=NSMakePoint(0, 0);
          [WertAXFeld setFloatValue:(10.0+ einlauflaenge)];
          [WertAYFeld setFloatValue:50.0];
@@ -1200,7 +1213,7 @@ return returnInt;
          NSNumber* KoordinateBY=[NSNumber numberWithFloat:offsety+[WertBYFeld floatValue]];
 
          
-         NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:KoordinateAX, @"ax",KoordinateAY,@"ay",KoordinateBX, @"bx",KoordinateBY,@"by" ,[NSNumber numberWithInt:0],@"index", nil];
+         NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:KoordinateAX, @"ax",KoordinateAY,@"ay",KoordinateBX, @"bx",KoordinateBY,@"by" ,[NSNumber numberWithInt:0],@"pwm",[NSNumber numberWithInt:0],@"index", nil];
          
          [KoordinatenTabelle addObject:tempDic];
 
@@ -1378,10 +1391,12 @@ return returnInt;
       {
          datensatzok = 1;
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
-      
+         //NSLog(@"cncindex: %d distanz OK. distA: %2.2f distB: %2.2f",cncindex,distA,distB);
+
       }
-      else {
-         NSLog(@"cncindex: %d distanz zu kurz. distA: %2.2f distB: %2.2f",cncindex,distA,distB);
+      else 
+      {
+         NSLog(@"cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",cncindex,distA,distB);
 
       }
       
@@ -1632,6 +1647,8 @@ return returnInt;
    
    [KoordinatenTabelle setArray:tempKoordinatenTabelle];
    [self updateIndex];
+   [ProfilGraph setStepperposition:0];
+   [ProfilGraph setNeedsDisplay:YES];
    
 	NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[NotificationDic setObject:KoordinatenTabelle forKey:@"koordinatentabelle"];
@@ -5700,7 +5717,7 @@ return returnInt;
                                       otherButton:nil
                         informativeTextWithFormat:info];
    
-   NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0, 0, 200, 24)];
+   NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0,0,200,24)];
    [input setStringValue:defaultValue];
    [alert setAccessoryView:input];
    //[alert addButtonWithTitle:@"ax"];
@@ -5709,10 +5726,14 @@ return returnInt;
    {
       [input validateEditing];
       return [input stringValue];
-   } else if (button == NSAlertAlternateReturn) 
+   } 
+   else if (button == NSAlertAlternateReturn) 
    {
+      [input release];
       return nil;
-   } else {
+   } 
+   else 
+   {
       NSAssert1(NO, @"Invalid input dialog button %d", button);
       return nil;
    }
@@ -5746,7 +5767,6 @@ return returnInt;
    //NSLog(@"reportElementSichern ElementArray: %@",[ElementArray description]);
    
    NSDictionary* neuesElementDic = [NSDictionary dictionaryWithObjectsAndKeys:ElementArray,@"elementarray",neuerName,@"name", nil];
-
    
    int erfolg=0;
    NSLog(@"ElementSichern");
