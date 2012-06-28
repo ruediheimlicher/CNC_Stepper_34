@@ -5647,8 +5647,8 @@ return returnInt;
       
       //Schneiden an Blockunterkante links - einstichy
       
-      PositionA.x = EckeLinksUnten.x-einstichx; // Nicht bis Anschlag fahren
-      PositionB.x = EckeLinksUnten.x-einstichx;
+      PositionA.x = EckeLinksUnten.x-einstichx+1; // Nicht bis Anschlag fahren
+      PositionB.x = EckeLinksUnten.x-einstichx+1;
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
@@ -6919,6 +6919,8 @@ return returnInt;
 
 - (IBAction)reportProfilOberseiteTask:(id)sender
 {
+   NSDate *anfang = [NSDate date];
+
    [CNC_Stoptaste setState:0];
    //[self reportOberkanteAnfahren:NULL];
    [CNC_Neutaste performClick:NULL];
@@ -6938,6 +6940,9 @@ return returnInt;
    [CNC_BlockAnfuegenTaste performClick:NULL]; 
    [RechtsLinksRadio setSelectedSegment:1];
    [RechtsLinksRadio  performClick:NULL]; 
+   double delta = [anfang timeIntervalSinceNow];
+   NSLog(@"delta: %f",delta);
+   
 }
 
 - (IBAction)reportProfilUnterseiteTask:(id)sender
@@ -7158,23 +7163,23 @@ return returnInt;
       {
          case 0xAA:
          {
-            NSLog(@"AVR End Abschnitt von A");
+          //  NSLog(@"AVR End Abschnitt von A");
             
          }break;
          
          case 0xAB:
          {
-            NSLog(@"AVR End Abschnitt von B");
+          //  NSLog(@"AVR End Abschnitt von B");
          }break;
             
          case 0xAC:
          {
-            NSLog(@"AVR End Abschnitt von C");
+          //  NSLog(@"AVR End Abschnitt von C");
          }break;
             
          case 0xAD:
          {
-            NSLog(@"AVR End Abschnitt von D");
+          //  NSLog(@"AVR End Abschnitt von D");
          }break;
             
          case 0xB5:

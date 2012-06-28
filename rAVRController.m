@@ -156,7 +156,7 @@ private void button4_Click(object sender, EventArgs e)
          case USBTASTE:
          {
             NSLog(@"wait USB");
-            [self performSelector:@selector (USBOpen) withObject:NULL afterDelay:3];
+            [self performSelector:@selector (USBOpen) withObject:NULL afterDelay:2];
 
          }break;
          case ANDERESEITEANFAHREN:
@@ -332,9 +332,39 @@ private void button4_Click(object sender, EventArgs e)
 
        Stepperposition=0;
        [AVR setBusy:1];
+       newsendbuffer=malloc(32);
+       
+       NSMutableArray* tempSchnittdatenArray=(NSMutableArray*)[SchnittDatenArray objectAtIndex:Stepperposition];
+       //[tempSchnittdatenArray addObject:[NSNumber numberWithInt:[AVR pwm]]];
+       NSScanner *theScanner;
+       unsigned	  value;
+       //NSLog(@"writeCNCAbschnitt tempSchnittdatenArray count: %d",[tempSchnittdatenArray count]);
+       //NSLog(@"tempSchnittdatenArray object 20: %d",[[tempSchnittdatenArray objectAtIndex:20]intValue]);
+       //NSLog(@"loop start");
+       int i=0;
+       for (i=0;i<[tempSchnittdatenArray count];i++)
+       {
+          //NSLog(@"i: %d tempString: %@",i,tempString);
+          int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
+          //           fprintf(stderr,"%d\t",tempWert);
+          NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
+          
+          //theScanner = [NSScanner scannerWithString:[[tempSchnittdatenArray objectAtIndex:i]stringValue]];
+          theScanner = [NSScanner scannerWithString:tempHexString];
+          if ([theScanner scanHexInt:&value])
+          {
+             newsendbuffer[i] = (char)value;
+             //NSLog(@"writeCNCAbschnitt: index: %d	string: %@	hexstring: %@ value: %X	buffer: %x",i,tempString,tempHexString, value,sendbuffer[i]);
+             //NSLog(@"writeCNC i: %d	Hexstring: %@ value: %d",i,tempHexString,value);
+          }
+          else
+          {
+             NSRunAlertPanel (@"Invalid data format", @"Please only use hex values between 00 and FF.", @"OK", nil, nil);
+             return;
+          }
+       }
+      
        [self writeCNCAbschnitt];
-       //int result = rawhid_recv(0, receivebuffer, 64, 200);
-       //NSLog(@"result: %d receivebuffer: %d",result, receivebuffer[0]);
        //NSLog(@"readUSB Start Timer");
        
        // home ist 1 wenn homebutton gedrückt ist
@@ -440,28 +470,18 @@ private void button4_Click(object sender, EventArgs e)
          unsigned	  value;
          //NSLog(@"writeCNCAbschnitt tempSchnittdatenArray count: %d",[tempSchnittdatenArray count]);
          //NSLog(@"tempSchnittdatenArray object 20: %d",[[tempSchnittdatenArray objectAtIndex:20]intValue]);
-         
+         //NSLog(@"loop start");
+ //        NSDate *anfang = [NSDate date];
          for (i=0;i<[tempSchnittdatenArray count];i++)
          {
-            
-           //if (i<5)
-           {
-              //NSLog(@"WriteCNCAbschnitt i: %d value: %d",i,[[tempSchnittdatenArray objectAtIndex:i]intValue]);
-           }
-            NSString* tempString=[[tempSchnittdatenArray objectAtIndex:i]stringValue];
-            //NSLog(@"i: %d tempString: %@",i,tempString);
-            int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
+             int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
  //           fprintf(stderr,"%d\t",tempWert);
              NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
-          
-            //theScanner = [NSScanner scannerWithString:[[tempSchnittdatenArray objectAtIndex:i]stringValue]];
             theScanner = [NSScanner scannerWithString:tempHexString];
             if ([theScanner scanHexInt:&value])
             {
                sendbuffer[i] = (char)value;
-               //NSLog(@"writeCNCAbschnitt: index: %d	string: %@	hexstring: %@ value: %X	buffer: %x",i,tempString,tempHexString, value,sendbuffer[i]);
-               //NSLog(@"writeCNC i: %d	Hexstring: %@ value: %d",i,tempHexString,value);
-            }
+             }
             else
             {
                NSRunAlertPanel (@"Invalid data format", @"Please only use hex values between 00 and FF.", @"OK", nil, nil);
@@ -471,6 +491,9 @@ private void button4_Click(object sender, EventArgs e)
             
             //sendbuffer[i]=(char)[[tempSchnittdatenArray objectAtIndex:i]UTF8String];
          }
+ //        double delta = [anfang timeIntervalSinceNow];
+ //        NSLog(@"delta: %f",delta);
+
          //fprintf(stderr,"\n");
          
          //sendbuffer[20] = pwm;
@@ -526,12 +549,6 @@ private void button4_Click(object sender, EventArgs e)
                  sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19]);
           */
          
-         // Rest auffüllen
-         for (i=[tempSchnittdatenArray count];i<32;i++)
-         {
-            sendbuffer[i] = 0;
-         }
-         
          
          //NSLog(@"writeCNCAbschnitt  Stepperposition: %d ax: %2.2f ay: %2.2fpwm: %d",Stepperposition,sendbuffer[20]);         
          
@@ -541,7 +558,38 @@ private void button4_Click(object sender, EventArgs e)
          //NSLog(@"writeCNCAbschnitt  Stepperposition: %d ",Stepperposition);
          
          Stepperposition++;
+        if (Stepperposition<[SchnittDatenArray count]-1)
+        {
+         NSMutableArray* tempNewSchnittdatenArray=(NSMutableArray*)[SchnittDatenArray objectAtIndex:Stepperposition];
+         //[tempSchnittdatenArray addObject:[NSNumber numberWithInt:[AVR pwm]]];
+         NSScanner *theNewScanner;
+         unsigned	  newvalue;
+         //NSLog(@"writeCNCAbschnitt tempSchnittdatenArray count: %d",[tempSchnittdatenArray count]);
+         //NSLog(@"tempSchnittdatenArray object 20: %d",[[tempSchnittdatenArray objectAtIndex:20]intValue]);
+         //NSLog(@"loop start");
          
+         for (i=0;i<[tempNewSchnittdatenArray count];i++)
+         {
+            //NSLog(@"i: %d tempString: %@",i,tempString);
+            int tempWert=[[tempNewSchnittdatenArray objectAtIndex:i]intValue];
+            //           fprintf(stderr,"%d\t",tempWert);
+            NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
+            
+            theNewScanner = [NSScanner scannerWithString:tempHexString];
+            if ([theNewScanner scanHexInt:&newvalue])
+            {
+               newsendbuffer[i] = (char)newvalue;
+               //NSLog(@"writeCNCAbschnitt: index: %d	string: %@	hexstring: %@ value: %X	buffer: %x",i,tempString,tempHexString, value,sendbuffer[i]);
+               //NSLog(@"writeCNC i: %d	Hexstring: %@ value: %d",i,tempHexString,value);
+            }
+            else
+            {
+               NSRunAlertPanel (@"Invalid data format", @"Please only use hex values between 00 and FF.", @"OK", nil, nil);
+               return;
+            }
+         }
+        } // if count
+
          free (sendbuffer);
       }
 	}
@@ -828,7 +876,7 @@ private void button4_Click(object sender, EventArgs e)
                case 0xB5:
                {
                   NSLog(@"Anschlag A home first");
-                  [HomeAnschlagSet addIndex:0xBA5];
+                  [HomeAnschlagSet addIndex:0xB5];
                }break;
                   
                case 0xB6:
@@ -840,7 +888,7 @@ private void button4_Click(object sender, EventArgs e)
                case 0xB7:
                {
                   NSLog(@"Anschlag C home first");
-                  [HomeAnschlagSet addIndex:0xB75];
+                  [HomeAnschlagSet addIndex:0xB7];
                }break;
                   
                case 0xB8:
@@ -875,7 +923,7 @@ private void button4_Click(object sender, EventArgs e)
 
                case 0xD0:
                {
-                  NSLog(@"letzter Abschnitt");
+                  //NSLog(@"letzter Abschnitt");
                   [NotificationDic setObject:AbschnittFertig forKey:@"abschnittfertig"];
                   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
                   [nc postNotificationName:@"usbread" object:self userInfo:NotificationDic];

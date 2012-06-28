@@ -27,10 +27,11 @@
     struct Abschnitt * prev;
  };
  
+#define NSLog(...) 0
 
 
 // int rawhid_open(int max, int vid, int pid, int usage_page, int usage)
-//extern int rawhid_recv( );
+// extern int rawhid_recv( );
 
 @interface IOWarriorWindowController : NSObject
 {
@@ -88,6 +89,8 @@
    int               pwm;
    int               halt;
     NSMutableIndexSet* HomeAnschlagSet;
+   char*      newsendbuffer;
+  
 }
 
 

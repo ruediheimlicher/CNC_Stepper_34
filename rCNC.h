@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "rUtils.h"
 
+
 @interface rCNC : NSObject 
 {
 	NSMutableArray*		DatenArray;

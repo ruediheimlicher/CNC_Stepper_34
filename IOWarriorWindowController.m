@@ -223,7 +223,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
       const char* prod = get_prod();
       //fprintf(stderr,"prod: %s\n",prod);
       NSString* Prod = [NSString stringWithUTF8String:prod];
-      NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
+      //NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
       NSDictionary* USBDatenDic = [NSDictionary dictionaryWithObjectsAndKeys:Prod,@"prod",Manu,@"manu", nil];
       [AVR setUSBDaten:USBDatenDic];
     //  NSNotificationCenter *nc=[NSNotificationCenter defaultCenter];

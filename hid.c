@@ -18,7 +18,7 @@
 
 #define BUFFER_SIZE 64
 
-#define printf(...) // comment this out to get lots of info printed
+//#define printf(...) // comment this out to get lots of info printed
 
 static IONotificationPortRef    gNotifyPort;
 static io_iterator_t             gAddedIter;
@@ -94,7 +94,7 @@ int rawhid_recv(int num, void *buf, int len, int timeout)
 			break;
 		}
 		if (!hid->open) {
-			printf("rawhid_recv, device not open\n");
+			//printf("rawhid_recv, device not open\n");
 			ret = -1;
 			break;
 		}
@@ -113,18 +113,18 @@ int rawhid_recv(int num, void *buf, int len, int timeout)
 static void add_hid(hid_t *h)
 {
 
-   fprintf(stderr, "add_hid\n");
+//   fprintf(stderr, "add_hid\n");
    //IOHIDDeviceRef* r= &h->ref;
    
    CFTypeRef prod = IOHIDDeviceGetProperty(h->ref, CFSTR(kIOHIDProductKey));
    const char* prodstr = CFStringGetCStringPtr(prod, kCFStringEncodingMacRoman);
-   fprintf(stderr,"prodstr: %s\n",prodstr);
+//   fprintf(stderr,"prodstr: %s\n",prodstr);
    
   
    CFTypeRef prop= IOHIDDeviceGetProperty(h->ref,CFSTR(kIOHIDManufacturerKey));
    //CFStringRef manu = (CFStringRef)prop;
    const char* manustr = CFStringGetCStringPtr(prop, kCFStringEncodingMacRoman);
-   fprintf(stderr,"manustr: %s\n",manustr);
+//   fprintf(stderr,"manustr: %s\n",manustr);
    
 	if (!first_hid || !last_hid) 
    {
@@ -240,7 +240,7 @@ int rawhid_send(int num, void *buf, int len, int timeout)
    {
 		//fprintf(stderr,"enter run loop (send)\n");
 		CFRunLoopRun();
-		fprintf(stderr,"leave run loop (send)\n");
+//		fprintf(stderr,"leave run loop (send)\n");
 		if (result > -100) break;
 		if (!hid->open) 
       {
@@ -367,7 +367,7 @@ int rawhid_open(int max, int vid, int pid, int usage_page, int usage)
       CFRelease(hid_manager);
       return 0;
    }
-	printf("run loop\n");
+//	printf("run loop\n");
 	// let it do the callback for all devices
 	while (CFRunLoopRunInMode(kCFRunLoopDefaultMode, 0, true) == kCFRunLoopRunHandledSource) ;
 	// count up how many were added by the callback
@@ -430,7 +430,7 @@ static void timeout_callback(CFRunLoopTimerRef timer, void *info)
 void output_callback(void *context, IOReturn ret, void *sender,
                      IOHIDReportType type, uint32_t id, uint8_t *data, CFIndex len)
 {
-	fprintf(stderr,"output_callback, r=%d\n", ret);
+	//fprintf(stderr,"output_callback, r=%d\n", ret);
 	if (ret == kIOReturnSuccess) 
    {
 		*(int *)context = len;
@@ -447,7 +447,7 @@ static void detach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDevic
 {
 	hid_t *p;
    
-	fprintf(stderr,"detach callback\n");
+	//fprintf(stderr,"detach callback\n");
    usbstatus=0;
 	for (p = first_hid; p; p = p->next) {
 		if (p->ref == dev) 
@@ -465,7 +465,7 @@ static void attach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDevic
 {
    struct hid_struct *h;
    
-	fprintf(stderr,"attach callback\n");
+	//fprintf(stderr,"attach callback\n");
    //
 	if (IOHIDDeviceOpen(dev, kIOHIDOptionsTypeNone) != kIOReturnSuccess) return;
 	h = (hid_t *)malloc(sizeof(hid_t));
