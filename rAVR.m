@@ -1185,13 +1185,13 @@ return returnInt;
          NSLog(@"reportStartKnopf count 0");
          NSPoint tempStartPunkt=NSMakePoint(0, 0);
          [WertAXFeld setFloatValue:(10.0+ einlauflaenge)];
-         [WertAYFeld setFloatValue:50.0];
+         [WertAYFeld setFloatValue:30.0];
          
          [WertAXStepper setFloatValue:[WertAXFeld intValue]];
          [WertAYStepper setFloatValue:[WertAYFeld intValue]];
 
          [WertBXFeld setFloatValue:(10.0+ einlauflaenge)];
-         [WertBYFeld setFloatValue:50.0];
+         [WertBYFeld setFloatValue:30.0];
          
          [WertBXStepper setFloatValue:[WertBXFeld intValue]];
          [WertBYStepper setFloatValue:[WertBYFeld intValue]];
@@ -1223,6 +1223,7 @@ return returnInt;
          
          [ProfilGraph setNeedsDisplay:YES];
          [SchnittdatenArray removeAllObjects];
+         [NeuesElementTaste setEnabled:YES];
          
       }
    //   [DC_Taste setState:0];
@@ -1599,7 +1600,7 @@ return returnInt;
       }
 		
       [CNCDatenArray addObject:tempSteuerdatenDic];
-      NSArray* tempSchnittdatenArray = [CNC SchnittdatenVonDic:tempSteuerdatenDic];
+      //NSArray* tempSchnittdatenArray = [CNC SchnittdatenVonDic:tempSteuerdatenDic];
       //NSLog(@"tempSchnittdatenArray: %@",[tempSchnittdatenArray description]);
 		[SchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
       //NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
@@ -4032,6 +4033,10 @@ return returnInt;
    
 	return;
   }
+- (IBAction)reportNewElement:(id)sender
+{
+   
+}
 
 - (IBAction)reportNeueLinie:(id)sender
 {
@@ -5914,6 +5919,7 @@ return returnInt;
 	[CNC_Sendtaste setEnabled:NO];
 	[CNC_Starttaste setEnabled:YES];
    [CNC_Stoptaste setEnabled:NO];
+   [NeuesElementTaste setEnabled:NO];
 
    [PositionFeld setIntValue:0];
    [PositionFeld setStringValue:@""];

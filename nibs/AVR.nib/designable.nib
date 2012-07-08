@@ -274,7 +274,7 @@
 												<string key="NSFrame">{{18, 563}, {60, 60}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="975904358"/>
+												<reference key="NSNextKeyView" ref="680485493"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="748799718">
@@ -887,7 +887,7 @@
 												<string key="NSFrame">{{42, 537}, {35, 22}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="493025431"/>
+												<reference key="NSNextKeyView" ref="975904358"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<int key="NSTag">1001</int>
 												<bool key="NSEnabled">YES</bool>
@@ -987,7 +987,7 @@
 												<string key="NSFrame">{{557, 636}, {39, 19}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="680210129"/>
+												<reference key="NSNextKeyView" ref="1052012373"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="372818842">
@@ -1204,7 +1204,7 @@
 												<string key="NSFrame">{{616, 633}, {27, 19}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="1052012373"/>
+												<reference key="NSNextKeyView" ref="704775615"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="894528843">
@@ -1277,7 +1277,7 @@
 														<string key="NSFrame">{{1, 1}, {1192, 8}}</string>
 														<reference key="NSSuperview" ref="996991511"/>
 														<reference key="NSWindow"/>
-														<reference key="NSNextKeyView"/>
+														<reference key="NSNextKeyView" ref="552804168"/>
 														<int key="NSViewLayerContentsRedrawPolicy">2</int>
 														<string key="NSReuseIdentifierKey">_NS:632</string>
 													</object>
@@ -1343,7 +1343,7 @@
 												<string key="NSFrame">{{181, 613}, {142, 20}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="704775615"/>
+												<reference key="NSNextKeyView" ref="680210129"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSSegmentedCell" key="NSCell" id="1043738112">
@@ -1394,7 +1394,7 @@
 												<string key="NSFrame">{{89, 539}, {25, 85}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="680485493"/>
+												<reference key="NSNextKeyView" ref="493025431"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSSliderCell" key="NSCell" id="137525192">
@@ -1508,10 +1508,10 @@
 											<object class="NSButton" id="275184602">
 												<reference key="NSNextResponder" ref="689186444"/>
 												<int key="NSvFlags">268</int>
-												<string key="NSFrame">{{335, 465}, {48, 23}}</string>
+												<string key="NSFrame">{{335, 467}, {48, 23}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="26190041"/>
+												<reference key="NSNextKeyView" ref="135347990"/>
 												<int key="NSViewLayerContentsRedrawPolicy">2</int>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSButtonCell" key="NSCell" id="541333855">
@@ -3048,6 +3048,29 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												<int key="NSBoxType">0</int>
 												<int key="NSTitlePosition">0</int>
 												<bool key="NSTransparent">NO</bool>
+											</object>
+											<object class="NSButton" id="135347990">
+												<reference key="NSNextResponder" ref="689186444"/>
+												<int key="NSvFlags">268</int>
+												<string key="NSFrame">{{391, 466}, {100, 25}}</string>
+												<reference key="NSSuperview" ref="689186444"/>
+												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="26190041"/>
+												<int key="NSViewLayerContentsRedrawPolicy">2</int>
+												<bool key="NSEnabled">YES</bool>
+												<object class="NSButtonCell" key="NSCell" id="601075423">
+													<int key="NSCellFlags">-1543373312</int>
+													<int key="NSCellFlags2">134217728</int>
+													<string key="NSContents">neues Element</string>
+													<reference key="NSSupport" ref="686651050"/>
+													<reference key="NSControlView" ref="135347990"/>
+													<int key="NSButtonFlags">-2033434369</int>
+													<int key="NSButtonFlags2">160</int>
+													<string key="NSAlternateContents"/>
+													<string key="NSKeyEquivalent"/>
+													<int key="NSPeriodicDelay">400</int>
+													<int key="NSPeriodicInterval">75</int>
+												</object>
 											</object>
 										</array>
 										<string key="NSFrame">{{10, 33}, {1213, 659}}</string>
@@ -5317,6 +5340,22 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 					<int key="connectionID">2129</int>
 				</object>
 				<object class="IBConnectionRecord">
+					<object class="IBActionConnection" key="connection">
+						<string key="label">reportNeueLinie:</string>
+						<reference key="source" ref="1068649839"/>
+						<reference key="destination" ref="135347990"/>
+					</object>
+					<int key="connectionID">2133</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">NeuesElementTaste</string>
+						<reference key="source" ref="1068649839"/>
+						<reference key="destination" ref="135347990"/>
+					</object>
+					<int key="connectionID">2134</int>
+				</object>
+				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="751885620"/>
@@ -5486,12 +5525,13 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="971422681"/>
 							<reference ref="975904358"/>
 							<reference ref="973410250"/>
-							<reference ref="275184602"/>
 							<reference ref="26190041"/>
 							<reference ref="225590066"/>
 							<reference ref="382493987"/>
 							<reference ref="558774561"/>
 							<reference ref="548292517"/>
+							<reference ref="275184602"/>
+							<reference ref="135347990"/>
 						</array>
 						<reference key="parent" ref="605208388"/>
 					</object>
@@ -7782,6 +7822,19 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="object" ref="1027401102"/>
 						<reference key="parent" ref="268963023"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2130</int>
+						<reference key="object" ref="135347990"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="601075423"/>
+						</array>
+						<reference key="parent" ref="689186444"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2131</int>
+						<reference key="object" ref="601075423"/>
+						<reference key="parent" ref="135347990"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -8071,6 +8124,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<string key="2124.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="2125.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="2126.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="2130.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="2131.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="289.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="290.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="383.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -8165,7 +8220,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">2129</int>
+			<int key="maxID">2134</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
@@ -8197,6 +8252,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="reportManUp:">id</string>
 						<string key="reportNeuTaste:">id</string>
 						<string key="reportNeueZeile:">id</string>
+						<string key="reportNewElement:">id</string>
 						<string key="reportOberkanteAnfahren:">id</string>
 						<string key="reportOberseiteTaste:">id</string>
 						<string key="reportPWMStepper:">id</string>
@@ -8323,6 +8379,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 						<object class="IBActionInfo" key="reportNeueZeile:">
 							<string key="name">reportNeueZeile:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportNewElement:">
+							<string key="name">reportNewElement:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="reportOberkanteAnfahren:">
@@ -8505,6 +8565,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="IndexStepper">id</string>
 						<string key="LagePop">id</string>
 						<string key="ManufactorerFeld">id</string>
+						<string key="NeuesElementTaste">id</string>
 						<string key="OberkantenStepper">id</string>
 						<string key="OberseiteCheckbox">id</string>
 						<string key="OberseiteTaste">id</string>
@@ -8787,6 +8848,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 						<object class="IBToOneOutletInfo" key="ManufactorerFeld">
 							<string key="name">ManufactorerFeld</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="NeuesElementTaste">
+							<string key="name">NeuesElementTaste</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="OberkantenStepper">

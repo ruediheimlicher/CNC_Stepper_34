@@ -256,6 +256,7 @@
    IBOutlet id					HomeTaste;
 
    IBOutlet id					SeitenVertauschenTaste;
+  IBOutlet id					NeuesElementTaste;
    
    IBOutlet	id					AbmessungX;
    IBOutlet	id					AbmessungY;
@@ -320,7 +321,7 @@
 - (IBAction)reportWertBYStepper:(id)sender;
 
 - (IBAction)reportPWMStepper:(id)sender;
-
+- (IBAction)reportNewElement:(id)sender;
 - (IBAction)reportManLeft:(id)sender;
 - (IBAction)reportManRight:(id)sender;
 - (IBAction)reportManUp:(id)sender;

@@ -27,7 +27,7 @@
     struct Abschnitt * prev;
  };
  
-#define NSLog(...) 0
+//#define NSLog(...) 0
 
 
 // int rawhid_open(int max, int vid, int pid, int usage_page, int usage)
