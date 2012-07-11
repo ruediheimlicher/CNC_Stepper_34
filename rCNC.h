@@ -15,6 +15,7 @@
 	NSMutableArray*		DatenArray;
 	int			speed;
 	int			steps;
+   float red_pwm;
 
 }
 - (int)steps;
@@ -23,6 +24,7 @@
 - (NSArray*)DatenArray;
 - (void)setSpeed:(float)dieGeschwindigkeit;
 - (int)speed;
+- (void)setredpwm:(float)red_pwmwert;
 - (NSDictionary*)SteuerdatenVonDic:(NSDictionary*)derDatenDic;
 - (NSArray*)SchnittdatenVonDic:(NSDictionary*)derDatenDic;
 

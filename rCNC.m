@@ -12,7 +12,7 @@ uint8_t vs[4]={9,5,6,10};	//Tabelle Vollschritt Rechtslauf
 uint8_t hs[8]={9,1,5,4,6,2,10,8}; //Tabelle Halbschritt Rechtslauf
 
 float full_pwm = 1;
-float red_pwm = 0.3;
+
 
 
 @implementation rCNC
@@ -25,6 +25,7 @@ if ((self = [super init]) != nil)
 	
 	speed=10;
 	steps=48;
+   red_pwm = 0.4;
 
 return self;
 }
@@ -96,6 +97,12 @@ return NULL;
 {
 	speed = dieGeschwindigkeit; // Vorschubgeschwindigkeit
 }
+
+- (void)setredpwm:(float)red_pwmwert
+{
+	red_pwm = red_pwmwert; // reduzierte Heizleistung
+}
+
 
 - (int)speed
 {
@@ -172,6 +179,12 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 	float DistanzAY= EndPunktA.y - StartPunktA.y;
 	float DistanzBY= EndPunktB.y - StartPunktB.y;
    
+   [tempDatenDic setObject:[NSNumber numberWithFloat:(float)DistanzAX] forKey: @"distanzax"];
+   [tempDatenDic setObject:[NSNumber numberWithFloat:(float)DistanzAY] forKey: @"distanzay"];
+   [tempDatenDic setObject:[NSNumber numberWithFloat:(float)DistanzBX] forKey: @"distanzbx"];
+   [tempDatenDic setObject:[NSNumber numberWithFloat:(float)DistanzBY] forKey: @"distanzby"];
+
+   
 	float Distanz= sqrt(pow(DistanzX,2)+ pow(DistanzY,2));	// effektive Distanz
 	float DistanzA= hypotf(DistanzAX,DistanzAY);	// effektive Distanz A
 	float DistanzB= hypotf(DistanzBX,DistanzBY);	// effektive Distanz B
@@ -214,7 +227,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
       }
 
    }
-   NSLog(@"motorstatus: DistanzAX:\t%2.2f\t DistanzAY:\t%2.2f\t DistanzBX:\t%2.2f\t DistanzBY:\t%2.2f\tmotorstatus: %d",DistanzAX,DistanzAY,DistanzBX,DistanzBY,motorstatus);
+   //NSLog(@"motorstatus: DistanzAX:\t%2.2f\t DistanzAY:\t%2.2f\t DistanzBX:\t%2.2f\t DistanzBY:\t%2.2f\tmotorstatus: %d",DistanzAX,DistanzAY,DistanzBX,DistanzBY,motorstatus);
 
 //   NSLog(@"motorstatus: %d",motorstatus);
    /*
@@ -288,7 +301,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
     */
    
    float relZeit= fmaxf(ZeitA,ZeitB);                             // relevante Zeit: grössere Zeit gibt korrekte max Schnittgeschwindigkeit 
-
+   //NSLog(@"ZeitA: %2.4f ZeitB: %2.4f",ZeitA,ZeitB);
 	int SchritteX=steps*DistanzX;													//	Schritte in X-Richtung
 	int SchritteAX=steps*DistanzAX;													//	Schritte in X-Richtung A
 	int SchritteBX=steps*DistanzBX;													//	Schritte in X-Richtung B
@@ -310,12 +323,19 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
    
    [tempDatenDic setObject:[NSNumber numberWithFloat:(float)SchritteX] forKey: @"schrittex"];
    [tempDatenDic setObject:[NSNumber numberWithFloat:(float)SchritteAX] forKey: @"schritteax"];
+   [tempDatenDic setObject:[NSNumber numberWithFloat:(float)SchritteBX] forKey: @"schrittebx"];
 
 	//NSLog(@"SchritteX raw %d",SchritteX);
 	
 	int SchritteY=steps*DistanzY;	//	Schritte in Y-Richtung
 	int SchritteAY=steps*DistanzAY;	//	Schritte in Y-Richtung A
 	int SchritteBY=steps*DistanzBY;	//	Schritte in Y-Richtung B
+   
+   //NSLog(@"delayax: %2.4f delaybx: %2.4f",ZeitA/SchritteAX*10000,ZeitB/SchritteBX*10000);
+   [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitA/SchritteAX*10000)] forKey: @"delayax"];
+   [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitA/SchritteAY*10000)] forKey: @"delayay"];
+   [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitB/SchritteBX*10000)] forKey: @"delaybx"];
+   [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitB/SchritteBY*10000)] forKey: @"delayby"];
    
    if (DistanzA< 0.5 || DistanzB < 0.5)
    {
@@ -1752,7 +1772,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    //float tiefe=10;// Schlitztiefe
    float dicke=0.5; // Schlitzbreite
    float full_pwm = 1;
-   float red_pwm = 0.3;
+   //red_pwm = 0.4;
    NSMutableArray* EinlaufpunkteArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 
    NSPoint Startpunkt = NSMakePoint(0,0);
@@ -1793,7 +1813,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    //float tiefe=10;// Schlitztiefe
    float dicke=0.5; // Schlitzbreite
    float full_pwm = 1;
-   float red_pwm = 0.3;
+   
 
    NSMutableArray* AuslaufpunkteArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 

@@ -256,10 +256,12 @@
    IBOutlet id					HomeTaste;
 
    IBOutlet id					SeitenVertauschenTaste;
-  IBOutlet id					NeuesElementTaste;
+   IBOutlet id					NeuesElementTaste;
    
    IBOutlet	id					AbmessungX;
    IBOutlet	id					AbmessungY;
+   
+   IBOutlet	id					red_pwmFeld;
    
    IBOutlet id					RechtsLinksRadio;
 

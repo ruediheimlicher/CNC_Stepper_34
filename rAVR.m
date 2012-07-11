@@ -431,6 +431,19 @@ return returnInt;
             {
                minimaldistanz = 0.5;
             }
+            
+            
+            if ([tempPListDic objectForKey:@"redpwm"])
+            {
+               NSLog(@"redpwm: %2.2f",[[tempPListDic objectForKey:@"redpwm"]floatValue]);
+               //[Spannweite setIntValue:[[tempPListDic objectForKey:@"minimaldistanz"]intValue]];
+              [red_pwmFeld setFloatValue: [[tempPListDic objectForKey:@"redpwm"]floatValue]];
+            }
+            else
+            {
+               [red_pwmFeld setFloatValue:0.4];
+            }
+            
             return tempPListDic;
             [tempPListDic release];
          }
@@ -689,7 +702,7 @@ return returnInt;
 	//[ProfilBOffsetXFeld setIntValue:0];
    
    NSNumberFormatter* SimpleFormatter=[[[NSNumberFormatter alloc] init] autorelease];;
-   [SimpleFormatter setFormat:@"###.0;0.0;(##0.0)"];
+   [SimpleFormatter setFormat:@"###0.0;0.0;(##0.0)"];
    
 //   [ProfilWrenchFeld setFormatter:SimpleFormatter];
 //   [ProfilWrenchFeld setFloatValue:0];
@@ -907,13 +920,34 @@ return returnInt;
    [ProfilWrenchEinheitRadio setState:1 atRow:0 column:0];
    
    [AbbrandFeld setFormatter:SimpleFormatter];
+   [AbbrandFeld setDelegate:self];
+   
+   [red_pwmFeld setFormatter:SimpleFormatter];
+   [red_pwmFeld setDelegate:self];
    
    [DC_PWM setDelegate:self];
    [SpeedFeld setDelegate:self];
 //   [SpeedStepper setIntValue:12];
     [PWMFeld setDelegate:self];
    
-   
+   for (i=0;i<4;i++)
+   {
+      int motor=i;
+      int aktuellermotor = motor;
+      int motorstatus=0;
+      motorstatus |= (1<<4);
+      aktuellermotor <<=6;
+      motorstatus |= aktuellermotor;
+      int neuermotor = aktuellermotor;
+      neuermotor >>=6;
+      // motor += aktuellermotor;
+      
+      
+      NSLog(@"i: %d motor: %d aktuellermotor: %d neuermotor: %d motorstatus: %d",i,motor, aktuellermotor,neuermotor,motorstatus);
+      
+      
+   }
+   [[self window]makeFirstResponder: ProfilGraph];
 }
 
 
@@ -1185,13 +1219,13 @@ return returnInt;
          NSLog(@"reportStartKnopf count 0");
          NSPoint tempStartPunkt=NSMakePoint(0, 0);
          [WertAXFeld setFloatValue:(10.0+ einlauflaenge)];
-         [WertAYFeld setFloatValue:30.0];
+         [WertAYFeld setFloatValue:40.0];
          
          [WertAXStepper setFloatValue:[WertAXFeld intValue]];
          [WertAYStepper setFloatValue:[WertAYFeld intValue]];
 
          [WertBXFeld setFloatValue:(10.0+ einlauflaenge)];
-         [WertBYFeld setFloatValue:30.0];
+         [WertBYFeld setFloatValue:40.0];
          
          [WertBXStepper setFloatValue:[WertBXFeld intValue]];
          [WertBYStepper setFloatValue:[WertBYFeld intValue]];
@@ -1265,7 +1299,7 @@ return returnInt;
    [HomeTaste setState:0];
    [DC_Taste setState:0];
    [CNC setSpeed:[SpeedFeld intValue]];
-   
+   [CNC setredpwm:[red_pwmFeld floatValue]];
    //NSLog(@"reportStopKnopf [KoordinatenTabelle count]: %d",[KoordinatenTabelle count]);
    if ([KoordinatenTabelle count]<=1)
    {
@@ -1292,7 +1326,6 @@ return returnInt;
    
    NSMutableArray* tempKoordinatenTabelle = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    
-   [CNC setSpeed:[SpeedFeld intValue]];
    int  anzaxplus=0;
    int  anzaxminus=0;
    int  anzayplus=0;
@@ -1437,6 +1470,7 @@ return returnInt;
       
       if ([tempPrevDic objectForKey:@"pwm"])
       {
+          //NSLog(@"i: %d pwm da: %d",i,[[tempPrevDic objectForKey:@"pwm"]intValue]);
          nowpwm = [[tempPrevDic objectForKey:@"pwm"]intValue];
       }
       
@@ -1606,7 +1640,7 @@ return returnInt;
       //NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
       cncindex++;
    }
-//   NSLog(@"CNCDatenArray: %@",[CNCDatenArray description]);
+ //  NSLog(@"CNCDatenArray: %@",[[CNCDatenArray valueForKey:@"pwm"]description]);
 
    
    
@@ -1620,7 +1654,32 @@ return returnInt;
 
    [[SchnittdatenArray lastObject]replaceObjectAtIndex:17 withObject: [NSNumber numberWithInt:lastposition]];
    
-   
+   float wegax=0, wegay=0, wegbx=0, wegby=0;
+    float distanzax=0, distanzay=0, distanzbx=0, distanzby=0;
+   float zeitax=0, zeitay=0,zeitbx=0,zeitby=0;
+   for (i=0;i<[SchnittdatenArray count];i++)
+   {
+      NSDictionary* tempDic = [CNCDatenArray objectAtIndex:i];
+      //NSLog(@"index: %d tempDic: %@",i,[tempDic description]);
+      wegax += [[tempDic objectForKey:@"schritteax"]floatValue]*[[tempDic objectForKey:@"delayax"]floatValue]/1000;
+      wegay += [[tempDic objectForKey:@"schritteay"]floatValue]*[[tempDic objectForKey:@"delayay"]floatValue]/1000;
+      wegbx += [[tempDic objectForKey:@"schrittebx"]floatValue]*[[tempDic objectForKey:@"delaybx"]floatValue]/1000;
+      wegby += [[tempDic objectForKey:@"schritteby"]floatValue]*[[tempDic objectForKey:@"delayby"]floatValue]/1000;
+      zeitax += [[tempDic objectForKey:@"delayax"]floatValue];
+      zeitay += [[tempDic objectForKey:@"delayay"]floatValue];
+      zeitbx += [[tempDic objectForKey:@"delaybx"]floatValue];
+      zeitby += [[tempDic objectForKey:@"delayby"]floatValue];
+
+      distanzax += [[tempDic objectForKey:@"distanzax"]floatValue];
+      distanzay += [[tempDic objectForKey:@"distanzay"]floatValue];
+
+      distanzbx += [[tempDic objectForKey:@"distanzbx"]floatValue];
+      distanzby += [[tempDic objectForKey:@"distanzby"]floatValue];
+
+   }
+//   NSLog(@"index: %d \twegax:\t%2.4f\twegay:\t%2.4f \twegbx:\t%2.4f\twegby:\t%2.4f",i,wegax, wegay, wegbx, wegby);
+//  NSLog(@"index: %d \tdistanzax:\t%2.4f\tdistanzay:\t%2.4f \tdistanzbx:\t%2.4f\tdistanzby:\t%2.4f",i,distanzax, distanzay, distanzbx, distanzby);
+  // NSLog(@"zeitax:\t%2.4f\tzeitay:\t%2.4f \tzeitbx:\t%2.4f\tzeitby:\t%2.4f",zeitax, zeitay, zeitbx, zeitby);
    
    //   [self updateIndex];
    //NSLog(@"Seite A: anzaxplus:%d anzaxminus:%d anzayplus:%d anzayminus:%d",anzaxplus, anzaxminus, anzayplus, anzayminus);
@@ -2014,6 +2073,8 @@ return returnInt;
       [tempPListDic setObject:[NSNumber numberWithInt:[Spannweite intValue]] forKey:@"spannweite"];
       [tempPListDic setObject:[NSNumber numberWithInt:[Portalabstand intValue]] forKey:@"portalabstand"];
       [tempPListDic setObject:[NSNumber numberWithFloat:[AbbrandFeld floatValue]] forKey:@"abbranda"];
+
+      [tempPListDic setObject:[NSNumber numberWithFloat:[red_pwmFeld floatValue]] forKey:@"redpwm"];
 
       //NSLog(@"saveSpeed: gesicherter PListDic: %@",[tempPListDic description]);
       
@@ -5233,6 +5294,7 @@ return returnInt;
 	[nc postNotificationName:@"usbopen" object:self userInfo:tempDic];
    int lastSpeed = [CNC speed];
    [CNC setSpeed:14];
+   [CNC setredpwm:[red_pwmFeld floatValue]];
    float breite = [Blockbreite floatValue];
    float rand=[Einlaufrand floatValue];
    
@@ -5350,7 +5412,8 @@ return returnInt;
    // Lage: 0: Einlauf 1: Auslauf
    
    float full_pwm = 1;
-   float red_pwm = 0.3;
+   float red_pwm = [red_pwmFeld floatValue];
+   [CNC setredpwm:red_pwm];
    int aktuellepwm=[DC_PWM intValue];
    
    int lage=0;
@@ -6461,7 +6524,8 @@ return returnInt;
 	[nc postNotificationName:@"usbopen" object:self userInfo:tempDic];
 
    float full_pwm = 1;
-   float red_pwm = 0.3;
+   float red_pwm = [red_pwmFeld floatValue];
+   [CNC setredpwm:red_pwm];
    int aktuellepwm=[DC_PWM intValue];
    int lastSpeed = [CNC speed];
    int nowpwm =0;
@@ -6474,6 +6538,7 @@ return returnInt;
       [CNC setSpeed:14]; // Schnellgang ohne Schnitt
 
    }
+   
    int lage=0;
    int einstichx = 4;
    int einstichy = 4;
@@ -6787,7 +6852,8 @@ return returnInt;
    NSMutableArray* HomeSchnittdatenArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    int lastSpeed = [CNC speed];
    [CNC setSpeed:14];
-
+   [CNC setredpwm:[red_pwmFeld floatValue]];
+   
    for (i=0;i<[AnfahrtArray count]-1;i++)
 	{
 		// Seite A
@@ -7394,6 +7460,14 @@ return returnInt;
          //[self saveSpeed];
          
       }break;
+         
+         //abbrand: 1005
+         // redpwm: 1006
+         
+      case 1006:
+      {
+         [CNC setredpwm:[[note object] floatValue]];
+      }
          
       case 1010:
       {

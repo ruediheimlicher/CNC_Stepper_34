@@ -401,7 +401,7 @@ private void button4_Click(object sender, EventArgs e)
 //   fprintf(stderr,"dauer2 bis vor switch:\tdauer3 bis nach switch:\tdauer4 vor writeCNCAbschnitt:\tdauer5 nach writeCNCAbschnitt:\tdauer6 nach if endindex:\tdauer7 nach notific:\ttotal:\n");
 
    // Kopfzeile fuer writeCNCAbschnitt
-   fprintf(stderr,"dauer1 vor scanner-loop:\tdauer2 nach scanner-loop:\tdauer3 vor rawhid_send:\tdauer4 nach rawhid_send:\tdauer6:\tdauer7:\ttotal:\n");
+   //fprintf(stderr,"dauer1 vor scanner-loop:\tdauer2 nach scanner-loop:\tdauer3 vor rawhid_send:\tdauer4 nach rawhid_send:\tdauer6:\tdauer7:\ttotal:\n");
 
 }
 
@@ -647,6 +647,8 @@ private void button4_Click(object sender, EventArgs e)
 
       
    }
+   
+   /*
    fprintf(stderr,"%f\t", dauer1*-1);
    fprintf(stderr,"%f\t", dauer2*-1);
    fprintf(stderr,"%f\t", dauer3*-1);
@@ -655,7 +657,7 @@ private void button4_Click(object sender, EventArgs e)
    fprintf(stderr,"%f\t", dauer6*-1);
    fprintf(stderr,"%f\t", dauer7*-1);
    fprintf(stderr,"%f\n", dauer8*-1);
-
+    */
 }
 
 - (void)stopTimer
