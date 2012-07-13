@@ -1245,9 +1245,10 @@ return returnInt;
          //NSNumber* KoordinateBY=[NSNumber numberWithFloat:offsety];
          NSNumber* KoordinateBX=[NSNumber numberWithFloat:offsetx+[WertBXFeld floatValue]];
          NSNumber* KoordinateBY=[NSNumber numberWithFloat:offsety+[WertBYFeld floatValue]];
+         int nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
 
          
-         NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:KoordinateAX, @"ax",KoordinateAY,@"ay",KoordinateBX, @"bx",KoordinateBY,@"by" ,[NSNumber numberWithInt:0],@"pwm",[NSNumber numberWithInt:0],@"index", nil];
+         NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:KoordinateAX, @"ax",KoordinateAY,@"ay",KoordinateBX, @"bx",KoordinateBY,@"by" ,[NSNumber numberWithInt:nowpwm],@"pwm",[NSNumber numberWithInt:0],@"index", nil];
          
          [KoordinatenTabelle addObject:tempDic];
 
@@ -1285,7 +1286,6 @@ return returnInt;
 	{
 		[CNC_Starttaste setState:NO]; 
 		GraphEnd=1;
-		
 	}
 	else 
 	{
@@ -1636,7 +1636,8 @@ return returnInt;
       [CNCDatenArray addObject:tempSteuerdatenDic];
       //NSArray* tempSchnittdatenArray = [CNC SchnittdatenVonDic:tempSteuerdatenDic];
       //NSLog(@"tempSchnittdatenArray: %@",[tempSchnittdatenArray description]);
-		[SchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
+		
+      [SchnittdatenArray addObject:[CNC SchnittdatenVonDic:tempSteuerdatenDic]];
       //NSLog(@"tempSteuerdatenDic: %@",[tempSteuerdatenDic description]);
       cncindex++;
    }
@@ -1660,7 +1661,7 @@ return returnInt;
    for (i=0;i<[SchnittdatenArray count];i++)
    {
       NSDictionary* tempDic = [CNCDatenArray objectAtIndex:i];
-      //NSLog(@"index: %d tempDic: %@",i,[tempDic description]);
+      //NSLog(@"index: %d tempDic pwm: %2.2f",i,[[tempDic objectForKey:@"pwm"]floatValue]);
       wegax += [[tempDic objectForKey:@"schritteax"]floatValue]*[[tempDic objectForKey:@"delayax"]floatValue]/1000;
       wegay += [[tempDic objectForKey:@"schritteay"]floatValue]*[[tempDic objectForKey:@"delayay"]floatValue]/1000;
       wegbx += [[tempDic objectForKey:@"schrittebx"]floatValue]*[[tempDic objectForKey:@"delaybx"]floatValue]/1000;
@@ -5626,6 +5627,7 @@ return returnInt;
        index++;
        */
       
+      
       // Anfahrt von unten: Zuerst schneiden senkrecht noch oben bis Blockrand
       
       // Hochfahren auf Einlauf. Liegt auf gleicher Hoehe, wenn kein wrench
@@ -5656,11 +5658,9 @@ return returnInt;
       //NSLog(@"vor index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       
       float deltaAX = einlaufAX - PositionA.x;
-      //      deltaAY = PositionA.y - einlaufAY;
       deltaAY = einlaufAY - PositionA.y;
       
       PositionA.x +=deltaAX;
-      // PositionA.y -=deltaAY;
       PositionA.y +=deltaAY;
       
       
@@ -5668,7 +5668,6 @@ return returnInt;
       deltaBY =  einlaufBY - PositionB.y;
       
       PositionB.x +=deltaBX;
-      //PositionB.y -=deltaBY;
       PositionB.y +=deltaBY;
       
       
@@ -5678,7 +5677,7 @@ return returnInt;
       //NSLog(@"BlockKoordinatenTabelle Einlauf: %@",[BlockKoordinatenTabelle description]);
       //NSLog(@"reportBlockkonfigurieren nach Schneiden zum Einlauf EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
       
-      
+      // Nach Profil und ev. Ausstich:
       // Auslauf
       lage=1;
       
@@ -5687,13 +5686,15 @@ return returnInt;
       PositionB = NSMakePoint(auslaufBX, auslaufBY);
       //NSLog(@"Auslauf start index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       
-      //Schneiden an Blockrand rechts
+      // Distanz ist unterschiedlich
+      
+      //Schneiden an Blockrand rechts Eventuell Strom red
       
       PositionA.x = EckeRechtsOben.x;
       PositionB.x = EckeRechtsOben.x;
       //NSLog(@"Auslauf Rand rechts index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*red_pwm],@"pwm",nil]];
       index++;
       
       /*
@@ -7110,6 +7111,7 @@ return returnInt;
             
          case NSAlertSecondButtonReturn: // Ignorieren
          {
+            // pwm entfernen
             int i=0;
             for (i=0;i<[SchnittdatenArray count];i++)
             {

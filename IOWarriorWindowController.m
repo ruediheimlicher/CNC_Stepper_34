@@ -883,7 +883,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    if ([[[note object]title]length])
    {
       schliessencounter++;
-      NSLog(@"hat Title");
+      //NSLog(@"hat Title");
       // "New Folder" wird bei 10.6.8 als Titel von open zurueckgegeben. Deshalb ausschliessen(iBook schwarz)
       if (!([[[note object]title]isEqualToString:@"CNC-Eingabe"]||[[[note object]title]isEqualToString:@"New Folder"]))
       {

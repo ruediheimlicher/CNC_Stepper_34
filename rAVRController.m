@@ -311,7 +311,7 @@ private void button4_Click(object sender, EventArgs e)
    if ([[note userInfo]objectForKey:@"pwm"])
    {
       pwm = [[[note userInfo]objectForKey:@"pwm"]intValue];
-//      NSLog(@"USB_SchnittdatenAktion pwm: %d",pwm);
+      NSLog(@"USB_SchnittdatenAktion pwm: %d",pwm);
    }
    
    
@@ -579,7 +579,7 @@ private void button4_Click(object sender, EventArgs e)
           */
          
          
-         //NSLog(@"writeCNCAbschnitt  Stepperposition: %d ax: %2.2f ay: %2.2fpwm: %d",Stepperposition,sendbuffer[20]);         
+         //NSLog(@"writeCNCAbschnitt  Stepperposition: %d  pwm: %d",Stepperposition,sendbuffer[20]);         
          dauer3 = [dateA timeIntervalSinceNow]*1000;
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          dauer4 = [dateA timeIntervalSinceNow]*1000;
@@ -797,8 +797,10 @@ private void button4_Click(object sender, EventArgs e)
       [NotificationDic setObject:Abschnittnummer forKey:@"inposition"];
       
       NSNumber* ladePosition=[NSNumber numberWithInt:(UInt8)buffer[6]];
-      // NSLog(@"**   outposition NSNumber: %d",[outPosition intValue]);
+      
+       //NSLog(@"**   ladePosition NSNumber: %d",[ladePosition intValue]);
       //NSLog(@"**readUSB   buffer 6 %d",(UInt8)buffer[6]);
+      
       [NotificationDic setObject:ladePosition forKey:@"outposition"];
       [NotificationDic setObject:[NSNumber numberWithInt:Stepperposition] forKey:@"stepperposition"];
       
@@ -823,6 +825,7 @@ private void button4_Click(object sender, EventArgs e)
          //NSLog(@"readUSB dauer bis (if Abschnittfertig): %f ms", dauer);
          
          //NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
+         //NSLog(@"readUSB AbschnittFertig:  %X buffer A: %d B: %d C: %d D: %d ",abschnittfertig,(UInt8)buffer[16],(UInt8)buffer[17],(UInt8)buffer[18],(UInt8)buffer[19]); 
          //NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
          
          // NSLog(@"AVRController mausistdown: %d abschnittfertig: %d anzrepeat: %d",mausistdown, abschnittfertig,anzrepeat);
