@@ -1468,10 +1468,10 @@ return returnInt;
       
       int nowpwm = [DC_PWM intValue]; // Standardwert wenn nichts anderes angegeben
       
-      if ([tempPrevDic objectForKey:@"pwm"])
+      if ([tempNowDic objectForKey:@"pwm"])
       {
           //NSLog(@"i: %d pwm da: %d",i,[[tempPrevDic objectForKey:@"pwm"]intValue]);
-         nowpwm = [[tempPrevDic objectForKey:@"pwm"]intValue];
+         nowpwm = [[tempNowDic objectForKey:@"pwm"]intValue];
       }
       
       if (i<10)
