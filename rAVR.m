@@ -336,7 +336,7 @@ return returnInt;
             if ([tempPListDic objectForKey:@"profilwrench"])
             {
                //NSLog(@"profilwrench: %2.2f",[[tempPListDic objectForKey:@"profilwrench"]floatValue]);
-               [ProfilWrenchFeld setFloatValue:[[tempPListDic objectForKey:@"profilwrench"]intValue]];
+               [ProfilWrenchFeld setFloatValue:[[tempPListDic objectForKey:@"profilwrench"]floatValue]];
                
             }
             else
@@ -426,10 +426,12 @@ return returnInt;
                //NSLog(@"minimaldistanz: %d",[[tempPListDic objectForKey:@"minimaldistanz"]floatValue]);
                //[Spannweite setIntValue:[[tempPListDic objectForKey:@"minimaldistanz"]intValue]];
                minimaldistanz = [[tempPListDic objectForKey:@"minimaldistanz"]floatValue];
+               [MinimaldistanzFeld setFloatValue:[[tempPListDic objectForKey:@"minimaldistanz"]floatValue]];
             }
             else
             {
-               minimaldistanz = 0.5;
+               minimaldistanz = 0.8;
+               [MinimaldistanzFeld setFloatValue:0.8];
             }
             
             
@@ -925,6 +927,10 @@ return returnInt;
    [red_pwmFeld setFormatter:SimpleFormatter];
    [red_pwmFeld setDelegate:self];
    
+   [MinimaldistanzFeld setFormatter:SimpleFormatter];
+   [MinimaldistanzFeld setDelegate:self];
+
+   
    [DC_PWM setDelegate:self];
    [SpeedFeld setDelegate:self];
 //   [SpeedStepper setIntValue:12];
@@ -943,7 +949,8 @@ return returnInt;
       // motor += aktuellermotor;
       
       
-      NSLog(@"i: %d motor: %d aktuellermotor: %d neuermotor: %d motorstatus: %d",i,motor, aktuellermotor,neuermotor,motorstatus);
+      //
+      //NSLog(@"i: %d motor: %d aktuellermotor: %d neuermotor: %d motorstatus: %d",i,motor, aktuellermotor,neuermotor,motorstatus);
       
       
    }
@@ -1866,8 +1873,6 @@ return returnInt;
    //NSLog(@"reportPWMSichern");
    //NSLog(@"reportPWMSichern PWM: %d",[DC_PWM intValue]);
    
-   
-   
    int erfolg=0;
    //NSLog(@"PWM Sichern");
    BOOL LibOK=NO;
@@ -1886,8 +1891,6 @@ return returnInt;
    {
       BOOL OrdnerOK=[Filemanager createDirectoryAtURL:LibURL  withIntermediateDirectories:NO  attributes:NULL error:&error];
       //Datenordner ist noch leer
-      
-      
    }
    NSString* PListPfad;
    NSString* PListName = @"CNC.plist";
@@ -1922,9 +1925,66 @@ return returnInt;
       erfolg=[tempPListDic writeToURL:PListURL atomically:YES];
       //NSLog(@"reportPWMSichern erfolg: %d",erfolg);
    }
+   return erfolg;
+}
+
+- (int)saveMinimaldistanz
+{
+   //NSLog(@"saveMinimaldistanz");
+   //NSLog(@"saveMinimaldistanz PWM: %d",[DC_PWM intValue]);
+
+   int erfolg=0;
+   //NSLog(@"saveMinimaldistanz");
+   BOOL LibOK=NO;
+   BOOL istOrdner;
+   NSError* error=0;
+   NSFileManager *Filemanager = [NSFileManager defaultManager];
+   NSString* LibPfad=[NSHomeDirectory() stringByAppendingFormat:@"%@%@",@"/Documents",@"/CNCDaten"];
+   NSURL* LibURL=[NSURL fileURLWithPath:LibPfad];
+   LibOK= ([Filemanager fileExistsAtPath:LibPfad isDirectory:&istOrdner]&&istOrdner);
+   //NSLog(@"ElementSichern:    LibPfad: %@ LibOK: %d",LibPfad, LibOK );	
+   if (LibOK)
+   {
+      ;
+   }
+   else
+   {
+      BOOL OrdnerOK=[Filemanager createDirectoryAtURL:LibURL  withIntermediateDirectories:NO  attributes:NULL error:&error];
+      //Datenordner ist noch leer
+   }
+   NSString* PListPfad;
+   NSString* PListName = @"CNC.plist";
    
+   //NSLog(@"\n\n");
+   PListPfad=[LibPfad stringByAppendingPathComponent:PListName];
+   NSURL* PListURL = [NSURL fileURLWithPath:PListPfad];
+   //NSLog(@"reportPWMSichern: PListPfad: %@ ",PListPfad);
+   //NSMutableDictionary* saveElementDic = nil;
    
-   
+   if (PListPfad)
+   {
+      //NSLog(@"reportPWMSichern: PListPfad: %@ ",PListPfad);
+      
+      NSMutableDictionary* tempPListDic;//=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+      NSFileManager *Filemanager=[NSFileManager defaultManager];
+      if ([Filemanager fileExistsAtPath:PListPfad])
+      {
+         tempPListDic=[NSMutableDictionary dictionaryWithContentsOfFile:PListPfad];
+         //NSLog(@"reportPWMSichern: vorhandener PListDic: %@",[tempPListDic description]);
+      }
+      
+      else
+      {
+         tempPListDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+         //NSLog(@"reportPWMSichern: neuer PListDic");
+      }
+      [tempPListDic setObject:[NSNumber numberWithFloat:[MinimaldistanzFeld floatValue]] forKey:@"minimaldistanz"];
+      
+      //NSLog(@"saveMinimaldistanz: gesicherter PListDic: %@",[tempPListDic description]);
+      
+      erfolg=[tempPListDic writeToURL:PListURL atomically:YES];
+      //NSLog(@"saveMinimaldistanz erfolg: %d",erfolg);
+   }
    return erfolg;
 }
 
@@ -1942,9 +2002,6 @@ return returnInt;
 {
    //NSLog(@"saveSpeed");
    //NSLog(@"saveSpeed speed: %d",[SpeedFeld intValue]);
-   
-   
-   
    int erfolg=0;
    BOOL LibOK=NO;
    BOOL istOrdner;
@@ -1998,8 +2055,6 @@ return returnInt;
       erfolg=[tempPListDic writeToURL:PListURL atomically:YES];
       //NSLog(@"saveSpeed erfolg: %d",erfolg);
    }
-   
-   
    
    return erfolg;
 }
@@ -3312,8 +3367,8 @@ return returnInt;
    
 	if ([CNC_Starttaste state])
 	{
-		[[StartKoordinate cellAtIndex:0]setIntValue:MausPunkt.x];
-		[[StartKoordinate cellAtIndex:1]setIntValue:MausPunkt.y];
+		[[StartKoordinate cellAtIndex:0]setFloatValue:MausPunkt.x];
+		[[StartKoordinate cellAtIndex:1]setFloatValue:MausPunkt.y];
 		oldMauspunkt=MausPunkt;
 		
       NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:MausPunkt.x], @"ax",
@@ -4355,7 +4410,7 @@ return returnInt;
    float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
    float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
    float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
-   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+//   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
    [AbmessungX setIntValue:maxX - minX];
    [AbmessungY setIntValue:maxY - minY];
    
@@ -4385,7 +4440,7 @@ return returnInt;
     30:  Unterseite, rueckwaerts eingesetzt
     40:  Nasenleisteauslauf
     */
-   NSLog(@"LibProfileingabeAktion start [KoordinatenTabelle count] beim Start: %d",[KoordinatenTabelle count]);;
+   //NSLog(@"LibProfileingabeAktion start [KoordinatenTabelle count] beim Start: %d",[KoordinatenTabelle count]);;
    int startindexoffset = [KoordinatenTabelle count]-1;
 	NSString* ProfilName;
    NSString* Profil1Name;
@@ -4708,7 +4763,7 @@ return returnInt;
       [KoordinatenTabelle removeObjectAtIndex:[KoordinatenTabelle count]-1]; // Letzen Punkt entfernen
    }
    [self updateIndex];
-   NSLog(@"[KoordinatenTabelle count] beim Start: %d",[KoordinatenTabelle count]);;
+   //NSLog(@"[KoordinatenTabelle count] beim Start: %d",[KoordinatenTabelle count]);;
    
    int index=0;
    int profilstartindex=0;
@@ -4798,7 +4853,7 @@ return returnInt;
       // Endindex fixieren, wird fuer Abbrand gebraucht fuer 'bis'
       profilendindex = [[[KoordinatenTabelle lastObject]objectForKey:@"index"]intValue];
       profilendindex = [KoordinatenTabelle count];
-      NSLog(@"profilendindex: %d",profilendindex);
+      //NSLog(@"profilendindex: %d",profilendindex);
       
    } // mit Unterseite
    
@@ -4917,12 +4972,13 @@ return returnInt;
    KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrandA:abbranda  mitAbbrandB:abbrandb aufSeite:0 von:von bis:bis];
    
    
+   
    NSDictionary* RahmenDic = [self RahmenDic];
    float maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
    float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
    float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
    float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
-   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+   //NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
    [AbmessungX setIntValue:maxX - minX];
    [AbmessungY setIntValue:maxY - minY];
 
@@ -5017,7 +5073,7 @@ return returnInt;
    float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
    float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
    float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
-   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+   //NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
    [AbmessungX setIntValue:maxX - minX];
    [AbmessungY setIntValue:maxY - minY];
 
@@ -5115,7 +5171,7 @@ return returnInt;
    float minX = [[RahmenDic objectForKey:@"minx"]floatValue];
    float maxY=[[RahmenDic objectForKey:@"maxy"]floatValue];
    float minY=[[RahmenDic objectForKey:@"miny"]floatValue];
-   NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
+  // NSLog(@"maxX: %2.2f minX: %2.2f * maxY: %2.2f minY: %2.2f",maxX,minX,maxY,minY);
    [AbmessungX setIntValue:maxX - minX];
    [AbmessungY setIntValue:maxY - minY];
    
@@ -5585,7 +5641,7 @@ return returnInt;
       int index=0;
       
       
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       
       
       index++;
@@ -5597,7 +5653,7 @@ return returnInt;
       PositionA.x +=einstichx;       
       PositionB.x +=einstichx;
       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
 
       
@@ -5606,7 +5662,7 @@ return returnInt;
       PositionB.y +=einstichy;
       
       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       
      
@@ -5642,7 +5698,7 @@ return returnInt;
       PositionA.y +=deltaAY;
       PositionB.y +=deltaBY;
       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       
       /*
@@ -5672,7 +5728,7 @@ return returnInt;
       
       
       //NSLog(@"nach index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       //NSLog(@"BlockKoordinatenTabelle Einlauf: %@",[BlockKoordinatenTabelle description]);
       //NSLog(@"reportBlockkonfigurieren nach Schneiden zum Einlauf EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
@@ -5694,7 +5750,7 @@ return returnInt;
       PositionB.x = EckeRechtsOben.x;
       //NSLog(@"Auslauf Rand rechts index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*red_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*red_pwm],@"pwm",nil]];
       index++;
       
       /*
@@ -5711,7 +5767,7 @@ return returnInt;
       PositionA.y = EckeRechtsUnten.y;
       PositionB.y = EckeRechtsUnten.y;
       
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       
       //Schneiden an Blockunterkante links - einstichy
@@ -5719,7 +5775,7 @@ return returnInt;
       PositionA.x = EckeLinksUnten.x-einstichx+1; // Nicht bis Anschlag fahren
       PositionB.x = EckeLinksUnten.x-einstichx+1;
       
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       
    } // if count
@@ -6325,7 +6381,7 @@ return returnInt;
    maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
    minX = [[RahmenDic objectForKey:@"minx"]floatValue];
    
-   NSLog(@"maxX: %2.2f minX: %2.2f",maxX,minX);
+   //NSLog(@"maxX: %2.2f minX: %2.2f",maxX,minX);
    // x-Werte spiegeln und maxX addieren
    for (i=0;i< [tempKoordinatenArray count];i++)
    {
@@ -7173,6 +7229,7 @@ return returnInt;
       }
       [self saveSpeed];
       [self savePWM];
+      [self saveMinimaldistanz];
    } // if AVR_USBStatus
    else 
    {
@@ -7469,8 +7526,13 @@ return returnInt;
       case 1006:
       {
          [CNC setredpwm:[[note object] floatValue]];
-      }
-         
+      }break;
+
+      case 1007:
+      {
+         minimaldistanz=[[note object] floatValue];
+      }break;
+
       case 1010:
       {
          NSLog(@"PWM 1010: %d",[[note object]intValue]);

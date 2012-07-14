@@ -280,6 +280,7 @@
    int                     AVR_USBStatus;
    IBOutlet id					ManufactorerFeld;
    IBOutlet id					ProductFeld;
+   IBOutlet id					MinimaldistanzFeld;
    float                   minimaldistanz; // minimaler abstand zwischen 2  Punkten, um in den Array aufgenommen zu werden
 
 }
