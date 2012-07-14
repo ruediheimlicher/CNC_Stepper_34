@@ -349,6 +349,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
    [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitB/SchritteBX*10000)] forKey: @"delaybx"];
    [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitB/SchritteBY*10000)] forKey: @"delayby"];
    
+   
    /*
    [tempDatenDic setObject:[NSNumber numberWithFloat:(relevanteZeit/SchritteAX*10000)] forKey: @"delayax"];
    [tempDatenDic setObject:[NSNumber numberWithFloat:(relevanteZeit/SchritteAY*10000)] forKey: @"delayay"];
