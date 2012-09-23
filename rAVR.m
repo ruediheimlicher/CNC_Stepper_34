@@ -7452,7 +7452,7 @@ return returnInt;
       }
       if (homeanschlagCount == 4)
           {
-             NSLog(@"AVR  USBReadAktion Home erreicht");
+             NSLog(@"AVR USBReadAktion Home erreicht");
              [self setBusy:0];
           }
       
