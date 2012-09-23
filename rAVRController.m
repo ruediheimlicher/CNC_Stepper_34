@@ -854,7 +854,8 @@ private void button4_Click(object sender, EventArgs e)
          int slaveversionint = (UInt8)buffer[9];
          slaveversionint <<= 8;
          slaveversionint += (UInt8)buffer[8];
-         NSLog(@"**readUSB  slaveversionint: %d",slaveversionint);
+         //NSLog(@"**readUSB  slaveversionint: %d",slaveversionint);
+         
          [NotificationDic setObject:[NSNumber numberWithInt:slaveversionint] forKey:@"slaveversion"];
 
          [NotificationDic setObject:[NSNumber numberWithInt:Stepperposition] forKey:@"stepperposition"];

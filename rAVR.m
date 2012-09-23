@@ -7340,7 +7340,8 @@ return returnInt;
    if ([[[note userInfo]objectForKey:@"slaveversion"]intValue])
    {
       int slaveversionint =[[[note userInfo]objectForKey:@"slaveversion"]intValue];
-      [SlaveVersionFeld setStringValue:[NSString stringWithFormat:@"Slaveversion: %d",slaveversionint]];
+      [SlaveVersionFeld setStringValue:[NSString stringWithFormat:@"Slaveversion: %03d",slaveversionint]];
+   
    }
   
    

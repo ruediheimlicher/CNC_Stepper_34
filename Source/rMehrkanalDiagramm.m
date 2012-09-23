@@ -143,6 +143,36 @@ for (i=0;i<8;i++)
 	[self setNeedsDisplay:YES];
 }
 
+
+- (void)setEinheitenDicY:(NSDictionary*)derEinheitenDic
+{
+   NSLog(@"setEinheitenDicY: %@",[derEinheitenDic description]);
+   if ([derEinheitenDic objectForKey:@"majorteile"])
+   {
+      MajorTeileY=[[derEinheitenDic objectForKey:@"majorteile"]intValue];
+   }
+   if ([derEinheitenDic objectForKey:@"minorteile"])
+   {
+      MinorTeileY=[[derEinheitenDic objectForKey:@"minorteile"]intValue];
+   }
+   if ([derEinheitenDic objectForKey:@"max"])
+   {
+      MaxY=[[derEinheitenDic objectForKey:@"max"]floatValue];
+   }
+   if ([derEinheitenDic objectForKey:@"max"])
+   {
+      MaxY=[[derEinheitenDic objectForKey:@"max"]floatValue];
+   }
+   if ([derEinheitenDic objectForKey:@"nullpunkt"])
+   {
+      NullpunktY=[[derEinheitenDic objectForKey:@"nullpunkt"]intValue];
+      
+      NSLog(@"EinheitenDicY %d  NullpunktY: %d",[[derEinheitenDic objectForKey:@"nullpunkt"]intValue],NullpunktY);
+      
+   }
+   
+}
+
 - (void)clear8Kanal
 {
 	//NSLog(@"MehrkanalDiagramm clear8Kanal");
