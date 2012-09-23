@@ -432,6 +432,7 @@
 - (void)dealloc
 {
    [ElementArray release];
+   [super dealloc];
 }
 
 
@@ -988,6 +989,7 @@
 - (void)dealloc
 {
    [ElementArray release];
+   [super dealloc];
 }
 
 
@@ -3075,6 +3077,7 @@
    [Profil2Array release];
    [ProfilLibPfad release];
    [PList release];
+   [super dealloc];
 }
 
 #pragma mark Form
@@ -3315,7 +3318,6 @@
    [BlockDic setObject:[NSNumber numberWithInt:[Auslaufkote intValue]] forKey:@"auslaufkote"];
    [BlockDic setObject:[NSNumber numberWithInt:[Blockbreite intValue]] forKey:@"blockbreite"];
    [BlockDic setObject:[NSNumber numberWithInt:[Blockdicke intValue]] forKey:@"blockdichte"];
-
    
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
    [nc postNotificationName:@"Blockeingabe" object:self userInfo:BlockDic];

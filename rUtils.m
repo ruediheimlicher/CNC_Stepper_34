@@ -163,14 +163,14 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    
 	NSString* firstString = [tempArray objectAtIndex:0];
 	//NSLog(@"firstString: %@",firstString );
-      
+   
 	//NSLog(@"firstString desc: %@",[firstString description]);
 	NSString* ProfilName=[NSString string];
-
+   
    NSRange testRange;
 	testRange=[firstString rangeOfString:@"\r"];
 	//NSLog(@"testRange start loc: %u l: %u",testRange.location, testRange.length);	
-
+   
    
    
 	NSRange nameRange;
@@ -273,7 +273,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 		//NSLog(@"tempX: %@",tempX);
 		//NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:wertx], @"x",
 		//[NSNumber numberWithFloat:werty], @"y",NULL];
-		NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:tempX, @"x",tempY, @"y",NULL];
+		NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:tempX, @"x",tempY, @"y",[NSNumber numberWithFloat:1], @"data",NULL];
 		[ProfilArray addObject:tempDic];
       if (wertx < minx)
       {
@@ -293,8 +293,8 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    //NSLog(@"Spline Oberseite");
    NSArray* OberseiteArray=[ProfilArray subarrayWithRange:NSMakeRange(0, Nasenindex+1)];
    
-  // NSDictionary* OberseiteSplineKoeffArray=[self SplinekoeffizientenVonArray:OberseiteArray];
-
+   // NSDictionary* OberseiteSplineKoeffArray=[self SplinekoeffizientenVonArray:OberseiteArray];
+   
    NSArray* UnterseiteArray=[ProfilArray subarrayWithRange:NSMakeRange(Nasenindex, [ProfilArray count]-Nasenindex)];
    NSMutableArray * revUnterseiteArray = [NSMutableArray arrayWithCapacity:[UnterseiteArray count]];
    
@@ -302,15 +302,15 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    {
       [revUnterseiteArray addObject:[UnterseiteArray objectAtIndex:[UnterseiteArray count] - i - 1]];
    }
-    
+   
    
    //NSLog(@"Spline Unterseite");
    
-//   NSDictionary* UnterseiteSplineKoeffArray=[self SplinekoeffizientenVonArray:revUnterseiteArray];
-
+   //   NSDictionary* UnterseiteSplineKoeffArray=[self SplinekoeffizientenVonArray:revUnterseiteArray];
+   
    
    // End Spline
-
+   
    
    
    
@@ -662,7 +662,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    
    //NSLog(@"offsetx: %2.5f offsety: %2.5f count: %d",offsetx,offsety,[profilArray count]);
    //NSLog(@"linienArray: %@",[linienArray description]);
-   NSLog(@"linienArray: %@",[linienArray valueForKey:@"teil"]);
+//   NSLog(@"linienArray: %@",[linienArray valueForKey:@"teil"]);
  
    // anfangspunkt und Endpunkt der Profillinie feststellen. Einlauf: 10. Auslauf: 40
    int profilanfangindex=0;

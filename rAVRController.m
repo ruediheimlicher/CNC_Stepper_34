@@ -526,7 +526,8 @@ private void button4_Click(object sender, EventArgs e)
          //fprintf(stderr,"\n");
          
          //sendbuffer[20] = pwm;
-        
+        //NSLog(@"code: %d",sendbuffer[16]);
+
          /*
          fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
                  sendbuffer[0],(sendbuffer[1]& 0x80),sendbuffer[2],(sendbuffer[3]&0x80),
@@ -780,7 +781,7 @@ private void button4_Click(object sender, EventArgs e)
       // {
       //NSLog(@"i: %d char: %x data: %d",i,buffer[i],[[NSNumber numberWithInt:(UInt8)buffer[i]]intValue]);
       // }
-      NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+//      NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
       
       //NSLog(@"**");
       //NSNumber* curr_num=[NSNumber numberWithInt:(UInt8)buffer[1]];
@@ -790,24 +791,27 @@ private void button4_Click(object sender, EventArgs e)
       
       NSNumber* AbschnittFertig=[NSNumber numberWithInt:(UInt8)buffer[0]];
       
-      NSNumber* Abschnittnummer=[NSNumber numberWithInt:(UInt8)buffer[5]];
+     // NSNumber* Abschnittnummer=[NSNumber numberWithInt:(UInt8)buffer[5]];
       
       //NSLog(@"**readUSB   buffer 5 %d",(UInt8)buffer[5]);
       
-      [NotificationDic setObject:Abschnittnummer forKey:@"inposition"];
+      //[NotificationDic setObject:Abschnittnummer forKey:@"inposition"];
       
-      NSNumber* ladePosition=[NSNumber numberWithInt:(UInt8)buffer[6]];
+     // NSNumber* ladePosition=[NSNumber numberWithInt:(UInt8)buffer[6]];
       
        //NSLog(@"**   ladePosition NSNumber: %d",[ladePosition intValue]);
       //NSLog(@"**readUSB   buffer 6 %d",(UInt8)buffer[6]);
       
-      [NotificationDic setObject:ladePosition forKey:@"outposition"];
-      [NotificationDic setObject:[NSNumber numberWithInt:Stepperposition] forKey:@"stepperposition"];
+      //NSLog(@"**readUSB   buffer 8 version: %d",(UInt8)buffer[8]);
+      
+      
+      //[NotificationDic setObject:ladePosition forKey:@"outposition"];
+      //[NotificationDic setObject:[NSNumber numberWithInt:Stepperposition] forKey:@"stepperposition"];
       
       // cncstatus abfragen
       //NSNumber* cncstatus=[NSNumber numberWithInt:(UInt8)buffer[7]];
       
-      [NotificationDic setObject:[NSNumber numberWithInt:mausistdown] forKey:@"mausistdown"];
+      //[NotificationDic setObject:[NSNumber numberWithInt:mausistdown] forKey:@"mausistdown"];
       //NSLog(@"readUSB \nAbschnittFertig: %X  \n[5]: %d \n[6]: %d  \n[7]: %d \nStepperposition: %d",[AbschnittFertig intValue],(UInt8)buffer[5] , (UInt8)buffer[6],(UInt8)buffer[7], Stepperposition);
       //if (abschnittfertig)
       {
@@ -816,16 +820,57 @@ private void button4_Click(object sender, EventArgs e)
       }
       dauer1 = [dateA timeIntervalSinceNow]*1000;
       //NSLog(@"readUSB dauer A: %f ms", dauer);
-      
-      
+      /*
+      if ([AbschnittFertig intValue] == 0x33) // Code fuer neu
+      {
+         NSLog(@"readUSB 0x33 5: %d 6: %d",buffer[5],buffer[5]);
+      }
+       */
+      /*
+      if ([AbschnittFertig intValue] == 0x44) // Code fuer neu
+      {
+         NSLog(@"readUSB 0x44 %d",buffer[5]);
+      }
+      */
       if ([AbschnittFertig intValue] >= 0xA0) // Code fuer Fertig: AD
       {
+         // verschoben von oben 
+         NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+
+         NSNumber* Abschnittnummer=[NSNumber numberWithInt:(UInt8)buffer[5]];
+         //NSLog(@"**readUSB   buffer 5 %d",(UInt8)buffer[5]);
+         
+         [NotificationDic setObject:Abschnittnummer forKey:@"inposition"];
+         
+         NSNumber* ladePosition=[NSNumber numberWithInt:(UInt8)buffer[6]];
+         //NSLog(@"**   ladePosition NSNumber: %d",[ladePosition intValue]);
+         //NSLog(@"**readUSB   buffer 6 %d",(UInt8)buffer[6]);
+         [NotificationDic setObject:ladePosition forKey:@"outposition"];
+         
+         //NSLog(@"**readUSB   buffer 8 %X",(UInt8)buffer[8]);
+         //NSNumber* slaveversionl=[NSNumber numberWithInt:(UInt8)buffer[8]];
+         //NSLog(@"**readUSB   buffer 9 %X",(UInt8)buffer[9]);
+         //NSNumber* slaveversionh=[NSNumber numberWithInt:(UInt8)buffer[9]];
+         int slaveversionint = (UInt8)buffer[9];
+         slaveversionint <<= 8;
+         slaveversionint += (UInt8)buffer[8];
+         NSLog(@"**readUSB  slaveversionint: %d",slaveversionint);
+         [NotificationDic setObject:[NSNumber numberWithInt:slaveversionint] forKey:@"slaveversion"];
+
+         [NotificationDic setObject:[NSNumber numberWithInt:Stepperposition] forKey:@"stepperposition"];
+
+         // cncstatus abfragen
+         //NSNumber* cncstatus=[NSNumber numberWithInt:(UInt8)buffer[7]];
+         [NotificationDic setObject:[NSNumber numberWithInt:mausistdown] forKey:@"mausistdown"];
+         // end verschieben
          
          dauer2 = [dateA timeIntervalSinceNow]*1000;
          //NSLog(@"readUSB dauer bis (if Abschnittfertig): %f ms", dauer);
          
          //NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
          //NSLog(@"readUSB AbschnittFertig:  %X buffer A: %d B: %d C: %d D: %d ",abschnittfertig,(UInt8)buffer[16],(UInt8)buffer[17],(UInt8)buffer[18],(UInt8)buffer[19]); 
+         //NSLog(@"readUSB AbschnittFertig:  %X buffer 20: %d 21: %d 22: %d 23: %d ",abschnittfertig,(UInt8)buffer[20],(UInt8)buffer[21],(UInt8)buffer[22],(UInt8)buffer[23]); 
+
          //NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
          
          // NSLog(@"AVRController mausistdown: %d abschnittfertig: %d anzrepeat: %d",mausistdown, abschnittfertig,anzrepeat);
@@ -1111,6 +1156,9 @@ private void button4_Click(object sender, EventArgs e)
          //NSLog(@"AbschnittFertig: %d",[AbschnittFertig intValue]);
          //NSLog(@"**   outposition  %d",[outPosition intValue]);
          dauer7 = [dateA timeIntervalSinceNow]*1000;
+         NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+         [nc postNotificationName:@"usbread" object:self userInfo:NotificationDic];
+         
       }
       
       anzDaten++;
@@ -1137,8 +1185,8 @@ private void button4_Click(object sender, EventArgs e)
       
      
       
-      NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
-      [nc postNotificationName:@"usbread" object:self userInfo:NotificationDic];
+     // NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+     // [nc postNotificationName:@"usbread" object:self userInfo:NotificationDic];
             
    }
    //free (buffer);
@@ -1149,7 +1197,7 @@ private void button4_Click(object sender, EventArgs e)
 - (void)PfeilAktion:(NSNotification*)note
 {
 	//[self reportManDown:NULL];
-	//NSLog(@"AVRController PfeilAktion note: %@",[[note userInfo]description]);
+	NSLog(@"AVRController PfeilAktion note: %@",[[note userInfo]description]);
    
    if ([[note userInfo]objectForKey:@"push"])
    {
@@ -1172,7 +1220,7 @@ private void button4_Click(object sender, EventArgs e)
          sendbuffer[16]=0x00;
          free(sendbuffer);
          [AVR setBusy:0];
-        // NSLog(@"PfeilAktion mouseup Stepperposition: %d",Stepperposition);
+         //NSLog(@"PfeilAktion mouseup Stepperposition: %d",Stepperposition);
       }
    }
    else

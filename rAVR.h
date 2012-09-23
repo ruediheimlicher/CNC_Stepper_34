@@ -23,6 +23,8 @@
 #define USBREMOVED            6
 #define ANDERESEITEANFAHREN   10
 
+#define VERSIONSLAVE "SLAVE.12.502"
+//#define VERSIONSLAVE "USB.405"
 /*
 @interface rPfeiltasteCell : NSButtonCell 
 {
@@ -270,6 +272,7 @@
    
    IBOutlet id					VersionFeld;
    IBOutlet id					DatumFeld;
+   IBOutlet id            SlaveVersionFeld;
    int                     startwert;
    NSWindow*					window;
    int                     mausistdown;

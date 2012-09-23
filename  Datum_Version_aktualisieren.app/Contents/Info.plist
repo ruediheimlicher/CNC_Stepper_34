@@ -10,6 +10,8 @@
 	<string>applet</string>
 	<key>CFBundleIconFile</key>
 	<string>applet</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.apple.ScriptEditor.id.Datum-Version-aktualisieren</string>
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
@@ -34,9 +36,9 @@
 		<key>name</key>
 		<string>ScriptWindowState</string>
 		<key>positionOfDivider</key>
-		<real>535</real>
+		<real>587</real>
 		<key>savedFrame</key>
-		<string>40 306 1236 722 0 0 1680 1028 </string>
+		<string>42 306 1236 722 0 0 1680 1028 </string>
 		<key>selectedTabView</key>
 		<string>result</string>
 	</dict>

@@ -2,3 +2,8 @@ Homebus.pages/
 Source/rWerkstattplan.h
 USB_Stepper.xcodeproj/
 Source/rWerkstattplan.m
+designable.nib
+keyedobjects.nib
+applet.*
+main.scpt
+applet

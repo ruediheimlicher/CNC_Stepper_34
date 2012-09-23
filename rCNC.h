@@ -26,8 +26,10 @@
 - (int)speed;
 - (void)setredpwm:(float)red_pwmwert;
 - (NSDictionary*)SteuerdatenVonDic:(NSDictionary*)derDatenDic;
-- (NSArray*)SchnittdatenVonDic:(NSDictionary*)derDatenDic;
+- (NSDictionary*)SteuerdatenVonDic:(NSDictionary*)derDatenDic mitAbbrand:(int)mitabbrand;
 
+- (NSArray*)SchnittdatenVonDic:(NSDictionary*)derDatenDic;
+- (NSArray*)SchnittdatenVonDic:(NSDictionary*)derDatenDic mitAbbrand:(int)mitabbrand;
 - (NSArray*)PfeilvonPunkt:(NSPoint) Startpunkt mitLaenge:(int)laenge inRichtung:(int)richtung;
 - (NSArray*)LinieVonPunkt:(NSPoint)Anfangspunkt mitLaenge:(float)laenge mitWinkel:(int)winkel;
 

@@ -40,6 +40,7 @@ return sqrt(dX*dX + dY*dY);
        stepperposition = -1;
        GraphOffset = 0;
     }
+   
     return self;
 }
 
@@ -111,7 +112,7 @@ return sqrt(dX*dX + dY*dY);
 - (void)setStepperposition:(int)pos
 {
    stepperposition = pos;
-   if ([DatenArray count])
+   if ([DatenArray count] && pos< [DatenArray count])
    {
       NSPoint PunktA=NSMakePoint([[[DatenArray objectAtIndex:pos]objectForKey:@"ax"]floatValue]*scale,[[[DatenArray objectAtIndex:pos]objectForKey:@"ay"]floatValue]*scale);
       //NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
@@ -524,8 +525,9 @@ return sqrt(dX*dX + dY*dY);
 
 - (void)drawRect:(NSRect)dirtyRect 
 {
+   
    int abbbranddelay=0;
-	//NSLog(@"ProfilGraph drawRect klickpunkt: %d",klickpunkt);
+	//NSLog(@"ProfilGraph drawRect start");
 	int i=0;
 	[self GitterZeichnen];
 	if ([DatenArray count])
@@ -791,12 +793,14 @@ return sqrt(dX*dX + dY*dY);
       [[NSColor grayColor]set];
 		[RahmenPath stroke];      
    } // if Rahmenarray count
-   
+   //NSLog(@"ProfilGraph drawRect end");
 }
 
 - (void)dealloc
 {
+   
    [KlicksetA release];
+   [super dealloc];
    
 }
 @end

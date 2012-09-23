@@ -27,6 +27,12 @@ extern int usbstatus;
 #define MANLEFT      3
 #define MANDOWN      4
 
+#define STEPEND_A          0x00        // Motor A hat Ende der Steps erreicht
+#define STEPEND_B          0x10
+#define STEPEND_C          0x20
+#define STEPEND_D          0x30
+
+
 
 #define FIRST_BIT       0 // in 'position' von reportStopKnopf: Abschnitt ist first
 #define LAST_BIT        1 // in 'position' von reportStopKnopf: Abschnitt ist last
@@ -320,6 +326,7 @@ return returnInt;
             {
                [ProfilBOffsetXFeld setIntValue:0];
             }
+            
             if ([tempPListDic objectForKey:@"profilboffsety"])
             {
                //NSLog(@"profilboffsety: %d",[[tempPListDic objectForKey:@"profilboffsety"]intValue]);
@@ -437,7 +444,7 @@ return returnInt;
             
             if ([tempPListDic objectForKey:@"redpwm"])
             {
-               NSLog(@"redpwm: %2.2f",[[tempPListDic objectForKey:@"redpwm"]floatValue]);
+               //NSLog(@"redpwm: %2.2f",[[tempPListDic objectForKey:@"redpwm"]floatValue]);
                //[Spannweite setIntValue:[[tempPListDic objectForKey:@"minimaldistanz"]intValue]];
               [red_pwmFeld setFloatValue: [[tempPListDic objectForKey:@"redpwm"]floatValue]];
             }
@@ -624,8 +631,21 @@ return returnInt;
 
 - (void)awakeFromNib
 {
+   /*
+   char* versionstringraw = VERSIONSLAVE;
+   char* versionstring = (char*) malloc(4);
+   //strncpy(versionstring, versionstringraw+9, 3);
+   strncpy(versionstring, VERSIONSLAVE+9, 3);
+
+   versionstring[3]='\0';
+   uint16_t versionint = atoi(versionstring);
+   uint8_t versionintl = versionint & 0x00FF;
+   uint8_t versioninth = (versionint&0xFF00)>>8;
+
+   NSLog(@"Version versionstringraw: %s versionstring: %s versionint: %X versionintl: %X versioninth: %X",versionstringraw,versionstring,versionint,versionintl,versioninth);
+   free(versionstring);
 	//NSLog(@"awake");
-   
+   */
 	int i;
 	NSMutableArray* tempArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 	NSArray* bitnummerArray=[NSArray arrayWithObjects: @"null", @"eins",@"zwei",@"drei",@"vier",@"fuenf",nil];
@@ -666,8 +686,8 @@ return returnInt;
 	int RaumTitelfeldhoehe=10;
 	int RaumTagbalkenhoehe=32;				//Hoehe eines Tagbalkens
 	int RaumTagplanhoehe=(RaumTagbalkenhoehe)+RaumTitelfeldhoehe;	// Hoehe des Tagplanfeldes mit den (AnzRaumobjekte) Tagbalken
-//	int RaumTagplanAbstand=RaumTagplanhoehe+10;	// Abstand zwischen den Ecken der Tagplanfelder
-//	int RaumKopfbereich=50;	// Bereich ueber dem Scroller
+   //	int RaumTagplanAbstand=RaumTagplanhoehe+10;	// Abstand zwischen den Ecken der Tagplanfelder
+   //	int RaumKopfbereich=50;	// Bereich ueber dem Scroller
 	
 	NSRect RaumScrollerFeld=RaumViewFeld;	//	Feld fuer Scroller, in dem der RaumView liegt
 	
@@ -706,21 +726,21 @@ return returnInt;
    NSNumberFormatter* SimpleFormatter=[[[NSNumberFormatter alloc] init] autorelease];;
    [SimpleFormatter setFormat:@"###0.0;0.0;(##0.0)"];
    
-//   [ProfilWrenchFeld setFormatter:SimpleFormatter];
-//   [ProfilWrenchFeld setFloatValue:0];
-
+   //   [ProfilWrenchFeld setFormatter:SimpleFormatter];
+   //   [ProfilWrenchFeld setFloatValue:0];
+   
 	ProfilDaten = [[[NSMutableArray alloc]initWithCapacity:0]retain];
 	
 	//Profil_DS=[[rProfil_DS alloc]init];
 	//[ProfilTable setDataSource: self];
 	//[[[ProfilTable tableColumnWithIdentifier:@"ax"]dataCell]setAlignment:NSRightTextAlignment];
 	//[[[ProfilTable tableColumnWithIdentifier:@"ay"]dataCell]setAlignment:NSRightTextAlignment];
-
-
+   
+   
    //[ProfilTable setDelegate:self];
 	Utils = [[[rUtils alloc]init]retain];
-
-
+   
+   
 	NSRect SegFeld=RaumViewFeld;
 	SegFeld.origin.y-=40;
 	SegFeld.size.height=50;
@@ -733,90 +753,35 @@ return returnInt;
 	[ObjektSeg setTarget:self];
 	[ObjektSeg setAction:@selector(ObjektSegAktion:)];
 	
-	
-	//		[[[StepperTab tabViewItemAtIndex:0]view]addSubview:ObjektSeg];
-	
-	
-	
-	//EEPROM-Feld einrichten
-	raum=9;
-	//NSRect EEPROMFeld=[[[StepperTab tabViewItemAtIndex:raum]view] frame];
-	
-	NSMutableArray* tempByteArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
-	//NSArray* bitnummerArray=[NSArray arrayWithObjects: @"null", @"eins",@"zwei",@"drei",@"vier",@"fuenf",nil];
-	NSString* hexString;
-	for (i=0;i<8;i++)
-	{
-		NSNumber* Hexint=[NSNumber numberWithInt:22*i];
-		hexString = [NSString stringWithFormat:@"%X", [Hexint intValue]];
-		if ([hexString length] <2)
-		{
-			hexString=[@"0" stringByAppendingString:hexString];
-		}
-		//NSLog(@"hexString: %@",hexString);
-		// Hexadecimal NSString to NSNumber:
-		
-		NSScanner *scanner;
-		unsigned int tempInt;
-		
-		scanner = [NSScanner scannerWithString:hexString];
-		[scanner scanHexInt:&tempInt];
-		Hexint = [NSNumber numberWithInt:tempInt];
-		
-		[tempDic setObject:hexString forKey:[bitnummerArray objectAtIndex:i%6]];
-		[tempByteArray addObject:hexString];
-	}
-	
-	
-	
-	
-	
-	
-	
 	[ProfilGraph setScale:[[ScalePop selectedItem]tag]];
    [ProfilGraph setGraphOffset:10];
-	[[self window]makeKeyAndOrderFront:self];
-	
+//	[[self window]makeKeyAndOrderFront:self];
+   [[self window]makeFirstResponder:ProfilGraph];
 	NSString* logString=[NSString string];
 	logString=[logString stringByAppendingString:[NSString stringWithFormat:@"%02X ",0x02]];
 	logString=[logString stringByAppendingString:[NSString stringWithFormat:@"%02X ",161]];
 	//NSLog(@"logString: %@",logString);
 	
-	//I2C einschalten
-	//	[self setI2CStatus:1];
-	
-	uint8_t Data=0xac;
-	uint8_t StundenCodeA=(Data>>0);	//	erster Balken im char, bit 3, 2
-	uint8_t StundenCodeB=(Data>>2);	//	zweiter Balken im char, bits 1, 0
-	uint8_t StundenCodeC=(Data>>4);	//	erster Balken im char, bit 3, 2
-	uint8_t StundenCodeD=(Data>>6);	//	zweiter Balken im char, bits 1, 0
-	
-	//NSLog(@"Data: %02X CodeA: %02X CodeB: %02X CodeC: %02X CodeD: %02X",Data, StundenCodeA, StundenCodeB, StundenCodeC, StundenCodeD);
-	StundenCodeA &= 0x03;
-	StundenCodeB &= 0x03;
-	StundenCodeC &= 0x03;
-	StundenCodeD &= 0x03;
-	//NSLog(@"StundenCodeA: %02X StundenCodeB: %02X CodeC: %02X CodeD: %02X", StundenCodeA, StundenCodeB, StundenCodeC, StundenCodeD);
 	
 	//NSLog(@"Bitschieber");
 	uint16_t StepCounterA;
 	uint8_t dataL=0;
 	uint8_t dataH=0;
-			
+   
 	dataL=164;
 	dataH=4;
-//	dataH &= (0x7F);
-//	StepCounterA= dataH;		// HByte
-//	StepCounterA <<= 8;		// shift 8
-//	StepCounterA += dataL;	// +LByte
-
+   //	dataH &= (0x7F);
+   //	StepCounterA= dataH;		// HByte
+   //	StepCounterA <<= 8;		// shift 8
+   //	StepCounterA += dataL;	// +LByte
+   
 	StepCounterA= (dataH<<8) + dataL;
-
+   
 	//NSLog(@"StepCounterA hex: %X int: %d",StepCounterA,StepCounterA);
-
+   
 	NSString* VersionString=[NSString stringWithUTF8String:VERSION];
    
-	[VersionFeld setStringValue:[NSString stringWithFormat:@"%@ %@",@"Version:",VersionString]];
+	[VersionFeld setStringValue:[NSString stringWithFormat:@"%@ %@",@"Stepperversion:",VersionString]];
 	NSString* DatumString=[NSString stringWithUTF8String:DATUM];
 	[DatumFeld setStringValue:[NSString stringWithFormat:@"%@ %@",@"Datum:",DatumString]];
    NSLog(@"Version: %@ Datum: %@",VersionString,DatumString);
@@ -840,49 +805,49 @@ return returnInt;
 	[[[CNCTable tableColumnWithIdentifier:@"ay"]dataCell]setAlignment:NSRightTextAlignment];
 	[[[CNCTable tableColumnWithIdentifier:@"bx"]dataCell]setAlignment:NSRightTextAlignment];
 	[[[CNCTable tableColumnWithIdentifier:@"by"]dataCell]setAlignment:NSRightTextAlignment];
-
    
-    [[[CNCTable tableColumnWithIdentifier:@"ax"] dataCell]
+   
+   [[[CNCTable tableColumnWithIdentifier:@"ax"] dataCell]
     setFormatter:Koordinatenformatter];
    [[[CNCTable tableColumnWithIdentifier:@"ay"] dataCell]
     setFormatter:Koordinatenformatter];
-
+   
    [[[CNCTable tableColumnWithIdentifier:@"bx"] dataCell]
     setFormatter:Koordinatenformatter];
    [[[CNCTable tableColumnWithIdentifier:@"by"] dataCell]
     setFormatter:Koordinatenformatter];
    
-
-    
+   
+   
    [CNCTable setDataSource:self];
    [WertAXFeld setFormatter:Koordinatenformatter];
    [WertAXFeld setAlignment:NSRightTextAlignment];
    [WertAXFeld setDelegate:self];
-//   [WertAXFeld setFloatValue:220];
+   //   [WertAXFeld setFloatValue:220];
    [WertAYFeld setFormatter:Koordinatenformatter];
    [WertAYFeld setAlignment:NSRightTextAlignment];
    [WertAYFeld setDelegate:self];
-//   [WertAYFeld setFloatValue:50];
+   //   [WertAYFeld setFloatValue:50];
    NSRect r=[WertAXStepper frame];
    r.size.width = r.size.height+5;
- //  [WertAXStepper setFrame:r];
-//   [WertAXStepper  rotateByAngle:-90.0]; 
+   //  [WertAXStepper setFrame:r];
+   //   [WertAXStepper  rotateByAngle:-90.0]; 
    [WertAXStepper setNeedsDisplay:YES];
    
-  
+   
    [WertBXFeld setFormatter:Koordinatenformatter];
    [WertBXFeld setAlignment:NSRightTextAlignment];
    [WertBXFeld setDelegate:self];
-//   [WertBXFeld setFloatValue:220];
+   //   [WertBXFeld setFloatValue:220];
    [WertBYFeld setFormatter:Koordinatenformatter];
    [WertBYFeld setAlignment:NSRightTextAlignment];
    [WertBYFeld setDelegate:self];
-//   [WertBYFeld setFloatValue:50];
+   //   [WertBYFeld setFloatValue:50];
    
    r=[WertBXStepper frame];
    r.size.width = r.size.height+5;
-//   [WertBXStepper setFrame:r];
-//   [WertBXStepper  rotateByAngle:-90.0];
+   //   [WertBXStepper setFrame:r];
+   //   [WertBXStepper  rotateByAngle:-90.0];
    [WertBXStepper setNeedsDisplay:YES];
    
    [PWMFeld setAlignment:NSCenterTextAlignment];
@@ -905,19 +870,19 @@ return returnInt;
    
    [Einlaufrand setIntValue:einlaufrand];
    [Auslaufrand setIntValue:auslaufrand];
-
+   
    //[[NSColor redColor]set];
    
    [AnschlagLinksIndikator setBoxType: NSBoxCustom];
    [AnschlagLinksIndikator setBorderType: NSLineBorder];
    [AnschlagLinksIndikator setFillColor:[NSColor redColor]];
    [AnschlagLinksIndikator setTransparent:YES];
-
+   
    [AnschlagUntenIndikator setBoxType: NSBoxCustom];
    [AnschlagUntenIndikator setBorderType: NSLineBorder];
    [AnschlagUntenIndikator setFillColor:[NSColor redColor]];
    [AnschlagUntenIndikator setTransparent:YES];
-
+   
    [RechtsLinksRadio setSelectedSegment:0];
    [ProfilWrenchEinheitRadio setState:1 atRow:0 column:0];
    
@@ -929,34 +894,48 @@ return returnInt;
    
    [MinimaldistanzFeld setFormatter:SimpleFormatter];
    [MinimaldistanzFeld setDelegate:self];
-
+   
    
    [DC_PWM setDelegate:self];
    [SpeedFeld setDelegate:self];
-//   [SpeedStepper setIntValue:12];
-    [PWMFeld setDelegate:self];
-   
+   //   [SpeedStepper setIntValue:12];
+   [PWMFeld setDelegate:self];
+   int motorstatus=0;
    for (i=0;i<4;i++)
    {
       int motor=i;
       int aktuellermotor = motor;
-      int motorstatus=0;
-      motorstatus |= (1<<4);
-      aktuellermotor <<=6;
-      motorstatus |= aktuellermotor;
+      
+      //motorstatus |= (1<<4);
+      //aktuellermotor <<=6;
+      //motorstatus |= aktuellermotor;
       int neuermotor = aktuellermotor;
-      neuermotor >>=6;
+      //neuermotor >>=6;
       // motor += aktuellermotor;
       
       
       //
       //NSLog(@"i: %d motor: %d aktuellermotor: %d neuermotor: %d motorstatus: %d",i,motor, aktuellermotor,neuermotor,motorstatus);
       
-      
    }
+   motorstatus |= (1<<2);
+   motorstatus |= STEPEND_A;
+   //NSLog(@"motorstatus: %X",motorstatus);
+   motorstatus &= ~STEPEND_A;
+   motorstatus |= STEPEND_B;
+   //NSLog(@"motorstatus: %X",motorstatus);
+   motorstatus &= ~STEPEND_B;
+   motorstatus |= STEPEND_C;
+   //NSLog(@"motorstatus: %X",motorstatus);
+   motorstatus &= ~STEPEND_C;
+   motorstatus |= STEPEND_D;
+   //NSLog(@"motorstatus: %X",motorstatus);
+   motorstatus &= ~STEPEND_D;
+   
+   
    [[self window]makeFirstResponder: ProfilGraph];
+   NSLog(@"awake end");
 }
-
 
 - (void)ReportHandlerCallbackAktion:(NSNotification*)note
 {
@@ -1223,16 +1202,16 @@ return returnInt;
       //NSLog(@"reportStartKnopf start: %@",[KoordinatenTabelle description]);
       if ([KoordinatenTabelle count]==0)
       {
-         NSLog(@"reportStartKnopf count 0");
+         //NSLog(@"reportStartKnopf count 0");
          NSPoint tempStartPunkt=NSMakePoint(0, 0);
          [WertAXFeld setFloatValue:(10.0+ einlauflaenge)];
-         [WertAYFeld setFloatValue:40.0];
+         [WertAYFeld setFloatValue:50.0];
          
          [WertAXStepper setFloatValue:[WertAXFeld intValue]];
          [WertAYStepper setFloatValue:[WertAYFeld intValue]];
 
          [WertBXFeld setFloatValue:(10.0+ einlauflaenge)];
-         [WertBYFeld setFloatValue:40.0];
+         [WertBYFeld setFloatValue:50.0];
          
          [WertBXStepper setFloatValue:[WertBXFeld intValue]];
          [WertBYStepper setFloatValue:[WertBYFeld intValue]];
@@ -1268,10 +1247,15 @@ return returnInt;
          [NeuesElementTaste setEnabled:YES];
          
       }
+      else 
+      {
+         [NeuesElementTaste setEnabled:YES];
+      }
    //   [DC_Taste setState:0];
       [CNC_Stoptaste setEnabled:YES];
       [CNC_Halttaste setState:0];
       [CNC_Halttaste setEnabled:NO];
+      
       [self setStepperstrom:1];
    }
 		//NSLog(@"reportStartKnopf end: %@",[KoordinatenTabelle description]);
@@ -1343,7 +1327,7 @@ return returnInt;
    int  anzbyplus=0;
    int  anzbyminus=0;
    
-   //NSLog(@"reportStopKnopf KoordinatenTabelle: %@",[KoordinatenTabelle description]);
+   //NSLog(@"reportStopKnopf KoordinatenTabelle data: %@",[[KoordinatenTabelle valueForKey:@"data"]description]);
    
    // Werte des ersten Datensatzes
    NSDictionary* tempPrevDic=[KoordinatenTabelle objectAtIndex:0];
@@ -1362,6 +1346,9 @@ return returnInt;
    float nowabrbx=0;
    float nowabrby=0;
    
+   float wegaoben=0, wegaunten = 0;
+   float wegboben=0, wegbunten = 0;
+   
    if ([tempPrevDic objectForKey:@"abrax"])
    {
       prevabrax=[[tempPrevDic objectForKey:@"abrax"]floatValue];
@@ -1376,10 +1363,12 @@ return returnInt;
    //   for (i=0;i<[KoordinatenTabelle count]-1;i++)
    
    int cncindex=0;
+   minimaldistanz = [MinimaldistanzFeld floatValue];
    NSLog(@"minimaldistanz: %2.2f",minimaldistanz);
 
    for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
+      //NSLog(@"i: %d teil: %d",i,[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"teil"]intValue] );
       // Dic des aktuellen Datensatzes
       NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i+1];
       float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
@@ -1415,6 +1404,24 @@ return returnInt;
       // Distanzen zum vorherigen Punkt
       float distA = hypot(nowax-prevax,noway-prevay); 
       float distB = hypot(nowbx-prevbx,nowby-prevby);
+      
+      
+      
+      if ([[tempNowDic objectForKey:@"teil"]intValue]==20)
+      {
+        // fprintf(stderr,"oben   %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,distA,distB,wegaoben,wegboben);
+         wegaoben += distA;
+         wegboben += distB;
+         
+      }
+
+      if ([[tempNowDic objectForKey:@"teil"]intValue]==30)
+      {
+         //fprintf(stderr,"unten   %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,distA,distB,wegaunten,wegbunten);
+         wegaunten += distA;
+         wegbunten += distB;
+      }
+      
       
       float distabrA = hypot(nowabrax-prevabrax,nowabray-prevabray); 
       float distabrB = hypot(nowabrbx-prevabrbx,nowabrby-prevabrby);
@@ -1651,7 +1658,7 @@ return returnInt;
  //  NSLog(@"CNCDatenArray: %@",[[CNCDatenArray valueForKey:@"pwm"]description]);
 
    
-   
+   //NSLog(@"wegaoben: %2.2f wegaunten: %2.2f wegboben: %2.2f wegbunten: %2.2f",wegaoben,wegaunten, wegboben, wegbunten);
    
    //anzaxminus,anzayminus ,anzbxminus, anzbyminus;
    //anzaxplus,anzayplus ,anzbxplus, anzbyplus;
@@ -1665,19 +1672,30 @@ return returnInt;
    float wegax=0, wegay=0, wegbx=0, wegby=0;
     float distanzax=0, distanzay=0, distanzbx=0, distanzby=0;
    float zeitax=0, zeitay=0,zeitbx=0,zeitby=0;
-   for (i=0;i<[SchnittdatenArray count];i++)
+   int steps = 48;
+   //fprintf(stderr, "index: \t zeitax:\tzeitay:\tzeitbx:\tzeitby:\t\n");
+
+   for (i=0;i<[CNCDatenArray count];i++)
    {
       NSDictionary* tempDic = [CNCDatenArray objectAtIndex:i];
       //NSLog(@"index: %d tempDic pwm: %2.2f",i,[[tempDic objectForKey:@"pwm"]floatValue]);
-      wegax += [[tempDic objectForKey:@"schritteax"]floatValue]*[[tempDic objectForKey:@"delayax"]floatValue]/1000;
-      wegay += [[tempDic objectForKey:@"schritteay"]floatValue]*[[tempDic objectForKey:@"delayay"]floatValue]/1000;
-      wegbx += [[tempDic objectForKey:@"schrittebx"]floatValue]*[[tempDic objectForKey:@"delaybx"]floatValue]/1000;
-      wegby += [[tempDic objectForKey:@"schritteby"]floatValue]*[[tempDic objectForKey:@"delayby"]floatValue]/1000;
-      zeitax += [[tempDic objectForKey:@"delayax"]floatValue];
-      zeitay += [[tempDic objectForKey:@"delayay"]floatValue];
-      zeitbx += [[tempDic objectForKey:@"delaybx"]floatValue];
-      zeitby += [[tempDic objectForKey:@"delayby"]floatValue];
+      wegax += [[tempDic objectForKey:@"schritteax"]floatValue]/steps*[[tempDic objectForKey:@"delayax"]floatValue]/1000;
+      wegay += [[tempDic objectForKey:@"schritteay"]floatValue]/steps*[[tempDic objectForKey:@"delayay"]floatValue]/1000;
+      wegbx += [[tempDic objectForKey:@"schrittebx"]floatValue]/steps*[[tempDic objectForKey:@"delaybx"]floatValue]/1000;
+      wegby += [[tempDic objectForKey:@"schritteby"]floatValue]/steps*[[tempDic objectForKey:@"delayby"]floatValue]/1000;
+      
+      float deltazeitax = [[tempDic objectForKey:@"schritteax"]floatValue]*[[tempDic objectForKey:@"delayax"]floatValue]/1000;
+      float deltazeitay = [[tempDic objectForKey:@"schritteay"]floatValue]*[[tempDic objectForKey:@"delayay"]floatValue]/1000;
+      float deltazeitbx = [[tempDic objectForKey:@"schrittebx"]floatValue]*[[tempDic objectForKey:@"delaybx"]floatValue]/1000;
+      float deltazeitby = [[tempDic objectForKey:@"schritteby"]floatValue]*[[tempDic objectForKey:@"delayby"]floatValue]/1000;
+      
+      zeitax += [[tempDic objectForKey:@"schritteax"]floatValue]*[[tempDic objectForKey:@"delayax"]floatValue]/1000;
+      zeitay += [[tempDic objectForKey:@"schritteay"]floatValue]*[[tempDic objectForKey:@"delayay"]floatValue]/1000;
+      zeitbx += [[tempDic objectForKey:@"schrittebx"]floatValue]*[[tempDic objectForKey:@"delaybx"]floatValue]/1000;
+      zeitby += [[tempDic objectForKey:@"schritteby"]floatValue]*[[tempDic objectForKey:@"delayby"]floatValue]/1000;
 
+    // fprintf(stderr, "%d\t%2.8f\t%2.8f \t%2.8f\t%2.8f\n",i,deltazeitax, deltazeitay, deltazeitbx, deltazeitby);
+      
       distanzax += [[tempDic objectForKey:@"distanzax"]floatValue];
       distanzay += [[tempDic objectForKey:@"distanzay"]floatValue];
 
@@ -1737,7 +1755,6 @@ return returnInt;
    //[PositionFeld setIntValue:[KoordinatenTabelle count]-1];
    [IndexFeld setIntValue:anzDaten];
    [IndexStepper setIntValue:anzDaten];
-   
    //NSLog(@"reportStopKnopf KoordinatenTabelle count: %d",[KoordinatenTabelle count]);
 }
 
@@ -2124,7 +2141,7 @@ return returnInt;
       [tempPListDic setObject:[NSNumber numberWithInt:[ProfilTiefeFeldA intValue]] forKey:@"profiltiefea"];
       [tempPListDic setObject:[NSNumber numberWithInt:[ProfilTiefeFeldB intValue]] forKey:@"profiltiefeb"];
       [tempPListDic setObject:[NSNumber numberWithInt:[ProfilBOffsetXFeld intValue]] forKey:@"profilboffsetx"];
-      [tempPListDic setObject:[NSNumber numberWithInt:[ProfilBOffsetYFeld intValue]] forKey:@"profilboffsetx"];
+      [tempPListDic setObject:[NSNumber numberWithInt:[ProfilBOffsetYFeld intValue]] forKey:@"profilboffsety"];
       [tempPListDic setObject:[NSNumber numberWithInt:[Basisabstand intValue]] forKey:@"basisabstand"];
       [tempPListDic setObject:[NSNumber numberWithInt:[Spannweite intValue]] forKey:@"spannweite"];
       [tempPListDic setObject:[NSNumber numberWithInt:[Portalabstand intValue]] forKey:@"portalabstand"];
@@ -3213,10 +3230,11 @@ return returnInt;
       NSMutableDictionary* tempDic=[NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i]];
       [tempDic setObject:[NSNumber numberWithInt:i] forKey:@"index"];
       [KoordinatenTabelle replaceObjectAtIndex:i withObject:tempDic];
-      [ProfilGraph setNeedsDisplay:YES];
-      [CNCTable reloadData];
-      [IndexStepper setMaxValue:[KoordinatenTabelle count]-1];
-   }
+    }
+   [ProfilGraph setNeedsDisplay:YES];
+   [CNCTable reloadData];
+   [IndexStepper setMaxValue:[KoordinatenTabelle count]-1];
+
 }
 
 - (IBAction)reportNeueZeile:(id)sender // Neuen Punkt einfügen
@@ -3406,7 +3424,7 @@ return returnInt;
 		NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:MausPunkt.x], @"ax",
 										 [NSNumber numberWithFloat:MausPunkt.y], @"ay",[NSNumber numberWithFloat:MausPunkt.x + offsetx], @"bx",
 										 [NSNumber numberWithFloat:MausPunkt.y + offsety], @"by",[NSNumber numberWithInt:[KoordinatenTabelle count]],@"index",[NSNumber numberWithInt:oldpwm],@"pwm",NULL];
-		NSLog(@"if CNC_Stoptaste state tempDic: %@",[tempDic description]);
+		//NSLog(@"if CNC_Stoptaste state tempDic: %@",[tempDic description]);
       if ([KoordinatenTabelle count]>1)
 		{
 			//[KoordinatenTabelle replaceObjectAtIndex:[KoordinatenTabelle count]-1 withObject:tempDic];
@@ -3624,7 +3642,6 @@ return returnInt;
    {
       mausistdown =[[[note userInfo]objectForKey:@"mausistdown"]intValue];
       //NSLog(@"MausAktion mausistdown: %d",mausistdown);
-      
    }
 }
 
@@ -3633,7 +3650,7 @@ return returnInt;
 	[[self window]makeFirstResponder: ProfilGraph];
 	//NSLog(@"MausKlickAktion note: %@",[[note userInfo]description]);
 	
-	NSPoint MausPunkt = NSPointFromString([[note userInfo]objectForKey:@"mauspunkt"]);
+	//NSPoint MausPunkt = NSPointFromString([[note userInfo]objectForKey:@"mauspunkt"]);
 	int klickIndex= [[[note userInfo] objectForKey:@"klickpunkt"]intValue];
 	if (klickIndex > 0x0FFF)
    {
@@ -4491,6 +4508,8 @@ return returnInt;
    float abray = 0;;
    float abrbx = 0;;
    float abrby = 0;;
+   
+   
       
    NSPoint AbbrandStartpunktA;
    NSPoint AbbrandStartpunktB;
@@ -4968,9 +4987,10 @@ return returnInt;
    }
    
    
-   
-   KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrandA:abbranda  mitAbbrandB:abbrandb aufSeite:0 von:von bis:bis];
-   
+   if ([AbbrandCheckbox state])
+   {
+      KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrandA:abbranda  mitAbbrandB:abbrandb aufSeite:0 von:von bis:bis];
+   }
    
    
    NSDictionary* RahmenDic = [self RahmenDic];
@@ -5060,6 +5080,18 @@ return returnInt;
       [KoordinatenTabelle addObject: tempDic];
    }
    //NSLog(@"LibElementeingabeAktion Koordinatentabelle count: %d numberOfRows: %d ",[KoordinatenTabelle count],[CNCTable numberOfRows]);
+
+   float abbranda = [AbbrandFeld floatValue];
+   float abbrandb = [AbbrandFeld floatValue]/[ProfilTiefeFeldB floatValue]*[ProfilTiefeFeldA floatValue]; // groesser bei groesserem Unterschied
+   int von = 0;
+   int bis = [KoordinatenTabelle  count];
+  
+   if ([AbbrandCheckbox state])
+   {
+      KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrandA:abbranda  mitAbbrandB:abbrandb aufSeite:1 von:von bis:bis];
+   }
+   
+
    
    //NSLog(@"KoordinatenTabelle nach: %@",[KoordinatenTabelle description]);
    
@@ -5087,8 +5119,8 @@ return returnInt;
    //NSLog(@"KoordinatenTabelle: %@",[KoordinatenTabelle description]);
    [CNCTable scrollRowToVisible:[KoordinatenTabelle count] - 1];
    [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:[KoordinatenTabelle count]-1] byExtendingSelection:NO];
-//   [ProfilGraph setDatenArray:KoordinatenTabelle];
-//	[ProfilGraph setNeedsDisplay:YES];
+   [ProfilGraph setDatenArray:KoordinatenTabelle];
+	[ProfilGraph setNeedsDisplay:YES];
    [CNCTable reloadData];
    
    
@@ -5175,6 +5207,16 @@ return returnInt;
    [AbmessungX setIntValue:maxX - minX];
    [AbmessungY setIntValue:maxY - minY];
    
+   float abbranda = [AbbrandFeld floatValue];
+   float abbrandb = [AbbrandFeld floatValue]/[ProfilTiefeFeldB floatValue]*[ProfilTiefeFeldA floatValue]; // groesser bei groesserem Unterschied
+   int von = 0;
+   int bis = [KoordinatenTabelle  count];
+   
+   if ([AbbrandCheckbox state])
+   {
+      KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrandA:abbranda  mitAbbrandB:abbrandb aufSeite:1 von:von bis:bis];
+   }
+
    
    NSMutableDictionary* StartwertDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[StartwertDic setObject:[[KoordinatenTabelle lastObject]objectForKey:@"ax"] forKey:@"startx"];
@@ -5352,6 +5394,9 @@ return returnInt;
    int lastSpeed = [CNC speed];
    [CNC setSpeed:14];
    [CNC setredpwm:[red_pwmFeld floatValue]];
+   
+   float plattendicke = 50;
+   
    float breite = [Blockbreite floatValue];
    float rand=[Einlaufrand floatValue];
    
@@ -5485,11 +5530,13 @@ return returnInt;
    float auslaufAY;
    float auslaufBX;
    float auslaufBY;
-   float zugabeoben=5;
+   float zugabeoben=3 + [AbbrandFeld intValue];
    float zugabeunten=10;
    
    float einstichx = 6;
    float einstichy = 4;
+   float plattendicke = 50;
+
    
    float maxx=0,minx=MAXFLOAT; // Startwerte fuer Suche nach Rand
    float maxy=0,miny=MAXFLOAT;
@@ -5565,6 +5612,7 @@ return returnInt;
       float dicke=[Blockdicke floatValue];
       
       float blockoberkante = [Blockoberkante floatValue];
+      //blockoberkante = plattendicke-5;
       
       if ((maxy + fabs(miny))>dicke) 
       {
@@ -5582,8 +5630,11 @@ return returnInt;
          dicke = (abstandoben+abstandunten)+zugabeoben +zugabeunten; // (maxy-miny) ist Dicke ohne zugaben
       }
       
-      //NSLog(@"reportBlockkonfigurieren dicke: %2.2f",dicke);
-      [Blockoberkante setIntValue:dicke+5];
+      NSLog(@"reportBlockkonfigurieren dicke: %2.2f",dicke);
+      [Blockoberkante setIntValue:dicke+zugabeoben];
+      //[Blockoberkante setIntValue:plattendicke-5];
+      
+      [OberkantenStepper setIntValue:[Blockoberkante intValue]];
       
       [Blockdicke setIntValue:dicke];
       [Einlaufrand setIntValue:einlaufrand];
@@ -5629,6 +5680,9 @@ return returnInt;
       
       
       // Start des Schnittes ist um einstichx, einstichy verschoben
+      
+      einstichy = plattendicke - dicke;
+      
       
       PositionA.x -=einstichx;
       PositionB.x -=einstichx;
@@ -5733,7 +5787,9 @@ return returnInt;
       //NSLog(@"BlockKoordinatenTabelle Einlauf: %@",[BlockKoordinatenTabelle description]);
       //NSLog(@"reportBlockkonfigurieren nach Schneiden zum Einlauf EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
       
+      
       // Nach Profil und ev. Ausstich:
+      
       // Auslauf
       lage=1;
       
@@ -5764,8 +5820,8 @@ return returnInt;
        */
       //Schneiden an Blockunterkante rechts
       
-      PositionA.y = EckeRechtsUnten.y;
-      PositionB.y = EckeRechtsUnten.y;
+      PositionA.y = EckeRechtsUnten.y - einstichy + 3;
+      PositionB.y = EckeRechtsUnten.y - einstichy + 3;
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
@@ -6030,7 +6086,7 @@ return returnInt;
 
 - (IBAction)reportNeuTaste:(id)sender
 {
-  // NSLog(@"reportNeuTaste");
+   NSLog(@"reportNeuTaste");
   // NSLog(@"reportNeuTaste KoordinatenTabelle count: %lu",[KoordinatenTabelle count]);
   // NSLog(@"reportNeuTaste KoordinatenTabelle vor: %@",[KoordinatenTabelle description]);
 	[CNC_Preparetaste setEnabled:YES];
@@ -7281,6 +7337,13 @@ return returnInt;
        }
    }
    
+   if ([[[note userInfo]objectForKey:@"slaveversion"]intValue])
+   {
+      int slaveversionint =[[[note userInfo]objectForKey:@"slaveversion"]intValue];
+      [SlaveVersionFeld setStringValue:[NSString stringWithFormat:@"Slaveversion: %d",slaveversionint]];
+   }
+  
+   
    int homeanschlagCount=0;
    if ([[note userInfo]objectForKey:@"homeanschlagset"])
    {
@@ -7416,6 +7479,7 @@ return returnInt;
 
 - (IBAction)reportUSB:(id)sender
 {
+   //NSLog(@"check A");
    NSDictionary* tempDic=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:USBTASTE] forKey:@"usb"];
 	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	[nc postNotificationName:@"usbopen" object:self userInfo:tempDic];

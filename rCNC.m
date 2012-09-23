@@ -13,6 +13,11 @@ uint8_t hs[8]={9,1,5,4,6,2,10,8}; //Tabelle Halbschritt Rechtslauf
 
 float full_pwm = 1;
 
+#define MOTOR_A 0
+#define MOTOR_B 1
+#define MOTOR_C 2
+#define MOTOR_D 3
+
 
 
 @implementation rCNC
@@ -20,7 +25,7 @@ float full_pwm = 1;
 {
 if ((self = [super init]) != nil) 
 {
-	DatenArray = [[NSArray alloc]init];
+	DatenArray = [[NSMutableArray alloc]init];
 	[DatenArray retain];
 	
 	speed=10;
@@ -123,10 +128,6 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 */
 - (NSDictionary*)SteuerdatenVonDic:(NSDictionary*)derDatenDic
 {
-#define MOTOR_A 0
-#define MOTOR_B 1
-#define MOTOR_C 2
-#define MOTOR_D 3
 
     //NSLog(@"SteuerdatenVonDic: %@",[derDatenDic description]);
 	int  anzSchritte;
@@ -139,6 +140,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
    int  anzbxminus=0;
    int  anzbyplus=0;
    int  anzbyminus=0;
+   
 
 	if ([derDatenDic count]==0) 
 	{
@@ -338,25 +340,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 	int SchritteAY=steps*DistanzAY;	//	Schritte in Y-Richtung A
 	int SchritteBY=steps*DistanzBY;	//	Schritte in Y-Richtung B
    
-   NSLog(@"ZeitA: %2.4f ZeitB: %2.4f",ZeitA,ZeitB);
-
-   
-   //NSLog(@"delayax: %2.4f delaybx: %2.4f",ZeitA/SchritteAX*10000,ZeitB/SchritteBX*10000);
-   
-   
-   [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitA/SchritteAX*10000)] forKey: @"delayax"];
-   [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitA/SchritteAY*10000)] forKey: @"delayay"];
-   [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitB/SchritteBX*10000)] forKey: @"delaybx"];
-   [tempDatenDic setObject:[NSNumber numberWithFloat:(ZeitB/SchritteBY*10000)] forKey: @"delayby"];
-   
-   
-   /*
-   [tempDatenDic setObject:[NSNumber numberWithFloat:(relevanteZeit/SchritteAX*10000)] forKey: @"delayax"];
-   [tempDatenDic setObject:[NSNumber numberWithFloat:(relevanteZeit/SchritteAY*10000)] forKey: @"delayay"];
-   [tempDatenDic setObject:[NSNumber numberWithFloat:(relevanteZeit/SchritteBX*10000)] forKey: @"delaybx"];
-   [tempDatenDic setObject:[NSNumber numberWithFloat:(relevanteZeit/SchritteBY*10000)] forKey: @"delayby"];
-  */
-   
+    
    if (DistanzA< 0.5 || DistanzB < 0.5)
    {
       //NSLog(@"DistanzA: %2.2f DistanzB: %2.2f * SchritteAX: %d SchritteAY: %d * SchritteBX: %d SchritteBY: %d",DistanzAX,DistanzAY,SchritteAX,SchritteAY,SchritteBX,SchritteBY);
@@ -375,8 +359,6 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 		SchritteX &= 0x7FFF;
 		//NSLog(@"SchritteX nach *-1 und 0x7FFFF %d",SchritteX);
 		SchritteX |= 0x8000;
-		//NSLog(@"SchritteX nach  0x8000 %d",SchritteX);
-		//NSLog(@"SchritteX negativ: %d",SchritteX);
 	}
    
 	if (SchritteAX < 0) // negative Zahl
@@ -386,8 +368,6 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 		SchritteAX &= 0x7FFF;
 		//NSLog(@"SchritteAX nach *-1 und 0x7FFFF %d",SchritteAX);
 		SchritteAX |= 0x8000;
-		//NSLog(@"SchritteAX nach  0x8000 %d",SchritteAX);
-		//NSLog(@"SchritteAX negativ: %d",SchritteAX);
 	}
    else
    {
@@ -454,8 +434,6 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
    
 	// schritt x
 	
-//	[tempDatenDic setObject:[NSNumber numberWithFloat:(SchritteX & 0xFF)] forKey: @"schrittexl"];
-//	[tempDatenDic setObject:[NSNumber numberWithFloat:((SchritteX >> 8) & 0xFF)] forKey: @"schrittexh"];
 
 	[tempDatenDic setObject:[NSNumber numberWithFloat:(SchritteAX & 0xFF)] forKey: @"schritteaxl"];
 	[tempDatenDic setObject:[NSNumber numberWithFloat:((SchritteAX >> 8) & 0xFF)] forKey: @"schritteaxh"];
@@ -465,8 +443,6 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 
 
 	// schritte y
-//  [tempDatenDic setObject:[NSNumber numberWithFloat:(SchritteY & 0xFF)] forKey: @"schritteyl"];
-//	[tempDatenDic setObject:[NSNumber numberWithFloat:((SchritteY >> 8) & 0xFF)] forKey: @"schritteyh"];
 
    [tempDatenDic setObject:[NSNumber numberWithFloat:(SchritteAY & 0xFF)] forKey: @"schritteayl"];
 	[tempDatenDic setObject:[NSNumber numberWithFloat:((SchritteAY >> 8) & 0xFF)] forKey: @"schritteayh"];
@@ -475,22 +451,19 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 
    
 	
-//	float delayX= ((Zeit/(SchritteX & 0x7FFF))*100000)/10;							// Zeit fuer einen Schritt in 100us-Einheit
+	float delayX= ((relZeit/(SchritteX & 0x7FFF))*100000)/10;							// Zeit fuer einen Schritt in 100us-Einheit
 	float delayAX= ((relZeit/(SchritteAX & 0x7FFF))*100000)/10;							// Zeit fuer einen Schritt AX in 100us-Einheit
 	float delayBX= ((relZeit/(SchritteBX & 0x7FFF))*100000)/10;							// Zeit fuer einen Schritt BX in 100us-Einheit
 	
-   
-   
-//   float delayY= ((Zeit/(SchritteY & 0x7FFF))*100000)/10;
+      
+   float delayY= ((relZeit/(SchritteY & 0x7FFF))*100000)/10;
    float delayAY= ((relZeit/(SchritteAY & 0x7FFF))*100000)/10;
    float delayBY= ((relZeit/(SchritteBY & 0x7FFF))*100000)/10;
 	
-	//NSLog(@"DistanzX: %.2f DistanzY: %.2f Distanz: %.2f Zeit: %.3f  delayX: %.1f  delayY: %.1f SchritteX: %d SchritteY: %d",DistanzX,DistanzY,Distanz, Zeit, delayX, delayY, SchritteX,SchritteY);
+	//NSLog(@"DistanzX: \t%.2f \tDistanzY: \t%.2f \tDistanz: \t%.2f \tZeit: \t%.3f  \tdelayX: \t%.1f\t  delayY: \t%.1f \tSchritteX: \t%d \tSchritteY: \t%d",DistanzX,DistanzY,Distanz, Zeit, delayX, delayY, SchritteX,SchritteY);
 	
 	
 	
-//	[tempDatenDic setObject:[NSNumber numberWithFloat:((int)delayX & 0xFF)] forKey: @"delayxl"];
-//	[tempDatenDic setObject:[NSNumber numberWithFloat:(((int)delayX >> 8) & 0xFF)] forKey: @"delayxh"];
 
    [tempDatenDic setObject:[NSNumber numberWithFloat:delayAX] forKey: @"delayax"];
    [tempDatenDic setObject:[NSNumber numberWithFloat:delayAY] forKey: @"delayay"];
@@ -505,9 +478,6 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 	[tempDatenDic setObject:[NSNumber numberWithFloat:(((int)delayBX >> 8) & 0xFF)] forKey: @"delaybxh"];
 
 
-	
-//   [tempDatenDic setObject:[NSNumber numberWithFloat:((int)delayY & 0xFF)] forKey: @"delayyl"];
-//	[tempDatenDic setObject:[NSNumber numberWithFloat:(((int)delayY >> 8) & 0xFF)] forKey: @"delayyh"];
 
    [tempDatenDic setObject:[NSNumber numberWithFloat:((int)delayAY & 0xFF)] forKey: @"delayayl"];
 	[tempDatenDic setObject:[NSNumber numberWithFloat:(((int)delayAY >> 8) & 0xFF)] forKey: @"delayayh"];
@@ -533,6 +503,9 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 	//NSLog(@"SteuerdatenVonDic tempDatenDic: %@",[tempDatenDic description]);
 	return tempDatenDic;
 }
+
+
+
 
 - (NSArray*)SteuerdatenArrayVonDic:(NSDictionary*)derDatenDic // Rampen am Anfang und Ende
 {
@@ -601,7 +574,142 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 	//NSLog(@"SchritteY raw %d",SchritteY);
 }
 
+// ohne Abbrand
+
 - (NSArray*)SchnittdatenVonDic:(NSDictionary*)derDatenDic
+{
+   
+   /*
+    Bereitet die Angaben im Steuerdatenarray für die Uebergabe an den USB vor.
+    Alle 16Bit-Zahlen werden aufgeteilt in highbyte und lowbyte
+    
+    Aufbau:
+    
+    delayx = 269;
+    delayy = 115;
+    endpunkt = "{50, 50.2}";
+    schrittex = "-18";
+    schrittey = "-42";
+    startpunkt = "{52, 54.9}";
+    zoomfaktor = "0.19";
+    
+    Array:
+    
+    schritteax lb
+    schritteax hb
+    schritteay lb
+    schritteay hb
+    
+    delayax lb
+    delayax hb
+    delayay lb
+    delayay hb
+    
+    schrittebx lb
+    schrittebx hb
+    schritteby lb
+    schritteby hb
+    
+    delaybx lb
+    delaybx hb
+    delayby lb
+    delayby hb
+    
+    code
+    position // first, last, ...
+    indexh
+    indexl
+    
+    pwm (pos 20)
+    motorstatus (pos 21)
+    */
+   
+   if ([[derDatenDic objectForKey:@"indexl"]intValue] < 3)
+   {
+      //NSLog(@"SchnittdatenVonDic derDatenDic: %@",[derDatenDic description]);
+   }
+   //NSLog(@"SchnittdatenVonDic index: %d",[[derDatenDic objectForKey:@"indexl"]intValue]);
+   
+	NSMutableArray* tempArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+	int tempDataL=0;
+	int tempDataH=0;
+	tempDataL=[[derDatenDic objectForKey:@"schrittex"]intValue]& 0xFF;
+	tempDataH=([[derDatenDic objectForKey:@"schrittex"]intValue]>>8)&0xFF;
+	//NSLog(@"tempData int: %d hex: %X tempDataL int: %d hex: %X tempDataH int: %d hex: %X",tempData,tempData,tempDataL,tempDataL,tempDataH,tempDataH);
+   //NSLog(@"tempData int: %d tempDataL int: %d  tempDataH int: %d ",tempData,tempDataL,tempDataH);
+   
+   // Seite A
+   [tempArray addObject:[derDatenDic objectForKey:@"schritteaxl"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"schritteaxh"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"schritteayl"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"schritteayh"]];
+   
+   
+   [tempArray addObject:[derDatenDic objectForKey:@"delayaxl"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"delayaxh"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"delayayl"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"delayayh"]];
+   
+   
+   // Seite B
+   [tempArray addObject:[derDatenDic objectForKey:@"schrittebxl"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"schrittebxh"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"schrittebyl"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"schrittebyh"]];
+   
+   [tempArray addObject:[derDatenDic objectForKey:@"delaybxl"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"delaybxh"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"delaybyl"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"delaybyh"]];
+   
+   
+	[tempArray addObject:[derDatenDic objectForKey:@"code"]];
+   
+   
+   if ([derDatenDic objectForKey:@"position"])
+   {
+      [tempArray addObject:[derDatenDic objectForKey:@"position"]]; 
+   }
+   else
+   {
+      [tempArray addObject:[NSNumber numberWithInt:0]];
+   }// Beschreibung der Lage innerhalb des Schnitt-Polygons: first, last, 
+   
+   
+	[tempArray addObject:[derDatenDic objectForKey:@"indexh"]];
+	[tempArray addObject:[derDatenDic objectForKey:@"indexl"]];
+   
+   if ([derDatenDic objectForKey:@"pwm"])
+   {
+      [tempArray addObject:[derDatenDic objectForKey:@"pwm"]];
+   }
+   else 
+   {
+      [tempArray addObject:[NSNumber numberWithInt:0]];
+   }
+   
+   if ([derDatenDic objectForKey:@"motorstatus"])
+   {
+      //NSLog(@"Schnittdaten motorstatus: %d",[[derDatenDic objectForKey:@"motorstatus"]intValue]);
+      [tempArray addObject:[derDatenDic objectForKey:@"motorstatus"]];
+   }
+   else 
+   {
+      [tempArray addObject:[NSNumber numberWithInt:1]];
+   }
+   
+   //NSLog(@"tempArray indexl: %d",[[derDatenDic objectForKey:@"indexl"]intValue]);
+   //NSLog(@"SchnittdatenVonDic tempArray: %@",[tempArray description]);
+   //NSLog(@"SchnittdatenVonDic tempArray count: %d",[tempArray count]);
+   
+   
+   return tempArray;
+}
+
+
+// mit Abbrand
+
+- (NSArray*)SchnittdatenVonDic:(NSDictionary*)derDatenDic mitAbbrand:(int)mitabbrand
 {
    
    /*
@@ -717,11 +825,9 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
    {
       [tempArray addObject:[NSNumber numberWithInt:1]];
    }
-
    
    //NSLog(@"SchnittdatenVonDic tempArray: %@",[tempArray description]);
    //NSLog(@"SchnittdatenVonDic tempArray count: %d",[tempArray count]);
-   
    
    return tempArray;
 }
@@ -1394,7 +1500,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
 	
 	// Anzahl Schritte:
 	float Umfang = 2*M_PI*RadiusA*(1-powf(epsilon, 2)/4 -3*powf(epsilon,4)/64);
-   NSLog(@"Ellipsenumfang: %2.2f",Umfang);
+   //NSLog(@"Ellipsenumfang: %2.2f",Umfang);
 	
    int anzSchritte =Umfang/Schrittlaenge;
    
@@ -1440,7 +1546,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    
    [EllipsenpunktKoordinatenArray addObject:[EllipsenpunktKoordinatenArray objectAtIndex:0]];
    
-	NSLog(@"EllipsenKoordinaten: %@",[EllipsenpunktKoordinatenArray description]);
+	//NSLog(@"EllipsenKoordinaten: %@",[EllipsenpunktKoordinatenArray description]);
 	
    return EllipsenpunktKoordinatenArray;
 }
@@ -1498,7 +1604,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
 
 	// Anzahl Schritte:
 	float Umfang = 2*M_PI*RadiusA*(1-powf(epsilon, 2)/4 -3*powf(epsilon,4)/64);
-   NSLog(@"Ellipsenumfang: %2.2f",Umfang);
+   //NSLog(@"Ellipsenumfang: %2.2f",Umfang);
 	int anzSchritte =0;
    if (anzahlPunkte == -1)
    {
@@ -1551,7 +1657,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    
    [EllipsenpunktKoordinatenArray addObject:[EllipsenpunktKoordinatenArray objectAtIndex:0]];
    
-	NSLog(@"EllipsenKoordinaten: %@",[EllipsenpunktKoordinatenArray description]);
+	//NSLog(@"EllipsenKoordinaten: %@",[EllipsenpunktKoordinatenArray description]);
 	
    return EllipsenpunktKoordinatenArray;
 }
@@ -1879,17 +1985,23 @@ PortA=vs[n & 3]; warte10ms(); n++;
     seite = 0: abbrandmassa oben, Negativform
     seite = 1: abbrandmassa aussen, Positivform
     */
-   NSLog(@"addAbbrand MassA: %2.2f MassB: %2.2f von: %d bis: %d",abbrandmassa,abbrandmassb,von,bis);
+   //NSLog(@"addAbbrand MassA: %2.2f MassB: %2.2f von: %d bis: %d",abbrandmassa,abbrandmassb,von,bis);
    int i=0;
    NSMutableArray* AbbrandArray = [[NSMutableArray alloc]initWithCapacity:0];
    
    float lastwha[2] = {}; // WH des letzten berechneten Punktes. Wird fuer Check gebraucht, ob die Kruemmung gewechselt hat
    float lastwhb[2] = {}; // WH des letzten berechneten Punktes. Wird fuer Check gebraucht, ob die Kruemmung gewechselt hat
    
+   
+   float wegobena=0, weguntena=0;
+   float wegobenb=0, weguntenb=0;
+
+   
 //   NSLog(@"addAbbrandVonKoordinaten ax: %@",[Koordinatentabelle valueForKey:@"ax"]);
 //   NSLog(@"addAbbrandVonKoordinaten ay: %@",[Koordinatentabelle valueForKey:@"ay"]);
     //NSLog(@"addAbbrandVonKoordinaten start: %@",[Koordinatentabelle  description]);
-   
+   //NSLog(@"addAbbrandVonKoordinaten start: %@",[[Koordinatentabelle objectAtIndex:0] description]);
+
    //fprintf(stderr, "i \tprev x \tprev y \tnext x \tnexy \tprefhyp \tnexthyp \tprevnorm x \tprevnorm y \tnextnorm x  \tnextnorm y\n"); 
    
    /*
@@ -2191,14 +2303,23 @@ PortA=vs[n & 3]; warte10ms(); n++;
          [tempDic setObject:[NSNumber numberWithFloat:ay+abbranda[1]] forKey:@"abray"];
          [tempDic setObject:[NSNumber numberWithFloat:bx+abbrandb[0]] forKey:@"abrbx"];
          [tempDic setObject:[NSNumber numberWithFloat:by+abbrandb[1]] forKey:@"abrby"];
-         //NSLog(@"i %d mod %2.2f %2.2f %2.2f %2.2f  %2.2f %2.2f %2.2f %f",i,ax,ay,bx,by,ax+abbranda[0],ay+abbranda[1],bx+abbrandb[0],by+abbrandb[1]);
          
+         float hypa = hypotf(ax, ay);
+         float hypb = hypotf(bx, by);
          float abrhypa = hypotf(ax+abbranda[0], ay+abbranda[1]);
          float abrhypb = hypotf(bx+abbrandb[0], by+abbrandb[1]);
+         
+         if (i<25)
+         {
+            // NSLog(@"i %d mod %2.2f %2.2f %2.2f %2.2f  %2.2f %2.2f %2.2f %f",i,ax,ay,bx,by,ax+abbranda[0],ay+abbranda[1],bx+abbrandb[0],by+abbrandb[1]);
+            //fprintf(stderr,"i \t%d  \t%2.2f \t%2.2f \t%2.2f \t%2.2f\n",i,hypa,abrhypa,hypb,abrhypb);
+         }
          
          if (((i>10)&&(i<18)) || (i> 40))
          {
             //NSLog(@"i: %d tempDic: %@",i,[tempDic description]);
+           // fprintf(stderr,"i %d  \t%2.2f \t%2.2f \t%2.2f \t%2.2f\n",i,hypa,abrhypa,hypb,abrhypb);
+
          }
       } // i im Bereich
       
@@ -2206,6 +2327,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
       
    } // for i
    //NSLog(@"addAbbrandVonKoordinaten end: %@",[AbbrandArray  description]);
+   //NSLog(@"addAbbrandVonKoordinaten end: %@",[[AbbrandArray  objectAtIndex:0] description]);
    return AbbrandArray;
    
 }

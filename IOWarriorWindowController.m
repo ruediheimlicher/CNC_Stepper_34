@@ -233,7 +233,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
       
    }
    usbstatus=r;
-   
+   NSLog(@"check c");
    
    return r;
 }
