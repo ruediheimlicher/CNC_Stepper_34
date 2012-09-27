@@ -1841,7 +1841,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    NSLog(@"deltax : %.5f deltay: %.5f",deltax,deltay);
    NSLog(@"deltax real: %.5fmm ",deltax*Profiltiefe);
    
-   // Steigung der Tangente und Einhitsvektor
+   // Steigung der Tangente und Einheitsvektor
    float steigungunten = deltay/deltax; // tangente
    NSPoint vektortang = NSMakePoint(cos(steigungunten), sin(steigungunten));
    
@@ -1890,7 +1890,6 @@ PortA=vs[n & 3]; warte10ms(); n++;
          minvornpos = k ;
       }
       
-      
       float tempsteigunghinten = (tempOberseitenpunkt.y - Startpunktnachhinten.y)/(tempOberseitenpunkt.x - Startpunktnachhinten.x);
       //NSLog(@"k: %d tempsteigunghinten: %.3f fehler: %.3f",k,tempsteigunghinten,fabs(tempsteigunghinten - zielsteigungnachhinten));
       
@@ -1913,7 +1912,21 @@ PortA=vs[n & 3]; warte10ms(); n++;
    int aktuellepos= minhintenpos-schritte;
    int aktuellerindex=0;
    
-   // Offset des Startpunktes
+   //Steigung der Profillinie von minhintenpos bis 2 Schritte nach hinten:
+   float deltaxh = [[[ProfilArray objectAtIndex:minhintenpos-2]objectForKey:@"x"]floatValue] - [[[ProfilArray objectAtIndex:minhintenpos]objectForKey:@"x"]floatValue];
+   float deltayh = [[[ProfilArray objectAtIndex:minhintenpos-2]objectForKey:@"y"]floatValue] - [[[ProfilArray objectAtIndex:minhintenpos]objectForKey:@"y"]floatValue];
+   float steigungh = deltayh/deltaxh;
+
+   //Steigung der Profillinie von minvornpos bis 2 Schritte nach vorn:
+   float deltaxv = [[[ProfilArray objectAtIndex:minvornpos+2]objectForKey:@"x"]floatValue] - [[[ProfilArray objectAtIndex:minvornpos]objectForKey:@"x"]floatValue];
+   float deltayv = [[[ProfilArray objectAtIndex:minvornpos+2]objectForKey:@"y"]floatValue] - [[[ProfilArray objectAtIndex:minvornpos]objectForKey:@"y"]floatValue];
+   float steigungv = deltayv/deltaxv;
+   NSLog(@"steigungh: %.3f steigungv: %.3f",steigungh,steigungv);
+
+   
+   //Breite des Streifens: 10mm
+
+   // Offset des Startpunktes im Profil
    float offsetx = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
    float offsety = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
    NSLog(@"offsetx: %.3f offsety: %.3f ",offsetx,offsety);
@@ -1924,7 +1937,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    tempX *= Profiltiefe;						// Wert in mm
    // NSLog(@"tempX: %2.2f ",tempX);
    tempX += Startpunkt.x;	// offset in mm
-   NSNumber* tempNumberX0=[NSNumber numberWithFloat:tempX];
+   //NSNumber* tempNumberX0=[NSNumber numberWithFloat:tempX];
    
    float tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
    //NSLog(@"tempY: %2.2f ",tempY);
@@ -1932,10 +1945,10 @@ PortA=vs[n & 3]; warte10ms(); n++;
    tempY *= Profiltiefe;						// Wert in mm
    // NSLog(@"tempX: %2.2f ",tempX);
    tempY += Startpunkt.y;	// offset in mm
-   NSNumber* tempNumberY0=[NSNumber numberWithFloat:tempY];
+  // NSNumber* tempNumberY0=[NSNumber numberWithFloat:tempY];
    
-   NSDictionary* tempDic0=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX0, @"x",tempNumberY0,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];
-   [HolmpunktArray addObject: tempDic0];
+   //NSDictionary* tempDic0=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX0, @"x",tempNumberY0,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];
+   //[HolmpunktArray addObject: tempDic0];
    
    //erster Knickpunkt oben setzen: Koord von Endpunktnachhinten
    
@@ -1952,9 +1965,23 @@ PortA=vs[n & 3]; warte10ms(); n++;
    tempY *= Profiltiefe;						// Wert in mm
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY1=[NSNumber numberWithFloat:tempY];
-   
+    
    NSDictionary* tempDic1=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX1, @"x",tempNumberY1,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];
    [HolmpunktArray addObject: tempDic1];
+   
+   int l0 = 10;
+   //Koord des Anfangs des Streifens berechnen: 10 mm nach hinten
+   tempX -= l0;
+   NSNumber* tempNumberX0=[NSNumber numberWithFloat:tempX];
+
+   tempY -= l0*steigungh;
+   NSNumber* tempNumberY0=[NSNumber numberWithFloat:tempY];
+  
+   NSDictionary* tempDic0=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX0, @"x",tempNumberY0,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];
+   [HolmpunktArray insertObject: tempDic0 atIndex:0];
+   
+   
+   
    
    //zweiter Knickpunkt unten setzen: Koord von Startpunktnachhinten
    aktuellepos= holmposhinten;
