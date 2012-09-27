@@ -918,6 +918,13 @@ return returnInt;
       //NSLog(@"i: %d motor: %d aktuellermotor: %d neuermotor: %d motorstatus: %d",i,motor, aktuellermotor,neuermotor,motorstatus);
       
    }
+   
+   [ProfilPop removeAllItems];
+   [ProfilPop addItemWithTitle:@"Profil waehlen"];
+   NSArray* ProfilnamenArray = [self readProfilLib];
+   [ProfilPop addItemsWithTitles:ProfilnamenArray];
+   
+   
    motorstatus |= (1<<2);
    motorstatus |= STEPEND_A;
    //NSLog(@"motorstatus: %X",motorstatus);
@@ -935,6 +942,44 @@ return returnInt;
    
    [[self window]makeFirstResponder: ProfilGraph];
    NSLog(@"awake end");
+}
+
+- (NSArray*)readProfilLib
+{
+   NSMutableArray* tempLibElementArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+	BOOL LibOK=NO;
+	BOOL istOrdner;
+   
+	NSFileManager *Filemanager = [NSFileManager defaultManager];
+	NSString*  ProfilLibPfad=[NSHomeDirectory() stringByAppendingFormat:@"%@%@%@",@"/Documents",@"/CNCDaten",@"/ProfilLib"];
+   [ProfilLibPfad retain];
+   //NSURL* LibURL=[NSURL fileURLWithPath:LibPfad];
+   LibOK= ([Filemanager fileExistsAtPath:ProfilLibPfad isDirectory:&istOrdner]&&istOrdner);
+   //NSLog(@"readProfilLib:    LibPfad: %@ LibOK: %d",ProfilLibPfad, LibOK );
+   if (LibOK)
+   {
+      ;
+   }
+   else
+   {
+      //Lib ist noch leer
+      
+      
+   }
+   
+   //NSLog(@"LibPfad: %@",LibPfad);
+	if (LibOK)
+	{
+      NSMutableArray* ProfilnamenArray = (NSMutableArray*)[Filemanager contentsOfDirectoryAtPath:ProfilLibPfad error:NULL];
+      [ProfilnamenArray removeObject:@".DS_Store"];
+      [ProfilnamenArray removeObject:@" Profile ReadMe.txt"];
+		//NSLog(@"readProfilLib ProfilnamenArray: %@",[ProfilnamenArray description]);
+      
+      return ProfilnamenArray;
+      
+		
+	}//LIBOK
+   return tempLibElementArray;
 }
 
 - (void)ReportHandlerCallbackAktion:(NSNotification*)note
@@ -1444,7 +1489,7 @@ return returnInt;
       }
       else 
       {
-         NSLog(@"cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",cncindex,distA,distB);
+         //NSLog(@"cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",cncindex,distA,distB);
 
       }
       
@@ -1458,7 +1503,7 @@ return returnInt;
             }
             else 
             {
-               NSLog(@"cncindex: %d abbrandistanz zu kurz. distabrA: %2.2f distabrB: %2.2f",cncindex,distabrA,distabrB);
+               //NSLog(@"cncindex: %d abbrandistanz zu kurz. distabrA: %2.2f distabrB: %2.2f",cncindex,distabrA,distabrB);
                datensatzok = 0;
             }
          }
@@ -1475,7 +1520,7 @@ return returnInt;
       
       else 
       {
-         NSLog(@"i: %d distanz zu kurz",i);
+         //NSLog(@"i: %d distanz zu kurz",i);
          // [tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:cncindex]];
          continue;
       }
@@ -3063,6 +3108,8 @@ return returnInt;
    
 }
 
+
+
 - (IBAction)reportKreis:(id)sender
 {
 	/*
@@ -4167,6 +4214,399 @@ return returnInt;
    
 	return;
   }
+
+- (NSArray*)readFigur
+{
+   NSArray* FigurArray;
+   NSLog(@"readFigur start");
+   
+   /*
+    [ProfilOpenPanel beginWithCompletionHandler:^(NSInteger result)
+    {
+    NSLog(@"readFigur B");
+    if (result == NSFileHandlingPanelOKButton)
+    {
+    NSLog(@"readFigur C");
+    for (NSURL *fileURL in [ProfilOpenPanel URLs])
+    {
+    NSLog(@"readFigur C");
+    NSLog(@"URLs: %@",[[ProfilOpenPanel URLs] description]);
+    // Do what you want with fileURL
+    // ...
+    }
+    }
+    NSLog(@"readFigur D");
+    [ProfilOpenPanel release];
+    
+    }];
+    */
+	/*
+    [OpenPanel beginSheetForDirectory:NSHomeDirectory() file:nil
+	 //types:nil
+    modalForWindow:[self window]
+    modalDelegate:self
+    didEndSelector:@selector(ProfilPfadAktion:returnCode:contextInfo:)
+    contextInfo:nil];
+    */
+   
+   
+   return NULL;
+   NSOpenPanel* ProfilOpenPanel = [NSOpenPanel openPanel];
+	NSURL* FigurPfad=[ProfilOpenPanel URL];
+   
+	//NSLog(@"readFigur: URL: %@",FigurPfad);
+	NSError* err=0;
+	NSString* FigurString=[NSString stringWithContentsOfURL:FigurPfad encoding:NSUTF8StringEncoding error:&err]; // String des Speicherpfads
+	
+   //NSLog(@"Utils openProfil FigurString: \n%@",FigurString);
+	
+   NSArray* tempArray = [NSArray array];
+   
+	//NSArray* tempArray=[FigurString componentsSeparatedByString:@"\r"];
+   
+   //NSArray* temp_n_Array=[FigurString componentsSeparatedByString:@"\n"];
+   //NSLog(@"Utils openProfil anz: %d temp_n_Array: %@",[temp_n_Array count],temp_n_Array);
+   if ([[FigurString componentsSeparatedByString:@"\n"]count] == 1) // separator \r
+   {
+      tempArray=[FigurString componentsSeparatedByString:@"\r"];
+      
+   }
+   else
+   {
+      tempArray=[FigurString componentsSeparatedByString:@"\n"];
+   }
+   
+   //NSArray* temp_r_Array=[FigurString componentsSeparatedByString:@"\r"];
+	
+   
+   // NSLog(@"Utils openProfil anz: %d temp_r_Array: \n%@",[temp_r_Array count],temp_r_Array);
+   
+   NSString* firstString = [tempArray objectAtIndex:0];
+	//NSLog(@"firstString Titel: %@ ",firstString);
+	if (([[firstString componentsSeparatedByString:@"\t"]count]==1)) // Titel
+	{
+      NSLog(@"Titel gefunden: %@ ",firstString);
+		NSRange titelRange;
+      
+		titelRange.location = 1;
+		titelRange.length = [tempArray count]-1;
+      
+		tempArray = [tempArray subarrayWithRange:titelRange];
+      
+	}
+	//NSLog(@"Utils openFigur tempArray nach Titel: \n%@",[tempArray description]);
+	//NSLog(@"Utils openFigur tempArray count: %d",[tempArray count]);
+	int i=0;
+	
+	NSNumberFormatter *numberFormatter =[[[NSNumberFormatter alloc] init] autorelease];
+	[numberFormatter setMaximumFractionDigits:4];
+	[numberFormatter setFormat:@"##0.0000"];
+   
+	for (i=0;i<[tempArray count];i++)
+	{
+		NSString* tempZeilenString=[tempArray objectAtIndex:i];
+		//NSLog(@"Utils tempZeilenString l: %d",[tempZeilenString length]);
+		if ((tempZeilenString==NULL)|| ([tempZeilenString length]<=1))
+		{
+			continue;
+		}
+		//NSLog(@"char 0: %d",[tempZeilenString characterAtIndex:0]);
+		
+      if ([tempZeilenString characterAtIndex:0]==10)
+		{
+         NSLog(@"char 0 weg");
+         tempZeilenString=[tempZeilenString substringFromIndex:1];
+		}
+		
+      //leerschlag weg
+		while ([tempZeilenString characterAtIndex:0]==' ')
+		{
+         tempZeilenString=[tempZeilenString substringFromIndex:1];
+		}
+		//NSLog(@"i: %d tempZeilenString: %@",i,tempZeilenString);
+		//NSLog(@"LeerschlagRange start loc: %d l: %d",LeerschlagRange.location, LeerschlagRange.length);
+		
+		NSArray* tempZeilenArray=[tempZeilenString componentsSeparatedByString:@"\t"];
+		if ([tempZeilenArray count])
+      {
+         // object 0 ist index
+         float wertx=[[tempZeilenArray objectAtIndex:1]floatValue];//*100;
+         float werty=[[tempZeilenArray objectAtIndex:2]floatValue];//*100;
+         NSString*tempX=[NSString stringWithFormat:@"%@", [numberFormatter stringFromNumber:[NSNumber numberWithFloat:wertx]]];
+         NSString*tempY=[NSString stringWithFormat:@"%@", [numberFormatter stringFromNumber:[NSNumber numberWithFloat:werty]]];
+         //NSLog(@"tempX: %@",tempX);
+         //NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:wertx], @"x",
+         //[NSNumber numberWithFloat:werty], @"y",NULL];
+         NSDictionary* tempDic = [NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:i],@"index",tempX, @"x",tempY, @"y",NULL];
+         [FigurArray addObject:tempDic];
+      }
+		//[ProfilArray insertObject:tempDic atIndex:0];
+	}
+	
+	//NSLog(@"Utils openProfil FigurArray: \n%@",[FigurArray description]);
+	return FigurArray;
+}
+
+- (IBAction)reportHolm:(id)sender
+{
+   float Holmposition = 0.66; // Lage des Holms von der Endleiste an gemessen
+   NSString* ProfilName;
+	NSArray* ProfilArrayA;
+	NSArray* ProfilArrayB;
+   
+   /*
+   NSOpenPanel * TestProfilOpenPanel = [NSOpenPanel openPanel];
+   NSLog(@"readFigur ProfilOpenPanel: %@",[TestProfilOpenPanel description]);    //
+   //[ProfilOpenPanel setCanChooseFiles:YES];
+   //[ProfilOpenPanel setCanChooseDirectories:NO];
+   //[ProfilOpenPanel setAllowsMultipleSelection:YES];
+   //[ProfilOpenPanel setAllowedFileTypes:[NSArray arrayWithObject:@"txt"]];
+   NSLog(@"readFigur A");
+
+    if (TestProfilOpenPanel)
+   {
+      NSLog(@" Panel da");
+      int antwort=[TestProfilOpenPanel runModal];
+   }
+   else
+   {       NSLog(@"kein Panel");
+      return ;
+   }
+   
+   return ;
+    */
+   
+   // NSArray* ProfilUArray;
+   float offsetx = [ProfilBOffsetXFeld floatValue];
+   float offsety = [ProfilBOffsetYFeld floatValue];
+   
+	// Profil lesen
+   [ProfilGraph setScale:[[ScalePop selectedItem]tag]];
+   
+   if ([WertAXFeld floatValue]==0)
+   {
+      [WertAXFeld setFloatValue:25.0 + [ProfilTiefeFeldA intValue]];
+   }
+   if ([WertAYFeld floatValue]==0)
+   {
+      [WertAYFeld setFloatValue:25];
+      //[WertAYFeld setFloatValue:[ProfilBOffsetYFeld intValue]];
+   }
+   
+   NSPoint StartpunktA;
+   NSPoint StartpunktB;
+   
+   if ([KoordinatenTabelle count])
+   {
+      float ax = [[[KoordinatenTabelle lastObject]objectForKey:@"ax"]floatValue];
+      float ay = [[[KoordinatenTabelle lastObject]objectForKey:@"ay"]floatValue];
+      float bx = [[[KoordinatenTabelle lastObject]objectForKey:@"bx"]floatValue];
+      float by = [[[KoordinatenTabelle lastObject]objectForKey:@"by"]floatValue];
+      StartpunktA = NSMakePoint(ax, ay);
+      StartpunktB = NSMakePoint(bx, by);
+   }
+   else
+   {
+      StartpunktA = NSMakePoint([WertAXFeld floatValue], [WertAYFeld floatValue]);
+      StartpunktB = NSMakePoint([WertAXFeld floatValue]+offsetx, [WertAYFeld floatValue]+offsety);
+      
+   }
+   
+   BOOL LibOK=NO;
+	BOOL istOrdner;
+
+   NSDictionary* ProfilDic;
+   NSMutableArray* ProfilnamenArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+   NSFileManager *Filemanager = [NSFileManager defaultManager];
+	NSString* ProfilLibPfad=[NSHomeDirectory() stringByAppendingFormat:@"%@%@%@",@"/Documents",@"/CNCDaten",@"/ProfilLib"];
+   [ProfilLibPfad retain];
+   //NSURL* LibURL=[NSURL fileURLWithPath:LibPfad];
+   LibOK= ([Filemanager fileExistsAtPath:ProfilLibPfad isDirectory:&istOrdner]&&istOrdner);
+   //NSLog(@"readProfilLib:    LibPfad: %@ LibOK: %d profilindex: %d",ProfilLibPfad, LibOK,[ProfilPop indexOfSelectedItem]+1);
+
+   if (LibOK)
+	{
+      ProfilnamenArray = (NSMutableArray*)[Filemanager contentsOfDirectoryAtPath:ProfilLibPfad error:NULL];
+      [ProfilnamenArray removeObject:@".DS_Store"];
+      [ProfilnamenArray removeObject:@" Profile ReadMe.txt"];
+		//NSLog(@"readProfilLib ProfilnamenArray: %@ selected: %@",[ProfilnamenArray description], [[ProfilnamenArray objectAtIndex:[ProfilPop indexOfSelectedItem]+1] description]); // item 0 ist Titel
+		
+	}//LIBOK
+   
+   NSString* Profil1Name;
+   if ([ProfilPop indexOfSelectedItem])
+   {
+      int index=[ProfilPop indexOfSelectedItem]; // Item 0 ist Titel
+      //NSLog(@"reportProfilPop Profil aus Pop: %@",[Profile1 itemTitleAtIndex:index]);
+      Profil1Name=[ProfilPop itemTitleAtIndex:index];
+      NSString* ProfilName = [Profil1Name stringByAppendingPathExtension:@"txt"];
+      NSString* Profilpfad = [ProfilLibPfad stringByAppendingPathComponent:Profil1Name];
+      NSArray* Profil1Array;
+      //NSLog(@"reportProfilPop Profilpfad: %@",Profilpfad);
+      NSFileManager *Filemanager = [NSFileManager defaultManager];
+      int ProfilOK= [Filemanager fileExistsAtPath:Profilpfad];
+      
+      if (ProfilOK)
+      {
+         // Profilkoordinaten lesen
+         NSDictionary* ProfilDic = [Utils ProfilDatenAnPfad:Profilpfad];
+         
+         //NSLog(@"reportProfilPop ProfilDic: %@",[ProfilDic description]);
+         
+         Profil1Array = [ProfilDic objectForKey:@"profilarray"];
+         
+         if ([ProfilDic objectForKey:@"name"])
+         {
+            Profil1Name = [NSString stringWithString:[ProfilDic objectForKey:@"name"]];
+         }
+         
+         NSDictionary* tempHolmDic = [CNC HolmDicVonPunkt:StartpunktA mitProfil:Profil1Array mitProfiltiefe:[ProfilTiefeFeldA intValue] mitScale:0];
+         
+         return;
+         
+         int holmpos = 0; // Position an Unterseite
+         
+         for (int i=0; i<[Profil1Array count]; i++)
+         {
+            //NSLog(@"i: %d x: %.3f",i,[[[Profil1Array objectAtIndex:i]objectForKey:@"x"]floatValue]);
+            
+            // Koord x laeuft auf der Unterseite von 1 an rueckwaerts. pruefen ob immer npch groesser als Holmposition
+            if (i>[Profil1Array count]/2 && [[[Profil1Array objectAtIndex:i]objectForKey:@"x"]floatValue] > Holmposition)
+            {
+               holmpos = i;
+            }
+         }
+         
+  //       NSLog(@"holmpos: %d x: %.3f y: %.3f",holmpos,[[[Profil1Array objectAtIndex:holmpos]objectForKey:@"x"]floatValue],[[[Profil1Array objectAtIndex:holmpos]objectForKey:@"y"]floatValue] );
+ //        NSLog(@"x0: %.5f x1: %.5f",[[[Profil1Array objectAtIndex:holmpos-2]objectForKey:@"x"]floatValue],[[[Profil1Array objectAtIndex:holmpos+2]objectForKey:@"x"]floatValue]);
+ //        NSLog(@"y0: %.5f y1: %.5f",[[[Profil1Array objectAtIndex:holmpos-2]objectForKey:@"y"]floatValue],[[[Profil1Array objectAtIndex:holmpos+2]objectForKey:@"y"]floatValue]);
+         
+         // Startpunkte der Diagonalen auf der unteren Profillinie
+         NSPoint Startpunktnachvorn = NSMakePoint([[[Profil1Array objectAtIndex:holmpos]objectForKey:@"x"]floatValue], [[[Profil1Array objectAtIndex:holmpos]objectForKey:@"y"]floatValue]);
+         NSPoint Startpunktnachhinten = Startpunktnachvorn; // Ausgangspunkt fuer Suche nach Punkt in genuegender Distanz
+         int schritte; // Anzahl Koordinatenpunkte, welche fuer eine ausreichende Breite der Grundflaeche notwendig sind.
+         float distanzreal = 0;
+         schritte=0; // mindestens eine Schrittweite
+         while ((holmpos + schritte) < [Profil1Array count] && distanzreal < 10)
+         {
+            schritte++;
+            Startpunktnachhinten = NSMakePoint([[[Profil1Array objectAtIndex:(holmpos + schritte)]objectForKey:@"x"]floatValue], [[[Profil1Array objectAtIndex:(holmpos + schritte)]objectForKey:@"y"]floatValue]);
+            
+            distanzreal = (Startpunktnachvorn.x-Startpunktnachhinten.x)*[ProfilTiefeFeldA intValue];
+            //NSLog(@"schritte: %d distanzreal: %.2fmm", schritte,distanzreal);
+            
+         }
+         NSLog(@"schritte: %d distanzreal: %.2fmm",schritte,distanzreal);
+         // Holmansatzpunkte unten
+         int holmposvorn = holmpos;
+         int holmposhinten = holmpos + schritte;
+         // Koordinatenunterschiede
+         float deltay = [[[Profil1Array objectAtIndex:holmposhinten]objectForKey:@"y"]floatValue]-[[[Profil1Array objectAtIndex:holmposvorn]objectForKey:@"y"]floatValue]; // index verlaeuft gegen Endleiste zu
+         float deltax = [[[Profil1Array objectAtIndex:holmposhinten]objectForKey:@"x"]floatValue]-[[[Profil1Array objectAtIndex:holmposvorn]objectForKey:@"x"]floatValue];
+         NSLog(@"deltax : %.5f deltay: %.5f",deltax,deltay);
+         NSLog(@"deltax real: %.5fmm ",deltax*[ProfilTiefeFeldA intValue]);
+
+         // Steigung der Tangente und Einhitsvektor
+         float steigungunten = deltay/deltax; // tangente
+         NSPoint vektortang = NSMakePoint(cos(steigungunten), sin(steigungunten));
+         
+         // Steigung der Senkrechten und Einheitvektor
+         float steigungsenkrecht = -deltax/deltay; // senkrechte
+         NSPoint vektorsenkr = NSMakePoint(cos(steigungsenkrecht), sin(steigungsenkrecht));
+         
+         // Vektor der Winkelhalbierenden nach vorn
+         NSPoint vektornachvorn = NSMakePoint(cos(steigungunten) + cos(steigungsenkrecht), sin(steigungunten) + sin(steigungsenkrecht));
+         
+         // Vektor der Winkelhalbiernenden nach hinten
+         //NSPoint vektornachhinten = NSMakePoint(-1*(cos(steigungunten) + cos(steigungsenkrecht)), sin(steigungunten) + sin(steigungsenkrecht));
+         
+         //NSLog(@"t0: %.4f t1: %.4f",vektortang.x,vektortang.y);
+         //NSLog(@"s0: %.4f s1: %.4f",vektorsenkr.x,vektorsenkr.y);
+         //NSLog(@"u0: %.4f v1: %.4f",vektornachvorn.x,vektornachvorn.y);
+         
+         float holm1lage=[[[Profil1Array objectAtIndex:holmpos]objectForKey:@"x"]floatValue]*[ProfilTiefeFeldA intValue];
+         //float winkelnachvorn = steigungunten + M_PI/4;
+         //float winkelnachhinten = steigungunten + 3*M_PI/4;
+         NSLog(@"holm1lage: %.4f steigungunten: %.4f steigungsenkrecht: %.4f",holm1lage,steigungunten,steigungsenkrecht);
+         
+         float xnachvorn = 0;
+         float ynachvorn = Startpunktnachvorn.y + vektornachvorn.y/vektornachvorn.x * (xnachvorn - Startpunktnachvorn.x);
+         
+         float zielsteigungnachvorn = 1-steigungunten; // Soll der Steigung des vorderen Teils
+         float minvornfehler = FLT_MAX; // abweichung vom Soll
+         int minvornpos =0; // index des des Fehlerminimums
+
+         float zielsteigungnachhinten = -(1-steigungunten);
+         float minhintenfehler = FLT_MAX;
+         int minhintenpos =0;
+
+         
+         for (int k=0;k<[Profil1Array count]/2;k++) // nur Oberseite
+         {
+            NSPoint Endpunktnachvorn = NSMakePoint([[[Profil1Array objectAtIndex:k]objectForKey:@"x"]floatValue], [[[Profil1Array objectAtIndex:k]objectForKey:@"y"]floatValue]);
+            NSPoint Endpunktnachhinten = NSMakePoint([[[Profil1Array objectAtIndex:k]objectForKey:@"x"]floatValue], [[[Profil1Array objectAtIndex:k]objectForKey:@"y"]floatValue]);
+            float tempsteigungvorn = (Endpunktnachvorn.y - Startpunktnachvorn.y)/(Endpunktnachvorn.x - Startpunktnachvorn.x);
+            //NSLog(@"k: %d tempsteigungvorn: %.3f fehler: %.3f",k,tempsteigungvorn,fabs(tempsteigungvorn - zielsteigungnachvorn));
+            float tempfehler = fabs(tempsteigungvorn - zielsteigungnachvorn);
+            if (tempfehler < minvornfehler)
+            {
+               minvornfehler = tempfehler;
+               minvornpos = k ;
+            }
+            
+            float tempsteigunghinten = (Endpunktnachhinten.y - Startpunktnachhinten.y)/(Endpunktnachhinten.x - Startpunktnachhinten.x);
+            //NSLog(@"k: %d tempsteigunghinten: %.3f fehler: %.3f",k,tempsteigunghinten,fabs(tempsteigunghinten - zielsteigungnachhinten));
+            
+            tempfehler = fabs(tempsteigunghinten - zielsteigungnachhinten);
+            if (tempfehler < minhintenfehler)
+            {
+               minhintenfehler = tempfehler;
+               minhintenpos = k ;
+            }
+           
+         }
+         NSLog(@"holmposvorn: %d minvornpos: %d steigungvorn ok minvornfehler: %.3f",holmposvorn,minvornpos,minvornfehler);
+         NSLog(@"holmposhinten: %d minhintenpos: %d steigunghinten ok minhintenfehler: %.3f",holmposhinten,minhintenpos,minhintenfehler);
+        
+      } // if ProfilOK
+
+}
+
+   
+   NSArray* ProfilArray ;//= [Utils readProfilLib];
+   //NSLog(@"ProfilArray %@",[ProfilArray description]);
+   return;
+   // ***********************************  Profil lesen
+   
+   if (ProfilDic == NULL) // canceled
+   {
+      return;
+   }
+   
+   return;
+   ProfilName=[ProfilDic objectForKey:@"profilname"]; //Dic mit Keys x,y. Werte sind normiert auf Bereich 0-1
+   NSLog(@"ProfilDic %@",[ProfilDic description]);
+   
+   
+   float ProfiltiefeA = [ProfilTiefeFeldA floatValue];
+   float ProfiltiefeB = [ProfilTiefeFeldB floatValue];
+
+
+   NSDictionary* HolmpunktDicA=[CNC HolmDicVonPunkt:StartpunktA mitProfil:ProfilDic mitProfiltiefe:ProfiltiefeA mitScale:[[ScalePop selectedItem]tag]];
+  
+   NSDictionary* HolmpunktDicB=[CNC HolmDicVonPunkt:StartpunktB mitProfil:ProfilDic mitProfiltiefe:ProfiltiefeA mitScale:[[ScalePop selectedItem]tag]];
+
+}
+
+
+- (IBAction)reportEllipse:(id)sender
+{
+
+
+}
+
+
+
 - (IBAction)reportNewElement:(id)sender
 {
    
@@ -4796,7 +5236,7 @@ return returnInt;
       profilstartindex = [[[KoordinatenTabelle lastObject]objectForKey:@"index"]intValue];
        profilstartindex =[KoordinatenTabelle count];
       
-      NSLog(@"profilstartindex: %d",profilstartindex);
+      //NSLog(@"profilstartindex: %d",profilstartindex);
       for (index=0;index<= Nasenindex;index++) // Punkte der Oberseite
       {
          NSDictionary* tempZeilenDicA = [ProfilArrayA objectAtIndex:index];
@@ -4968,7 +5408,7 @@ return returnInt;
  //  if ((mitUnterseite ||  mitOberseite) &&! (mitOberseite && mitUnterseite)) // nur eine Seite
   if ((mitUnterseite ^  mitOberseite) ) // nur eine Seite
        {
-          NSLog(@"nur eine Seite");
+          //NSLog(@"nur eine Seite");
           if (mitEinlauf)
           {
              von=startindexoffset + 2;
@@ -7091,7 +7531,7 @@ return returnInt;
    [RechtsLinksRadio setSelectedSegment:0];
 
    [self reportNeueLinie:NULL];
-   [CNC_Eingabe doProfil1PopTaskMitProfil:10];
+   [CNC_Eingabe doProfil1PopTaskMitProfil:[ProfilPop indexOfSelectedItem]];
    
    [CNC_Eingabe setUnterseite:0];
    [CNC_Eingabe doProfilSpiegelnVertikalTask];

@@ -233,7 +233,6 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
       
    }
    usbstatus=r;
-   NSLog(@"check c");
    
    return r;
 }
@@ -537,29 +536,6 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 	
 	//[AVR setProfilPlan:NULL];
 	//	[self showADWandler:NULL];	
-	/*
-	 [ADWandler setInterfaceNummer:2];
-	 [ADWandler setTabIndex:1];
-	 [ADWandler setEinkanalWahlTaste:3];
-	 
-	 NSMutableArray* tempKanalArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
-	 [tempKanalArray addObject:[NSNumber numberWithInt:1]];
-	 [tempKanalArray addObject:[NSNumber numberWithInt:0]];
-	 [tempKanalArray addObject:[NSNumber numberWithInt:1]];
-	 [tempKanalArray addObject:[NSNumber numberWithInt:1]];
-	 [tempKanalArray addObject:[NSNumber numberWithInt:1]];
-	 [tempKanalArray addObject:[NSNumber numberWithInt:0]];
-	 [tempKanalArray addObject:[NSNumber numberWithInt:1]];
-	 [tempKanalArray addObject:[NSNumber numberWithInt:0]];
-	 [ADWandler setMehrkanalWahlTasteMitArray:tempKanalArray];//[NSArray arrayWithObjects:0,1,1,1,0,1,0,1,0,nil]];
-	 [self Alert:@"ADWandler awake vor readPList "];
-	 [self readPList];
-	 */
-	//	
-	//	[self readPList];
-	//[ADWandler showWindow:self];
-	
-	//NSLog(@"BIN  zahl: %d bin: %02X",14, 14);
 
 	// 
 	//CNC

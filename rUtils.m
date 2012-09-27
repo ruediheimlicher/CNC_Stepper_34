@@ -19,10 +19,11 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 {
 	NSMutableArray* ProfilArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 	NSOpenPanel* OpenPanel=[NSOpenPanel openPanel];
-	[OpenPanel setCanChooseFiles:YES];
-	[OpenPanel setCanChooseDirectories:NO];
-	[OpenPanel setAllowsMultipleSelection:NO];
-   [OpenPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"txt",NULL]];
+//	[OpenPanel setCanChooseFiles:YES];
+//	[OpenPanel setCanChooseDirectories:NO];
+//	[OpenPanel setAllowsMultipleSelection:NO];
+ //  [OpenPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"txt",NULL]];
+   NSLog(@"readProfil start");
 	/*
 	[OpenPanel beginSheetForDirectory:NSHomeDirectory() file:nil 
 	 //types:nil 
@@ -31,11 +32,12 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 							 didEndSelector:@selector(ProfilPfadAktion:returnCode:contextInfo:)
 								 contextInfo:nil];
 	*/
-	int antwort=[OpenPanel runModal];
-	NSURL* ProfilPfad=[OpenPanel URL];
+	NSInteger antwort=[OpenPanel runModal];
+	return NULL;
+   NSURL* ProfilPfad=[OpenPanel URL];
 	NSLog(@"readProfil: URL: %@",ProfilPfad);
 	NSError* err=0;
-	NSString* ProfilString=[NSString stringWithContentsOfURL:ProfilPfad encoding:NULL error:&err]; // String des Speicherpfads
+	NSString* ProfilString=[NSString stringWithContentsOfURL:ProfilPfad encoding:NSMacOSRomanStringEncoding  error:&err]; // String des Speicherpfads
 	//NSLog(@"Utils openProfil ProfilString: \n%@",ProfilString);
 	
 	NSArray* tempArray=[ProfilString componentsSeparatedByString:@"\r"];
@@ -297,8 +299,8 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    
    NSArray* UnterseiteArray=[ProfilArray subarrayWithRange:NSMakeRange(Nasenindex, [ProfilArray count]-Nasenindex)];
    NSMutableArray * revUnterseiteArray = [NSMutableArray arrayWithCapacity:[UnterseiteArray count]];
-   
-   for(int i = 0; i < [UnterseiteArray count]; i++) 
+   //int i=0;
+   for( i = 0; i < [UnterseiteArray count]; i++) 
    {
       [revUnterseiteArray addObject:[UnterseiteArray objectAtIndex:[UnterseiteArray count] - i - 1]];
    }
@@ -341,6 +343,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 	 contextInfo:nil];
 	 */
 	int antwort=[OpenPanel runModal];
+   return NULL;
    if (antwort == NSFileHandlingPanelCancelButton)
    {
       [OpenPanel release];
@@ -729,11 +732,42 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 - (NSArray*)readFigur
 {
 	NSMutableArray* FigurArray=[[NSMutableArray alloc]initWithCapacity:0];
-	NSOpenPanel* OpenPanel=[NSOpenPanel openPanel];
-	[OpenPanel setCanChooseFiles:YES];
-	[OpenPanel setCanChooseDirectories:NO];
-	[OpenPanel setAllowsMultipleSelection:NO];
-   [OpenPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"txt",NULL]];
+	/*
+    NSOpenPanel* ProfilOpenPanel=[[NSOpenPanel alloc ]init];
+	[ProfilOpenPanel setCanChooseFiles:YES];
+	[ProfilOpenPanel setCanChooseDirectories:NO];
+	[ProfilOpenPanel setAllowsMultipleSelection:NO];
+   [ProfilOpenPanel setAllowedFileTypes:[NSArray arrayWithObjects:@"txt",NULL]];
+   */
+   NSLog(@"readFigur start");
+   NSOpenPanel *ProfilOpenPanel = [[NSOpenPanel openPanel] retain];
+   NSLog(@"readFigur ProfilOpenPanel: %@",[ProfilOpenPanel description]);
+   // Configure your panel the way you want it
+   [ProfilOpenPanel setCanChooseFiles:YES];
+   [ProfilOpenPanel setCanChooseDirectories:NO];
+   [ProfilOpenPanel setAllowsMultipleSelection:YES];
+   [ProfilOpenPanel setAllowedFileTypes:[NSArray arrayWithObject:@"txt"]];
+   NSLog(@"readFigur A");
+   /*
+   [ProfilOpenPanel beginWithCompletionHandler:^(NSInteger result)
+   {
+      NSLog(@"readFigur B");
+      if (result == NSFileHandlingPanelOKButton)
+      {
+         NSLog(@"readFigur C");
+         for (NSURL *fileURL in [ProfilOpenPanel URLs])
+         {
+            NSLog(@"readFigur C");
+            NSLog(@"URLs: %@",[[ProfilOpenPanel URLs] description]);
+            // Do what you want with fileURL
+            // ...
+         }
+      }
+      NSLog(@"readFigur D");
+      [ProfilOpenPanel release];
+      
+   }];
+    */
 	/*
     [OpenPanel beginSheetForDirectory:NSHomeDirectory() file:nil 
 	 //types:nil 
@@ -742,8 +776,19 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
     didEndSelector:@selector(ProfilPfadAktion:returnCode:contextInfo:)
     contextInfo:nil];
     */
-	int antwort=[OpenPanel runModal];
-	NSURL* FigurPfad=[OpenPanel URL];
+   
+   if (ProfilOpenPanel)
+   {
+	int antwort=[ProfilOpenPanel runModal];
+   }
+   else{
+      NSLog(@"kein Panel");
+      return;
+   }
+    
+    return;
+	NSURL* FigurPfad=[ProfilOpenPanel URL];
+    
 	//NSLog(@"readFigur: URL: %@",FigurPfad);
 	NSError* err=0;
 	NSString* FigurString=[NSString stringWithContentsOfURL:FigurPfad encoding:NSUTF8StringEncoding error:&err]; // String des Speicherpfads

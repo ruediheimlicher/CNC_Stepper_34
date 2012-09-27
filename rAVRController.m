@@ -155,7 +155,7 @@ private void button4_Click(object sender, EventArgs e)
          case NEUTASTE:
          case USBTASTE:
          {
-            NSLog(@"wait USB");
+            //NSLog(@"wait USB");
             [self performSelector:@selector (USBOpen) withObject:NULL afterDelay:2];
 
          }break;

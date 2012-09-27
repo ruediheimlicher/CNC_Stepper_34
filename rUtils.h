@@ -15,6 +15,7 @@
 }
 - (void) logRect:(NSRect)r;
 - (NSDictionary*)ProfilDatenAnPfad:(NSString*)profilpfad;
+- (NSArray*)readProfil:(NSString*)profilname;
 - (NSDictionary*)readProfilMitName;
 - (NSDictionary*)SplinekoeffizientenVonArray:(NSArray*)dataArray;
 - (NSArray*)wrenchProfil:(NSArray*)profilArray mitWrench:(float)wrench;

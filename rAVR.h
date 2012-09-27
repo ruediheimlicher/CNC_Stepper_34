@@ -106,6 +106,7 @@
    IBOutlet id             AbbrandCheckbox;
 
    IBOutlet	id					ScalePop;
+   IBOutlet	id					ProfilPop;
    IBOutlet	id					CNCPositionFeld;
    IBOutlet	id					CNCStepXFeld;
    IBOutlet	id					CNCStepYFeld;
@@ -288,6 +289,7 @@
 
 }
 - (NSMutableDictionary*)readCNC_PList;
+- (NSArray*)readProfilLib;
 - (IBAction)reportUSB:(id)sender;
 - (void)setUSB_Device_Status:(int)status;
 - (IBAction)reportHorizontalSchieber:(id)sender;
@@ -345,6 +347,7 @@
 - (IBAction)reportQuadrat:(id)sender;
 - (IBAction)reportKreis:(id)sender;
 - (IBAction)reportEllipse:(id)sender;
+- (IBAction)reportHolm:(id)sender;
 - (NSArray*)KoordinatenTabelle;
 - (IBAction)reportSaveStepperDic:(id)sender;
 - (IBAction)reportZeileWeg:(id)sender;
