@@ -4351,29 +4351,29 @@ return returnInt;
 {
    float Holmposition = 0.66; // Lage des Holms von der Endleiste an gemessen
    NSString* ProfilName;
-	NSArray* ProfilArrayA;
-	NSArray* ProfilArrayB;
-   
+	NSArray* HolmArrayA;
+	NSArray* HolmArrayB;
+   float origpwm=[DC_PWM intValue];
    /*
-   NSOpenPanel * TestProfilOpenPanel = [NSOpenPanel openPanel];
-   NSLog(@"readFigur ProfilOpenPanel: %@",[TestProfilOpenPanel description]);    //
-   //[ProfilOpenPanel setCanChooseFiles:YES];
-   //[ProfilOpenPanel setCanChooseDirectories:NO];
-   //[ProfilOpenPanel setAllowsMultipleSelection:YES];
-   //[ProfilOpenPanel setAllowedFileTypes:[NSArray arrayWithObject:@"txt"]];
-   NSLog(@"readFigur A");
-
+    NSOpenPanel * TestProfilOpenPanel = [NSOpenPanel openPanel];
+    NSLog(@"readFigur ProfilOpenPanel: %@",[TestProfilOpenPanel description]);    //
+    //[ProfilOpenPanel setCanChooseFiles:YES];
+    //[ProfilOpenPanel setCanChooseDirectories:NO];
+    //[ProfilOpenPanel setAllowsMultipleSelection:YES];
+    //[ProfilOpenPanel setAllowedFileTypes:[NSArray arrayWithObject:@"txt"]];
+    NSLog(@"readFigur A");
+    
     if (TestProfilOpenPanel)
-   {
-      NSLog(@" Panel da");
-      int antwort=[TestProfilOpenPanel runModal];
-   }
-   else
-   {       NSLog(@"kein Panel");
-      return ;
-   }
-   
-   return ;
+    {
+    NSLog(@" Panel da");
+    int antwort=[TestProfilOpenPanel runModal];
+    }
+    else
+    {       NSLog(@"kein Panel");
+    return ;
+    }
+    
+    return ;
     */
    
    // NSArray* ProfilUArray;
@@ -4414,7 +4414,7 @@ return returnInt;
    
    BOOL LibOK=NO;
 	BOOL istOrdner;
-
+   
    NSDictionary* ProfilDic;
    NSMutableArray* ProfilnamenArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    NSFileManager *Filemanager = [NSFileManager defaultManager];
@@ -4423,7 +4423,7 @@ return returnInt;
    //NSURL* LibURL=[NSURL fileURLWithPath:LibPfad];
    LibOK= ([Filemanager fileExistsAtPath:ProfilLibPfad isDirectory:&istOrdner]&&istOrdner);
    //NSLog(@"readProfilLib:    LibPfad: %@ LibOK: %d profilindex: %d",ProfilLibPfad, LibOK,[ProfilPop indexOfSelectedItem]+1);
-
+   
    if (LibOK)
 	{
       ProfilnamenArray = (NSMutableArray*)[Filemanager contentsOfDirectoryAtPath:ProfilLibPfad error:NULL];
@@ -4442,6 +4442,7 @@ return returnInt;
       NSString* ProfilName = [Profil1Name stringByAppendingPathExtension:@"txt"];
       NSString* Profilpfad = [ProfilLibPfad stringByAppendingPathComponent:Profil1Name];
       NSArray* Profil1Array;
+      NSArray* Profil2Array;
       //NSLog(@"reportProfilPop Profilpfad: %@",Profilpfad);
       NSFileManager *Filemanager = [NSFileManager defaultManager];
       int ProfilOK= [Filemanager fileExistsAtPath:Profilpfad];
@@ -4460,142 +4461,64 @@ return returnInt;
             Profil1Name = [NSString stringWithString:[ProfilDic objectForKey:@"name"]];
          }
          
-         NSDictionary* tempHolmDic = [CNC HolmDicVonPunkt:StartpunktA mitProfil:Profil1Array mitProfiltiefe:[ProfilTiefeFeldA intValue] mitScale:0];
+         // Provisorisch
+         Profil2Array = [ProfilDic objectForKey:@"profilarray"];
+         
+         NSDictionary* HolmpunktDicA = [CNC HolmDicVonPunkt:StartpunktA mitProfil:Profil1Array mitProfiltiefe:[ProfilTiefeFeldA intValue] mitScale:0];
+         
+         
+         NSDictionary* HolmpunktDicB = [CNC HolmDicVonPunkt:StartpunktB mitProfil:Profil2Array mitProfiltiefe:[ProfilTiefeFeldA intValue] mitScale:0];
+         
+         
+         HolmArrayA = [HolmpunktDicA objectForKey:@"holmpunktarray"];
+         
+         HolmArrayB = [HolmpunktDicB objectForKey:@"holmpunktarray"];
+         
+         if ([KoordinatenTabelle count])
+         {
+            [KoordinatenTabelle removeObjectAtIndex:[KoordinatenTabelle count]-1]; // Letzen Punkt entfernen
+         }
+         [self updateIndex];
+         
+         NSLog(@"HolmArrayA count: %ld",[HolmArrayA count]);
+         for (int index=0;index< [HolmArrayA count];index++) // Punkte der Oberseite
+         {
+            
+            NSDictionary* tempZeilenDicA = [HolmArrayA objectAtIndex:index];
+            //NSLog(@"A index: %d x: %1.3f",index,[[[HolmArrayA objectAtIndex:index]objectForKey:@"x"]floatValue]);
+            
+            NSDictionary* tempZeilenDicB = [HolmArrayB objectAtIndex:index];
+            //NSLog(@"B index: %d x: %1.3f",index,[[[HolmArrayB objectAtIndex:index]objectForKey:@"x"]floatValue]);
+            
+            NSMutableDictionary* tempZeilenDic =[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+            [tempZeilenDic setObject:[tempZeilenDicA objectForKey:@"x"] forKey:@"ax"];
+            [tempZeilenDic setObject:[tempZeilenDicA objectForKey:@"y"] forKey:@"ay"];
+            [tempZeilenDic setObject:[tempZeilenDicB objectForKey:@"x"] forKey:@"bx"];
+            [tempZeilenDic setObject:[tempZeilenDicB objectForKey:@"y"] forKey:@"by"];
+            [tempZeilenDic setObject:[tempZeilenDicA objectForKey:@"index"] forKey:@"index"];
+            [tempZeilenDic setObject:[NSNumber numberWithInt:20] forKey:@"teil"]; // Kennzeichnung Oberseite
+            // pwm
+            [tempZeilenDic setObject:[NSNumber numberWithInt:origpwm] forKey:@"pwm"];
+            [KoordinatenTabelle addObject:tempZeilenDic];
+            //NSLog(@"index: %d x: %1.3f",index,[[[ProfilArrayA objectAtIndex:index]objectForKey:@"ax"]floatValue]);
+            
+         }
+         
+         [self updateIndex];
+         [CNCTable scrollRowToVisible:[KoordinatenTabelle count] - 1];
+         [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:[KoordinatenTabelle count]-1] byExtendingSelection:NO];
+         
+         [ProfilGraph setDatenArray:KoordinatenTabelle];
+         [ProfilGraph setNeedsDisplay:YES];
+         [CNCTable reloadData];
+         
+         
          
          return;
          
-         int holmpos = 0; // Position an Unterseite
          
-         for (int i=0; i<[Profil1Array count]; i++)
-         {
-            //NSLog(@"i: %d x: %.3f",i,[[[Profil1Array objectAtIndex:i]objectForKey:@"x"]floatValue]);
-            
-            // Koord x laeuft auf der Unterseite von 1 an rueckwaerts. pruefen ob immer npch groesser als Holmposition
-            if (i>[Profil1Array count]/2 && [[[Profil1Array objectAtIndex:i]objectForKey:@"x"]floatValue] > Holmposition)
-            {
-               holmpos = i;
-            }
-         }
-         
-  //       NSLog(@"holmpos: %d x: %.3f y: %.3f",holmpos,[[[Profil1Array objectAtIndex:holmpos]objectForKey:@"x"]floatValue],[[[Profil1Array objectAtIndex:holmpos]objectForKey:@"y"]floatValue] );
- //        NSLog(@"x0: %.5f x1: %.5f",[[[Profil1Array objectAtIndex:holmpos-2]objectForKey:@"x"]floatValue],[[[Profil1Array objectAtIndex:holmpos+2]objectForKey:@"x"]floatValue]);
- //        NSLog(@"y0: %.5f y1: %.5f",[[[Profil1Array objectAtIndex:holmpos-2]objectForKey:@"y"]floatValue],[[[Profil1Array objectAtIndex:holmpos+2]objectForKey:@"y"]floatValue]);
-         
-         // Startpunkte der Diagonalen auf der unteren Profillinie
-         NSPoint Startpunktnachvorn = NSMakePoint([[[Profil1Array objectAtIndex:holmpos]objectForKey:@"x"]floatValue], [[[Profil1Array objectAtIndex:holmpos]objectForKey:@"y"]floatValue]);
-         NSPoint Startpunktnachhinten = Startpunktnachvorn; // Ausgangspunkt fuer Suche nach Punkt in genuegender Distanz
-         int schritte; // Anzahl Koordinatenpunkte, welche fuer eine ausreichende Breite der Grundflaeche notwendig sind.
-         float distanzreal = 0;
-         schritte=0; // mindestens eine Schrittweite
-         while ((holmpos + schritte) < [Profil1Array count] && distanzreal < 10)
-         {
-            schritte++;
-            Startpunktnachhinten = NSMakePoint([[[Profil1Array objectAtIndex:(holmpos + schritte)]objectForKey:@"x"]floatValue], [[[Profil1Array objectAtIndex:(holmpos + schritte)]objectForKey:@"y"]floatValue]);
-            
-            distanzreal = (Startpunktnachvorn.x-Startpunktnachhinten.x)*[ProfilTiefeFeldA intValue];
-            //NSLog(@"schritte: %d distanzreal: %.2fmm", schritte,distanzreal);
-            
-         }
-         NSLog(@"schritte: %d distanzreal: %.2fmm",schritte,distanzreal);
-         // Holmansatzpunkte unten
-         int holmposvorn = holmpos;
-         int holmposhinten = holmpos + schritte;
-         // Koordinatenunterschiede
-         float deltay = [[[Profil1Array objectAtIndex:holmposhinten]objectForKey:@"y"]floatValue]-[[[Profil1Array objectAtIndex:holmposvorn]objectForKey:@"y"]floatValue]; // index verlaeuft gegen Endleiste zu
-         float deltax = [[[Profil1Array objectAtIndex:holmposhinten]objectForKey:@"x"]floatValue]-[[[Profil1Array objectAtIndex:holmposvorn]objectForKey:@"x"]floatValue];
-         NSLog(@"deltax : %.5f deltay: %.5f",deltax,deltay);
-         NSLog(@"deltax real: %.5fmm ",deltax*[ProfilTiefeFeldA intValue]);
-
-         // Steigung der Tangente und Einhitsvektor
-         float steigungunten = deltay/deltax; // tangente
-         NSPoint vektortang = NSMakePoint(cos(steigungunten), sin(steigungunten));
-         
-         // Steigung der Senkrechten und Einheitvektor
-         float steigungsenkrecht = -deltax/deltay; // senkrechte
-         NSPoint vektorsenkr = NSMakePoint(cos(steigungsenkrecht), sin(steigungsenkrecht));
-         
-         // Vektor der Winkelhalbierenden nach vorn
-         NSPoint vektornachvorn = NSMakePoint(cos(steigungunten) + cos(steigungsenkrecht), sin(steigungunten) + sin(steigungsenkrecht));
-         
-         // Vektor der Winkelhalbiernenden nach hinten
-         //NSPoint vektornachhinten = NSMakePoint(-1*(cos(steigungunten) + cos(steigungsenkrecht)), sin(steigungunten) + sin(steigungsenkrecht));
-         
-         //NSLog(@"t0: %.4f t1: %.4f",vektortang.x,vektortang.y);
-         //NSLog(@"s0: %.4f s1: %.4f",vektorsenkr.x,vektorsenkr.y);
-         //NSLog(@"u0: %.4f v1: %.4f",vektornachvorn.x,vektornachvorn.y);
-         
-         float holm1lage=[[[Profil1Array objectAtIndex:holmpos]objectForKey:@"x"]floatValue]*[ProfilTiefeFeldA intValue];
-         //float winkelnachvorn = steigungunten + M_PI/4;
-         //float winkelnachhinten = steigungunten + 3*M_PI/4;
-         NSLog(@"holm1lage: %.4f steigungunten: %.4f steigungsenkrecht: %.4f",holm1lage,steigungunten,steigungsenkrecht);
-         
-         float xnachvorn = 0;
-         float ynachvorn = Startpunktnachvorn.y + vektornachvorn.y/vektornachvorn.x * (xnachvorn - Startpunktnachvorn.x);
-         
-         float zielsteigungnachvorn = 1-steigungunten; // Soll der Steigung des vorderen Teils
-         float minvornfehler = FLT_MAX; // abweichung vom Soll
-         int minvornpos =0; // index des des Fehlerminimums
-
-         float zielsteigungnachhinten = -(1-steigungunten);
-         float minhintenfehler = FLT_MAX;
-         int minhintenpos =0;
-
-         
-         for (int k=0;k<[Profil1Array count]/2;k++) // nur Oberseite
-         {
-            NSPoint Endpunktnachvorn = NSMakePoint([[[Profil1Array objectAtIndex:k]objectForKey:@"x"]floatValue], [[[Profil1Array objectAtIndex:k]objectForKey:@"y"]floatValue]);
-            NSPoint Endpunktnachhinten = NSMakePoint([[[Profil1Array objectAtIndex:k]objectForKey:@"x"]floatValue], [[[Profil1Array objectAtIndex:k]objectForKey:@"y"]floatValue]);
-            float tempsteigungvorn = (Endpunktnachvorn.y - Startpunktnachvorn.y)/(Endpunktnachvorn.x - Startpunktnachvorn.x);
-            //NSLog(@"k: %d tempsteigungvorn: %.3f fehler: %.3f",k,tempsteigungvorn,fabs(tempsteigungvorn - zielsteigungnachvorn));
-            float tempfehler = fabs(tempsteigungvorn - zielsteigungnachvorn);
-            if (tempfehler < minvornfehler)
-            {
-               minvornfehler = tempfehler;
-               minvornpos = k ;
-            }
-            
-            float tempsteigunghinten = (Endpunktnachhinten.y - Startpunktnachhinten.y)/(Endpunktnachhinten.x - Startpunktnachhinten.x);
-            //NSLog(@"k: %d tempsteigunghinten: %.3f fehler: %.3f",k,tempsteigunghinten,fabs(tempsteigunghinten - zielsteigungnachhinten));
-            
-            tempfehler = fabs(tempsteigunghinten - zielsteigungnachhinten);
-            if (tempfehler < minhintenfehler)
-            {
-               minhintenfehler = tempfehler;
-               minhintenpos = k ;
-            }
-           
-         }
-         NSLog(@"holmposvorn: %d minvornpos: %d steigungvorn ok minvornfehler: %.3f",holmposvorn,minvornpos,minvornfehler);
-         NSLog(@"holmposhinten: %d minhintenpos: %d steigunghinten ok minhintenfehler: %.3f",holmposhinten,minhintenpos,minhintenfehler);
-        
-      } // if ProfilOK
-
-}
-
-   
-   NSArray* ProfilArray ;//= [Utils readProfilLib];
-   //NSLog(@"ProfilArray %@",[ProfilArray description]);
-   return;
-   // ***********************************  Profil lesen
-   
-   if (ProfilDic == NULL) // canceled
-   {
-      return;
+      }
    }
-   
-   return;
-   ProfilName=[ProfilDic objectForKey:@"profilname"]; //Dic mit Keys x,y. Werte sind normiert auf Bereich 0-1
-   NSLog(@"ProfilDic %@",[ProfilDic description]);
-   
-   
-   float ProfiltiefeA = [ProfilTiefeFeldA floatValue];
-   float ProfiltiefeB = [ProfilTiefeFeldB floatValue];
-
-
-   NSDictionary* HolmpunktDicA=[CNC HolmDicVonPunkt:StartpunktA mitProfil:ProfilDic mitProfiltiefe:ProfiltiefeA mitScale:[[ScalePop selectedItem]tag]];
-  
-   NSDictionary* HolmpunktDicB=[CNC HolmDicVonPunkt:StartpunktB mitProfil:ProfilDic mitProfiltiefe:ProfiltiefeA mitScale:[[ScalePop selectedItem]tag]];
-
 }
 
 

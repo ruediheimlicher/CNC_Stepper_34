@@ -1820,11 +1820,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    int schritte; // Anzahl Koordinatenpunkte, welche fuer eine ausreichende Breite der Grundflaeche notwendig sind.
    float distanzreal = 0;
    schritte=0; // mindestens eine Schrittweite
-   while ((holmpos + schritte) < [ProfilArray count] && distanzreal < 10)
+   while ((holmpos + schritte) < [ProfilArray count] && distanzreal < 8)
    {
       schritte++;
+
       Startpunktnachhinten = NSMakePoint([[[ProfilArray objectAtIndex:(holmpos + schritte)]objectForKey:@"x"]floatValue], [[[ProfilArray objectAtIndex:(holmpos + schritte)]objectForKey:@"y"]floatValue]);
-      
+      //NSLog(@"schritte: %d temppunkt.x: %.3f temppunkt.y: %.3f",schritte,Startpunktnachhinten.x*Profiltiefe,Startpunktnachhinten.y*Profiltiefe);
+
       distanzreal = (Startpunktnachvorn.x-Startpunktnachhinten.x)*Profiltiefe;
       //NSLog(@"schritte: %d distanzreal: %.2fmm", schritte,distanzreal);
       
@@ -1876,9 +1878,10 @@ PortA=vs[n & 3]; warte10ms(); n++;
    
    for (int k=0;k<[ProfilArray count]/2;k++) // nur Oberseite
    {
-      NSPoint Endpunktnachvorn = NSMakePoint([[[ProfilArray objectAtIndex:k]objectForKey:@"x"]floatValue], [[[ProfilArray objectAtIndex:k]objectForKey:@"y"]floatValue]);
-      NSPoint Endpunktnachhinten = NSMakePoint([[[ProfilArray objectAtIndex:k]objectForKey:@"x"]floatValue], [[[ProfilArray objectAtIndex:k]objectForKey:@"y"]floatValue]);
-      float tempsteigungvorn = (Endpunktnachvorn.y - Startpunktnachvorn.y)/(Endpunktnachvorn.x - Startpunktnachvorn.x);
+      NSPoint tempOberseitenpunkt = NSMakePoint([[[ProfilArray objectAtIndex:k]objectForKey:@"x"]floatValue], [[[ProfilArray objectAtIndex:k]objectForKey:@"y"]floatValue]);
+      
+      // Bildet der Punkt an pos k mit Endpunktnachvorn einen Winkel von 45°?
+      float tempsteigungvorn = (tempOberseitenpunkt.y - Startpunktnachvorn.y)/(tempOberseitenpunkt.x - Startpunktnachvorn.x);
       //NSLog(@"k: %d tempsteigungvorn: %.3f fehler: %.3f",k,tempsteigungvorn,fabs(tempsteigungvorn - zielsteigungnachvorn));
       float tempfehler = fabs(tempsteigungvorn - zielsteigungnachvorn);
       if (tempfehler < minvornfehler)
@@ -1887,7 +1890,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
          minvornpos = k ;
       }
       
-      float tempsteigunghinten = (Endpunktnachhinten.y - Startpunktnachhinten.y)/(Endpunktnachhinten.x - Startpunktnachhinten.x);
+      
+      float tempsteigunghinten = (tempOberseitenpunkt.y - Startpunktnachhinten.y)/(tempOberseitenpunkt.x - Startpunktnachhinten.x);
       //NSLog(@"k: %d tempsteigunghinten: %.3f fehler: %.3f",k,tempsteigunghinten,fabs(tempsteigunghinten - zielsteigungnachhinten));
       
       tempfehler = fabs(tempsteigunghinten - zielsteigungnachhinten);
@@ -1900,7 +1904,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    }
    NSLog(@"holmposvorn: %d minvornpos: %d steigungvorn ok minvornfehler: %.3f",holmposvorn,minvornpos,minvornfehler);
    NSLog(@"holmposhinten: %d minhintenpos: %d steigunghinten ok minhintenfehler: %.3f",holmposhinten,minhintenpos,minhintenfehler);
-   
+   NSLog(@"Startpunkt.x: %.3f Startpunkt.y: %.3f",Startpunkt.x,Startpunkt.y);
    NSMutableArray* HolmpunktArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    
    //HolmpunktArray fuellen
@@ -1909,8 +1913,14 @@ PortA=vs[n & 3]; warte10ms(); n++;
    int aktuellepos= minhintenpos-schritte;
    int aktuellerindex=0;
    
+   // Offset des Startpunktes
+   float offsetx = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
+   float offsety = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
+   NSLog(@"offsetx: %.3f offsety: %.3f ",offsetx,offsety);
+   
    float tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
    //NSLog(@"tempX: %2.2f ",tempX);
+   tempX -= offsetx;
    tempX *= Profiltiefe;						// Wert in mm
    // NSLog(@"tempX: %2.2f ",tempX);
    tempX += Startpunkt.x;	// offset in mm
@@ -1918,6 +1928,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    
    float tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
    //NSLog(@"tempY: %2.2f ",tempY);
+   tempY -= offsety;
    tempY *= Profiltiefe;						// Wert in mm
    // NSLog(@"tempX: %2.2f ",tempX);
    tempY += Startpunkt.y;	// offset in mm
@@ -1931,11 +1942,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellepos= minhintenpos;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
+   tempX -= offsetx;
    tempX *= Profiltiefe;						// Wert in mm
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX1=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
+   tempY -= offsety;
    tempY *= Profiltiefe;						// Wert in mm
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY1=[NSNumber numberWithFloat:tempY];
@@ -1947,11 +1960,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellepos= holmposhinten;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
+   tempX -= offsetx;
    tempX *= Profiltiefe;						// Wert in mm
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX2=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
+   tempY -= offsety;
    tempY *= Profiltiefe;						// Wert in mm
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY2=[NSNumber numberWithFloat:tempY];
@@ -1963,11 +1978,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellepos= holmposvorn;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
+   tempX -= offsetx;
    tempX *= Profiltiefe;						// Wert in mm
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX3=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
+   tempY -= offsety;
    tempY *= Profiltiefe;						// Wert in mm
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY3=[NSNumber numberWithFloat:tempY];
@@ -1980,11 +1997,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellepos= minvornpos;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
+   tempX -= offsetx;
    tempX *= Profiltiefe;						// Wert in mm
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX4=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
+   tempY -= offsety;
    tempY *= Profiltiefe;						// Wert in mm
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY4=[NSNumber numberWithFloat:tempY];
@@ -1996,11 +2015,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellepos= minvornpos+schritte;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
+   tempX -= offsetx;
    tempX *= Profiltiefe;						// Wert in mm
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX5=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
+   tempY -= offsety;
    tempY *= Profiltiefe;						// Wert in mm
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY5=[NSNumber numberWithFloat:tempY];
@@ -2009,7 +2030,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    [HolmpunktArray addObject: tempDic5];
    
    // if ProfilOK
-   NSLog(@"HolmpunktmArray %@",[HolmpunktArray description]);
+   //NSLog(@"HolmpunktArray %@",[HolmpunktArray description]);
    
    
    
