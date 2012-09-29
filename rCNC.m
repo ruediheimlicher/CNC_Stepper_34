@@ -1925,76 +1925,73 @@ PortA=vs[n & 3]; warte10ms(); n++;
 
    
    //Breite des Streifens: 10mm
+   int l0 = 10;
 
-   // Offset des Startpunktes im Profil
-   float offsetx = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
-   float offsety = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
-   NSLog(@"offsetx: %.3f offsety: %.3f ",offsetx,offsety);
+   // start bei minhintenpos
+   float startX = [[[ProfilArray objectAtIndex:minhintenpos]objectForKey:@"x"]floatValue];
+   startX *= Profiltiefe;
+   float startY = [[[ProfilArray objectAtIndex:minhintenpos]objectForKey:@"y"]floatValue];
+   startY *= Profiltiefe;
    
-   float tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
-   //NSLog(@"tempX: %2.2f ",tempX);
-   tempX -= offsetx;
-   tempX *= Profiltiefe;						// Wert in mm
-   // NSLog(@"tempX: %2.2f ",tempX);
-   tempX += Startpunkt.x;	// offset in mm
-   //NSNumber* tempNumberX0=[NSNumber numberWithFloat:tempX];
+   //Koord des Anfangs des Streifens berechnen: 10 mm nach hinten
+   startX -= l0;// Wert in mm
+   startY -= l0*steigungh;
    
-   float tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
-   //NSLog(@"tempY: %2.2f ",tempY);
-   tempY -= offsety;
-   tempY *= Profiltiefe;						// Wert in mm
-   // NSLog(@"tempX: %2.2f ",tempX);
-   tempY += Startpunkt.y;	// offset in mm
-  // NSNumber* tempNumberY0=[NSNumber numberWithFloat:tempY];
+   // Offset in mm fuer alle Punkte: Position des ersten Punktes
+   float offsetx = startX; 
+   float offsety = startY;
    
-   //NSDictionary* tempDic0=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX0, @"x",tempNumberY0,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];
-   //[HolmpunktArray addObject: tempDic0];
+   // Offset subtrahieren
+   startX -= offsetx;
+   startY -= offsety;
+   
+   // Koord des Startpunktes addieren
+   startX += Startpunkt.x;
+   startY += Startpunkt.y;	// offset in mm
+   
+    
+   NSNumber* startNumberY=[NSNumber numberWithFloat:startY];
+   NSNumber* startNumberX=[NSNumber numberWithFloat:startX];
+   
+    NSDictionary* startDic=[NSDictionary dictionaryWithObjectsAndKeys:startNumberX, @"x",startNumberY,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];
+   [HolmpunktArray addObject: startDic];
    
    //erster Knickpunkt oben setzen: Koord von Endpunktnachhinten
    
    aktuellepos= minhintenpos;
    aktuellerindex++;
-   tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
-   tempX -= offsetx;
+   float tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
+   
    tempX *= Profiltiefe;						// Wert in mm
+   tempX -= offsetx;
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX1=[NSNumber numberWithFloat:tempX];
    
-   tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
-   tempY -= offsety;
+   float tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
+   
    tempY *= Profiltiefe;						// Wert in mm
+   tempY -= offsety;
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY1=[NSNumber numberWithFloat:tempY];
     
    NSDictionary* tempDic1=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX1, @"x",tempNumberY1,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];
    [HolmpunktArray addObject: tempDic1];
    
-   int l0 = 10;
-   //Koord des Anfangs des Streifens berechnen: 10 mm nach hinten
-   tempX -= l0;
-   NSNumber* tempNumberX0=[NSNumber numberWithFloat:tempX];
-
-   tempY -= l0*steigungh;
-   NSNumber* tempNumberY0=[NSNumber numberWithFloat:tempY];
-  
-   NSDictionary* tempDic0=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX0, @"x",tempNumberY0,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];
-   [HolmpunktArray insertObject: tempDic0 atIndex:0];
-   
-   
-   
-   
    //zweiter Knickpunkt unten setzen: Koord von Startpunktnachhinten
    aktuellepos= holmposhinten;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
-   tempX -= offsetx;
+   
    tempX *= Profiltiefe;						// Wert in mm
+   tempX -= offsetx;
    tempX += Startpunkt.x;	// offset in mm
+   
    NSNumber* tempNumberX2=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
-   tempY -= offsety;
+   
    tempY *= Profiltiefe;						// Wert in mm
+   tempY -= offsety;
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY2=[NSNumber numberWithFloat:tempY];
    
@@ -2005,14 +2002,16 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellepos= holmposvorn;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
-   tempX -= offsetx;
+   
    tempX *= Profiltiefe;						// Wert in mm
+   tempX -= offsetx;
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX3=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
-   tempY -= offsety;
+   
    tempY *= Profiltiefe;						// Wert in mm
+   tempY -= offsety;
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY3=[NSNumber numberWithFloat:tempY];
    
@@ -2024,14 +2023,16 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellepos= minvornpos;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
-   tempX -= offsetx;
+   
    tempX *= Profiltiefe;						// Wert in mm
+   tempX -= offsetx;
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX4=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
-   tempY -= offsety;
+   
    tempY *= Profiltiefe;						// Wert in mm
+   tempY -= offsety;
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY4=[NSNumber numberWithFloat:tempY];
    
@@ -2042,26 +2043,23 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellepos= minvornpos+schritte;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
-   tempX -= offsetx;
+   
    tempX *= Profiltiefe;						// Wert in mm
+   tempX -= offsetx;
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX5=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
-   tempY -= offsety;
+   
    tempY *= Profiltiefe;						// Wert in mm
+   tempY -= offsety;
    tempY += Startpunkt.y;	// offset in mm
    NSNumber* tempNumberY5=[NSNumber numberWithFloat:tempY];
    
    NSDictionary* tempDic5=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX5, @"x",tempNumberY5,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];
    [HolmpunktArray addObject: tempDic5];
    
-   // if ProfilOK
    //NSLog(@"HolmpunktArray %@",[HolmpunktArray description]);
-   
-   
-   
-   
    
    [HolmpunktDic setObject:HolmpunktArray forKey:@"holmpunktarray"];
    

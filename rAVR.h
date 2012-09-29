@@ -378,6 +378,7 @@
 - (IBAction)reportNeuTaste:(id)sender;
 - (IBAction)terminateTransfer:(id)sender;
 
+- (IBAction)reportPrint:(id)sender;
 - (IBAction)ok:(id)sender;
 - (void)HomebusAnlegen;
 - (void)saveLabel:(NSString*)dasLabel forRaum:(int)derRaum forSegment:(int)dasSegment;

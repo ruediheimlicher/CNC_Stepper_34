@@ -1393,7 +1393,10 @@ private void button4_Click(object sender, EventArgs e)
 	[derTimer invalidate];
 
 	}
-
+- (IBAction)print:(id)sender
+{
+   [AVR reportPrint:sender];
+}
 
 - (void)applicationDidFinishLaunching:(NSNotification*)notification 
 { 

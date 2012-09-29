@@ -102,6 +102,7 @@
 - (void) setLastValueRead:(NSData*) inData;
 - (int)USBOpen;
 - (void)setHalt:(int)haltstatus;
+
 @end
 
 
@@ -110,6 +111,9 @@
 - (IBAction)showADWandler:(id)sender;
 - (IBAction)saveMehrkanalDaten:(id)sender;
 @end
+
+
+
 #pragma mark AVRController
 @interface IOWarriorWindowController(rAVRController)
 - (IBAction)showAVR:(id)sender;
@@ -120,5 +124,5 @@
 - (void)StartTWI;
 - (void)initList;
 - (void)StepperstromEinschalten:(int)ein;
-
+- (IBAction)print:(id)sender;
 @end

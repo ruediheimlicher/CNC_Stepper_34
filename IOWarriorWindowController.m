@@ -849,7 +849,8 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 
 - (void) FensterSchliessenAktion:(NSNotification*)note
 {
-   //NSLog(@"FensterSchliessenAktion note: %@ schliessencounter: %d",[[note object]title],schliessencounter);
+   NSLog(@"FensterSchliessenAktion note: %@ titel: %@ schliessencounter: %d",[note description],[[note object]title],schliessencounter);
+   //NSLog(@"FensterSchliessenAktion contextInfo: %@",[[note contextInfo]description]);
 	if (schliessencounter)
 	{
 		return;
@@ -859,24 +860,23 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    if ([[[note object]title]length])
    {
       schliessencounter++;
-      //NSLog(@"hat Title");
+      NSLog(@"hat Title");
       // "New Folder" wird bei 10.6.8 als Titel von open zurueckgegeben. Deshalb ausschliessen(iBook schwarz)
-      if (!([[[note object]title]isEqualToString:@"CNC-Eingabe"]||[[[note object]title]isEqualToString:@"New Folder"]))
+      if (!([[[note object]title]isEqualToString:@"CNC-Eingabe"]||[[[note object]title]isEqualToString:@"New Folder"]||[[[note object]title]isEqualToString:@"Print"]))
       {
+         NSLog(@"A");
          if ([self Beenden])
          {
+            NSLog(@"B");
             [NSApp terminate:self];
          }
       }
+      else
+      {
+         NSLog(@"Nicht beenden");
+      }
    }
    
-
-	//if ([self Beenden])
-	{
-//		[NSApp terminate:self];
-		
-	}
-	//return YES;
 }
 
 
