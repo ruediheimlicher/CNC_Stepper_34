@@ -528,8 +528,25 @@ return sqrt(dX*dX + dY*dY);
    
    int abbbranddelay=0;
 	//NSLog(@"ProfilGraph drawRect start");
+   
+   int screen=0;
+   if ([[NSGraphicsContext currentContext]isDrawingToScreen])
+   {
+      NSLog(@"ProfilGraph drawRect screen");
+      screen=1;
+   }
+   else
+   {
+      NSLog(@"ProfilGraph drawRect print");
+   }
+   
+   
 	int i=0;
-	[self GitterZeichnen];
+   
+      
+   {
+      [self GitterZeichnen];
+   }
 	if ([DatenArray count])
 	{
 		int anz=[DatenArray count];
@@ -614,7 +631,8 @@ return sqrt(dX*dX + dY*dY);
             break;
          }
       }
-      //NSLog(@"startabbrandindex: %d",startabbrandindex);
+      //NSLog(@"startabbrandindexa: %d startabbrandindexb: %d",startabbrandindexa,startabbrandindexb);
+      
 		NSPoint AbbrandStartPunktB=NSMakePoint(([[[DatenArray objectAtIndex:startabbrandindexb]objectForKey:@"abrbx"]floatValue])*scale,([[[DatenArray objectAtIndex:startabbrandindexb]objectForKey:@"abrby"]floatValue]+GraphOffset)*scale);
       AbbrandStartPunktB.y +=abbbranddelay;
 		NSPoint AbbrandEndPunktB=NSMakePoint([[[DatenArray objectAtIndex:anz-1]objectForKey:@"abrbx"]floatValue],[[[DatenArray objectAtIndex:anz-1]objectForKey:@"abrby"]floatValue]);
@@ -637,7 +655,7 @@ return sqrt(dX*dX + dY*dY);
 			[LinieB lineToPoint:PunktB];
 			NSBezierPath* tempMarkB;//=[NSBezierPath bezierPathWithOvalInRect:tempMarkRect];
          
-			if (i==Klickpunkt)
+			if (i==Klickpunkt && screen)
 			{
              NSRect tempMarkBRect=NSMakeRect(PunktB.x-1.5, PunktB.y-1.5, 3.1, 3.1);
 				tempMarkB=[NSBezierPath bezierPathWithOvalInRect:tempMarkBRect];
@@ -663,7 +681,9 @@ return sqrt(dX*dX + dY*dY);
 				NSRect tempMarkARect=NSMakeRect(PunktA.x-2.5, PunktA.y-2.5, 5.1, 5.1);
 				tempMarkA=[NSBezierPath bezierPathWithOvalInRect:tempMarkARect];
 				
-            if (i>stepperposition)
+            if (screen)
+            {
+            if (i>stepperposition ) // nur auf Screen farbig
             {
                [[NSColor blueColor]set];
                [tempMarkA stroke];
@@ -681,12 +701,12 @@ return sqrt(dX*dX + dY*dY);
                                          toPoint:NSMakePoint(PunktA.x-4.1, PunktA.y+4.1)];
 
             }
-            
+            } // if screen
             
 			}
 			//NSLog(@"in klickset i: %d Desc: %@",i,[klickset description]);
          
-         if ([KlicksetA count])
+         if ([KlicksetA count] && screen)
          {
             if (i==[KlicksetA firstIndex])
             {
@@ -697,7 +717,7 @@ return sqrt(dX*dX + dY*dY);
                //[KlickLinie lineToPoint:Punkt];
             }
             
-            if ([KlicksetA containsIndex:i])
+            if ([KlicksetA containsIndex:i] && screen)
             {
                //NSLog(@"in klickset i: %d",i);
                NSRect tempMarkRect=NSMakeRect(PunktA.x-1.5, PunktA.y-1.5, 3.1, 3.1);
@@ -713,7 +733,9 @@ return sqrt(dX*dX + dY*dY);
          
          // Abbrandlinien
          // Seite B
-         if ([[DatenArray objectAtIndex:i]objectForKey:@"abrbx"])
+         
+         
+         if ([[DatenArray objectAtIndex:i]objectForKey:@"abrbx"]&& screen)
          {
             NSPoint AbbrandPunktB=NSMakePoint(([[[DatenArray objectAtIndex:i]objectForKey:@"abrbx"]floatValue])*scale,([[[DatenArray objectAtIndex:i]objectForKey:@"abrby"]floatValue]+GraphOffset)*scale);
             AbbrandPunktB.y +=abbbranddelay;
@@ -727,7 +749,7 @@ return sqrt(dX*dX + dY*dY);
 			}
          
          // Seite A
-         if ([[DatenArray objectAtIndex:i]objectForKey:@"abrax"])
+         if ([[DatenArray objectAtIndex:i]objectForKey:@"abrax"]&& screen)
          {
             NSPoint AbbrandPunktA=NSMakePoint([[[DatenArray objectAtIndex:i]objectForKey:@"abrax"]floatValue]*scale,[[[DatenArray objectAtIndex:i]objectForKey:@"abray"]floatValue]*scale);
             AbbrandPunktA.y +=abbbranddelay;

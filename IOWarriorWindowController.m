@@ -209,12 +209,12 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
    if (r <= 0) 
    {
-      NSLog(@"USBOpen: no rawhid device found");
+      //NSLog(@"USBOpen: no rawhid device found");
       [AVR setUSB_Device_Status:0];
    }
    else
    {
-      NSLog(@"USBOpen: found rawhid device %d",usbstatus);
+      //NSLog(@"USBOpen: found rawhid device %d",usbstatus);
       [AVR setUSB_Device_Status:1];
       const char* manu = get_manu();
       //fprintf(stderr,"manu: %s\n",manu);
@@ -528,11 +528,6 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 	//[ProfilMenu setTarget :AVR];
 	//[[ProfilMenu itemWithTag:5001]setAction:@selector(readProfil:)];
 	
-	//	IOW vorbereiten
-	//	Port 0: Bit 0-3 auf FF setzen (Eingaenge). 
-	//	Bit 4 auf H setzen: AVR anzeigen, das TWI nicht ausgeschaltet werden soll 
-	//	Bit 7 auf H setzen: warten bis AVR das Bit auf L zieht (TWI ausgeschaltet)
-	//	Port 1: FF setzen (Eingaenge)
 	
 	//[AVR setProfilPlan:NULL];
 	//	[self showADWandler:NULL];	
@@ -834,14 +829,29 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 	return YES;
 }
 
+- (BOOL)windowWillClose:(id)sender
+{
+	NSLog(@"windowWillClose");
+   /*
+    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+    NSMutableDictionary* BeendenDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+    
+    [nc postNotificationName:@"IOWarriorBeenden" object:self userInfo:BeendenDic];
+    
+    */
+	
+	return YES;
+}
+
+
 - (BOOL)Beenden
 {
-	NSLog(@"Beenden");
+	//NSLog(@"Beenden");
    [AVR DC_ON:0];
    [AVR setStepperstrom:0];
 //   if (schliessencounter ==0)
    {
-      NSLog(@"Beenden savePListAktion");
+      //NSLog(@"Beenden savePListAktion");
       [self savePListAktion:NULL];
    }
 	return YES;
@@ -860,14 +870,12 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    if ([[[note object]title]length])
    {
       schliessencounter++;
-      NSLog(@"hat Title");
+      //NSLog(@"hat Title");
       // "New Folder" wird bei 10.6.8 als Titel von open zurueckgegeben. Deshalb ausschliessen(iBook schwarz)
       if (!([[[note object]title]isEqualToString:@"CNC-Eingabe"]||[[[note object]title]isEqualToString:@"New Folder"]||[[[note object]title]isEqualToString:@"Print"]))
       {
-         NSLog(@"A");
          if ([self Beenden])
          {
-            NSLog(@"B");
             [NSApp terminate:self];
          }
       }
