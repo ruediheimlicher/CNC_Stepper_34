@@ -4756,6 +4756,7 @@ return returnInt;
          tempPunktA.y = StartpunktA.y + self.Kote;
          tempPunktB.x = StartpunktB.x + einstichx;
          tempPunktB.y = StartpunktB.y + self.Kote;
+         //tempPunktB.y = StartpunktB.y + KoteWert;
          
          rahmenindex++;
          
