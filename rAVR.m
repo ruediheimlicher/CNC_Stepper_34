@@ -747,17 +747,10 @@ return returnInt;
 	CNC_PList = [[NSMutableDictionary alloc]initWithDictionary:[self readCNC_PList]];
    //CNC_PList = [self readCNC_PList];
    
-	int raum;
-	//NSView* RaumView =[[StepperTab tabViewItemAtIndex:0]view];;
 	
 	NSRect RaumViewFeld;
 	RaumViewFeld=[ProfilFeld  frame]; 
 	ProfilGraph =[[rProfilGraph alloc] initWithFrame:RaumViewFeld];	
-	int RaumTitelfeldhoehe=10;
-	int RaumTagbalkenhoehe=32;				//Hoehe eines Tagbalkens
-	int RaumTagplanhoehe=(RaumTagbalkenhoehe)+RaumTitelfeldhoehe;	// Hoehe des Tagplanfeldes mit den (AnzRaumobjekte) Tagbalken
-   //	int RaumTagplanAbstand=RaumTagplanhoehe+10;	// Abstand zwischen den Ecken der Tagplanfelder
-   //	int RaumKopfbereich=50;	// Bereich ueber dem Scroller
 	
 	NSRect RaumScrollerFeld=RaumViewFeld;	//	Feld fuer Scroller, in dem der RaumView liegt
 	
@@ -1010,9 +1003,11 @@ return returnInt;
    motorstatus &= ~STEPEND_D;
    
    self.Kote = 5;
-   [[self window]makeFirstResponder: ProfilGraph];
    
-   
+   //[[self window]makeFirstResponder: ProfilGraph];
+   //[[self window]setInitialFirstResponder: ProfilGraph];
+   [[self window]setInitialFirstResponder:[[StepperTab tabViewItemAtIndex:0]view]];
+   //[[self window]setInitialFirstResponder: CNC_Starttaste];
    
    NSLog(@"awake end");
 }
@@ -1358,9 +1353,12 @@ return returnInt;
 
         	[CNCDatenArray removeAllObjects];
          [CNCTable reloadData];
-         [ProfilGraph setDatenArray:KoordinatenTabelle];
+         if ([KoordinatenTabelle count])
+         {
+            [ProfilGraph setDatenArray:KoordinatenTabelle];
          
-         [ProfilGraph setNeedsDisplay:YES];
+            [ProfilGraph setNeedsDisplay:YES];
+         }
          [SchnittdatenArray removeAllObjects];
          [NeuesElementTaste setEnabled:YES];
          
@@ -3344,17 +3342,19 @@ return returnInt;
 
 - (void)updateIndex
 {
-   int i=0;
-   for (i=0;i<[KoordinatenTabelle count];i++)
+   if ([KoordinatenTabelle count])
    {
-      NSMutableDictionary* tempDic=[NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i]];
-      [tempDic setObject:[NSNumber numberWithInt:i] forKey:@"index"];
-      [KoordinatenTabelle replaceObjectAtIndex:i withObject:tempDic];
-    }
-   [ProfilGraph setNeedsDisplay:YES];
-   [CNCTable reloadData];
-   [IndexStepper setMaxValue:[KoordinatenTabelle count]-1];
-
+      int i=0;
+      for (i=0;i<[KoordinatenTabelle count];i++)
+      {
+         NSMutableDictionary* tempDic=[NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i]];
+         [tempDic setObject:[NSNumber numberWithInt:i] forKey:@"index"];
+         [KoordinatenTabelle replaceObjectAtIndex:i withObject:tempDic];
+      }
+      [ProfilGraph setNeedsDisplay:YES];
+      [CNCTable reloadData];
+      [IndexStepper setMaxValue:[KoordinatenTabelle count]-1];
+   }
 }
 
 - (IBAction)reportNeueZeile:(id)sender // Neuen Punkt einfügen
