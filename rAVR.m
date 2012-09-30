@@ -180,6 +180,7 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
 }
 
 
+
 - (int)Richtung
 {
    return richtung;
