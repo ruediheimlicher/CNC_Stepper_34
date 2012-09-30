@@ -38,6 +38,7 @@
 			<string>NSTableView</string>
 			<string>NSTextField</string>
 			<string>NSTextFieldCell</string>
+			<string>NSUserDefaultsController</string>
 			<string>NSView</string>
 			<string>NSWindowTemplate</string>
 		</array>
@@ -868,7 +869,7 @@
 												<string key="NSFrame">{{359, 637}, {29, 22}}</string>
 												<reference key="NSSuperview" ref="689186444"/>
 												<reference key="NSWindow"/>
-												<reference key="NSNextKeyView" ref="661083502"/>
+												<reference key="NSNextKeyView" ref="613130115"/>
 												<bool key="NSEnabled">YES</bool>
 												<object class="NSTextFieldCell" key="NSCell" id="214166882">
 													<int key="NSCellFlags">-1804599231</int>
@@ -3271,6 +3272,24 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 												</object>
 												<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
 											</object>
+											<object class="NSStepper" id="613130115">
+												<reference key="NSNextResponder" ref="689186444"/>
+												<int key="NSvFlags">268</int>
+												<string key="NSFrame">{{384, 635}, {19, 27}}</string>
+												<reference key="NSSuperview" ref="689186444"/>
+												<reference key="NSWindow"/>
+												<reference key="NSNextKeyView" ref="661083502"/>
+												<bool key="NSEnabled">YES</bool>
+												<object class="NSStepperCell" key="NSCell" id="694921046">
+													<int key="NSCellFlags">786464</int>
+													<int key="NSCellFlags2">0</int>
+													<reference key="NSControlView" ref="613130115"/>
+													<double key="NSMaxValue">100</double>
+													<double key="NSIncrement">1</double>
+													<bool key="NSAutorepeat">YES</bool>
+												</object>
+												<bool key="NSAllowsLogicalLayoutDirection">NO</bool>
+											</object>
 										</array>
 										<string key="NSFrame">{{10, 33}, {1213, 659}}</string>
 										<reference key="NSSuperview" ref="751885620"/>
@@ -4559,6 +4578,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<int key="NSTitlePosition">2</int>
 				<bool key="NSTransparent">NO</bool>
 			</object>
+			<object class="NSUserDefaultsController" id="723245705">
+				<bool key="NSSharedInstance">YES</bool>
+			</object>
 		</array>
 		<object class="IBObjectContainer" key="IBDocument.Objects">
 			<array class="NSMutableArray" key="connectionRecords">
@@ -5156,14 +5178,6 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
-						<string key="label">CNCPositionFeld</string>
-						<reference key="source" ref="1068649839"/>
-						<reference key="destination" ref="712533397"/>
-					</object>
-					<int key="connectionID">1766</int>
-				</object>
-				<object class="IBConnectionRecord">
-					<object class="IBOutletConnection" key="connection">
 						<string key="label">Basisabstand</string>
 						<reference key="source" ref="1068649839"/>
 						<reference key="destination" ref="755132366"/>
@@ -5596,6 +5610,22 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				</object>
 				<object class="IBConnectionRecord">
 					<object class="IBOutletConnection" key="connection">
+						<string key="label">KoteStepper</string>
+						<reference key="source" ref="1068649839"/>
+						<reference key="destination" ref="694921046"/>
+					</object>
+					<int key="connectionID">2170</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
+						<string key="label">KoteFeld</string>
+						<reference key="source" ref="1068649839"/>
+						<reference key="destination" ref="712533397"/>
+					</object>
+					<int key="connectionID">2171</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBOutletConnection" key="connection">
 						<string key="label">delegate</string>
 						<reference key="source" ref="751885620"/>
 						<reference key="destination" ref="1068649839"/>
@@ -5617,6 +5647,38 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="destination" ref="822437759"/>
 					</object>
 					<int key="connectionID">1351</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: Kote</string>
+						<reference key="source" ref="712533397"/>
+						<reference key="destination" ref="1068649839"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="712533397"/>
+							<reference key="NSDestination" ref="1068649839"/>
+							<string key="NSLabel">value: Kote</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">Kote</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">2175</int>
+				</object>
+				<object class="IBConnectionRecord">
+					<object class="IBBindingConnection" key="connection">
+						<string key="label">value: Kote</string>
+						<reference key="source" ref="694921046"/>
+						<reference key="destination" ref="1068649839"/>
+						<object class="NSNibBindingConnector" key="connector">
+							<reference key="NSSource" ref="694921046"/>
+							<reference key="NSDestination" ref="1068649839"/>
+							<string key="NSLabel">value: Kote</string>
+							<string key="NSBinding">value</string>
+							<string key="NSKeyPath">Kote</string>
+							<int key="NSNibBindingConnectorVersion">2</int>
+						</object>
+					</object>
+					<int key="connectionID">2169</int>
 				</object>
 			</array>
 			<object class="IBMutableOrderedSet" key="objectRecords">
@@ -5778,6 +5840,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<reference ref="275184602"/>
 							<reference ref="280366092"/>
 							<reference ref="1063689805"/>
+							<reference ref="613130115"/>
 						</array>
 						<reference key="parent" ref="605208388"/>
 					</object>
@@ -8174,6 +8237,24 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<reference key="object" ref="60008303"/>
 						<reference key="parent" ref="1063689805"/>
 					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2164</int>
+						<reference key="object" ref="613130115"/>
+						<array class="NSMutableArray" key="children">
+							<reference ref="694921046"/>
+						</array>
+						<reference key="parent" ref="689186444"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2165</int>
+						<reference key="object" ref="694921046"/>
+						<reference key="parent" ref="613130115"/>
+					</object>
+					<object class="IBObjectRecord">
+						<int key="objectID">2166</int>
+						<reference key="object" ref="723245705"/>
+						<reference key="parent" ref="0"/>
+					</object>
 				</array>
 			</object>
 			<dictionary class="NSMutableDictionary" key="flattenedProperties">
@@ -8479,6 +8560,9 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 				<string key="2154.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="2161.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="2162.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="2164.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="2165.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
+				<string key="2166.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="289.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="290.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
 				<string key="383.IBPluginDependency">com.apple.InterfaceBuilder.CocoaPlugin</string>
@@ -8573,10 +8657,31 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 			<nil key="activeLocalization"/>
 			<dictionary class="NSMutableDictionary" key="localizations"/>
 			<nil key="sourceID"/>
-			<int key="maxID">2163</int>
+			<int key="maxID">2175</int>
 		</object>
 		<object class="IBClassDescriber" key="IBDocument.Classes">
 			<array class="NSMutableArray" key="referencedPartialClassDescriptions">
+				<object class="IBPartialClassDescription">
+					<string key="className">NSCollectionViewItem</string>
+					<dictionary class="NSMutableDictionary" key="outlets">
+						<string key="imageView">NSImageView</string>
+						<string key="textField">NSTextField</string>
+					</dictionary>
+					<dictionary class="NSMutableDictionary" key="toOneOutletInfosByName">
+						<object class="IBToOneOutletInfo" key="imageView">
+							<string key="name">imageView</string>
+							<string key="candidateClassName">NSImageView</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="textField">
+							<string key="name">textField</string>
+							<string key="candidateClassName">NSTextField</string>
+						</object>
+					</dictionary>
+					<object class="IBClassDescriptionSource" key="sourceIdentifier">
+						<string key="majorKey">IBProjectSource</string>
+						<string key="minorKey">./Classes/NSCollectionViewItem.h</string>
+					</object>
+				</object>
 				<object class="IBPartialClassDescription">
 					<string key="className">rAVR</string>
 					<string key="superclassName">NSWindowController</string>
@@ -8587,6 +8692,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="reportBlockkonfigurieren:">id</string>
 						<string key="reportCNCKnopf:">id</string>
 						<string key="reportClearProfilTabelle:">id</string>
+						<string key="reportDC_Stepper:">id</string>
+						<string key="reportDC_Taste:">id</string>
 						<string key="reportDauerpfeilTaste:">id</string>
 						<string key="reportDrehgeber:">id</string>
 						<string key="reportEdgeTask:">id</string>
@@ -8597,6 +8704,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="reportHome:">id</string>
 						<string key="reportHorizontalSchieber:">id</string>
 						<string key="reportIndexStepper:">id</string>
+						<string key="reportKotenstepper:">id</string>
 						<string key="reportKreis:">id</string>
 						<string key="reportLinkeRechteSeite:">id</string>
 						<string key="reportLinkeRechteSeiteOffset:">id</string>
@@ -8605,6 +8713,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="reportManRight:">id</string>
 						<string key="reportManUp:">id</string>
 						<string key="reportNeuTaste:">id</string>
+						<string key="reportNeueLinie:">id</string>
 						<string key="reportNeueZeile:">id</string>
 						<string key="reportNewElement:">id</string>
 						<string key="reportOberkanteAnfahren:">id</string>
@@ -8637,6 +8746,7 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="reportWertBXStepper:">id</string>
 						<string key="reportWertBYStepper:">id</string>
 						<string key="reportZeileWeg:">id</string>
+						<string key="showEinstellungen:">id</string>
 						<string key="terminateTransfer:">id</string>
 					</dictionary>
 					<dictionary class="NSMutableDictionary" key="actionInfosByName">
@@ -8662,6 +8772,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 						<object class="IBActionInfo" key="reportClearProfilTabelle:">
 							<string key="name">reportClearProfilTabelle:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportDC_Stepper:">
+							<string key="name">reportDC_Stepper:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportDC_Taste:">
+							<string key="name">reportDC_Taste:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="reportDauerpfeilTaste:">
@@ -8704,6 +8822,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string key="name">reportIndexStepper:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="reportKotenstepper:">
+							<string key="name">reportKotenstepper:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="reportKreis:">
 							<string key="name">reportKreis:</string>
 							<string key="candidateClassName">id</string>
@@ -8734,6 +8856,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 						<object class="IBActionInfo" key="reportNeuTaste:">
 							<string key="name">reportNeuTaste:</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBActionInfo" key="reportNeueLinie:">
+							<string key="name">reportNeueLinie:</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBActionInfo" key="reportNeueZeile:">
@@ -8864,6 +8990,10 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 							<string key="name">reportZeileWeg:</string>
 							<string key="candidateClassName">id</string>
 						</object>
+						<object class="IBActionInfo" key="showEinstellungen:">
+							<string key="name">showEinstellungen:</string>
+							<string key="candidateClassName">id</string>
+						</object>
 						<object class="IBActionInfo" key="terminateTransfer:">
 							<string key="name">terminateTransfer:</string>
 							<string key="candidateClassName">id</string>
@@ -8926,6 +9056,8 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						<string key="HorizontalSchieberFeld">id</string>
 						<string key="IndexFeld">id</string>
 						<string key="IndexStepper">id</string>
+						<string key="KoteFeld">id</string>
+						<string key="KoteStepper">id</string>
 						<string key="LagePop">id</string>
 						<string key="ManufactorerFeld">id</string>
 						<string key="MinimaldistanzFeld">id</string>
@@ -9207,6 +9339,14 @@ AAMAAAABAAEAAAFTAAMAAAAEAAAFwgAAAAAACAAIAAgACAABAAEAAQABA</bytes>
 						</object>
 						<object class="IBToOneOutletInfo" key="IndexStepper">
 							<string key="name">IndexStepper</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="KoteFeld">
+							<string key="name">KoteFeld</string>
+							<string key="candidateClassName">id</string>
+						</object>
+						<object class="IBToOneOutletInfo" key="KoteStepper">
+							<string key="name">KoteStepper</string>
 							<string key="candidateClassName">id</string>
 						</object>
 						<object class="IBToOneOutletInfo" key="LagePop">

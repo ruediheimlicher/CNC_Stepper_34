@@ -286,8 +286,14 @@
    IBOutlet id					ProductFeld;
    IBOutlet id					MinimaldistanzFeld;
    float                   minimaldistanz; // minimaler abstand zwischen 2  Punkten, um in den Array aufgenommen zu werden
-
+   
+   IBOutlet id             KoteFeld;
+   IBOutlet id             KoteStepper;
+   
+   //int                     _kote;
+   int                     KoteWert;
 }
+@property (nonatomic)  int    Kote;
 - (NSMutableDictionary*)readCNC_PList;
 - (NSArray*)readProfilLib;
 - (IBAction)reportUSB:(id)sender;

@@ -188,6 +188,8 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
 
 
 @implementation rAVR
+@synthesize Kote = KoteWert;
+
 
 - (NSDictionary*)maxminWertVonArray:(NSArray*) WerteArray
 {
@@ -1007,8 +1009,11 @@ return returnInt;
    //NSLog(@"motorstatus: %X",motorstatus);
    motorstatus &= ~STEPEND_D;
    
-   
+   self.Kote = 5;
    [[self window]makeFirstResponder: ProfilGraph];
+   
+   
+   
    NSLog(@"awake end");
 }
 
