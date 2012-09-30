@@ -4563,6 +4563,7 @@ return returnInt;
          
          NSPoint tempPunktA = StartpunktA;
          NSPoint tempPunktB = StartpunktB;
+         NSPoint EckeLinksUnten;
          int rahmenindex=0;
          int einstichx = 2;
          int einstichy = 2;
@@ -4579,12 +4580,30 @@ return returnInt;
          [KoordinatenTabelle addObject:[tempRahmenDic copy]];
          //NSLog(@"count: %d KoordinatenTabelle 0: %@",[KoordinatenTabelle count],[KoordinatenTabelle description]);
          
+         // Hochfahren bis Kote
+         rahmenindex++;
+         //tempPunktA.x += einstichx;
+         tempPunktA.y += self.Kote;
+         //tempPunktB.x += einstichx;
+         tempPunktB.y += self.Kote;
+         
+         EckeLinksUnten = tempPunktA; // Rückkehrwert
+         
+         [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.x] forKey:@"ax"];
+         [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.y] forKey:@"ay"];
+         [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktB.x] forKey:@"bx"];
+         [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktB.y] forKey:@"by"];
+         [tempRahmenDic setObject:[NSNumber numberWithInt:rahmenindex] forKey:@"index"];
+         [tempRahmenDic setObject:[NSNumber numberWithInt:20] forKey:@"teil"]; // Kennzeichnung Oberseite
+         //NSLog(@"rahmenindex: %d tempRahmenDic: %@",rahmenindex,[tempRahmenDic description]);
+         [KoordinatenTabelle addObject:[tempRahmenDic copy]];
+
          // Einstich
          rahmenindex++;
          tempPunktA.x += einstichx;
-         tempPunktA.y += einstichy;
+         //tempPunktA.y += einstichy;
          tempPunktB.x += einstichx;
-         tempPunktB.y += einstichy;
+         //tempPunktB.y += einstichy;
          
          [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.x] forKey:@"ax"];
          [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.y] forKey:@"ay"];
@@ -4718,11 +4737,9 @@ return returnInt;
 
          
          // Herunterfahren
-         tempPunktA.x += 0;
-         tempPunktA.y = StartpunktA.y + einstichy;
-         //tempPunktB.x = [[[KoordinatenTabelle lastObject]objectForKey:@"bx"]floatValue];
-         tempPunktB.y = StartpunktB.y + einstichy;
-         // herunterfahren
+         tempPunktA.y = StartpunktA.y + self.Kote;
+         tempPunktB.y = StartpunktB.y + self.Kote;
+      
          rahmenindex++;
 
          [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.x] forKey:@"ax"];
@@ -4736,9 +4753,9 @@ return returnInt;
 
          // zurueckfahren
          tempPunktA.x = StartpunktA.x + einstichx;
-         tempPunktA.y = StartpunktA.y + einstichy;
+         tempPunktA.y = StartpunktA.y + self.Kote;
          tempPunktB.x = StartpunktB.x + einstichx;
-         tempPunktB.y = StartpunktB.y + einstichy;
+         tempPunktB.y = StartpunktB.y + self.Kote;
          
          rahmenindex++;
          
@@ -4755,9 +4772,9 @@ return returnInt;
          // Einstich herausfahren
          rahmenindex++;
          tempPunktA.x -= einstichx;
-         tempPunktA.y -= einstichy;
+         //tempPunktA.y -= einstichy;
          tempPunktB.x -= einstichx;
-         tempPunktB.y -= einstichy;
+         //tempPunktB.y -= einstichy;
          
          [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.x] forKey:@"ax"];
          [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.y] forKey:@"ay"];
@@ -6307,10 +6324,10 @@ return returnInt;
       NSPoint PositionB = EckeLinksUnten;
       
       
-      // Start des Schnittes ist um einstichx, einstichy verschoben
+      // Start des Schnittes ist um einstichx, einstichy verschoben. Start vorerst dorthin verlegen
       
-      einstichy = plattendicke - dicke;
-      
+  //    einstichy = plattendicke - dicke;
+      einstichy = self.Kote;
       
       PositionA.x -=einstichx;
       PositionB.x -=einstichx;
@@ -6318,14 +6335,20 @@ return returnInt;
       PositionA.y -=einstichy;
       PositionB.y -=einstichy;
       
-      
-      
       int index=0;
       
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       
       
+      index++;
+      
+      // Hochfahren auf Kote
+      PositionA.y +=einstichy;
+      PositionB.y +=einstichy;
+      
+      //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       
       
@@ -6338,14 +6361,6 @@ return returnInt;
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
 
-      
-      // weg vom Anschlag einstichy nach oben    
-      PositionA.y +=einstichy;
-      PositionB.y +=einstichy;
-      
-      //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
-      index++;
       
      
       /*    
@@ -6448,16 +6463,16 @@ return returnInt;
        */
       //Schneiden an Blockunterkante rechts
       
-      PositionA.y = EckeRechtsUnten.y - einstichy + 3;
-      PositionB.y = EckeRechtsUnten.y - einstichy + 3;
+      PositionA.y = EckeRechtsUnten.y;// - einstichy + 3;
+      PositionB.y = EckeRechtsUnten.y;// - einstichy + 3;
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       
       //Schneiden an Blockunterkante links - einstichy
       
-      PositionA.x = EckeLinksUnten.x-einstichx+1; // Nicht bis Anschlag fahren
-      PositionB.x = EckeLinksUnten.x-einstichx+1;
+      PositionA.x = EckeLinksUnten.x - 4;//-einstichx+1; // Nicht bis Anschlag fahren
+      PositionB.x = EckeLinksUnten.x - 4;//-einstichx+1;
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
