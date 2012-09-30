@@ -867,12 +867,14 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 	}
 //	NSLog(@"Fenster Schliessen");
 		
-   if ([[[note object]title]length])
+   if ([[[note object]title]length] && ![[[note object]title]isEqualToString:@"Print"]) // nicht bei Printdialog
    {
       schliessencounter++;
       //NSLog(@"hat Title");
+      
       // "New Folder" wird bei 10.6.8 als Titel von open zurueckgegeben. Deshalb ausschliessen(iBook schwarz)
-      if (!([[[note object]title]isEqualToString:@"CNC-Eingabe"]||[[[note object]title]isEqualToString:@"New Folder"]||[[[note object]title]isEqualToString:@"Print"]))
+      
+      if (!([[[note object]title]isEqualToString:@"CNC-Eingabe"]||[[[note object]title]isEqualToString:@"New Folder"]))
       {
          if ([self Beenden])
          {
