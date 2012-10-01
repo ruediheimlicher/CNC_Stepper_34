@@ -4575,8 +4575,7 @@ return returnInt;
       NSPoint EckeLinksUnten;
       int rahmenindex=0;
       int einstichx = 5;
-      //int einstichy = 2;
-      
+            
       // Start
       [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.x] forKey:@"ax"];
       [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.y] forKey:@"ay"];
@@ -4644,11 +4643,13 @@ return returnInt;
       HolmArrayA = [HolmpunktDicA objectForKey:@"holmpunktarray"];
       HolmArrayB = [HolmpunktDicB objectForKey:@"holmpunktarray"];
       
-      //float breiteA = [[[HolmArrayA objectAtIndex:3]objectForKey:@"y"]floatValue] - [[[HolmArrayA objectAtIndex:2]objectForKey:@"y"]floatValue];
-      //float breiteB = [[[HolmArrayB objectAtIndex:3]objectForKey:@"y"]floatValue] - [[[HolmArrayB objectAtIndex:2]objectForKey:@"y"]floatValue];
+      float breiteA = [[[HolmArrayA objectAtIndex:3]objectForKey:@"y"]floatValue] - [[[HolmArrayA objectAtIndex:2]objectForKey:@"y"]floatValue];
+      float breiteB = [[[HolmArrayB objectAtIndex:3]objectForKey:@"y"]floatValue] - [[[HolmArrayB objectAtIndex:2]objectForKey:@"y"]floatValue];
       
       float untenAx = [[[HolmArrayA objectAtIndex:2]objectForKey:@"y"]floatValue]; // Dist A vom Start bis erster Knick unten.
       float untenBx = [[[HolmArrayB objectAtIndex:2]objectForKey:@"y"]floatValue]; // Dist B vom Start bis erster Knick unten. Soll gleich liegen wie bei A
+      fprintf(stderr,"A:\t%.3f\tB:\t%.3f\n",untenAx,untenBx);
+      
       float delta = untenBx - untenAx;
       
       // Startpunkt korrigieren

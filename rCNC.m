@@ -1786,6 +1786,14 @@ PortA=vs[n & 3]; warte10ms(); n++;
 {
    float Holmposition = 0.66; // Lage des Holms von der Endleiste an gemessen
 	float basisbreite = 10; // Breite der Basis unten in mm
+   float schalendicke = 2; // Dicke der Schalendicke in mm
+   
+   // basisbreite auf 1 normieren
+   basisbreite /= Profiltiefe;
+   
+   // schalendicke auf 1 normieren
+   schalendicke /= Profiltiefe;
+
    
    //NSArray* ProfilArrayA;
    NSMutableDictionary* HolmpunktDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
@@ -1816,7 +1824,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    
    int schritte; // Anzahl Koordinatenpunkte, welche fuer eine ausreichende Breite der Grundflaeche notwendig sind.
    float distanzreal = 0;
-   float distanzmm = 0;
+   
    schritte=0; // mindestens eine Schrittweite
    
    while ((holmpos + schritte) < [ProfilArray count] && distanzreal < 8)
@@ -1829,9 +1837,6 @@ PortA=vs[n & 3]; warte10ms(); n++;
       //NSLog(@"schritte: %d distanzreal: %.2fmm", schritte,distanzreal);
    }
    
-   
-   
-   tempStartpunktnachhinten = NSMakePoint([[[ProfilArray objectAtIndex:(holmpos + schritte)]objectForKey:@"x"]floatValue], [[[ProfilArray objectAtIndex:(holmpos + schritte)]objectForKey:@"y"]floatValue]);
    
    //NSLog(@"schritte: %d distanzreal: %.2fmm",schritte,distanzreal);
    // Holmansatzpunkte unten
@@ -1851,13 +1856,17 @@ PortA=vs[n & 3]; warte10ms(); n++;
    float steigungunten = deltay/deltax; // tangente
    
    // Berechnung Startpunktnachhinten im Abstand basisbreite aus Startpunkt nachvorn und steigungunten 
-   basisbreite /= Profiltiefe;
-   NSLog(@"alt: Startpunktnachvorn.x: %.3f Startpunktnachvorn.y: %.5f",Startpunktnachvorn.x,Startpunktnachvorn.y);
-   NSLog(@"alt: Startpunktnachhinten.x: %.3f Startpunktnachhinten.y: %.5f",Startpunktnachhinten.x,Startpunktnachhinten.y);
+   
+   
+  // NSLog(@"alt: Startpunktnachvorn.x: %.3f Startpunktnachvorn.y: %.5f",Startpunktnachvorn.x,Startpunktnachvorn.y);
+  // NSLog(@"alt: Startpunktnachhinten.x: %.3f Startpunktnachhinten.y: %.5f",Startpunktnachhinten.x,Startpunktnachhinten.y);
    Startpunktnachhinten.x = Startpunktnachvorn.x - basisbreite;
    Startpunktnachhinten.y = Startpunktnachvorn.y - basisbreite * steigungunten;
-   NSLog(@"neu: Startpunktnachhinten.x: %.3f Startpunktnachhinten.y: %.5f",Startpunktnachhinten.x,Startpunktnachhinten.y);
+  // NSLog(@"neu: Startpunktnachhinten.x: %.3f Startpunktnachhinten.y: %.5f",Startpunktnachhinten.x,Startpunktnachhinten.y);
  
+   // schalendicke zu Startpunkten 2* addieren
+   Startpunktnachvorn.y += 2*schalendicke;
+   Startpunktnachhinten.y += 2*schalendicke;
    
    
    NSPoint vektortang = NSMakePoint(cos(steigungunten), sin(steigungunten));
@@ -2001,8 +2010,9 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
    
-   // neu
+   // neu: Startpunktnachvorn aus Berechnung
    tempX = Startpunktnachhinten.x;
+   
    tempX *= Profiltiefe;						// Wert in mm
    tempX -= offsetx;
    tempX += Startpunkt.x;	// offset in mm
@@ -2010,7 +2020,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
    NSNumber* tempNumberX2=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
-   // neu
+   
+   // neu: Startpunktnachvorn aus Berechnung
    tempY = Startpunktnachhinten.y;
    
    tempY *= Profiltiefe;						// Wert in mm
@@ -2027,12 +2038,18 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
    
+   // neu: Startpunktnachvorn aus Berechnung
+   tempX = Startpunktnachvorn.x;
+   
    tempX *= Profiltiefe;						// Wert in mm
    tempX -= offsetx;
    tempX += Startpunkt.x;	// offset in mm
    NSNumber* tempNumberX3=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
+   
+   // neu: Startpunktnachvorn aus Berechnung
+   tempY = Startpunktnachvorn.y;
    
    tempY *= Profiltiefe;						// Wert in mm
    tempY -= offsety;
