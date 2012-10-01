@@ -4646,11 +4646,11 @@ return returnInt;
       float breiteA = [[[HolmArrayA objectAtIndex:3]objectForKey:@"y"]floatValue] - [[[HolmArrayA objectAtIndex:2]objectForKey:@"y"]floatValue];
       float breiteB = [[[HolmArrayB objectAtIndex:3]objectForKey:@"y"]floatValue] - [[[HolmArrayB objectAtIndex:2]objectForKey:@"y"]floatValue];
       
-      float untenAx = [[[HolmArrayA objectAtIndex:2]objectForKey:@"y"]floatValue]; // Dist A vom Start bis erster Knick unten.
-      float untenBx = [[[HolmArrayB objectAtIndex:2]objectForKey:@"y"]floatValue]; // Dist B vom Start bis erster Knick unten. Soll gleich liegen wie bei A
+      float untenAx = [[[HolmArrayA objectAtIndex:2]objectForKey:@"x"]floatValue]; // Dist A vom Start bis erster Knick unten.
+      float untenBx = [[[HolmArrayB objectAtIndex:2]objectForKey:@"x"]floatValue]; // Dist B vom Start bis erster Knick unten. Soll gleich liegen wie bei A
       fprintf(stderr,"A:\t%.3f\tB:\t%.3f\n",untenAx,untenBx);
       
-      float delta = untenBx - untenAx;
+      float delta = untenAx - untenBx;
       
       // Startpunkt korrigieren
       // offset bei A: 5
