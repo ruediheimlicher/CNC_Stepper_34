@@ -1785,18 +1785,12 @@ PortA=vs[n & 3]; warte10ms(); n++;
 - (NSDictionary*)HolmDicVonPunkt:(NSPoint)Startpunkt mitProfil:(NSArray*)ProfilArray mitProfiltiefe:(int)Profiltiefe mitScale:(int)Scale
 {
    float Holmposition = 0.66; // Lage des Holms von der Endleiste an gemessen
-   NSString* ProfilName;
-	//NSArray* ProfilArrayA;
-	NSArray* ProfilArrayB;
+	float basisbreite = 10; // Breite der Basis unten in mm
+   
+   //NSArray* ProfilArrayA;
    NSMutableDictionary* HolmpunktDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    
-   
-   
-   //  NSPoint StartpunktA = Startpunkt;
-   //  NSPoint StartpunktB = Startpunkt;
-   
-   NSString* Profil1Name;
-   
+    
    int holmpos = 0; // Position an Unterseite
    
    for (int i=0; i<[ProfilArray count]; i++)
@@ -1817,34 +1811,58 @@ PortA=vs[n & 3]; warte10ms(); n++;
    // Startpunkte der Diagonalen auf der unteren Profillinie
    NSPoint Startpunktnachvorn = NSMakePoint([[[ProfilArray objectAtIndex:holmpos]objectForKey:@"x"]floatValue], [[[ProfilArray objectAtIndex:holmpos]objectForKey:@"y"]floatValue]);
    NSPoint Startpunktnachhinten = Startpunktnachvorn; // Ausgangspunkt fuer Suche nach Punkt in genuegender Distanz
+   NSPoint tempStartpunktnachhinten = Startpunktnachvorn; // Ausgangspunkt fuer Suche nach Punkt in genuegender Distanz
+   
+   
    int schritte; // Anzahl Koordinatenpunkte, welche fuer eine ausreichende Breite der Grundflaeche notwendig sind.
    float distanzreal = 0;
+   float distanzmm = 0;
    schritte=0; // mindestens eine Schrittweite
+   
    while ((holmpos + schritte) < [ProfilArray count] && distanzreal < 8)
    {
       schritte++;
 
       Startpunktnachhinten = NSMakePoint([[[ProfilArray objectAtIndex:(holmpos + schritte)]objectForKey:@"x"]floatValue], [[[ProfilArray objectAtIndex:(holmpos + schritte)]objectForKey:@"y"]floatValue]);
       //NSLog(@"schritte: %d temppunkt.x: %.3f temppunkt.y: %.3f",schritte,Startpunktnachhinten.x*Profiltiefe,Startpunktnachhinten.y*Profiltiefe);
-
       distanzreal = (Startpunktnachvorn.x-Startpunktnachhinten.x)*Profiltiefe;
       //NSLog(@"schritte: %d distanzreal: %.2fmm", schritte,distanzreal);
-      
    }
-   NSLog(@"schritte: %d distanzreal: %.2fmm",schritte,distanzreal);
+   
+   
+   
+   tempStartpunktnachhinten = NSMakePoint([[[ProfilArray objectAtIndex:(holmpos + schritte)]objectForKey:@"x"]floatValue], [[[ProfilArray objectAtIndex:(holmpos + schritte)]objectForKey:@"y"]floatValue]);
+   
+   //NSLog(@"schritte: %d distanzreal: %.2fmm",schritte,distanzreal);
    // Holmansatzpunkte unten
    int holmposvorn = holmpos;
    int holmposhinten = holmpos + schritte;
+   
+   // neu
+   //holmposhinten = holmposvorn + 2;
+   
    // Koordinatenunterschiede
    float deltay = [[[ProfilArray objectAtIndex:holmposhinten]objectForKey:@"y"]floatValue]-[[[ProfilArray objectAtIndex:holmposvorn]objectForKey:@"y"]floatValue]; // index verlaeuft gegen Endleiste zu
    float deltax = [[[ProfilArray objectAtIndex:holmposhinten]objectForKey:@"x"]floatValue]-[[[ProfilArray objectAtIndex:holmposvorn]objectForKey:@"x"]floatValue];
-   NSLog(@"deltax : %.5f deltay: %.5f",deltax,deltay);
-   NSLog(@"deltax real: %.5fmm ",deltax*Profiltiefe);
+   //NSLog(@"deltax : %.5f deltay: %.5f",deltax,deltay);
+   //NSLog(@"deltax real: %.5fmm ",deltax*Profiltiefe);
    
    // Steigung der Tangente und Einheitsvektor
    float steigungunten = deltay/deltax; // tangente
+   
+   // Berechnung Startpunktnachhinten im Abstand basisbreite aus Startpunkt nachvorn und steigungunten 
+   basisbreite /= Profiltiefe;
+   NSLog(@"alt: Startpunktnachvorn.x: %.3f Startpunktnachvorn.y: %.5f",Startpunktnachvorn.x,Startpunktnachvorn.y);
+   NSLog(@"alt: Startpunktnachhinten.x: %.3f Startpunktnachhinten.y: %.5f",Startpunktnachhinten.x,Startpunktnachhinten.y);
+   Startpunktnachhinten.x = Startpunktnachvorn.x - basisbreite;
+   Startpunktnachhinten.y = Startpunktnachvorn.y - basisbreite * steigungunten;
+   NSLog(@"neu: Startpunktnachhinten.x: %.3f Startpunktnachhinten.y: %.5f",Startpunktnachhinten.x,Startpunktnachhinten.y);
+ 
+   
+   
    NSPoint vektortang = NSMakePoint(cos(steigungunten), sin(steigungunten));
    
+  
    // Steigung der Senkrechten und Einheitvektor
    float steigungsenkrecht = -deltax/deltay; // senkrechte
    NSPoint vektorsenkr = NSMakePoint(cos(steigungsenkrecht), sin(steigungsenkrecht));
@@ -1862,7 +1880,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    float holm1lage=[[[ProfilArray objectAtIndex:holmpos]objectForKey:@"x"]floatValue]*Profiltiefe;
    //float winkelnachvorn = steigungunten + M_PI/4;
    //float winkelnachhinten = steigungunten + 3*M_PI/4;
-   NSLog(@"holm1lage: %.4f steigungunten: %.4f steigungsenkrecht: %.4f",holm1lage,steigungunten,steigungsenkrecht);
+   //NSLog(@"holm1lage: %.4f steigungunten: %.4f steigungsenkrecht: %.4f",holm1lage,steigungunten,steigungsenkrecht);
    
    float xnachvorn = 0;
    float ynachvorn = Startpunktnachvorn.y + vektornachvorn.y/vektornachvorn.x * (xnachvorn - Startpunktnachvorn.x);
@@ -1901,9 +1919,9 @@ PortA=vs[n & 3]; warte10ms(); n++;
       }
       
    }
-   NSLog(@"holmposvorn: %d minvornpos: %d steigungvorn ok minvornfehler: %.3f",holmposvorn,minvornpos,minvornfehler);
-   NSLog(@"holmposhinten: %d minhintenpos: %d steigunghinten ok minhintenfehler: %.3f",holmposhinten,minhintenpos,minhintenfehler);
-   NSLog(@"Startpunkt.x: %.3f Startpunkt.y: %.3f",Startpunkt.x,Startpunkt.y);
+   //NSLog(@"holmposvorn: %d minvornpos: %d steigungvorn ok minvornfehler: %.3f",holmposvorn,minvornpos,minvornfehler);
+   //NSLog(@"holmposhinten: %d minhintenpos: %d steigunghinten ok minhintenfehler: %.3f",holmposhinten,minhintenpos,minhintenfehler);
+   //NSLog(@"Startpunkt.x: %.3f Startpunkt.y: %.3f",Startpunkt.x,Startpunkt.y);
    NSMutableArray* HolmpunktArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    
    //HolmpunktArray fuellen
@@ -1914,6 +1932,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    
    //Steigung der Profillinie von minhintenpos bis 2 Schritte nach hinten:
    float deltaxh = [[[ProfilArray objectAtIndex:minhintenpos-2]objectForKey:@"x"]floatValue] - [[[ProfilArray objectAtIndex:minhintenpos]objectForKey:@"x"]floatValue];
+   
    float deltayh = [[[ProfilArray objectAtIndex:minhintenpos-2]objectForKey:@"y"]floatValue] - [[[ProfilArray objectAtIndex:minhintenpos]objectForKey:@"y"]floatValue];
    float steigungh = deltayh/deltaxh;
 
@@ -1921,7 +1940,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
    float deltaxv = [[[ProfilArray objectAtIndex:minvornpos+2]objectForKey:@"x"]floatValue] - [[[ProfilArray objectAtIndex:minvornpos]objectForKey:@"x"]floatValue];
    float deltayv = [[[ProfilArray objectAtIndex:minvornpos+2]objectForKey:@"y"]floatValue] - [[[ProfilArray objectAtIndex:minvornpos]objectForKey:@"y"]floatValue];
    float steigungv = deltayv/deltaxv;
-   NSLog(@"steigungh: %.3f steigungv: %.3f",steigungh,steigungv);
+   //NSLog(@"steigungh: %.3f steigungv: %.3f",steigungh,steigungv);
 
    
    //Breite des Streifens: 10mm
@@ -1982,6 +2001,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
    aktuellerindex++;
    tempX = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"x"]floatValue];
    
+   // neu
+   tempX = Startpunktnachhinten.x;
    tempX *= Profiltiefe;						// Wert in mm
    tempX -= offsetx;
    tempX += Startpunkt.x;	// offset in mm
@@ -1989,10 +2010,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    NSNumber* tempNumberX2=[NSNumber numberWithFloat:tempX];
    
    tempY = [[[ProfilArray objectAtIndex:aktuellepos]objectForKey:@"y"]floatValue];
+   // neu
+   tempY = Startpunktnachhinten.y;
    
    tempY *= Profiltiefe;						// Wert in mm
    tempY -= offsety;
    tempY += Startpunkt.y;	// offset in mm
+   
    NSNumber* tempNumberY2=[NSNumber numberWithFloat:tempY];
    
    NSDictionary* tempDic2=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX2, @"x",tempNumberY2,@"y" ,[NSNumber numberWithInt:aktuellerindex],@"index",[NSNumber numberWithInt:0],@"seitenindex", nil];

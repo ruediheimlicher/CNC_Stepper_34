@@ -532,12 +532,12 @@ return sqrt(dX*dX + dY*dY);
    int screen=0;
    if ([[NSGraphicsContext currentContext]isDrawingToScreen])
    {
-      NSLog(@"ProfilGraph drawRect screen");
+      //NSLog(@"ProfilGraph drawRect screen");
       screen=1;
    }
    else
    {
-      NSLog(@"ProfilGraph drawRect print");
+      //NSLog(@"ProfilGraph drawRect print");
    }
    
    

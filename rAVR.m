@@ -4530,7 +4530,7 @@ return returnInt;
    
    NSString* Profilpfad = [ProfilLibPfad stringByAppendingPathComponent:Profil1Name];
    
-   NSLog(@"reportProfilPop Profilpfad: %@",Profilpfad);
+   //NSLog(@"reportProfilPop Profilpfad: %@",Profilpfad);
    int ProfilOK= [Filemanager fileExistsAtPath:Profilpfad];
    
    if (ProfilOK)
@@ -4553,13 +4553,13 @@ return returnInt;
       // Rahmen zusammenstellen
       
       NSDictionary* maxminDic = [self maxminWertVonArray:[Profil1Array valueForKey:@"y"]];
-      NSLog(@"maxpos: %d max: %.3f minpos: %d min: %.3f",[[maxminDic objectForKey:@"maxpos"]intValue],[[maxminDic objectForKey:@"maxwert"]floatValue],[[maxminDic objectForKey:@"minpos"]intValue],[[maxminDic objectForKey:@"minwert"]floatValue]);
+      //NSLog(@"maxpos: %d max: %.3f minpos: %d min: %.3f",[[maxminDic objectForKey:@"maxpos"]intValue],[[maxminDic objectForKey:@"maxwert"]floatValue],[[maxminDic objectForKey:@"minpos"]intValue],[[maxminDic objectForKey:@"minwert"]floatValue]);
       
       float maxwert = [[maxminDic objectForKey:@"maxwert"]floatValue]* [ProfilTiefeFeldA intValue];
       float minwert = [[maxminDic objectForKey:@"minwert"]floatValue]* [ProfilTiefeFeldB intValue];
-      NSLog(@"StartpunktA.y: %.3f maxwert: %.3f minwert: %.3f",StartpunktA.y,maxwert,minwert);
+      //NSLog(@"StartpunktA.y: %.3f maxwert: %.3f minwert: %.3f",StartpunktA.y,maxwert,minwert);
       
-      NSLog(@"StartpunktA.y: %.3f abstandoben: %.3f abstandunten: %.3f",StartpunktA.y,abstandoben,abstandunten);
+      //NSLog(@"StartpunktA.y: %.3f abstandoben: %.3f abstandunten: %.3f",StartpunktA.y,abstandoben,abstandunten);
       
       //NSLog(@"count: %d KoordinatenTabelle vor: %@",[KoordinatenTabelle count],[KoordinatenTabelle description]);
       
@@ -4679,7 +4679,7 @@ return returnInt;
       
       //NSLog(@"KoordinatenTabelle count: %d",[KoordinatenTabelle count]);
       
-      NSLog(@"HolmArrayA count: %d",[HolmArrayA count]);
+      //NSLog(@"HolmArrayA count: %d",[HolmArrayA count]);
       for (int index=1;index< [HolmArrayA count];index++) // Punkte der Oberseite. Erster Punkt ist Startpunkt
       {
          NSMutableDictionary* tempZeilenDicA = [NSMutableDictionary dictionaryWithDictionary:[HolmArrayA objectAtIndex:index]];

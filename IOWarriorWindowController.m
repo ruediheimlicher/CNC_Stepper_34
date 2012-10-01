@@ -859,7 +859,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 
 - (void) FensterSchliessenAktion:(NSNotification*)note
 {
-   NSLog(@"FensterSchliessenAktion note: %@ titel: %@ schliessencounter: %d",[note description],[[note object]title],schliessencounter);
+   //NSLog(@"FensterSchliessenAktion note: %@ titel: %@ schliessencounter: %d",[note description],[[note object]title],schliessencounter);
    //NSLog(@"FensterSchliessenAktion contextInfo: %@",[[note contextInfo]description]);
 	if (schliessencounter)
 	{
