@@ -4648,7 +4648,7 @@ return returnInt;
       
       float untenAx = [[[HolmArrayA objectAtIndex:2]objectForKey:@"x"]floatValue]; // Dist A vom Start bis erster Knick unten.
       float untenBx = [[[HolmArrayB objectAtIndex:2]objectForKey:@"x"]floatValue]; // Dist B vom Start bis erster Knick unten. Soll gleich liegen wie bei A
-      fprintf(stderr,"A:\t%.3f\tB:\t%.3f\n",untenAx,untenBx);
+ //     fprintf(stderr,"A:\t%.3f\tB:\t%.3f\n",untenAx,untenBx);
       
       float delta = untenAx - untenBx;
       
@@ -7717,7 +7717,27 @@ return returnInt;
    [RechtsLinksRadio setSelectedSegment:0];
 
    [self reportNeueLinie:NULL];
-   [CNC_Eingabe doProfil1PopTaskMitProfil:[ProfilPop indexOfSelectedItem]];
+   int profilpopindex =0;
+   if ([ProfilPop indexOfSelectedItem])
+   {
+      profilpopindex=[ProfilPop indexOfSelectedItem]; // Item 0 ist Titel
+      NSLog(@"reportProfilOberseiteTask Profil aus Pop: %@",[ProfilPop itemTitleAtIndex:profilpopindex]);
+   }
+   else
+   {
+      
+      NSString* Profil1Name = [[ProfilNameFeldA stringValue]stringByAppendingPathExtension:@"txt"];
+      profilpopindex = [[ProfilPop itemTitles]indexOfObject:Profil1Name];
+      
+      NSLog(@"reportProfilPop profilpopindex: %d Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
+      if (profilpopindex == NSNotFound)
+      {
+         NSLog(@"reportProfilPop kein Profil");
+         return;
+      }
+   }
+
+   [CNC_Eingabe doProfil1PopTaskMitProfil:profilpopindex];
    
    [CNC_Eingabe setUnterseite:0];
    [CNC_Eingabe doProfilSpiegelnVertikalTask];
@@ -7739,7 +7759,29 @@ return returnInt;
    [CNC_Starttaste performClick:NULL]; // Startpunkt fixieren
    
    [self reportNeueLinie:NULL];
-   [CNC_Eingabe doProfil1PopTaskMitProfil:10];
+   NSLog(@"reportProfilOberseiteTask items: %@",[[ProfilPop itemTitles]description]);
+   int profilpopindex =0;
+   if ([ProfilPop indexOfSelectedItem])
+   {
+      profilpopindex=[ProfilPop indexOfSelectedItem]; // Item 0 ist Titel
+      NSLog(@"reportProfilOberseiteTask profilpopindex: %d Profil aus Pop: %@",profilpopindex,[ProfilPop itemTitleAtIndex:profilpopindex]);
+   }
+   else
+   {
+      
+      NSString* Profil1Name = [[ProfilNameFeldA stringValue]stringByAppendingPathExtension:@"txt"];
+      profilpopindex = [[ProfilPop itemTitles]indexOfObject:Profil1Name];
+      
+      NSLog(@"reportProfilOberseiteTask profilpopindex: %d Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
+      if (profilpopindex == NSNotFound)
+      {
+         NSLog(@"reportProfilPop kein Profil");
+         return;
+      }
+      
+   }
+
+   [CNC_Eingabe doProfil1PopTaskMitProfil:profilpopindex];
    
    [CNC_Eingabe setOberseite:1];
    [CNC_Eingabe setUnterseite:0];
@@ -7764,7 +7806,28 @@ return returnInt;
    [CNC_Starttaste performClick:NULL]; // Startpunkt fixieren
    
    [self reportNeueLinie:NULL];
-   [CNC_Eingabe doProfil1PopTaskMitProfil:10];
+   
+   int profilpopindex =0;
+   if ([ProfilPop indexOfSelectedItem])
+   {
+      profilpopindex=[ProfilPop indexOfSelectedItem]; // Item 0 ist Titel
+      NSLog(@"reportProfilOberseiteTask Profil aus Pop: %@",[ProfilPop itemTitleAtIndex:profilpopindex]);
+   }
+   else
+   {
+      
+      NSString* Profil1Name = [[ProfilNameFeldA stringValue]stringByAppendingPathExtension:@"txt"];
+      profilpopindex = [[ProfilPop itemTitles]indexOfObject:Profil1Name];
+      
+      NSLog(@"reportProfilPop profilpopindex: %d Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
+      if (profilpopindex == NSNotFound)
+      {
+         NSLog(@"reportProfilPop kein Profil");
+         return;
+      }
+   }
+
+   [CNC_Eingabe doProfil1PopTaskMitProfil:profilpopindex];
    
    [CNC_Eingabe setOberseite:0];
    [CNC_Eingabe setUnterseite:1];

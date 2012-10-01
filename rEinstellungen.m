@@ -2223,7 +2223,7 @@
       
       int index=profil1; // Item 0 ist Titel
       [Profile2 selectItemAtIndex:index];    // Profil 2 ist wahrscheinlich gleich
-      //NSLog(@"reportProfilPop Profil aus Pop: %@",[Profile1 itemTitleAtIndex:index]);
+      NSLog(@"reportProfilPop Profil aus Pop: %@",[Profile1 itemTitleAtIndex:index]);
       Profil1Name=[Profile1 itemTitleAtIndex:index];
       NSString* Profilname = [Profil1Name stringByAppendingPathExtension:@"txt"];
       NSString* Profilpfad = [ProfilLibPfad stringByAppendingPathComponent:Profilname];
