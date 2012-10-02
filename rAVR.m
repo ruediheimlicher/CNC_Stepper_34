@@ -4486,7 +4486,6 @@ return returnInt;
    BOOL LibOK=NO;
 	BOOL istOrdner;
    
-   NSDictionary* ProfilDic;
    NSMutableArray* ProfilnamenArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    NSFileManager *Filemanager = [NSFileManager defaultManager];
 	NSString* ProfilLibPfad=[NSHomeDirectory() stringByAppendingFormat:@"%@%@%@",@"/Documents",@"/CNCDaten",@"/ProfilLib"];
@@ -4527,7 +4526,6 @@ return returnInt;
       }
    }
    
-   
    NSString* Profilpfad = [ProfilLibPfad stringByAppendingPathComponent:Profil1Name];
    
    //NSLog(@"reportProfilPop Profilpfad: %@",Profilpfad);
@@ -4537,7 +4535,6 @@ return returnInt;
    {
       // Profilkoordinaten lesen
       NSDictionary* ProfilDic = [Utils ProfilDatenAnPfad:Profilpfad];
-      
       //NSLog(@"reportProfilPop ProfilDic: %@",[ProfilDic description]);
       
       Profil1Array = [ProfilDic objectForKey:@"profilarray"];
@@ -4560,7 +4557,6 @@ return returnInt;
       //NSLog(@"StartpunktA.y: %.3f maxwert: %.3f minwert: %.3f",StartpunktA.y,maxwert,minwert);
       
       //NSLog(@"StartpunktA.y: %.3f abstandoben: %.3f abstandunten: %.3f",StartpunktA.y,abstandoben,abstandunten);
-      
       //NSLog(@"count: %d KoordinatenTabelle vor: %@",[KoordinatenTabelle count],[KoordinatenTabelle description]);
       
       if ([KoordinatenTabelle count])
@@ -4798,7 +4794,7 @@ return returnInt;
       [ProfilGraph setDatenArray:KoordinatenTabelle];
       [ProfilGraph setNeedsDisplay:YES];
       [CNCTable reloadData];
-      
+      [NeuesElementTaste setEnabled:YES];
    }
    
 }
