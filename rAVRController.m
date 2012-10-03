@@ -6,7 +6,7 @@
 //  Copyright 2008 Ruedi Heimlicher. All rights reserved.
 //
 
-#import "IOWarriorWindowController.h"
+#import "USBWindowController.h"
 extern int usbstatus;
 
 /*

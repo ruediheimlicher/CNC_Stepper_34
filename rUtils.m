@@ -679,7 +679,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    for(i=0;i<[linienArray count];i++)
    {
       
-      if ([[[linienArray objectAtIndex:i]objectForKey:@"teil"]intValue] > pos) // Einlauf ist 20
+      if ([[[linienArray objectAtIndex:i]objectForKey:@"teil"]intValue] > pos) // Einlauf ist 10
       {
          if (profilanfangindex == 0) // noch nicht gesetzt
          {

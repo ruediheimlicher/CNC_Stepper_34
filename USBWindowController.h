@@ -1,4 +1,4 @@
-/* IOWarriorWindowController */
+/* USBWindowController */
 
 #import <Cocoa/Cocoa.h>
 

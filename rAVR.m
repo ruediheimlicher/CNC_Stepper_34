@@ -1781,14 +1781,23 @@ return returnInt;
    //   for (i=0;i<[KoordinatenTabelle count]-1;i++)
    
    int cncindex=0;
+   int okindex=0;
    minimaldistanz = [MinimaldistanzFeld floatValue];
-   NSLog(@"minimaldistanz: %2.2f",minimaldistanz);
+   NSLog(@"count: %d minimaldistanz: %2.2f",[KoordinatenTabelle count],minimaldistanz);
 
    for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
-      //NSLog(@"i: %d teil: %d",i,[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"teil"]intValue] );
+     // NSLog(@"i: %d teil: %d",i,[[[KoordinatenTabelle objectAtIndex:i]objectForKey:@"teil"]intValue] );
+      int nextteil=-1;
       // Dic des aktuellen Datensatzes
       NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i+1];
+      NSLog(@"i: %d nowDic teil: %d",i,[[tempNowDic objectForKey:@"teil"]intValue]);
+      if (i< [KoordinatenTabelle count]-2) // noch nicht vorletztes El
+      {
+         nextteil = [[[KoordinatenTabelle objectAtIndex:i+2] objectForKey:@"teil"]intValue];
+      }
+      NSLog(@"i: %d nowDic teil: %d nextteil: %d",i,[[tempNowDic objectForKey:@"teil"]intValue],nextteil);
+
       float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       float noway = [[tempNowDic objectForKey:@"ay"]floatValue];
       float nowbx = [[tempNowDic objectForKey:@"bx"]floatValue];
@@ -1853,7 +1862,8 @@ return returnInt;
       
       // Soll der Datensatz geladen werden?
       int datensatzok = 0;
-      if (distA > minimaldistanz || distB > minimaldistanz) // Eine der Distanzen ist genügend gross
+      
+      if (((distA > minimaldistanz || distB > minimaldistanz)) ) // Eine der Distanzen ist genügend gross
       {
          datensatzok = 1;
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
@@ -1862,7 +1872,7 @@ return returnInt;
       }
       else 
       {
-         //NSLog(@"cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",cncindex,distA,distB);
+         NSLog(@"i: %d cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
 
       }
       
@@ -1870,25 +1880,31 @@ return returnInt;
       {
          if ([tempNowDic objectForKey:@"abrax"])
          {
-            if(distabrA > minimaldistanz || distabrB > minimaldistanz) // Eine der Distanzen ist genügend gross
+            if(((distabrA > minimaldistanz || distabrB > minimaldistanz)) ) // Eine der Distanzen ist genügend gross
             {
                datensatzok =1;
             }
             else 
             {
-               //NSLog(@"cncindex: %d abbrandistanz zu kurz. distabrA: %2.2f distabrB: %2.2f",cncindex,distabrA,distabrB);
+               NSLog(@"i: %d cncindex: %d abbrandistanz zu kurz. distabrA: %2.2f distabrB: %2.2f",i,cncindex,distabrA,distabrB);
                datensatzok = 0;
             }
          }
       }
       
-      
-      
-      if (datensatzok)
+      if (nextteil == 40) // Letzten Profilpunkt auf jeden Fall
       {
+         datensatzok = 1;
+      }
+      
+      if (datensatzok )// Datensack erfüllt alle Bedingungen
+      {
+         
          NSMutableDictionary* tempOKDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i+1]];
          [tempKoordinatenTabelle addObject:tempOKDic];
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
+         NSLog(@"i: %d okindex: %d",i,okindex);
+         okindex++;
       }
       
       else 
