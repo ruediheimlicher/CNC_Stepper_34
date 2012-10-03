@@ -97,12 +97,313 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
    return position;
 }
 
+@implementation rProfildruckView
 
+- (void)setTitel:(NSString*)titel
+{
+   NSRect Titelrect = [self frame];
+   Titelrect.origin.y += Titelrect.size.height + 20;
+   Titelrect.size.height= 30;
+   if (!Titelfeld)
+   {
+      Titelfeld = [[NSTextField alloc]initWithFrame:Titelrect];
+   }
+   [Titelfeld setStringValue:titel];
+}
+
+- (void)drawRect:(NSRect)Profilfeld
+{
+      int abbbranddelay=0;
+      //NSLog(@"ProfilGraph drawRect start");
+      
+      int screen=0;
+      if ([[NSGraphicsContext currentContext]isDrawingToScreen])
+      {
+         //NSLog(@"ProfilGraph drawRect screen");
+         screen=1;
+      }
+      else
+      {
+         //NSLog(@"ProfilGraph drawRect print");
+      }
+      int i=0;
+      {
+         [self GitterZeichnen];
+      }
+      if ([DatenArray count])
+      {
+         int anz=[DatenArray count];
+         StartPunktA=NSMakePoint([[[DatenArray objectAtIndex:0]objectForKey:@"ax"]floatValue]*scale,[[[DatenArray objectAtIndex:0]objectForKey:@"ay"]floatValue]*scale);
+         //NSLog(@"drawRect startpunkt x: %.2f  y: %.2f",[[[DatenArray objectAtIndex:0]objectForKey:@"ax"]floatValue],[[[DatenArray objectAtIndex:0]objectForKey:@"ay"]floatValue]);
+         EndPunktA=NSMakePoint([[[DatenArray objectAtIndex:anz-1]objectForKey:@"ax"]floatValue],[[[DatenArray objectAtIndex:anz-1]objectForKey:@"ay"]floatValue]);
+         
+         StartPunktB=NSMakePoint([[[DatenArray objectAtIndex:0]objectForKey:@"bx"]floatValue]*scale,([[[DatenArray objectAtIndex:0]objectForKey:@"by"]floatValue]+GraphOffset)*scale);
+         //NSLog(@"drawRect startpunkt x: %.2f  y: %.2f",[[[DatenArray objectAtIndex:0]objectForKey:@"ax"]floatValue],[[[DatenArray objectAtIndex:0]objectForKey:@"ay"]floatValue]);
+         EndPunktB=NSMakePoint([[[DatenArray objectAtIndex:anz-1]objectForKey:@"bx"]floatValue]*scale,([[[DatenArray objectAtIndex:anz-1]objectForKey:@"by"]floatValue]+GraphOffset)*scale);
+         
+         
+         
+         NSPoint AA=NSMakePoint(0, [[[DatenArray objectAtIndex:0]objectForKey:@"ay"]floatValue]*scale);
+         NSPoint AB=NSMakePoint([self frame].size.width, [[[DatenArray objectAtIndex:0]objectForKey:@"ay"]floatValue]*scale);
+         NSBezierPath* GrundLinieA=[NSBezierPath bezierPath];
+         [GrundLinieA moveToPoint:AA];
+         [GrundLinieA lineToPoint:AB];
+         [GrundLinieA setLineWidth:0.3];
+         [[NSColor blueColor]set];
+         [GrundLinieA stroke];
+         
+         NSPoint BA=NSMakePoint(0, ([[[DatenArray objectAtIndex:0]objectForKey:@"by"]floatValue]+GraphOffset)*scale);
+         NSPoint BB=NSMakePoint([self frame].size.width, ([[[DatenArray objectAtIndex:0]objectForKey:@"by"]floatValue]+GraphOffset)*scale);
+         NSBezierPath* GrundLinieB=[NSBezierPath bezierPath];
+         [GrundLinieB moveToPoint:BA];
+         [GrundLinieB lineToPoint:BB];
+         [GrundLinieB setLineWidth:0.3];
+         [[NSColor blueColor]set];
+         [GrundLinieB stroke];
+         
+         
+         
+         NSRect StartMarkBRect=NSMakeRect(StartPunktB.x-1.5, StartPunktB.y-1, 3, 3);
+         NSBezierPath* StartMarkB=[NSBezierPath bezierPathWithOvalInRect:StartMarkBRect];
+         [[NSColor grayColor]set];
+         [StartMarkB stroke];
+         NSBezierPath* LinieB=[NSBezierPath bezierPath];
+         NSBezierPath* KlickLinieB=[NSBezierPath bezierPath];
+         [LinieB moveToPoint:StartPunktB];
+         
+         NSRect StartMarkARect=NSMakeRect(StartPunktA.x-1.5, StartPunktA.y-1, 3, 3);
+         NSBezierPath* StartMarkA=[NSBezierPath bezierPathWithOvalInRect:StartMarkARect];
+         [[NSColor blueColor]set];
+         [StartMarkA stroke];
+         NSBezierPath* LinieA=[NSBezierPath bezierPath];
+         NSBezierPath* KlickLinieA=[NSBezierPath bezierPath];
+         [LinieA moveToPoint:StartPunktA];
+         
+         
+         
+         // Abbrand
+         // Seite 1
+         NSBezierPath* AbbrandLinieA=[NSBezierPath bezierPath];
+         int startabbrandindexa=0;
+         for (i=0;i<anz;i++)
+         {
+            if ([[DatenArray objectAtIndex:i]objectForKey:@"abrax"])
+            {
+               //NSLog(@"Start Abbrand bei %d",i);
+               startabbrandindexa=i;
+               break;
+            }
+         }
+         //NSLog(@"startabbrandindex: %d",startabbrandindex);
+         NSPoint AbbrandStartPunktA=NSMakePoint([[[DatenArray objectAtIndex:startabbrandindexa]objectForKey:@"abrax"]floatValue]*scale,[[[DatenArray objectAtIndex:startabbrandindexa]objectForKey:@"abray"]floatValue]*scale);
+         AbbrandStartPunktA.y +=abbbranddelay;
+         
+         NSPoint AbbrandEndPunktA=NSMakePoint(([[[DatenArray objectAtIndex:anz-1]objectForKey:@"abrax"]floatValue]),([[[DatenArray objectAtIndex:anz-1]objectForKey:@"abray"]floatValue]+GraphOffset));
+         
+         [AbbrandLinieA moveToPoint:AbbrandStartPunktA];
+         //
+         // Seite 2
+         NSBezierPath* AbbrandLinieB=[NSBezierPath bezierPath];
+         int startabbrandindexb=0;
+         for (i=0;i<anz;i++)
+         {
+            if ([[DatenArray objectAtIndex:i]objectForKey:@"abrax"])
+            {
+               //NSLog(@"Start Abbrand bei %d",i);
+               startabbrandindexb=i;
+               break;
+            }
+         }
+         //NSLog(@"startabbrandindexa: %d startabbrandindexb: %d",startabbrandindexa,startabbrandindexb);
+         
+         NSPoint AbbrandStartPunktB=NSMakePoint(([[[DatenArray objectAtIndex:startabbrandindexb]objectForKey:@"abrbx"]floatValue])*scale,([[[DatenArray objectAtIndex:startabbrandindexb]objectForKey:@"abrby"]floatValue]+GraphOffset)*scale);
+         AbbrandStartPunktB.y +=abbbranddelay;
+         NSPoint AbbrandEndPunktB=NSMakePoint([[[DatenArray objectAtIndex:anz-1]objectForKey:@"abrbx"]floatValue],[[[DatenArray objectAtIndex:anz-1]objectForKey:@"abrby"]floatValue]);
+         
+         [AbbrandLinieB moveToPoint:AbbrandStartPunktB];
+         
+         
+         //
+         
+         //NSLog(@"klickpunkt: %d",klickpunkt);
+         for (i=0;i<anz;i++)
+         {
+            NSPoint PunktA=NSMakePoint([[[DatenArray objectAtIndex:i]objectForKey:@"ax"]floatValue]*scale,[[[DatenArray objectAtIndex:i]objectForKey:@"ay"]floatValue]*scale);
+            //NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
+            [LinieA lineToPoint:PunktA];
+            NSBezierPath* tempMarkA;//=[NSBezierPath bezierPathWithOvalInRect:tempMarkRect];
+            
+            NSPoint PunktB=NSMakePoint([[[DatenArray objectAtIndex:i]objectForKey:@"bx"]floatValue]*scale,([[[DatenArray objectAtIndex:i]objectForKey:@"by"]floatValue]+GraphOffset)*scale);
+            //NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
+            [LinieB lineToPoint:PunktB];
+            NSBezierPath* tempMarkB;//=[NSBezierPath bezierPathWithOvalInRect:tempMarkRect];
+            
+            if (i==Klickpunkt && screen)
+            {
+               NSRect tempMarkBRect=NSMakeRect(PunktB.x-1.5, PunktB.y-1.5, 3.1, 3.1);
+               tempMarkB=[NSBezierPath bezierPathWithOvalInRect:tempMarkBRect];
+               [[NSColor redColor]set];
+               [tempMarkB stroke];
+               
+               //NSLog(@"klickpunkt i: %d",i);
+               NSRect tempMarkARect=NSMakeRect(PunktA.x-4.1, PunktA.y-4.1, 8.1, 8.1);
+               tempMarkA=[NSBezierPath bezierPathWithOvalInRect:tempMarkARect];
+               [[NSColor grayColor]set];
+               [tempMarkA stroke];
+               
+               
+               
+            }
+            else
+            {
+               NSRect tempMarkBRect=NSMakeRect(PunktB.x-1.5, PunktB.y-1.5, 3.1, 3.1);
+               tempMarkB=[NSBezierPath bezierPathWithOvalInRect:tempMarkBRect];
+               [[NSColor grayColor]set];
+               [tempMarkB stroke];
+               
+               NSRect tempMarkARect=NSMakeRect(PunktA.x-2.5, PunktA.y-2.5, 5.1, 5.1);
+               tempMarkA=[NSBezierPath bezierPathWithOvalInRect:tempMarkARect];
+               
+               if (screen)
+               {
+                  if (i>stepperposition ) // nur auf Screen farbig
+                  {
+                     [[NSColor blueColor]set];
+                     [tempMarkA stroke];
+                  }
+                  
+                  else
+                  {
+                     
+                     [[NSColor redColor]set];
+                     //[tempMarkA fill];
+                     //[tempMarkA stroke];
+                     [NSBezierPath strokeLineFromPoint:NSMakePoint(PunktA.x-4.1, PunktA.y-4.1)
+                                               toPoint:NSMakePoint(PunktA.x+4.1, PunktA.y+4.1)];
+                     [NSBezierPath strokeLineFromPoint:NSMakePoint(PunktA.x+4.1, PunktA.y-4.1)
+                                               toPoint:NSMakePoint(PunktA.x-4.1, PunktA.y+4.1)];
+                     
+                  }
+               } // if screen
+               
+            }
+            //NSLog(@"in klickset i: %d Desc: %@",i,[klickset description]);
+            
+            if ([KlicksetA count] && screen)
+            {
+               if (i==[KlicksetA firstIndex])
+               {
+                  [KlickLinieA moveToPoint:PunktA];
+               }
+               else
+               {
+                  //[KlickLinie lineToPoint:Punkt];
+               }
+               
+               if ([KlicksetA containsIndex:i] && screen)
+               {
+                  //NSLog(@"in klickset i: %d",i);
+                  NSRect tempMarkRect=NSMakeRect(PunktA.x-1.5, PunktA.y-1.5, 3.1, 3.1);
+                  tempMarkA=[NSBezierPath bezierPathWithOvalInRect:tempMarkRect];
+                  [[NSColor blackColor]set];
+                  [tempMarkA fill];
+                  if ([KlicksetA count]>1 && i>[KlicksetA firstIndex])
+                  {
+                     [KlickLinieA lineToPoint:PunktA];
+                  }
+               }
+            }
+            
+            // Abbrandlinien
+            // Seite B
+            
+            
+            if ([[DatenArray objectAtIndex:i]objectForKey:@"abrbx"]&& screen)
+            {
+               NSPoint AbbrandPunktB=NSMakePoint(([[[DatenArray objectAtIndex:i]objectForKey:@"abrbx"]floatValue])*scale,([[[DatenArray objectAtIndex:i]objectForKey:@"abrby"]floatValue]+GraphOffset)*scale);
+               AbbrandPunktB.y +=abbbranddelay;
+               [AbbrandLinieB lineToPoint:AbbrandPunktB];
+               NSBezierPath* AbbranddeltaB=[NSBezierPath bezierPath];
+               
+               [AbbranddeltaB moveToPoint:PunktB];
+               [AbbranddeltaB lineToPoint:AbbrandPunktB];
+               [[NSColor grayColor]set];
+               [AbbranddeltaB stroke];
+            }
+            
+            // Seite A
+            if ([[DatenArray objectAtIndex:i]objectForKey:@"abrax"]&& screen)
+            {
+               NSPoint AbbrandPunktA=NSMakePoint([[[DatenArray objectAtIndex:i]objectForKey:@"abrax"]floatValue]*scale,[[[DatenArray objectAtIndex:i]objectForKey:@"abray"]floatValue]*scale);
+               AbbrandPunktA.y +=abbbranddelay;
+               [AbbrandLinieA lineToPoint:AbbrandPunktA];
+               NSBezierPath* AbbranddeltaA=[NSBezierPath bezierPath];
+               
+               [AbbranddeltaA moveToPoint:PunktA];
+               [AbbranddeltaA lineToPoint:AbbrandPunktA];
+               [AbbranddeltaA stroke];
+            }
+            
+         }//for i
+         
+         [[NSColor grayColor]set];
+         [LinieB stroke];
+         
+         [[NSColor blueColor]set];
+         [LinieA stroke];
+         
+         
+         if ([KlickLinieA isEmpty])
+         {
+            
+         }
+         else
+         {
+            [[NSColor greenColor]set];
+            [KlickLinieA stroke];
+         }
+         
+         [[NSColor grayColor]set];
+         [AbbrandLinieB stroke];
+         [AbbrandLinieA stroke];
+         
+         
+         
+      } // if Datenarray count
+      //return;
+      if (RahmenArray &&[RahmenArray count])
+      {
+         int i=0;
+         NSBezierPath* RahmenPath=[NSBezierPath bezierPath];
+         //NSLog(@"Rahmen: %@",[RahmenArray description]);
+         //NSLog(@"Rahmen 0: %@",[[RahmenArray objectAtIndex:0]description]);
+         NSPoint Startpunkt = NSPointFromString([RahmenArray objectAtIndex:0]);
+         Startpunkt.x *= scale;
+         Startpunkt.y *= scale;
+         
+         [RahmenPath moveToPoint:Startpunkt];
+         for (i=1; i<[RahmenArray count]; i++) 
+         {
+            //NSLog(@"Rahmen index: %d: %@",i,[[RahmenArray objectAtIndex:i]description]);
+            //NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
+            NSPoint temppunkt = NSPointFromString([RahmenArray objectAtIndex:i]);
+            temppunkt.x *= scale;
+            temppunkt.y *= scale;
+            
+            [RahmenPath lineToPoint:temppunkt];
+            
+         }
+         [RahmenPath lineToPoint:Startpunkt];
+         
+         [[NSColor grayColor]set];
+         [RahmenPath stroke];      
+      } // if Rahmenarray count
+      //NSLog(@"ProfilGraph drawRect end");
+   
+}
+@end
 
 @implementation  rPfeiltaste  
-
-
-
 - (void)awakeFromNib
 {
    //NSLog(@"Pfeiltaste awakeFromNib");
@@ -4786,7 +5087,6 @@ return returnInt;
       //NSLog(@"rahmenindex: %d tempRahmenDic: %@",rahmenindex,[tempRahmenDic description]);
       [KoordinatenTabelle addObject:[tempRahmenDic copy]];
       
-      
       [self updateIndex];
       [CNCTable scrollRowToVisible:[KoordinatenTabelle count] - 1];
       [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:[KoordinatenTabelle count]-1] byExtendingSelection:NO];
@@ -4796,7 +5096,6 @@ return returnInt;
       [CNCTable reloadData];
       [NeuesElementTaste setEnabled:YES];
    }
-   
 }
 
 
@@ -4807,10 +5106,6 @@ return returnInt;
 }
 
 
-- (IBAction)reportNewElement:(id)sender
-{
-   
-}
 
 - (IBAction)reportNeueLinie:(id)sender
 {
@@ -4844,9 +5139,7 @@ return returnInt;
    [datenDic setObject:[NSNumber numberWithInt:[Auslauflaenge intValue]] forKey:@"auslauflaenge"];
    [datenDic setObject:[NSNumber numberWithInt:[Auslauftiefe intValue]] forKey:@"auslauftiefe"];
 
-   
    [datenDic setObject:[NSNumber numberWithFloat:[AbbrandFeld floatValue]] forKey:@"abbranda"];
-   
     
    NSModalSession session = [NSApp beginModalSessionForWindow:[CNC_Eingabe window]];
    //NSLog(@"runModalForWindow A");
@@ -8192,6 +8485,25 @@ return returnInt;
    NSLog(@"AVR  reportPrint");
    //NSPageLayout *pageLayout = [NSPageLayout pageLayout];
    //  [pageLayout runModal];
+   
+   if (!(Profilfeld))
+   {
+      NSRect Profilrect = [ProfilGraph frame];
+      
+      Profilfeld = [[rProfildruckView alloc]initWithFrame:Profilrect];
+      
+   }
+   [Profilfeld setScale:[[ScalePop selectedItem]tag]];
+   [Profilfeld setGraphOffset:0];
+
+   [Profilfeld setTitel:@"Hallo"];
+   if ([KoordinatenTabelle count])
+   {
+      [Profilfeld setDatenArray:KoordinatenTabelle];
+      
+      [Profilfeld setNeedsDisplay:YES];
+   }
+
 
    NSPrintInfo *printInfo;
    NSPrintOperation *printOp;
@@ -8204,7 +8516,7 @@ return returnInt;
    [printInfo setOrientation:NSLandscapeOrientation];
    //NSLog(@"printInfo: %@",[printInfo dictionary]);
    
-   printOp = [NSPrintOperation printOperationWithView:ProfilGraph   printInfo:printInfo];
+   printOp = [NSPrintOperation printOperationWithView:Profilfeld   printInfo:printInfo];
    [printOp setShowsPrintPanel:YES];
    [printOp	runOperationModalForWindow:[self window]
                                      delegate:self

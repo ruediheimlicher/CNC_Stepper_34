@@ -106,7 +106,6 @@
 @end
 
 
-
 @interface rEinstellungen : NSWindowController 
 {
    // Element

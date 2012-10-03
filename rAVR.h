@@ -34,6 +34,17 @@
 @end
 */
 
+@interface rProfildruckView : rProfilGraph
+{
+   NSView*        Druckfeld;
+   NSTextField*   Titelfeld;
+}
+
+- (void)setTitel:(NSString*)titel;
+- (void)drawRect:(NSRect)dirtyRect;
+@end
+
+
 @interface rPfeiltaste : NSButton 
 {
    int richtung;
@@ -44,6 +55,7 @@
 - (int)Richtung;
 - (int)Tastestatus;
 @end
+
 
 
 @interface rAVR : NSWindowController <NSTableViewDataSource,NSTableViewDelegate>
@@ -292,6 +304,8 @@
    
    //int                     _kote;
    int                     KoteWert;
+   
+   rProfildruckView*       Profilfeld;
 }
 @property (nonatomic)  int    Kote;
 - (NSMutableDictionary*)readCNC_PList;
