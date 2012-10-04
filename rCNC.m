@@ -2110,7 +2110,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
 
 - (NSDictionary*)ProfilDicVonPunkt:(NSPoint)Startpunkt mitProfil:(NSArray*)ProfilArray mitProfiltiefe:(int)Profiltiefe mitScale:(int)Scale
 {
-   NSLog(@"AVR ProfilDicVonPunkt");
+   //NSLog(@"AVR ProfilDicVonPunkt");
    
    float x = [self EndleistenwinkelvonProfil:ProfilArray];
    

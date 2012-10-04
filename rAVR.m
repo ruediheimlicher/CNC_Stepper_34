@@ -1783,7 +1783,7 @@ return returnInt;
    int cncindex=0;
    int okindex=0;
    minimaldistanz = [MinimaldistanzFeld floatValue];
-   NSLog(@"count: %d minimaldistanz: %2.2f",[KoordinatenTabelle count],minimaldistanz);
+   //NSLog(@"count: %d minimaldistanz: %2.2f",[KoordinatenTabelle count],minimaldistanz);
 
    for (i=0;i<[KoordinatenTabelle count]-1;i++)
 	{
@@ -1791,12 +1791,11 @@ return returnInt;
       int nextteil=-1;
       // Dic des aktuellen Datensatzes
       NSDictionary* tempNowDic=[KoordinatenTabelle objectAtIndex:i+1];
-      NSLog(@"i: %d nowDic teil: %d",i,[[tempNowDic objectForKey:@"teil"]intValue]);
       if (i< [KoordinatenTabelle count]-2) // noch nicht vorletztes El
       {
          nextteil = [[[KoordinatenTabelle objectAtIndex:i+2] objectForKey:@"teil"]intValue];
       }
-      NSLog(@"i: %d nowDic teil: %d nextteil: %d",i,[[tempNowDic objectForKey:@"teil"]intValue],nextteil);
+      //NSLog(@"i: %d nowDic teil: %d nextteil: %d",i,[[tempNowDic objectForKey:@"teil"]intValue],nextteil);
 
       float nowax = [[tempNowDic objectForKey:@"ax"]floatValue];
       float noway = [[tempNowDic objectForKey:@"ay"]floatValue];
@@ -1872,7 +1871,7 @@ return returnInt;
       }
       else 
       {
-         NSLog(@"i: %d cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
+         //NSLog(@"i: %d cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
 
       }
       
@@ -1886,7 +1885,7 @@ return returnInt;
             }
             else 
             {
-               NSLog(@"i: %d cncindex: %d abbrandistanz zu kurz. distabrA: %2.2f distabrB: %2.2f",i,cncindex,distabrA,distabrB);
+               //NSLog(@"i: %d cncindex: %d abbrandistanz zu kurz. distabrA: %2.2f distabrB: %2.2f",i,cncindex,distabrA,distabrB);
                datensatzok = 0;
             }
          }
@@ -1903,7 +1902,7 @@ return returnInt;
          NSMutableDictionary* tempOKDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i+1]];
          [tempKoordinatenTabelle addObject:tempOKDic];
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
-         NSLog(@"i: %d okindex: %d",i,okindex);
+         //NSLog(@"i: %d okindex: %d",i,okindex);
          okindex++;
       }
       
@@ -6563,8 +6562,8 @@ return returnInt;
          dicke = (abstandoben+abstandunten)+zugabeoben +zugabeunten; // (maxy-miny) ist Dicke ohne zugaben
       }
       
-      NSLog(@"reportBlockkonfigurieren dicke: %2.2f",dicke);
-      [Blockoberkante setIntValue:dicke+zugabeoben];
+      //NSLog(@"reportBlockkonfigurieren dicke: %2.2f",dicke);
+      [Blockoberkante setIntValue:dicke];
       //[Blockoberkante setIntValue:plattendicke-5];
       
       [OberkantenStepper setIntValue:[Blockoberkante intValue]];
@@ -6575,15 +6574,8 @@ return returnInt;
       
       [Blockbreite setIntValue:maxx+einlaufrand - minx + auslaufrand];
       [AbmessungX setIntValue:[Blockbreite intValue] + einstichx];
-      //      NSPoint EckeRechtsOben = NSMakePoint(maxx+rand,fmax(einlaufAY,einlaufBY)+ maxy + zugabeoben);
-      //      NSLog(@"reportBlockkonfigurieren EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
-      
-      //      NSPoint EckeLinksOben = NSMakePoint(minx -rand, EckeRechtsOben.y);
-      //NSPoint EckeLinksUnten = NSMakePoint(EckeLinksOben.x, EckeRechtsOben.y- dicke);
-      //NSPoint EckeRechtsUnten = NSMakePoint(EckeRechtsOben.x, EckeLinksUnten.y);
       
       // neue Berechnung
-      
       
       NSPoint EckeLinksUnten = NSMakePoint(einlaufAX -rand, fmax(einlaufAY,einlaufBY) - abstandunten  -zugabeunten);
       NSPoint EckeLinksOben = NSMakePoint(EckeLinksUnten.x, EckeLinksUnten.y + dicke);
@@ -8064,7 +8056,7 @@ return returnInt;
    [CNC_Starttaste performClick:NULL]; // Startpunkt fixieren
    
    [self reportNeueLinie:NULL];
-   NSLog(@"reportProfilOberseiteTask items: %@",[[ProfilPop itemTitles]description]);
+   //NSLog(@"reportProfilOberseiteTask items: %@",[[ProfilPop itemTitles]description]);
    int profilpopindex =0;
    if ([ProfilPop indexOfSelectedItem])
    {
