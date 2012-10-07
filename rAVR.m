@@ -99,37 +99,57 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
 
 @implementation rProfildruckView
 
-- (void)setTitel:(NSString*)titel
+- (void)setTitel:(NSString*)derTitel
 {
    NSRect Titelrect = [self frame];
-   Titelrect.origin.y += Titelrect.size.height + 20;
+   NSFont* TitelFont=[NSFont fontWithName:@"Helvetica" size: 32];
+	
+   titel = [[NSString stringWithString:derTitel]retain];
+
+   return;
+   Titelrect.origin.y +=  30;
+   Titelrect.origin.x +=  80;
    Titelrect.size.height= 30;
    if (!Titelfeld)
    {
       Titelfeld = [[NSTextField alloc]initWithFrame:Titelrect];
    }
+   [Titelfeld setFont:TitelFont];
    [Titelfeld setStringValue:titel];
+      //[self addSubview:Titelfeld];
+   [Titelfeld release];
 }
 
 - (void)drawRect:(NSRect)Profilfeld
 {
+   //[self setScale: [[ScalePop selectedItem]tag]*0.72];
+   [super drawRect:Profilfeld];
       int abbbranddelay=0;
       //NSLog(@"ProfilGraph drawRect start");
       
       int screen=0;
       if ([[NSGraphicsContext currentContext]isDrawingToScreen])
       {
-         //NSLog(@"ProfilGraph drawRect screen");
+         NSLog(@"ProfilGraph drawRect screen");
          screen=1;
       }
       else
       {
-         //NSLog(@"ProfilGraph drawRect print");
+         NSLog(@"ProfilGraph drawRect print");
       }
       int i=0;
       {
          [self GitterZeichnen];
       }
+   if (titel)
+   {
+      NSMutableDictionary* attributes=[[NSMutableDictionary alloc]init];
+      [attributes setObject:[NSFont fontWithName:@"Helvetica" size:20] forKey:NSFontAttributeName];
+      [attributes setObject:[NSColor blueColor] forKey:NSForegroundColorAttributeName];
+      NSLog(@"titel: %@",titel);
+     // [titel drawAtPoint:NSMakePoint(40, 40) withAttributes:attributes];
+   }
+   
       if ([DatenArray count])
       {
          int anz=[DatenArray count];
@@ -160,7 +180,6 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
          [GrundLinieB setLineWidth:0.3];
          [[NSColor blueColor]set];
          [GrundLinieB stroke];
-         
          
          
          NSRect StartMarkBRect=NSMakeRect(StartPunktB.x-1.5, StartPunktB.y-1, 3, 3);
@@ -370,7 +389,7 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
          
          
       } // if Datenarray count
-      //return;
+      
       if (RahmenArray &&[RahmenArray count])
       {
          int i=0;
@@ -398,6 +417,8 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
          [[NSColor grayColor]set];
          [RahmenPath stroke];      
       } // if Rahmenarray count
+   
+
       //NSLog(@"ProfilGraph drawRect end");
    
 }
@@ -1120,6 +1141,23 @@ return returnInt;
 	
 	[ProfilGraph setScale:[[ScalePop selectedItem]tag]];
    [ProfilGraph setGraphOffset:0];
+   
+   
+   NSRect Titelrect = [ProfilGraph bounds];
+   Titelrect.origin.y += Titelrect.size.height -40;
+   Titelrect.origin.x += 10;
+   Titelrect.size.height = 20;
+   Titelrect.size.width = 120;
+   NSTextField* Titelfeld = [[NSTextField alloc]initWithFrame:Titelrect];
+   NSFont* TitelFont=[NSFont fontWithName:@"Helvetica" size: 14];
+   [Titelfeld setFont:TitelFont];
+   [Titelfeld setBordered:NO];
+   [Titelfeld setDrawsBackground:NO];
+   [Titelfeld setTag:1001];
+   [Titelfeld setStringValue:@"Profil"];
+   [ProfilGraph addSubview:Titelfeld];
+   [Titelfeld release];
+
 //	[[self window]makeKeyAndOrderFront:self];
    [[self window]makeFirstResponder:ProfilGraph];
 	NSString* logString=[NSString string];
@@ -1306,6 +1344,9 @@ return returnInt;
    
    self.Kote = 5;
    
+   
+   [Schalendickefeld setFormatter:SimpleFormatter];
+   [Schalendickefeld setFloatValue:2.2];
    //[[self window]makeFirstResponder: ProfilGraph];
    //[[self window]setInitialFirstResponder: ProfilGraph];
    [[self window]setInitialFirstResponder:[[StepperTab tabViewItemAtIndex:0]view]];
@@ -2724,7 +2765,7 @@ return returnInt;
 
 - (IBAction)reportWertAYStepper:(id)sender
 {
-   NSLog(@"reportWertAYStepper CNCTable numberOfSelectedRows: %d",[CNCTable numberOfSelectedRows]);
+   //NSLog(@"reportWertAYStepper CNCTable numberOfSelectedRows: %d",[CNCTable numberOfSelectedRows]);
    if ([CNCTable numberOfSelectedRows]==0) // keine Zeile aktiviert
    {
       return;
@@ -2743,6 +2784,7 @@ return returnInt;
    {
       wertpwm = [oldDic objectForKey:@"pwm"];
    }
+   
    float deltay = [sender floatValue] - [wertby floatValue]; // Differenz zum vorherigen Wert
    
    wertay = [NSNumber numberWithFloat:[sender floatValue]]; // Neuer Wert fuer wertax
@@ -4444,7 +4486,7 @@ return returnInt;
    
 	// Profil lesen
    [ProfilGraph setScale:[[ScalePop selectedItem]tag]];
-   
+   NSLog(@"AVR openProfil scale: %d",[[ScalePop selectedItem]tag]);
    if ([WertAXFeld floatValue]==0)
    {
       [WertAXFeld setFloatValue:25.0 + [ProfilTiefeFeldA intValue]];
@@ -4748,7 +4790,7 @@ return returnInt;
    float abstandoben = 5;
    float abstandunten = 10;
    
-   
+   [CNC setSchalendicke:[Schalendickefeld floatValue]];
    //
    /*
     NSLog(@"OpenPanel2");
@@ -4842,6 +4884,7 @@ return returnInt;
       }
    }
    
+   [[ProfilGraph viewWithTag:1001]setStringValue:[Profil1Name stringByDeletingPathExtension]];
    NSString* Profilpfad = [ProfilLibPfad stringByAppendingPathComponent:Profil1Name];
    
    //NSLog(@"reportProfilPop Profilpfad: %@",Profilpfad);
@@ -5396,6 +5439,7 @@ return returnInt;
    NSString* Profil2Name;
 	NSArray* ProfilArrayA;
 	NSArray* ProfilArrayB;
+   
    // NSArray* ProfilUArray;
    float offsetx = [ProfilBOffsetXFeld floatValue];
    float offsety = [ProfilBOffsetYFeld floatValue];
@@ -5502,6 +5546,8 @@ return returnInt;
    {
    Profil1Name=[ProfilDic objectForKey:@"profil1name"]; //Dic mit Keys x,y. Werte sind normiert auf Bereich 0-1
    [ProfilNameFeldA setStringValue:Profil1Name];
+   [[ProfilGraph viewWithTag:1001]setStringValue:Profil1Name];
+
    }
    if ([ProfilDic objectForKey:@"profil2name"])
    {
@@ -5618,7 +5664,7 @@ return returnInt;
          [tempZeilenDic setObject:[NSNumber numberWithFloat:ax+tempax]forKey:@"ax"];
          [tempZeilenDic setObject:[NSNumber numberWithFloat:ay+tempay]forKey:@"ay"];
          
-         // reduziertes pwm:
+         // reduziertes pwm: Schneiden aus dem Einstich heraus 
          if ([[EndleistenEinlaufArrayA objectAtIndex:k]count]>2) // Angaben fuer pwm an index 2
          {
             //NSLog(@"EndleistenEinlaufArrayA pwm: %2.2f",[[[EndleistenEinlaufArrayA objectAtIndex:k]objectAtIndex:2]floatValue]);
@@ -6641,26 +6687,7 @@ return returnInt;
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
 
-      
-     
-      /*    
-       // Blockrand senkrecht nach unten schneiden
-       PositionA.y -=dicke;
-       PositionB.y -=dicke;
-       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
-       index++;
-       
-       
-       // weg vom Blockrand 2mm      
-       PositionA.x -=2;
-       PositionB.x -=2;
-       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
-       index++;
-       */
-      
-      
+
       // Anfahrt von unten: Zuerst schneiden senkrecht noch oben bis Blockrand
       
       // Hochfahren auf Einlauf. Liegt auf gleicher Hoehe, wenn kein wrench
@@ -6675,7 +6702,7 @@ return returnInt;
       PositionA.y +=deltaAY;
       PositionB.y +=deltaBY;
       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm * full_pwm],@"pwm",nil]];
       index++;
       
       /*
@@ -7022,6 +7049,8 @@ return returnInt;
 
    [PositionFeld setIntValue:0];
    [PositionFeld setStringValue:@""];
+   
+   [[ProfilGraph viewWithTag:1001]setStringValue:@""];
    
    [[StartKoordinate cellAtIndex:0]setStringValue:@""];
    [[StartKoordinate cellAtIndex:1]setStringValue:@""];
@@ -8262,7 +8291,7 @@ return returnInt;
       if (delayok)
       {
          NSLog(@"mit delay");
-         [self performSelector:@selector (sendDelayedArrayWithDic:) withObject:SchnittdatenDic afterDelay:2];
+         [self performSelector:@selector (sendDelayedArrayWithDic:) withObject:SchnittdatenDic afterDelay:4];
       }
       else 
       {
@@ -8493,49 +8522,97 @@ return returnInt;
    NSLog(@"AVR  reportPrint");
    //NSPageLayout *pageLayout = [NSPageLayout pageLayout];
    //  [pageLayout runModal];
+   //[ProfilGraph setScale:[[ScalePop selectedItem]tag]];
+
+   NSView* Druckfeld = [[NSView alloc]initWithFrame:[ProfilGraph frame]];
+   //NSTextField* Titelfeld;
+   
    
    if (!(Profilfeld))
    {
-      NSRect Profilrect = [ProfilGraph frame];
+      NSRect Profilrect = [Druckfeld bounds];
+      Profilrect.origin.y =  10;
+      Profilrect.origin.x =  10;
+      Profilrect.size.height -= 60;
+      Profilrect.size.width -= 30;
+      
       
       Profilfeld = [[rProfildruckView alloc]initWithFrame:Profilrect];
       
    }
-   [Profilfeld setScale:[[ScalePop selectedItem]tag]];
+   
+   [Profilfeld setScale:[[ScalePop selectedItem]tag]/1.4];
+   
+   [Profilfeld setAnzahlMaschen:24];
    [Profilfeld setGraphOffset:0];
 
-   [Profilfeld setTitel:@"Hallo"];
+   [Profilfeld setTitel:[ProfilNameFeldA stringValue]];
    if ([KoordinatenTabelle count])
    {
       [Profilfeld setDatenArray:KoordinatenTabelle];
       
       [Profilfeld setNeedsDisplay:YES];
    }
+   [Druckfeld addSubview:Profilfeld];
+   
+   
+   NSRect Titelrect =  NSMakeRect(30, 80, 60, 60);
+   Titelrect.origin.y =  30;
+   Titelrect.origin.x =  80;
+   Titelrect.size.height= 60;
+   Titelrect.size.width= 180;
+   NSString*titel = [NSString stringWithString:[ProfilNameFeldA stringValue]];
 
+  
+   NSTextField* Titelfeld = [[[NSTextField alloc]initWithFrame:Titelrect]retain];
+   NSFont* TitelFont=[NSFont fontWithName:@"Helvetica" size: 14];
+   [Titelfeld setFont:TitelFont];
+   [Titelfeld setStringValue:@"Profil"];
+//   [Druckfeld addSubview:Titelfeld];
+   [Titelfeld release];
+   
+   NSImageView* Bildfeld;
+   NSRect Bildrect = NSMakeRect(230, 80, 60, 60);
+   Bildfeld = [[NSImageView alloc]initWithFrame:Bildrect];
+   [Bildfeld setImage:[NSImage imageNamed:@"home"]];
+//   [Druckfeld addSubview:Bildfeld];
+   [Bildfeld release];
+   
+   
+   //   [Titelfeld setAllowsEditingTextAttributes:YES];
+//   NSLog(@"Titelfeld: %@",titel);
+//   [Titelfeld setFont:TitelFont];
+   //[Titelfeld setStringValue:titel];
+   //[Titelfeld setIntValue:1];
+//   NSLog(@"Titelfeld stringVal: %@",[Titelfeld stringValue]);
+   
+   //[Titelfeld print:NULL];
+   
+   
+   NSLog(@"nach add");
+
+//   [Titelfeld release];
+   NSLog(@"vor druck");
 
    NSPrintInfo *printInfo;
    NSPrintOperation *printOp;
    printInfo = [NSPrintInfo sharedPrintInfo];
-   [printInfo setHorizontalPagination: NSFitPagination];
-   //[printInfo setHorizontalPagination:  NSAutoPagination];
+   //[printInfo setHorizontalPagination: NSFitPagination];
+   
+   [printInfo setHorizontalPagination:  NSAutoPagination];
    //[printInfo setVerticalPagination: NSFitPagination];
    [printInfo setVerticalPagination: NSAutoPagination];
    [printInfo setVerticallyCentered:NO];
    [printInfo setOrientation:NSLandscapeOrientation];
    //NSLog(@"printInfo: %@",[printInfo dictionary]);
    
-   printOp = [NSPrintOperation printOperationWithView:Profilfeld   printInfo:printInfo];
+   printOp = [NSPrintOperation printOperationWithView:Druckfeld   printInfo:printInfo];
    [printOp setShowsPrintPanel:YES];
    [printOp	runOperationModalForWindow:[self window]
                                      delegate:self
                                didRunSelector:nil
                                   contextInfo:[NSDictionary dictionaryWithObjectsAndKeys:@"PrintFromAVR",@"task", nil]];
-   //[printOp runOperation];
-   //[[[printOp printPanel]window] orderOut: self];
-   
-   //[NSPrintOperation setCurrentOperation: nil];
-
-   //[ProfilGraph print:NULL ];
+   NSLog(@"print end");
 
 }
 

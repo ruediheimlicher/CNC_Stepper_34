@@ -38,6 +38,7 @@
 {
    NSView*        Druckfeld;
    NSTextField*   Titelfeld;
+   NSString* titel;
 }
 
 - (void)setTitel:(NSString*)titel;
@@ -305,8 +306,10 @@
    //int                     _kote;
    int                     KoteWert;
    
+   IBOutlet id             Schalendickefeld;
+   
    rProfildruckView*       Profilfeld;
-}
+   }
 @property (nonatomic)  int    Kote;
 - (NSMutableDictionary*)readCNC_PList;
 - (NSArray*)readProfilLib;

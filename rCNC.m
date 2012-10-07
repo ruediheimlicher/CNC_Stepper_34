@@ -46,6 +46,16 @@ return NULL;
 	steps = dieSteps;
 }
 
+- (void)setSchalendicke:(float)dieDicke
+{
+   schalendicke = dieDicke;
+}
+
+- (float)schalendicke
+{
+   return schalendicke;
+}
+
 
 - (void)setDatenArray:(NSArray*)derDatenArray
 {
@@ -1786,8 +1796,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
 {
    float Holmposition = 0.66; // Lage des Holms von der Endleiste an gemessen
 	float basisbreite = 10; // Breite der Basis unten in mm
-   float schalendicke = 2; // Dicke der Schalendicke in mm
-   
+      
    // basisbreite auf 1 normieren
    basisbreite /= Profiltiefe;
    

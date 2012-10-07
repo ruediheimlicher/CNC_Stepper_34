@@ -453,7 +453,7 @@
 	
 	[ZeitAttrs setObject:ZeitFont forKey:NSFontAttributeName];
 	
-	//NSLog(@"rProfilGitterlinien drawRect");
+	NSLog(@"rProfilGitterlinien drawRect");
 	NSRect NetzBoxRahmen=[self frame];//NSMakeRect(NetzEcke.x,NetzEcke.y,200,100);
 	float breite=[[[self superview]superview]frame].size.width;
 	//NSLog(@"rProfilGitterlinien drawRect Breite alt: %2.2f",breite);

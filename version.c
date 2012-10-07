@@ -1,1 +1,1 @@
-//version.c#define VERSION "Stepper.12.005"
+//version.c#define VERSION "Stepper.12.006"

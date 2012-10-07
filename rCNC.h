@@ -16,6 +16,7 @@
 	int			speed;
 	int			steps;
    float red_pwm;
+   float schalendicke;
 
 }
 - (int)steps;
@@ -23,7 +24,12 @@
 - (void)setDatenArray:(NSArray*)derDatenArray;
 - (NSArray*)DatenArray;
 - (void)setSpeed:(float)dieGeschwindigkeit;
-- (int)speed;
+- (float)speed;
+
+- (void)setSchalendicke:(float)dieDicke;
+- (int)schalendicke;
+
+
 - (void)setredpwm:(float)red_pwmwert;
 - (NSDictionary*)SteuerdatenVonDic:(NSDictionary*)derDatenDic;
 - (NSDictionary*)SteuerdatenVonDic:(NSDictionary*)derDatenDic mitAbbrand:(int)mitabbrand;

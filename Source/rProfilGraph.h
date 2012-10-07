@@ -19,7 +19,7 @@
    NSPoint     EndPunktB;
    
    NSPoint     oldMauspunkt;
-   int         scale; // Massstab fuer die Darstellung. Uebergebene Masse sind in mm
+   float         scale; // Massstab fuer die Darstellung. Uebergebene Masse sind in mm
    int         mausistdown;
    int         Klickpunkt;
    int         Klickseite;
@@ -27,6 +27,7 @@
    NSMutableIndexSet* KlicksetA;
    int         startklickpunkt;
    int         stepperposition;
+   int anzahlmaschen;
    
    int GraphOffset;
    
@@ -34,8 +35,9 @@
 - (void)setDatenArray:(NSArray*)derDatenArray;
 - (void)setRahmenArray:(NSArray*)derRahmenArray;
 - (NSArray*)DatenArray;
-- (void)setScale:(int)derScalefaktor;
+- (void)setScale:(float)derScalefaktor;
 - (void)setStepperposition:(int)pos;
+- (void)setAnzahlMaschen: (int)anzahl;
 - (BOOL)acceptsFirstResponder;
 - (BOOL)canBecomeKeyView;
 - (void)keyDown:(NSEvent*)derEvent;
@@ -43,5 +45,7 @@
 - (void)setKlickpunkt:(int)derPunkt;
 - (void)setKlickrange:(NSRange)derRange;
 - (void)setGraphOffset:(int)offset;
+- (void)GitterZeichnenMitMaschen:(int)anzahl;
+- (void)GitterZeichnen;
 - (int)GraphOffset;
 @end
