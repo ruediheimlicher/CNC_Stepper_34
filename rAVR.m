@@ -104,7 +104,7 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
    NSRect Titelrect = [self frame];
    NSFont* TitelFont=[NSFont fontWithName:@"Helvetica" size: 32];
 	
-   titel = [[NSString stringWithString:derTitel]retain];
+   titel = [[NSString stringWithFormat:@"Profil: %@",derTitel]retain];
 
    return;
    Titelrect.origin.y +=  30;
@@ -130,12 +130,12 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
       int screen=0;
       if ([[NSGraphicsContext currentContext]isDrawingToScreen])
       {
-         NSLog(@"ProfilGraph drawRect screen");
+         //NSLog(@"ProfilGraph drawRect screen");
          screen=1;
       }
       else
       {
-         NSLog(@"ProfilGraph drawRect print");
+         //NSLog(@"ProfilGraph drawRect print");
       }
       int i=0;
       {
@@ -1147,14 +1147,14 @@ return returnInt;
    Titelrect.origin.y += Titelrect.size.height -40;
    Titelrect.origin.x += 10;
    Titelrect.size.height = 20;
-   Titelrect.size.width = 120;
+   Titelrect.size.width = 200;
    NSTextField* Titelfeld = [[NSTextField alloc]initWithFrame:Titelrect];
    NSFont* TitelFont=[NSFont fontWithName:@"Helvetica" size: 14];
    [Titelfeld setFont:TitelFont];
    [Titelfeld setBordered:NO];
    [Titelfeld setDrawsBackground:NO];
    [Titelfeld setTag:1001];
-   [Titelfeld setStringValue:@"Profil"];
+   [Titelfeld setStringValue:@""];
    [ProfilGraph addSubview:Titelfeld];
    [Titelfeld release];
 
@@ -1202,6 +1202,7 @@ return returnInt;
    
    [CNCTable setDataSource: self];
    [CNCTable setDelegate: self];
+   [CNCTable setRowHeight:13];
    [CNCTable setGridStyleMask:NSTableViewSolidVerticalGridLineMask];
    [[[CNCTable tableColumnWithIdentifier:@"index"]dataCell]setAlignment:NSCenterTextAlignment];
 	[[[CNCTable tableColumnWithIdentifier:@"ax"]dataCell]setAlignment:NSRightTextAlignment];
@@ -5452,7 +5453,7 @@ return returnInt;
    {
       [WertAYFeld setFloatValue:50];
    }
-   //NSLog(@"LibProfileingabeAktion KoordinatenTabelle: %@",[KoordinatenTabelle description]);
+   NSLog(@"LibProfileingabeAktion KoordinatenTabelle: %@",[KoordinatenTabelle description]);
 	// Profil lesen
    [ProfilGraph setScale:[[ScalePop selectedItem]tag]];
    
@@ -8560,14 +8561,14 @@ return returnInt;
    Titelrect.origin.y =  30;
    Titelrect.origin.x =  80;
    Titelrect.size.height= 60;
-   Titelrect.size.width= 180;
+   Titelrect.size.width= 240;
    NSString*titel = [NSString stringWithString:[ProfilNameFeldA stringValue]];
 
   
    NSTextField* Titelfeld = [[[NSTextField alloc]initWithFrame:Titelrect]retain];
    NSFont* TitelFont=[NSFont fontWithName:@"Helvetica" size: 14];
    [Titelfeld setFont:TitelFont];
-   [Titelfeld setStringValue:@"Profil"];
+   [Titelfeld setStringValue:@""];
 //   [Druckfeld addSubview:Titelfeld];
    [Titelfeld release];
    
@@ -8593,6 +8594,7 @@ return returnInt;
 
 //   [Titelfeld release];
    NSLog(@"vor druck");
+   
 
    NSPrintInfo *printInfo;
    NSPrintOperation *printOp;

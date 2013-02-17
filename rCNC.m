@@ -2119,7 +2119,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
 
 - (NSDictionary*)ProfilDicVonPunkt:(NSPoint)Startpunkt mitProfil:(NSArray*)ProfilArray mitProfiltiefe:(int)Profiltiefe mitScale:(int)Scale
 {
-   //NSLog(@"AVR ProfilDicVonPunkt");
+   NSLog(@"AVR ProfilDicVonPunkt");
    
    float x = [self EndleistenwinkelvonProfil:ProfilArray];
    
@@ -2147,8 +2147,11 @@ PortA=vs[n & 3]; warte10ms(); n++;
    NSMutableArray* ProfilUpunktArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    NSMutableArray* MittellinieArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 
-
+   float oberseiteweg=0;
+   float unterseiteweg=0;
    
+   float lastX=0;
+   float lastY=0;
    NSMutableDictionary* ProfilpunktDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 
    for (i=0;i<[ProfilArray count];i++)
@@ -2195,17 +2198,30 @@ PortA=vs[n & 3]; warte10ms(); n++;
       // NSLog(@"tempX: %2.2f ",tempX);
 		tempX += Startpunkt.x;	// offset in mm
       
-		//tempX *= Scale;
+		
 		NSNumber* tempNumberX=[NSNumber numberWithFloat:tempX];
 		//NSLog(@"tempX: %2.2f tempNumberX: %@",tempX, tempNumberX);
 		//Y-Achse
 		
 		tempY *= Profiltiefe;						// Wert in mm 
 		tempY += Startpunkt.y;	// Offset in mm
-		//tempY *= Scale;
-		NSNumber* tempNumberY=[NSNumber numberWithFloat:tempY];
+		
+      // Weg berechnen
+      if (i==0)
+      {
+         lastX = tempX;
+         lastY = tempY;
+      }
+      else
+      {
+         float tempweg = hypotf((tempY - lastY),(tempX - lastX));
+         
+      }
+		
+      NSNumber* tempNumberY=[NSNumber numberWithFloat:tempY];
 		
       //ProfilpunktArray fuellen
+      
       NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:tempNumberX, @"x",tempNumberY,@"y" ,[NSNumber numberWithInt:i],@"index",[NSNumber numberWithInt:seitenindex],@"seitenindex", nil];
       
       [ProfilpunktArray addObject: tempDic];
