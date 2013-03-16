@@ -4871,14 +4871,14 @@ return returnInt;
    if ([ProfilPop indexOfSelectedItem])
    {
       int index=[ProfilPop indexOfSelectedItem]; // Item 0 ist Titel
-      NSLog(@"reportProfilPop Profil aus Pop: %@",[ProfilPop itemTitleAtIndex:index]);
+      //NSLog(@"reportProfilPop Profil aus Pop: %@",[ProfilPop itemTitleAtIndex:index]);
       Profil1Name = [ProfilPop itemTitleAtIndex:index];
    }
    else
    {
       Profil1Name = [ProfilNameFeldA stringValue];
       Profil1Name = [Profil1Name stringByAppendingPathExtension:@"txt"];
-      NSLog(@"reportProfilPop Profil aus ProfilNameFeldA: %@",Profil1Name);
+      //NSLog(@"reportProfilPop Profil aus ProfilNameFeldA: %@",Profil1Name);
       if ([Profil1Name length]==0)
       {
          return;
@@ -5453,7 +5453,7 @@ return returnInt;
    {
       [WertAYFeld setFloatValue:50];
    }
-   NSLog(@"LibProfileingabeAktion KoordinatenTabelle: %@",[KoordinatenTabelle description]);
+   //NSLog(@"LibProfileingabeAktion KoordinatenTabelle: %@",[KoordinatenTabelle description]);
 	// Profil lesen
    [ProfilGraph setScale:[[ScalePop selectedItem]tag]];
    
@@ -5927,7 +5927,7 @@ return returnInt;
          wrenchwinkel *= -1;
       }
       KoordinatenTabelle = [[Utils wrenchProfilschnittlinie:KoordinatenTabelle mitWrench:wrenchwinkel]retain];
-   
+      NSLog(@"B");
    }
 
    
@@ -7037,7 +7037,7 @@ return returnInt;
 
 - (IBAction)reportNeuTaste:(id)sender
 {
-   NSLog(@"reportNeuTaste");
+   //NSLog(@"reportNeuTaste");
   // NSLog(@"reportNeuTaste KoordinatenTabelle count: %lu",[KoordinatenTabelle count]);
   // NSLog(@"reportNeuTaste KoordinatenTabelle vor: %@",[KoordinatenTabelle description]);
 	[CNC_Preparetaste setEnabled:YES];
@@ -8048,7 +8048,7 @@ return returnInt;
    if ([ProfilPop indexOfSelectedItem])
    {
       profilpopindex=[ProfilPop indexOfSelectedItem]; // Item 0 ist Titel
-      NSLog(@"reportProfilOberseiteTask Profil aus Pop: %@",[ProfilPop itemTitleAtIndex:profilpopindex]);
+      //NSLog(@"reportProfilOberseiteTask Profil aus Pop: %@",[ProfilPop itemTitleAtIndex:profilpopindex]);
    }
    else
    {
@@ -8056,7 +8056,7 @@ return returnInt;
       NSString* Profil1Name = [[ProfilNameFeldA stringValue]stringByAppendingPathExtension:@"txt"];
       profilpopindex = [[ProfilPop itemTitles]indexOfObject:Profil1Name];
       
-      NSLog(@"reportProfilPop profilpopindex: %d Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
+      //NSLog(@"reportProfilPop profilpopindex: %d Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
       if (profilpopindex == NSNotFound)
       {
          NSLog(@"reportProfilPop kein Profil");
@@ -8091,7 +8091,7 @@ return returnInt;
    if ([ProfilPop indexOfSelectedItem])
    {
       profilpopindex=[ProfilPop indexOfSelectedItem]; // Item 0 ist Titel
-      NSLog(@"reportProfilOberseiteTask profilpopindex: %d Profil aus Pop: %@",profilpopindex,[ProfilPop itemTitleAtIndex:profilpopindex]);
+      //NSLog(@"reportProfilOberseiteTask profilpopindex: %d Profil aus Pop: %@",profilpopindex,[ProfilPop itemTitleAtIndex:profilpopindex]);
    }
    else
    {
@@ -8099,7 +8099,7 @@ return returnInt;
       NSString* Profil1Name = [[ProfilNameFeldA stringValue]stringByAppendingPathExtension:@"txt"];
       profilpopindex = [[ProfilPop itemTitles]indexOfObject:Profil1Name];
       
-      NSLog(@"reportProfilOberseiteTask profilpopindex: %d Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
+      //NSLog(@"reportProfilOberseiteTask profilpopindex: %d Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
       if (profilpopindex == NSNotFound)
       {
          NSLog(@"reportProfilPop kein Profil");
@@ -8138,7 +8138,7 @@ return returnInt;
    if ([ProfilPop indexOfSelectedItem])
    {
       profilpopindex=[ProfilPop indexOfSelectedItem]; // Item 0 ist Titel
-      NSLog(@"reportProfilOberseiteTask Profil aus Pop: %@",[ProfilPop itemTitleAtIndex:profilpopindex]);
+      //NSLog(@"reportProfilOberseiteTask Profil aus Pop: %@",[ProfilPop itemTitleAtIndex:profilpopindex]);
    }
    else
    {
@@ -8146,7 +8146,7 @@ return returnInt;
       NSString* Profil1Name = [[ProfilNameFeldA stringValue]stringByAppendingPathExtension:@"txt"];
       profilpopindex = [[ProfilPop itemTitles]indexOfObject:Profil1Name];
       
-      NSLog(@"reportProfilPop profilpopindex: %d Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
+      //NSLog(@"reportProfilPop profilpopindex: %d Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
       if (profilpopindex == NSNotFound)
       {
          NSLog(@"reportProfilPop kein Profil");

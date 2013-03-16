@@ -147,7 +147,7 @@ private void button4_Click(object sender, EventArgs e)
 
 - (void)USBAktion:(NSNotification*)note
 {
-   NSLog(@"USBAktion usbstatus: %d",usbstatus);
+   //NSLog(@"USBAktion usbstatus: %d",usbstatus);
    if ([[note userInfo]objectForKey:@"usb"])
    {
       switch ([[[note userInfo]objectForKey:@"usb"]intValue]) 
@@ -410,7 +410,7 @@ private void button4_Click(object sender, EventArgs e)
 
 {
    //NSLog(@"***");
-   NSLog(@"SlaveResetAktion");
+   //NSLog(@"SlaveResetAktion");
    
    char*      sendbuffer;
    sendbuffer=malloc(32);

@@ -698,12 +698,15 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    }
    if (pos>10)
    {
-   profilendeindex -=1;
-   NSLog(@"profilanfangindex: %d profilendeindex: %d",profilanfangindex,profilendeindex);
+      if (profilendeindex)
+      {
+         profilendeindex -=1;
+      }
+   //NSLog(@"profilanfangindex: %d profilendeindex: %d",profilanfangindex,profilendeindex);
    x0=[[[linienArray objectAtIndex:profilendeindex]objectForKey:@"bx"]floatValue];
    y0=[[[linienArray objectAtIndex:profilendeindex]objectForKey:@"by"]floatValue];
    }
-      NSLog(@"x0: %2.2f y0: %2.2f",x0,y0);
+      //NSLog(@"x0: %2.2f y0: %2.2f",x0,y0);
 
    //Koordinaten drehen
    for(i=0;i<[linienArray count];i++)

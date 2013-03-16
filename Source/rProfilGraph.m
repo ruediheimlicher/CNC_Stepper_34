@@ -48,7 +48,7 @@ return sqrt(dX*dX + dY*dY);
 - (void)setScale:(float)derScalefaktor
 {
 	scale = derScalefaktor;
-   NSLog(@"Profilgraph scale: %.2f",scale);
+   //NSLog(@"Profilgraph scale: %.2f",scale);
 
 }
 

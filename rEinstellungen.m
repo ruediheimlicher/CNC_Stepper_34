@@ -1445,7 +1445,7 @@
    
    if ([daten objectForKey:@"abbranda"])
    {
-      NSLog(@"abbranda: %2.2f",[[daten objectForKey:@"abbranda"]floatValue]);
+      //NSLog(@"abbranda: %2.2f",[[daten objectForKey:@"abbranda"]floatValue]);
       if ([AbbrandmassA  floatValue] != [[daten objectForKey:@"abbranda"]floatValue])
       {
   
@@ -2178,7 +2178,7 @@
    flipV = !flipV; // flip toggeln
    
    [FlipVTaste setState:flipV];
-   NSLog(@"reportProfilSpiegelnVertikal flipV: %d", flipV);
+   //NSLog(@"reportProfilSpiegelnVertikal flipV: %d", flipV);
    for (i=0;i< [Profil1Array count];i++)
    {
       NSMutableDictionary* tempZeilenDic = [NSMutableDictionary dictionaryWithDictionary:[Profil1Array objectAtIndex:i]];
@@ -2248,7 +2248,7 @@
       
       int index=profil1; // Item 0 ist Titel
       [Profile2 selectItemAtIndex:index];    // Profil 2 ist wahrscheinlich gleich
-      NSLog(@"reportProfilPop Profil aus Pop: %@",[Profile1 itemTitleAtIndex:index]);
+      //NSLog(@"reportProfilPop Profil aus Pop: %@",[Profile1 itemTitleAtIndex:index]);
       Profil1Name=[Profile1 itemTitleAtIndex:index];
       NSString* Profilname = [Profil1Name stringByAppendingPathExtension:@"txt"];
       NSString* Profilpfad = [ProfilLibPfad stringByAppendingPathComponent:Profilname];
