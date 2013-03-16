@@ -253,6 +253,7 @@
       }
    }
    
+ 
    
 }
 
@@ -1456,6 +1457,24 @@
       [AbbrandmassA setFloatValue:1.3];
    }
 
+   if ([daten objectForKey:@"flipv"])
+   {
+      flipV = [[daten objectForKey:@"flipv"]floatValue];
+   }
+   else
+   {
+      flipV=0;
+   }
+   
+   if ([daten objectForKey:@"fliph"])
+   {
+      flipH = [[daten objectForKey:@"fliph"]floatValue];
+   }
+   else
+   {
+      flipH=0;
+   }
+
 
    /*
     if ([daten objectForKey:@"winkel"])
@@ -2156,7 +2175,10 @@
    
    //NSLog(@"reportProfilSpiegelnVertikal");
    int i;
-   flipV = [FlipVTaste state];
+   flipV = !flipV; // flip toggeln
+   
+   [FlipVTaste setState:flipV];
+   NSLog(@"reportProfilSpiegelnVertikal flipV: %d", flipV);
    for (i=0;i< [Profil1Array count];i++)
    {
       NSMutableDictionary* tempZeilenDic = [NSMutableDictionary dictionaryWithDictionary:[Profil1Array objectAtIndex:i]];
@@ -2203,6 +2225,9 @@
    [ErgebnisDic setObject:[NSNumber numberWithFloat:endx]  forKey:@"endx"];
    [ErgebnisDic setObject:[NSNumber numberWithFloat:endy]  forKey:@"endy"];
    [ErgebnisDic setObject:[NSNumber numberWithFloat:laenge]  forKey:@"laenge"];
+   [ErgebnisDic setObject:[NSNumber numberWithInt:flipV]  forKey:@"flipv"];
+   [ErgebnisDic setObject:[NSNumber numberWithInt:flipH]  forKey:@"fliph"];
+
    [ErgebnisDic setObject:[NSNumber numberWithFloat:winkel]  forKey:@"winkel"];
    [ErgebnisDic setObject:@"Schliessen"  forKey:@"quelle"];
    //[nc postNotificationName:@"Elementeingabe" object:self userInfo:ErgebnisDic];
@@ -2960,6 +2985,7 @@
    }
    //NSLog(@"reportProfilSpiegelnVertikal");
    int i;
+   flipV = !flipV;
    flipV = [sender state];
    for (i=0;i< [Profil1Array count];i++)
    {

@@ -144,6 +144,10 @@
    
    float startx, starty;
    float zoom;
+   int                  flipH;
+   int                  flipV;
+   int                  reverse;
+
    
    // Lib
    IBOutlet id    LibElement;
@@ -209,9 +213,6 @@
    NSMutableArray*      Profil1Array;
    NSMutableArray*      Profil2Array;
    NSString*            ProfilLibPfad;
-   int                  flipH;
-   int                  flipV;
-   int                  reverse;
 
    // Form
    IBOutlet id          SeiteA1;
