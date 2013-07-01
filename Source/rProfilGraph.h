@@ -27,7 +27,9 @@
    NSMutableIndexSet* KlicksetA;
    int         startklickpunkt;
    int         stepperposition;
-   int anzahlmaschen;
+   int         anzahlmaschen;
+   
+   int         graphstatus;
    
    int GraphOffset;
    
@@ -45,6 +47,7 @@
 - (void)setKlickpunkt:(int)derPunkt;
 - (void)setKlickrange:(NSRange)derRange;
 - (void)setGraphOffset:(int)offset;
+- (void)setgraphstatus:(int)status;
 - (void)GitterZeichnenMitMaschen:(int)anzahl;
 - (void)GitterZeichnen;
 - (int)GraphOffset;

@@ -23,6 +23,8 @@
 #define USBREMOVED            6
 #define ANDERESEITEANFAHREN   10
 
+#define CNC_STOP              1
+
 #define VERSIONSLAVE "SLAVE.12.502"
 //#define VERSIONSLAVE "USB.405"
 /*

@@ -40,6 +40,7 @@ return sqrt(dX*dX + dY*dY);
        stepperposition = -1;
        GraphOffset = 0;
        anzahlmaschen = 24;
+       graphstatus=0;
     }
    
     return self;
@@ -442,6 +443,11 @@ return sqrt(dX*dX + dY*dY);
 	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	[nc postNotificationName:@"pfeiltaste" object:self userInfo:NotificationDic];
 
+}
+
+- (void)setgraphstatus:(int)status
+{
+   graphstatus = status;
 }
 
 
@@ -859,6 +865,7 @@ return sqrt(dX*dX + dY*dY);
          [KlickLinieA stroke];
       }
       
+      
       [[NSColor grayColor]set];
       [AbbrandLinieB stroke];
       [AbbrandLinieA stroke];
@@ -866,7 +873,7 @@ return sqrt(dX*dX + dY*dY);
       
       
 	} // if Datenarray count
-   //return;
+
    if (RahmenArray &&[RahmenArray count])
    {
       int i=0;
@@ -878,9 +885,11 @@ return sqrt(dX*dX + dY*dY);
       Startpunkt.y *= scale;
       
       [RahmenPath moveToPoint:Startpunkt];
-      for (i=1; i<[RahmenArray count]; i++) 
+      for (i=1; i<[RahmenArray count]; i++)
       {
          //NSLog(@"Rahmen index: %d: %@",i,[[RahmenArray objectAtIndex:i]description]);
+         NSPoint Punkt = NSPointFromString([RahmenArray objectAtIndex:i]);
+         
 			//NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
          NSPoint temppunkt = NSPointFromString([RahmenArray objectAtIndex:i]);
          temppunkt.x *= scale;

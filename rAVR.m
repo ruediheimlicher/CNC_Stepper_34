@@ -1532,7 +1532,7 @@ return returnInt;
 	}
    
 	[CNC_Eingabe showWindow:NULL];
-      
+   
 }
 
 /*
@@ -1749,8 +1749,46 @@ return returnInt;
    [CNCDatenArray removeAllObjects];
    [HomeTaste setState:0];
    [DC_Taste setState:0];
-   [CNC setSpeed:[SpeedFeld intValue]];
+   if ([SpeedFeld intValue])
+   {
+      [CNC setSpeed:[SpeedFeld intValue]];
+   }
+   else
+   {
+      NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+      [Warnung addButtonWithTitle:@"OK"];
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Speed ist 0"]];
+      
+      NSString* s1=@"";
+      NSString* s2=@"";
+      NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
+      [Warnung setInformativeText:InformationString];
+      [Warnung setAlertStyle:NSWarningAlertStyle];
+      
+      int antwort=[Warnung runModal];
+      return;
+   }
+   
+   if ([DC_PWM intValue])
+   {
    [CNC setredpwm:[red_pwmFeld floatValue]];
+   }
+   else
+   {
+      NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+      [Warnung addButtonWithTitle:@"OK"];
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"PWM ist 0"]];
+      
+      NSString* s1=@"";
+      NSString* s2=@"";
+      NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
+      [Warnung setInformativeText:InformationString];
+      [Warnung setAlertStyle:NSWarningAlertStyle];
+      
+      int antwort=[Warnung runModal];
+      return;
+     
+   }
    //NSLog(@"reportStopKnopf [KoordinatenTabelle count]: %d",[KoordinatenTabelle count]);
    if ([KoordinatenTabelle count]<=1)
    {
@@ -1771,9 +1809,10 @@ return returnInt;
       [CNC_Stoptaste setState:0];
       //[CNC_Stoptaste setEnabled:NO];
       
-      
       return;
    }
+   
+   [ProfilGraph setgraphstatus:1];
    
    NSMutableArray* tempKoordinatenTabelle = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    
@@ -6504,13 +6543,14 @@ return returnInt;
    float einlaufAY;
    float einlaufBX;
    float einlaufBY;
+   
    // Auslauf:
    float auslaufAX;
    float auslaufAY;
    float auslaufBX;
    float auslaufBY;
-   float zugabeoben=3 + [AbbrandFeld intValue];
-   float zugabeunten=10;
+   float zugabeoben= 3 + [AbbrandFeld intValue];
+   float zugabeunten= 10;
    
    float einstichx = 6;
    float einstichy = 4;
@@ -6586,9 +6626,9 @@ return returnInt;
       
       
       float breite = [Blockbreite floatValue];
-      float rand=[Einlaufrand floatValue];
+      float rand = [Einlaufrand floatValue];
       
-      float dicke=[Blockdicke floatValue];
+      float dicke = [Blockdicke floatValue];
       
       float blockoberkante = [Blockoberkante floatValue];
       //blockoberkante = plattendicke-5;
@@ -6624,7 +6664,8 @@ return returnInt;
       
       // neue Berechnung
       
-      NSPoint EckeLinksUnten = NSMakePoint(einlaufAX -rand, fmax(einlaufAY,einlaufBY) - abstandunten  -zugabeunten);
+            
+      NSPoint EckeLinksUnten = NSMakePoint(einlaufAX -rand, fmax(einlaufAY,einlaufBY) - abstandunten  - zugabeunten);
       NSPoint EckeLinksOben = NSMakePoint(EckeLinksUnten.x, EckeLinksUnten.y + dicke);
       
       NSPoint EckeRechtsOben = NSMakePoint(EckeLinksOben.x + ausmassx + einlaufrand + auslaufrand, EckeLinksOben.y);
@@ -6654,13 +6695,16 @@ return returnInt;
       // Start des Schnittes ist um einstichx, einstichy verschoben. Start vorerst dorthin verlegen
       
   //    einstichy = plattendicke - dicke;
+      
       einstichy = self.Kote;
       
       PositionA.x -=einstichx;
       PositionB.x -=einstichx;
       
-      PositionA.y -=einstichy;
-      PositionB.y -=einstichy;
+      
+// nach einfuehren VerikalSpiegeln: Horizontaler Einlauf ohne Hochfahren, -=einstichy auskomm
+ //     PositionA.y -=einstichy;
+ //     PositionB.y -=einstichy;
       
       int index=0;
       
@@ -6671,8 +6715,10 @@ return returnInt;
       index++;
       
       // Hochfahren auf Kote
-      PositionA.y +=einstichy;
-      PositionB.y +=einstichy;
+      
+      // nach einfuehren VerikalSpiegeln: Horizontaler Einlauf ohne Hochfahren, -=einstichy auskomm
+//       PositionA.y +=einstichy;
+//       PositionB.y +=einstichy;
       
       //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
@@ -6779,8 +6825,11 @@ return returnInt;
       
       //Schneiden an Blockunterkante links - einstichy
       
-      PositionA.x = EckeLinksUnten.x - 4;//-einstichx+1; // Nicht bis Anschlag fahren
-      PositionB.x = EckeLinksUnten.x - 4;//-einstichx+1;
+      //PositionA.x = EckeLinksUnten.x - 4;//-einstichx+1; // Nicht bis Anschlag fahren
+      PositionA.x = EckeLinksUnten.x - einstichx; // Bis Anschlag fahren
+      
+      //PositionB.x = EckeLinksUnten.x - 4;//-einstichx+1;
+      PositionB.x = EckeLinksUnten.x - einstichx;
       
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
@@ -7583,6 +7632,110 @@ return returnInt;
    
 }
 
+
+
+- (IBAction)reportVertikalSpiegeln:(id)sender
+{
+   //NSLog(@"AVR  reportVertikalSpiegeln %d",[sender selectedSegment]);
+   if ([KoordinatenTabelle count]==0)
+   {
+      return;
+   }
+   int i=0;
+   NSMutableArray* tempKoordinatenArray = [[[NSMutableArray alloc]initWithArray: KoordinatenTabelle]autorelease];
+   
+   //maximales y finden
+   float maxY=0;
+   float minY=MAXFLOAT;
+   NSDictionary* RahmenDic = [self RahmenDic];
+   if ([RahmenDic objectForKey:@"maxy"])
+   {
+      maxY = [[RahmenDic objectForKey:@"maxy"]floatValue];
+   }
+   
+   if ([RahmenDic objectForKey:@"miny"])
+   {
+      minY = [[RahmenDic objectForKey:@"miny"]floatValue];
+   }
+   
+   //NSLog(@"AVR reportVertikalSpiegeln maxY: %2.2f minY: %2.2f",maxY,minY);
+   // y-Werte spiegeln und maxY addieren
+   for (i=0;i< [tempKoordinatenArray count];i++)
+   {
+      NSMutableDictionary* tempZeilenDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i]];
+      if (i<5 || i> [tempKoordinatenArray count]-5)
+      {
+         
+         // NSLog(@"tempZeilenDic vor: %@",[[tempKoordinatenArray objectAtIndex:i] description]);
+      }
+      
+      float tempay=[[tempZeilenDic objectForKey:@"ay"]floatValue]-minY;
+      tempay *= -1;
+      tempay += maxY;
+      [tempZeilenDic setObject:[NSNumber numberWithFloat:tempay]forKey:@"ay"];
+      
+      float tempby=[[tempZeilenDic objectForKey:@"by"]floatValue]-minY;
+      tempby *= -1;
+      tempby += maxY;
+      [tempZeilenDic setObject:[NSNumber numberWithFloat:tempby]forKey:@"by"];
+      
+      // Abbrand
+      if ([tempZeilenDic objectForKey:@"abray"])
+      {
+         float tempay=[[tempZeilenDic objectForKey:@"abray"]floatValue]-minY;
+         tempay *= -1;
+         tempay += maxY;
+         [tempZeilenDic setObject:[NSNumber numberWithFloat:tempay]forKey:@"abray"];
+         
+         float tempby=[[tempZeilenDic objectForKey:@"abrby"]floatValue]-minY;
+         tempby *= -1;
+         tempby += maxY;
+         [tempZeilenDic setObject:[NSNumber numberWithFloat:tempby]forKey:@"abrby"];
+         
+         
+      }
+      
+      [KoordinatenTabelle replaceObjectAtIndex:i withObject:tempZeilenDic];
+      
+      if (i<5 || i> [tempKoordinatenArray count]-5)
+      {
+         //NSLog(@"AVR reportVertikalSpiegeln tempZeilenDic nach: %@",[tempZeilenDic  description]);
+      }
+   }
+   
+   /*
+    for (i=0;i<[KoordinatenTabelle count]; i++)
+    {
+    NSMutableDictionary* tempZeilenDic = (NSMutableDictionary*)[KoordinatenTabelle objectAtIndex:i];
+    NSLog(@"tempZeilenDic: %@",[tempZeilenDic description]);
+    NSNumber* tempax=(NSNumber*)[tempZeilenDic objectForKey:@"ax"];
+    NSNumber* tempay=(NSNumber*)[tempZeilenDic objectForKey:@"ay"];
+    NSNumber* tempbx=(NSNumber*)[tempZeilenDic objectForKey:@"bx"];
+    NSNumber* tempby=(NSNumber*)[tempZeilenDic objectForKey:@"by"];
+    NSNumber* tempindex=(NSNumber*)[tempZeilenDic objectForKey:@"index"];
+    NSMutableDictionary* neuerZeilenDic = [[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+    }
+    */
+   //NSLog(@"maxX: %2.2f",maxX);
+   //NSLog(@"reportVertikalSpiegeln RahmenArray vor Spiegeln: %@",[BlockrahmenArray description]);
+
+   for (i=0;i<4;i++)
+   {
+      NSPoint tempEcke = NSPointFromString([BlockrahmenArray objectAtIndex:i]);
+      float tempy = tempEcke.y-minY;
+      tempy *= -1;
+      tempy += maxY;
+      NSString* newEckestring = NSStringFromPoint(NSMakePoint(tempEcke.x,tempy));
+      [BlockrahmenArray replaceObjectAtIndex:i  withObject:newEckestring];
+   }
+   [ProfilGraph setRahmenArray:BlockrahmenArray];
+   //NSLog(@"reportVertikalSpiegeln RahmenArray nach Spiegeln: %@",[BlockrahmenArray description]);
+   
+   [ProfilGraph setNeedsDisplay:YES];
+	[CNCTable reloadData];
+   
+}
+
 - (IBAction)reportAndereSeiteAnfahren:(id)sender
 {
    NSDictionary* tempDic=[NSDictionary dictionaryWithObject:[NSNumber numberWithInt:ANDERESEITEANFAHREN] forKey:@"usb"];
@@ -7735,6 +7888,9 @@ return returnInt;
    [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
    [CNC setSpeed:lastSpeed];
 }
+
+
+
 
 - (IBAction)reportHome:(id)sender
 {
@@ -8190,6 +8346,31 @@ return returnInt;
       NSLog(@"reportUSB_sendArray SchnittdatenArray leer");
       return;
    }
+   
+   if ([DC_PWM intValue] == 0)
+   {
+      NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+      [Warnung addButtonWithTitle:@"OK"];
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"PWM ist Null"]];
+      [Warnung setAlertStyle:NSWarningAlertStyle];
+      
+      int antwort=[Warnung runModal];
+      return;
+      
+   }
+   
+   if ([SpeedFeld intValue] == 0)
+   {
+      NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+      [Warnung addButtonWithTitle:@"OK"];
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"Speed ist Null"]];
+      [Warnung setAlertStyle:NSWarningAlertStyle];
+      
+      int antwort=[Warnung runModal];
+      return;
+
+   }
+   
    if (AVR_USBStatus)
    {
       //NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
