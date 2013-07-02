@@ -5101,6 +5101,7 @@ return returnInt;
          [tempZeilenDic setObject:[tempZeilenDicB objectForKey:@"y"] forKey:@"by"];
          [tempZeilenDic setObject:[tempZeilenDicA objectForKey:@"index"] forKey:@"index"];
          [tempZeilenDic setObject:[NSNumber numberWithInt:20] forKey:@"teil"]; // Kennzeichnung Oberseite
+         
          // pwm
          [tempZeilenDic setObject:[NSNumber numberWithInt:origpwm] forKey:@"pwm"];
          [KoordinatenTabelle addObject:tempZeilenDic];
@@ -5906,7 +5907,7 @@ return returnInt;
       by = [[[KoordinatenTabelle lastObject]objectForKey:@"by"]floatValue];
       
       NSArray* NasenleistenAuslaufArray=[CNC NasenleistenauslaufMitLaenge:auslauflaenge mitTiefe:auslauftiefe];
-      //NSLog(@"AVR EndleistenEinlaufArray: %@",[NasenleisteneinlaufMitLaenge description]);
+      NSLog(@"AVR NasenleistenAuslaufArray: %@",[NasenleistenAuslaufArray description]);
       int l;
       for(l=1;l<[NasenleistenAuslaufArray count];l++)
       {
@@ -5920,13 +5921,17 @@ return returnInt;
          [tempZeilenDic setObject:[NSNumber numberWithFloat:by+tempy]forKey:@"by"];
          [tempZeilenDic setObject:[NSNumber numberWithInt:l] forKey:@"index"];
          [tempZeilenDic setObject:[NSNumber numberWithInt:40] forKey:@"teil"]; // Kennzeichnung Auslauf
+ 
+         //NSLog(@"l: %d NasenleistenAuslaufArray pwm-index: %2.2f",l,[[[NasenleistenAuslaufArray objectAtIndex:l]objectAtIndex:2]floatValue]);
+         //float temppwm = [[[NasenleistenAuslaufArray objectAtIndex:l]objectAtIndex:2]floatValue]*origpwm;
+         //NSLog(@"NasenleistenAuslaufArray pwm: %2.2f",temppwm);
          
          
-         if ([[NasenleistenAuslaufArray objectAtIndex:l]count]>2) // Angaben fuer pwm an index 2
+         if ([[NasenleistenAuslaufArray objectAtIndex:l]count]>2) // Angaben fuer pwm sind an index 2
          {
             //NSLog(@"NasenleistenAuslaufArray pwm-index: %2.2f",[[[NasenleistenAuslaufArray objectAtIndex:l]objectAtIndex:2]floatValue]);
             float temppwm = [[[NasenleistenAuslaufArray objectAtIndex:l]objectAtIndex:2]floatValue]*origpwm;
-            //NSLog(@"NasenleistenAuslaufArray pwm: %2.2f",temppwm);
+            NSLog(@"NasenleistenAuslaufArray pwm: %2.2f",temppwm);
             [tempZeilenDic setObject:[NSNumber numberWithInt:temppwm] forKey:@"pwm"];
          
          }
@@ -5934,8 +5939,8 @@ return returnInt;
          {
             [tempZeilenDic setObject:[NSNumber numberWithInt:origpwm] forKey:@"pwm"];
          }
-
-
+         NSLog(@" l: %d tempZeilenDic: %@",l,[tempZeilenDic description]);
+         
          [KoordinatenTabelle addObject:tempZeilenDic];
          
       }
@@ -5959,18 +5964,18 @@ return returnInt;
                  wrenchwinkel = [ProfilWrenchFeld floatValue]* (-1);
               }break;
            }
-      NSLog(@"wrenchwinkel: %2.2f ",wrenchwinkel);
+      NSLog(@"Wrenchwinkel: %2.2f ",wrenchwinkel);
       
       if (mitOberseite &&!mitUnterseite && flipV) // nur Oberseite und gespiegelt
       {
          wrenchwinkel *= -1;
       }
       KoordinatenTabelle = [[Utils wrenchProfilschnittlinie:KoordinatenTabelle mitWrench:wrenchwinkel]retain];
-      NSLog(@"B");
+      //NSLog(@"B");
    }
 
    
-   //NSLog(@"KoordinatenTabelle nach wrench: %@",[KoordinatenTabelle description]);
+   //NSLog(@"\n\nKoordinatenTabelle nach wrench: %@",[KoordinatenTabelle description]);
 
    //   [KoordinatenTabelle addObjectsFromArray:ProfilArray];
    // NSLog(@"Profil KoordinatenTabelle: %@",[[KoordinatenTabelle valueForKey:@"ax"] description]);
@@ -5984,9 +5989,13 @@ return returnInt;
    int bis=[KoordinatenTabelle count];
    
  //  if ((mitUnterseite ||  mitOberseite) &&! (mitOberseite && mitUnterseite)) // nur eine Seite
-  if ((mitUnterseite ^  mitOberseite) ) // nur eine Seite
+ 
+   
+   if ((mitUnterseite ^  mitOberseite) ) // nur eine Seite
        {
-          //NSLog(@"nur eine Seite");
+          NSLog(@"nur eine Seite");
+          
+          // Beginn und Ende des Abbrandes einstellen
           if (mitEinlauf)
           {
              von=startindexoffset + 2;
@@ -6708,7 +6717,6 @@ return returnInt;
       
       int index=0;
       
-      
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       
       
@@ -6779,11 +6787,11 @@ return returnInt;
       
       
       //NSLog(@"nach index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+      
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       index++;
       //NSLog(@"BlockKoordinatenTabelle Einlauf: %@",[BlockKoordinatenTabelle description]);
       //NSLog(@"reportBlockkonfigurieren nach Schneiden zum Einlauf EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
-      
       
       // Nach Profil und ev. Ausstich:
       
@@ -6803,11 +6811,17 @@ return returnInt;
       PositionB.x = EckeRechtsOben.x;
       //NSLog(@"Auslauf Rand rechts index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       
-      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*red_pwm],@"pwm",nil]];
+      //[BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*red_pwm],@"pwm",nil]];
+      
+      // Korr 3 7 2013: red pwm eliminiert. Wird schon in Profileinfuegen erledigt
+      [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
+
+      
+      
       index++;
       
       /*
-       //Schneiden an Blockoberkante rechts
+       //Schneiden zu Blockoberkante rechts
        
        PositionA.y = EckeRechtsOben.y;
        PositionB.y = EckeRechtsOben.y;
@@ -6815,7 +6829,7 @@ return returnInt;
        [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithInt:aktuellepwm*full_pwm],@"pwm",nil]];
        index++;
        */
-      //Schneiden an Blockunterkante rechts
+      //Schneiden zu Blockunterkante rechts
       
       PositionA.y = EckeRechtsUnten.y;// - einstichy + 3;
       PositionB.y = EckeRechtsUnten.y;// - einstichy + 3;
@@ -6849,10 +6863,12 @@ return returnInt;
    {
       if ([BlockKoordinatenTabelle count])
       {
+         NSLog(@"BlockKoordinatenTabelle: %@",[BlockKoordinatenTabelle description]);
          int i=0;
          [KoordinatenTabelle removeObjectAtIndex:0];
          for(i=0;i<[BlockKoordinatenTabelle count];i++)
          {
+            
                if ([[[BlockKoordinatenTabelle objectAtIndex:i]objectForKey:@"lage"]intValue]) // Auslauf
                {
                   [KoordinatenTabelle addObject:[BlockKoordinatenTabelle objectAtIndex:i] ];
