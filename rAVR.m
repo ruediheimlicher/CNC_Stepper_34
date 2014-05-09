@@ -1826,6 +1826,7 @@ return returnInt;
    int  anzbyplus=0;
    int  anzbyminus=0;
    
+   //NSLog(@"reportStopKnopf KoordinatenTabelle teil: %@",[KoordinatenTabelle valueForKey:@"teil"]);
    //NSLog(@"reportStopKnopf KoordinatenTabelle data: %@",[[KoordinatenTabelle valueForKey:@"data"]description]);
    
    // Werte des ersten Datensatzes
@@ -1930,6 +1931,7 @@ return returnInt;
       }
       
       
+      
       float distabrA = hypot(nowabrax-prevabrax,nowabray-prevabray); 
       float distabrB = hypot(nowabrbx-prevabrbx,nowabrby-prevabrby);
       
@@ -1977,7 +1979,7 @@ return returnInt;
          datensatzok = 1;
       }
       
-      if (datensatzok )// Datensack erfüllt alle Bedingungen
+      if (datensatzok )// Datensatz erfüllt alle Bedingungen
       {
          
          NSMutableDictionary* tempOKDic = [NSMutableDictionary dictionaryWithDictionary:[KoordinatenTabelle objectAtIndex:i+1]];
@@ -5623,14 +5625,27 @@ return returnInt;
    float TiefeA = ProfiltiefeA + [Basisabstand intValue] * pfeilung;
    float TiefeB = TiefeA - [Portalabstand intValue] * pfeilung;
    
-   TiefeA += abbranda; // Korrektur wegen Abbrand an Ende und Nase
+   NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f",pfeilung,TiefeA,TiefeB);
+   
+   // + oder -? Korr 14. Juli 123
+   if (mitOberseite && mitUnterseite)
+   {
+      TiefeA += abbranda; // Korrektur wegen Abbrand an Ende und Nase. Abbrand ist aussen
    TiefeB += abbrandb;
+   
+   }
+   else
+   {
+      TiefeA -= abbranda; // Korrektur wegen Abbrand an Ende und Nase
+      TiefeB -= abbrandb;
+
+   }
    
    
    float testB = TiefeB + ([Portalabstand intValue] - ([Spannweite intValue]+[Basisabstand intValue] ))*pfeilung;
+  // testB = TiefeB + (([Spannweite intValue] ))*pfeilung;
    
-   
-   //NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f testB: %2.2f",pfeilung,TiefeA,TiefeB, testB);
+   NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f testB: %2.2f",pfeilung,TiefeA,TiefeB, testB);
    /*
    switch ([GleichesProfilRadioKnopf selectedRow])
    {
@@ -5939,7 +5954,7 @@ return returnInt;
          {
             [tempZeilenDic setObject:[NSNumber numberWithInt:origpwm] forKey:@"pwm"];
          }
-         NSLog(@" l: %d tempZeilenDic: %@",l,[tempZeilenDic description]);
+         NSLog(@"LibProfilEingabeAktion l: %d tempZeilenDic: %@",l,[tempZeilenDic description]);
          
          [KoordinatenTabelle addObject:tempZeilenDic];
          
@@ -6012,6 +6027,8 @@ return returnInt;
       von = profilstartindex;
       bis = profilendindex;
    }
+   
+   
    
    
    if ([AbbrandCheckbox state])
@@ -6816,8 +6833,6 @@ return returnInt;
       // Korr 3 7 2013: red pwm eliminiert. Wird schon in Profileinfuegen erledigt
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
 
-      
-      
       index++;
       
       /*
@@ -6863,7 +6878,7 @@ return returnInt;
    {
       if ([BlockKoordinatenTabelle count])
       {
-         NSLog(@"BlockKoordinatenTabelle: %@",[BlockKoordinatenTabelle description]);
+         //NSLog(@"BlockKoordinatenTabelle: %@",[BlockKoordinatenTabelle description]);
          int i=0;
          [KoordinatenTabelle removeObjectAtIndex:0];
          for(i=0;i<[BlockKoordinatenTabelle count];i++)
@@ -8386,7 +8401,7 @@ return returnInt;
       return;
 
    }
-   
+   NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
    if (AVR_USBStatus)
    {
       //NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
@@ -8480,7 +8495,7 @@ return returnInt;
       }
       
       [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"art"]; // 
-      //NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
+      NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
       
       //   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
       //NSLog(@"reportUSB_SendArray delayok: %d",delayok);

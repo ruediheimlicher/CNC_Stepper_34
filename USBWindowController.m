@@ -547,7 +547,9 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    pwm=0;
 	int  r;
 	//char buf[64];
+   
    r = [self USBOpen];
+   
    if (usbstatus==0)
    {
       NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];

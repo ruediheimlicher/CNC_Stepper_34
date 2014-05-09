@@ -441,6 +441,8 @@ private void button4_Click(object sender, EventArgs e)
 {
 	//NSLog(@"writeCNCAbschnitt Start Stepperposition: %d count: %d",Stepperposition,[SchnittDatenArray count]);
 	//NSLog(@"writeCNCAbschnitt SchnittDatenArray anz: %d\n SchnittDatenArray: %@",[SchnittDatenArray count],[SchnittDatenArray description]);
+   
+   /*
    double dauer0 = 0;
    double dauer1 = 0;
    double dauer2 = 0;
@@ -450,7 +452,7 @@ private void button4_Click(object sender, EventArgs e)
    double dauer6 = 0;
    double dauer7 = 0;
    double dauer8 = 0;
-  
+  */
 
 
    if (Stepperposition < [SchnittDatenArray count])
@@ -496,7 +498,7 @@ private void button4_Click(object sender, EventArgs e)
          //NSLog(@"tempSchnittdatenArray object 20: %d",[[tempSchnittdatenArray objectAtIndex:20]intValue]);
          //NSLog(@"loop start");
          //NSDate *anfang = [NSDate date];
-         dauer1 = [dateA timeIntervalSinceNow]*1000;
+         //dauer1 = [dateA timeIntervalSinceNow]*1000;
          for (i=0;i<[tempSchnittdatenArray count];i++)
          {
             
@@ -519,7 +521,7 @@ private void button4_Click(object sender, EventArgs e)
             //sendbuffer[i]=(char)[[tempSchnittdatenArray objectAtIndex:i]UTF8String];
          }
          
-         dauer2 = [dateA timeIntervalSinceNow]*1000;
+         //dauer2 = [dateA timeIntervalSinceNow]*1000;
          //double delta = [anfang timeIntervalSinceNow]*1000;
          //NSLog(@"delta: %f ms",delta);
 
@@ -581,13 +583,17 @@ private void button4_Click(object sender, EventArgs e)
          
          
          //NSLog(@"writeCNCAbschnitt  Stepperposition: %d  pwm: %d",Stepperposition,sendbuffer[20]);         
-         dauer3 = [dateA timeIntervalSinceNow]*1000;
+         //dauer3 = [dateA timeIntervalSinceNow]*1000;
+         
+         
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
-         dauer4 = [dateA timeIntervalSinceNow]*1000;
+         
+         
+         //dauer4 = [dateA timeIntervalSinceNow]*1000;
 //         int senderfolg= rawhid_send(0, newsendbuffer, 32, 50);
          
-         //NSLog(@"writeCNCAbschnitt senderfolg: %X",senderfolg);
-         //NSLog(@"writeCNCAbschnitt  Stepperposition: %d ",Stepperposition);
+         NSLog(@"writeCNCAbschnitt senderfolg: %X",senderfolg);
+         NSLog(@"writeCNCAbschnitt  Stepperposition: %d ",Stepperposition);
          
          Stepperposition++;
          
@@ -688,6 +694,7 @@ private void button4_Click(object sender, EventArgs e)
 	NSData*		dataRead;
 	int         reportSize=32;
 	
+   /*
    double dauer0 = 0;
    double dauer1 = 0;
    double dauer2 = 0;
@@ -697,6 +704,7 @@ private void button4_Click(object sender, EventArgs e)
    double dauer6 = 0;
    double dauer7 = 0;
    double dauer8 = 0;
+   */
    
    if (Stepperposition ==0)//< [SchnittDatenArray count])
    {
@@ -744,7 +752,7 @@ private void button4_Click(object sender, EventArgs e)
     */
    result = rawhid_recv(0, buffer, 32, 50);
    
-   //NSLog(@"timout rawhid_recv: %d",result);
+   fprintf(stderr,"readUSB rawhid_recv: %d\n",result);
    dataRead = [NSData dataWithBytes:buffer length:reportSize];
    
    //NSLog(@"ignoreDuplicates: %d",ignoreDuplicates);
@@ -777,10 +785,12 @@ private void button4_Click(object sender, EventArgs e)
       
       
       int i=0;
-      // for (i=0; i<10;i++)
-      // {
-      //NSLog(@"i: %d char: %x data: %d",i,buffer[i],[[NSNumber numberWithInt:(UInt8)buffer[i]]intValue]);
-      // }
+      /*
+       for (i=0; i<10;i++)
+       {
+      NSLog(@"i: %d char: %x data: %d",i,buffer[i],[[NSNumber numberWithInt:(UInt8)buffer[i]]intValue]);
+       }
+       */
 //      NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
       
       //NSLog(@"**");
@@ -790,6 +800,7 @@ private void button4_Click(object sender, EventArgs e)
       //int abschnittfertig=(UInt8)buffer[0];     // code fuer Art des Pakets
       
       NSNumber* AbschnittFertig=[NSNumber numberWithInt:(UInt8)buffer[0]];
+      NSLog(@"**read_USB   buffer 0 %d",(UInt8)buffer[0]);
       
      // NSNumber* Abschnittnummer=[NSNumber numberWithInt:(UInt8)buffer[5]];
       
@@ -818,7 +829,7 @@ private void button4_Click(object sender, EventArgs e)
          //NSLog(@"readUSB   Code: %X     [5]: %X  [6]: %X   [7]: %X  Stepperposition: %d    home: %d",[AbschnittFertig intValue],(UInt8)buffer[5] , (UInt8)buffer[6],(UInt8)buffer[7], Stepperposition,home);
          
       }
-      dauer1 = [dateA timeIntervalSinceNow]*1000;
+      //dauer1 = [dateA timeIntervalSinceNow]*1000;
       //NSLog(@"readUSB dauer A: %f ms", dauer);
       /*
       if ([AbschnittFertig intValue] == 0x33) // Code fuer neu
@@ -865,7 +876,7 @@ private void button4_Click(object sender, EventArgs e)
          [NotificationDic setObject:[NSNumber numberWithInt:mausistdown] forKey:@"mausistdown"];
          // end verschieben
          
-         dauer2 = [dateA timeIntervalSinceNow]*1000;
+         //dauer2 = [dateA timeIntervalSinceNow]*1000;
          //NSLog(@"readUSB dauer bis (if Abschnittfertig): %f ms", dauer);
          
          //NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
@@ -1045,7 +1056,7 @@ private void button4_Click(object sender, EventArgs e)
                
          }// switch abschnittfertig
          
-         dauer3 = [dateA timeIntervalSinceNow]*1000;
+         //dauer3 = [dateA timeIntervalSinceNow]*1000;
          //NSLog(@"readUSB dauer bis nach switch: %f ms", dauer);
          
          if ([AnschlagSet count])
@@ -1136,27 +1147,27 @@ private void button4_Click(object sender, EventArgs e)
             
             else
             {
-               dauer4 = [dateA timeIntervalSinceNow]*1000;
+               //dauer4 = [dateA timeIntervalSinceNow]*1000;
                //NSLog(@"readUSB dauer vor writeCNCAbschnitt: %f ms", dauer);
                
                //NSLog(@"AbschnittFertig writeCNCAbschnitt abschnittfertig: %X",abschnittfertig);
                [self writeCNCAbschnitt];
-               dauer5 = [dateA timeIntervalSinceNow]*1000;
+               //dauer5 = [dateA timeIntervalSinceNow]*1000;
                //NSLog(@"readUSB dauer nach writeCNCAbschnitt: %f ms", dauer);
                
             }
             
          }
          
-         dauer6 = [dateA timeIntervalSinceNow]*1000;
+         //dauer6 = [dateA timeIntervalSinceNow]*1000;
          
          [NotificationDic setObject:HomeAnschlagSet forKey:@"homeanschlagset"];
          [NotificationDic setObject:[NSNumber numberWithInt:home] forKey:@"home"];
          [NotificationDic setObject:AbschnittFertig forKey:@"abschnittfertig"];
          
-         //NSLog(@"AbschnittFertig: %d",[AbschnittFertig intValue]);
+         NSLog(@"AbschnittFertig: %d",[AbschnittFertig intValue]);
          //NSLog(@"**   outposition  %d",[outPosition intValue]);
-         dauer7 = [dateA timeIntervalSinceNow]*1000;
+         //dauer7 = [dateA timeIntervalSinceNow]*1000;
          NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
          [nc postNotificationName:@"usbread" object:self userInfo:NotificationDic];
          
@@ -1164,7 +1175,7 @@ private void button4_Click(object sender, EventArgs e)
       
       anzDaten++;
       //[self setLastValueRead:dataRead];
-      dauer8 = [dateA timeIntervalSinceNow]*1000;
+      //dauer8 = [dateA timeIntervalSinceNow]*1000;
       //      fprintf(stderr,"dauer2 bis vor switch:\tdauer3 bis nach switch:\tdauer4 vor writeCNCAbschnitt:\tdauer5 nach writeCNCAbschnitt:\tdauer6 nach writeCNCAbschnitt:\tdauer7 nach notification:\n");
       /*
       fprintf(stderr,"%f\t", dauer2*-1);

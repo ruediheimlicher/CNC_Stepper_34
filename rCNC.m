@@ -201,6 +201,9 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
 	float DistanzA= hypotf(DistanzAX,DistanzAY);	// effektive Distanz A
 	float DistanzB= hypotf(DistanzBX,DistanzBY);	// effektive Distanz B
    
+   [tempDatenDic setObject:[NSNumber numberWithFloat:DistanzA] forKey: @"distanza"];
+   [tempDatenDic setObject:[NSNumber numberWithFloat:DistanzB] forKey: @"distanzb"];
+
    if (DistanzA< 0.5 || DistanzB < 0.5)
    {
    //   NSLog(@"i:  DistanzA: %2.2f DistanzB: %2.2f",DistanzA,DistanzB);

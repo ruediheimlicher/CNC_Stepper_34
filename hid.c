@@ -71,7 +71,8 @@ int rawhid_recv(int num, void *buf, int len, int timeout)
 	if (len < 1) return 0;
 	hid = get_hid(num);
 	if (!hid || !hid->open) return -1;
-	if ((b = hid->first_buffer) != NULL) {
+	if ((b = hid->first_buffer) != NULL)
+   {
 		if (len > b->len) len = b->len;
 		memcpy(buf, b->buf, len);
 		hid->first_buffer = b->next;
@@ -222,6 +223,7 @@ int rawhid_send(int num, void *buf, int len, int timeout)
 #warning "Send timeout not implemented on MACOSX"
 	IOReturn ret = IOHIDDeviceSetReport(hid->ref, kIOHIDReportTypeOutput, 0, buf, len);
 	result = (ret == kIOReturnSuccess) ? len : -1;
+   //fprintf(stderr,"rawhid_send B result: %d\n",result);
 #endif
 #if 0
 	// No matter what I tried this never actually sends an output
@@ -230,6 +232,7 @@ int rawhid_send(int num, void *buf, int len, int timeout)
 	// the sync call that works.  Is it an Apple bug?
 	// (submitted to Apple on 22-sep-2009, problem ID 7245050)
 	//
+   fprintf(stderr,"rawhid_send C\n");
 	IOHIDDeviceScheduleWithRunLoop(hid->ref, CFRunLoopGetCurrent(), kCFRunLoopDefaultMode);
 	// should already be scheduled with run loop by attach_callback,
 	// sadly this doesn't make any difference either way
@@ -249,6 +252,7 @@ int rawhid_send(int num, void *buf, int len, int timeout)
 		}
 	}
 #endif
+   //fprintf(stderr,"rawhid_send end result: %d\n",result);
 	return result;
 }
 
