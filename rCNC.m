@@ -2430,6 +2430,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             // Seite 1
             // ********
             
+            // Vektoren vorher, nachher
             float preva[2] = {prevax-ax,prevay-ay};
             float nexta[2] = {nextax-ax,nextay-ay};
             //            NSLog(@"i: %d  preva[0]: %2.4f preva[1]: %2.4f nexta[0]: %1.4f nexta[1]: %2.4f",i,preva[0],preva[1],nexta[0],nexta[1]);
@@ -2442,6 +2443,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             float nextnorma[2]= {(nexta[0])/nexthypoa,(nexta[1])/nexthypoa}; // naechster Normalenvektor
             */
             
+            // Laengen der Vektoren bestimmen
             float prevhypoa = 0;
             
             if (preva[0] || preva[1])
@@ -2456,7 +2458,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
                nexthypoa = hypot(nexta[0],nexta[1]); // Laenge des naechsten Weges
             }
             
-            //NSLog(@"i: %d  prevhypoa: %2.4f nexthypoa: %2.4f",i,prevhypoa,nexthypoa);
+            NSLog(@"i: %d  prevhypoa: %2.4f nexthypoa: %2.4f",i,prevhypoa,nexthypoa);
             
             float prevnorma[2] = {0.0,0.0};
             if (prevhypoa)
@@ -2464,6 +2466,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
                prevnorma[0]= (preva[0])/prevhypoa;
                prevnorma[1] = (preva[1])/prevhypoa; // vorheriger Normalenvektor
             }
+            
             
             
             float nextnorma[2] = {0.0,0.0};
@@ -2478,11 +2481,49 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             // Winkel aus Skalarprodukt der Einheitsvektoren
             float cosphia=prevnorma[0]*nextnorma[0]+ prevnorma[1]*nextnorma[1]; // cosinus des Zwischenwinkels
-            // Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
+            
+             // Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
+            
+            // Vorzeichen von cosphia
+            if (cosphia >=0)
+            {
+               // kleine Winkelunterschiede eliminieren
+               if (cosphia >0.99)
+               {
+                  NSLog(@"cosphia korr+");
+                  cosphia=1.0;
+                  cosphi2a=1.0;
+               }
+               else
+               {
+               cosphi2a=sqrtf((1+cosphia)/2);                       // cosinus des halben Zwischenwinkels
+               }
+            }
+            
+            else
+            {
+               // kleine Winkelunterschiede eliminieren
+               if (cosphia < (-0.99))
+               {
+                  NSLog(@"cosphia korr-");
+                  cosphia=-1.0;
+                  cosphi2a=-1.0;
+               }
+               else
+               {
+                  cosphi2a=-sqrtf((1+cosphia)/2);                       // cosinus des halben Zwischenwinkels
+               }
+               
+            }
+            
+            
+            
+            
+           
             
             //            NSLog(@"i: %d  prevhypoa: %2.4f nexthypoa: %2.4f cosphia: %1.8f",i,prevhypoa,nexthypoa,cosphia);
             
-            cosphi2a=sqrtf((1-cosphia)/2);                       // cosinus des halben Zwischenwinkels
+     //       cosphi2a=sqrtf((1-cosphia)/2);                       // cosinus des halben Zwischenwinkels
             //NSLog(@"i: %d cosphia: %2.4f",i,cosphia*1000);
             
             if (cosphia <0)
@@ -2505,7 +2546,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
              */
             
             float deta = preva[0]*wha[1]-preva[1]*wha[0];
-            if (deta >= 0)
+            
+            if (deta < 0)
             {
                seitenkorrektura *= -1;
             }
