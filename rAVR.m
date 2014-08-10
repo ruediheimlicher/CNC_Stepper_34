@@ -5496,7 +5496,7 @@ return returnInt;
    
    int startindexoffset = [KoordinatenTabelle count]-1;
    
-   NSLog(@"LibProfileingabeAktion startindexoffset: %d",startindexoffset);
+   //NSLog(@"LibProfileingabeAktion startindexoffset: %d",startindexoffset);
    
 	NSString* ProfilName;
    NSString* Profil1Name;
@@ -5650,7 +5650,7 @@ return returnInt;
    float TiefeA = ProfiltiefeA + [Basisabstand intValue] * pfeilung;
    float TiefeB = TiefeA - [Portalabstand intValue] * pfeilung;
    
-   NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f",pfeilung,TiefeA,TiefeB);
+  // NSLog(@"pfeilung: %2.4f TiefeA: %2.2f TiefeB: %2.2f",pfeilung,TiefeA,TiefeB);
    
    // + oder -? Korr 14. Juli 123
    if (mitOberseite && mitUnterseite)
@@ -5670,7 +5670,7 @@ return returnInt;
    float testB = TiefeB + ([Portalabstand intValue] - ([Spannweite intValue]+[Basisabstand intValue] ))*pfeilung;
   // testB = TiefeB + (([Spannweite intValue] ))*pfeilung;
    
-   NSLog(@"pfeilung 2: %2.4f TiefeA: %2.2f TiefeB: %2.2f testB: %2.2f",pfeilung,TiefeA,TiefeB, testB);
+  // NSLog(@"pfeilung 2: %2.4f TiefeA: %2.2f TiefeB: %2.2f testB: %2.2f",pfeilung,TiefeA,TiefeB, testB);
    
    /*
    switch ([GleichesProfilRadioKnopf selectedRow])
@@ -5710,7 +5710,7 @@ return returnInt;
    [Auslauftiefe setIntValue:[[ProfilDic objectForKey:@"auslauftiefe"]intValue]];
    [Auslauflaenge setIntValue:[[ProfilDic objectForKey:@"auslauflaenge"]intValue]];
    
-   NSLog(@"einlaufrand: %d auslaufrand: %d",einlaufrand,auslaufrand);
+   //NSLog(@"einlaufrand: %d auslaufrand: %d",einlaufrand,auslaufrand);
    
    // Einlauf-Schnittlinie
    
@@ -5897,7 +5897,7 @@ return returnInt;
 
    if (mitUnterseite)
    {
-      NSLog(@"Unterseite einfuegen");
+      //NSLog(@"Unterseite einfuegen");
 
       for (index=Nasenindex;index< [ProfilArrayA count];index++) // Alle Punkte abfahren
       {
@@ -6064,7 +6064,7 @@ return returnInt;
    {
       KoordinatenTabelle = [CNC addAbbrandVonKoordinaten:KoordinatenTabelle mitAbbrandA:abbranda  mitAbbrandB:abbrandb aufSeite:0 von:von bis:bis];
    }
-   NSLog(@"AbbrandCheckbox end");
+   //NSLog(@"AbbrandCheckbox end");
   
    NSDictionary* RahmenDic = [self RahmenDic];
    float maxX = [[RahmenDic objectForKey:@"maxx"]floatValue];
@@ -6899,7 +6899,7 @@ return returnInt;
 - (IBAction)reportBlockanfuegen:(id)sender
 {
    
-   NSLog(@"reportBlockanfuegen ");
+   //NSLog(@"reportBlockanfuegen ");
    [self reportBlockkonfigurieren:NULL];
    if ([KoordinatenTabelle count])
    {
@@ -8372,7 +8372,7 @@ return returnInt;
       
       profilpopindex = [[ProfilPop itemTitles]indexOfObject:Profil1Name];
       
-      NSLog(@"reportProfilUnterseiteTask profilpopindex: %ld Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
+      //NSLog(@"reportProfilUnterseiteTask profilpopindex: %ld Profil aus ProfilNameFeldA: %@",profilpopindex,Profil1Name);
       if (profilpopindex == NSNotFound)
       {
          NSLog(@"reportProfilUnterseiteTask kein Profil");

@@ -2378,7 +2378,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
     -Neue Koordinaten in Dic einsetzen: abrax, abray, abrbx, abrby.
     
     */
-   fprintf(stderr,"i\t ax\tay\tpreva[0]\tpreva[1]\tnexta[0]\tnexta[1]\twha[0]\twha[1]\t prevnorma[0]\tprevnorma[1]\tnextnorma[0]\tnextnorma[1]\tcosphia\tlastwha[0]\tlastwha[1]\tprevhypoa\tnexthypoa\tcospsia\n");
+   //fprintf(stderr,"i\t ax\tay\tpreva[0]\tpreva[1]\tnexta[0]\tnexta[1]\twha[0]\twha[1]\t prevnorma[0]\tprevnorma[1]\tnextnorma[0]\tnextnorma[1]\tcosphia\tlastwha[0]\tlastwha[1]\tprevhypoa\tnexthypoa\tcospsia\n");
 
    for (i=0; i<[Koordinatentabelle count];i++)
    {
@@ -2517,7 +2517,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
                // kleine Winkelunterschiede eliminieren
                if (cosphia >0.999)
                {
-                  NSLog(@"cosphia korr+");
+                  //NSLog(@"cosphia korr+");
                   cosphia=1.0;
                   cosphi2a=1.0;
                }
@@ -2532,7 +2532,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
                // kleine Winkelunterschiede eliminieren
                if (cosphia < (-0.999))
                {
-                  NSLog(@"cosphia korr-");
+                  //NSLog(@"cosphia korr-");
                   cosphia=-1.0;
                   cosphi2a=-1.0;
                }
@@ -2650,7 +2650,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
                // kleine Winkelunterschiede eliminieren
                if (cosphib >0.999)
                {
-                  NSLog(@"cosphia korr+");
+                  //NSLog(@"cosphia korr+");
                   cosphib=1.0;
                   cosphi2b=1.0;
                }
@@ -2665,7 +2665,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
                // kleine Winkelunterschiede eliminieren
                if (cosphib < (-0.999))
                {
-                  NSLog(@"cosphib korr-");
+                  //NSLog(@"cosphib korr-");
                   cosphib=-1.0;
                   cosphi2b=-1.0;
                }
@@ -2713,7 +2713,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
          if (i>[Koordinatentabelle count]-20)
          {
-            fprintf(stderr,"%d\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\n",i, ax,ay,preva[0],preva[1],nexta[0],nexta[1],wha[0],wha[1], prevnorma[0],prevnorma[1],nextnorma[0],nextnorma[1],cosphia,lastwha[0],lastwha[1],prevhypoa,nexthypoa,cospsia);
+          //  fprintf(stderr,"%d\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\n",i, ax,ay,preva[0],preva[1],nexta[0],nexta[1],wha[0],wha[1], prevnorma[0],prevnorma[1],nextnorma[0],nextnorma[1],cosphia,lastwha[0],lastwha[1],prevhypoa,nexthypoa,cospsia);
          }
             //            NSLog(@"i: %d  lasthypoa: %2.4f currhypoa: %2.4f cospsia: %1.8f",i,lasthypoa,currhypoa,cospsia);
             
@@ -2783,7 +2783,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          
          if (i==bis-1) // letzter Punkt, Abbrandvektor soll senkrecht stehen
          {
-            NSLog(@"i=bis-1");
+            //NSLog(@"i=bis-1");
             float deltaax=prevax-ax;
             float deltaay=prevay-ay;
             float normalenhypoa = hypotf(deltaax, deltaay);

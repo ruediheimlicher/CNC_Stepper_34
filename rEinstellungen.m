@@ -2242,15 +2242,15 @@
    [FlipHTaste setState:0];
    [FlipVTaste setState:0];
    [ReverseTaste setState:0];
-   NSLog(@"profil1: %d",profil1);
+   //NSLog(@"profil1: %d",profil1);
    if (profil1)
    {
       
       int index=profil1; // Item 0 ist Titel
-      NSLog(@"xA");
+      //NSLog(@"xA");
       [Profile2 selectItemAtIndex:index];    // Profil 2 ist wahrscheinlich gleich
       
-      NSLog(@"doProfil1PopTaskMitProfil Profil aus Pop: %@",[Profile1 itemTitleAtIndex:index]);
+      //NSLog(@"doProfil1PopTaskMitProfil Profil aus Pop: %@",[Profile1 itemTitleAtIndex:index]);
       Profil1Name=[Profile1 itemTitleAtIndex:index];
       NSString* Profilname = [Profil1Name stringByAppendingPathExtension:@"txt"];
       NSString* Profilpfad = [ProfilLibPfad stringByAppendingPathComponent:Profilname];
@@ -2270,7 +2270,7 @@
          {
             Profil1Name = [NSString stringWithString:[[ElementLibArray objectAtIndex:index]objectForKey:@"name"]];
          }
-         NSLog(@"doProfil1PopTaskMitProfil ProfilName1: %@",Profil1Name);
+         //NSLog(@"doProfil1PopTaskMitProfil ProfilName1: %@",Profil1Name);
          if ([ProfilDic objectForKey:@"profilarray"])
          {
             [Profil1Array removeAllObjects];
@@ -2304,7 +2304,7 @@
 
 - (void)doProfilEinfuegenTask
 {
-   NSLog(@"reportProfilEinfuegen");
+   //NSLog(@"reportProfilEinfuegen");
    if ([Profil1Array count])
    {
       NSMutableDictionary* ProfilDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
@@ -2351,11 +2351,11 @@
       [PList setObject:[NSNumber numberWithInt:[Einlaufrand intValue]] forKey:@"einlaufrand"];
       [PList setObject:[NSNumber numberWithInt:[Auslaufrand intValue]] forKey:@"auslaufrand"];
       
-       NSLog(@"reportProfilEinfuegen userInfo:ProfilDic count: %ld",(unsigned long)[ProfilDic count]);
+       //NSLog(@"reportProfilEinfuegen userInfo:ProfilDic count: %ld",(unsigned long)[ProfilDic count]);
       NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
       [nc postNotificationName:@"LibProfileingabe" object:self userInfo: ProfilDic];
    }
-   NSLog(@"reportProfilEinfuegen end");
+   //NSLog(@"reportProfilEinfuegen end");
 
 }
 
