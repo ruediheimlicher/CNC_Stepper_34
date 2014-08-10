@@ -5948,7 +5948,7 @@ return returnInt;
       by = [[[KoordinatenTabelle lastObject]objectForKey:@"by"]floatValue];
       
       NSArray* NasenleistenAuslaufArray=[CNC NasenleistenauslaufMitLaenge:auslauflaenge mitTiefe:auslauftiefe];
-      NSLog(@"AVR NasenleistenAuslaufArray: %@",[NasenleistenAuslaufArray description]);
+      //NSLog(@"AVR NasenleistenAuslaufArray: %@",[NasenleistenAuslaufArray description]);
       int l;
       for(l=1;l<[NasenleistenAuslaufArray count];l++)
       {
@@ -5972,7 +5972,7 @@ return returnInt;
          {
             //NSLog(@"NasenleistenAuslaufArray pwm-index: %2.2f",[[[NasenleistenAuslaufArray objectAtIndex:l]objectAtIndex:2]floatValue]);
             float temppwm = [[[NasenleistenAuslaufArray objectAtIndex:l]objectAtIndex:2]floatValue]*origpwm;
-            NSLog(@"NasenleistenAuslaufArray pwm: %2.2f",temppwm);
+            //NSLog(@"NasenleistenAuslaufArray pwm: %2.2f",temppwm);
             [tempZeilenDic setObject:[NSNumber numberWithInt:temppwm] forKey:@"pwm"];
          
          }
@@ -6904,18 +6904,18 @@ return returnInt;
       {
          //NSLog(@"BlockKoordinatenTabelle: %@",[BlockKoordinatenTabelle description]);
          int i=0;
-         NSLog(@"H");
+         //NSLog(@"H");
          [KoordinatenTabelle removeObjectAtIndex:0];
          for(i=0;i<[BlockKoordinatenTabelle count];i++)
          {
-            NSLog(@"i");
+            //NSLog(@"i");
                if ([[[BlockKoordinatenTabelle objectAtIndex:i]objectForKey:@"lage"]intValue]) // Auslauf
                {
                   [KoordinatenTabelle addObject:[BlockKoordinatenTabelle objectAtIndex:i] ];
                }
             else // Einlauf
             {
-               NSLog(@"J");
+               //NSLog(@"J");
                [KoordinatenTabelle insertObject:[BlockKoordinatenTabelle objectAtIndex:i] atIndex:i];
             }
             

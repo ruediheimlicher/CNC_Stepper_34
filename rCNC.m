@@ -2354,6 +2354,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
    float wegobena=0, weguntena=0;
    float wegobenb=0, weguntenb=0;
    
+   int prevseitea=1;
+   int prevseiteb=1;
+   
+   int prevseitenkorrektura=1;
+   int prevseitenkorrekturb=1;
+
+   
    
    //   NSLog(@"addAbbrandVonKoordinaten ax: %@",[Koordinatentabelle valueForKey:@"ax"]);
    //   NSLog(@"addAbbrandVonKoordinaten ay: %@",[Koordinatentabelle valueForKey:@"ay"]);
@@ -2378,6 +2385,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
       NSMutableDictionary* tempDic=[NSMutableDictionary dictionaryWithDictionary:[Koordinatentabelle objectAtIndex:i]];
       if (i>von-1 && i<bis) // Abbrandbereich, von ist 1-basiert
       {
+         fprintf(stderr,"*** Punkt %d\n",i);
          float ax = [[[Koordinatentabelle objectAtIndex:i]objectForKey:@"ax"]floatValue];
          float ay = [[[Koordinatentabelle objectAtIndex:i]objectForKey:@"ay"]floatValue];
          float bx = [[[Koordinatentabelle objectAtIndex:i]objectForKey:@"bx"]floatValue];
@@ -2418,16 +2426,55 @@ PortA=vs[n & 3]; warte10ms(); n++;
          if ((i<bis-1) && (i>von)) // Punkt im Abbrandbereich
          {
             //NSLog(@" ");
+            // ********
             // Seite 1
+            // ********
+            
             float preva[2] = {prevax-ax,prevay-ay};
             float nexta[2] = {nextax-ax,nextay-ay};
             //            NSLog(@"i: %d  preva[0]: %2.4f preva[1]: %2.4f nexta[0]: %1.4f nexta[1]: %2.4f",i,preva[0],preva[1],nexta[0],nexta[1]);
             
+            /*
             float prevhypoa=hypot(preva[0],preva[1]); // Laenge des vorherigen Weges
             float nexthypoa=hypot(nexta[0],nexta[1]); // Laenge des naechsten Weges
             
             float prevnorma[2]= {(preva[0])/prevhypoa,(preva[1])/prevhypoa}; // vorheriger Normalenvektor
             float nextnorma[2]= {(nexta[0])/nexthypoa,(nexta[1])/nexthypoa}; // naechster Normalenvektor
+            */
+            
+            float prevhypoa = 0;
+            
+            if (preva[0] || preva[1])
+            {
+               prevhypoa=hypot(preva[0],preva[1]); // Laenge des vorherigen Weges
+            }
+            
+            float nexthypoa= 0;
+            
+            if (nexta[0] || nexta[1])
+            {
+               nexthypoa = hypot(nexta[0],nexta[1]); // Laenge des naechsten Weges
+            }
+            
+            //NSLog(@"i: %d  prevhypoa: %2.4f nexthypoa: %2.4f",i,prevhypoa,nexthypoa);
+            
+            float prevnorma[2] = {0.0,0.0};
+            if (prevhypoa)
+            {
+               prevnorma[0]= (preva[0])/prevhypoa;
+               prevnorma[1] = (preva[1])/prevhypoa; // vorheriger Normalenvektor
+            }
+            
+            
+            float nextnorma[2] = {0.0,0.0};
+            if (nexthypoa)
+            {
+               nextnorma[0]= (nexta[0])/nexthypoa;
+               nextnorma[1] = (nexta[1])/nexthypoa; // vorheriger Normalenvektor
+            }
+            
+
+            
             
             // Winkel aus Skalarprodukt der Einheitsvektoren
             float cosphia=prevnorma[0]*nextnorma[0]+ prevnorma[1]*nextnorma[1]; // cosinus des Zwischenwinkels
@@ -2480,16 +2527,50 @@ PortA=vs[n & 3]; warte10ms(); n++;
             //           NSLog(@"i: %d  wha[0]: %2.4f wha[1]: %2.4f cosphi: %1.8f",i,wha[0],wha[1],cosphia);
             
             
+            // *******
             // Seite 2
+            // *******
             float prevb[2]= {prevbx-bx,prevby-by};
             float nextb[2]= {nextbx-bx,nextby-by};
             
+            /*
             float prevhypob=hypotf(prevb[0],prevb[1]);
             float nexthypob=hypotf(nextb[0],nextb[1]);
             
             float prevnormb[2]= {prevb[0]/prevhypob,prevb[1]/prevhypob};
             float nextnormb[2]= {nextb[0]/nexthypob,nextb[1]/nexthypob};
+            */
             
+            float prevhypob = 0;
+            
+            if (prevb[0] || prevb[1])
+            {
+               prevhypob=hypot(prevb[0],prevb[1]); // Laenge des vorherigen Weges
+            }
+            
+            float nexthypob= 0;
+            
+            if (nextb[0] || nextb[1])
+            {
+               nexthypob = hypot(nextb[0],nextb[1]); // Laenge des naechsten Weges
+            }
+            
+            float prevnormb[2] = {0.0,0.0};
+            if (prevhypoa)
+            {
+               prevnormb[0]= (prevb[0])/prevhypob;
+               prevnormb[1] = (prevb[1])/prevhypob; // vorheriger Normalenvektor
+            }
+            
+            
+            
+            float nextnormb[2] = {0.0,0.0};
+            if (nexthypoa)
+            {
+               nextnormb[0]= (nextb[0])/nexthypob;
+               nextnormb[1] = (nextb[1])/nexthypob; // vorheriger Normalenvektor
+            }
+
             // Winkel aus Skalarprodukt der Einheitsvektoren
             float cosphib=prevnormb[0]*nextnormb[0]+ prevnormb[1]*nextnormb[1];
             
