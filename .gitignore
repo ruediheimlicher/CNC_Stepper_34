@@ -7,3 +7,4 @@ keyedobjects.nib
 applet.*
 main.scpt
 applet
+*_new.c
