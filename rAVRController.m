@@ -752,7 +752,8 @@ private void button4_Click(object sender, EventArgs e)
     */
    result = rawhid_recv(0, buffer, 32, 50);
    
-   fprintf(stderr,"readUSB rawhid_recv: %d\n",result);
+
+//fprintf(stderr,"readUSB rawhid_recv: %d\n",result);
    dataRead = [NSData dataWithBytes:buffer length:reportSize];
    
    //NSLog(@"ignoreDuplicates: %d",ignoreDuplicates);
@@ -801,7 +802,7 @@ private void button4_Click(object sender, EventArgs e)
       
       NSNumber* AbschnittFertig=[NSNumber numberWithInt:(UInt8)buffer[0]];
       NSLog(@"**read_USB   buffer 0 %d",(UInt8)buffer[0]);
-      
+
      // NSNumber* Abschnittnummer=[NSNumber numberWithInt:(UInt8)buffer[5]];
       
       //NSLog(@"**readUSB   buffer 5 %d",(UInt8)buffer[5]);
