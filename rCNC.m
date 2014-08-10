@@ -2404,6 +2404,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          float prevby = 0;
          
          float cosphia = 0; // cos des halben Winkels
+         float cosphib = 0; // cos des halben Winkels
          float cosphi2a = 0; // cos des halben Winkels
          float cosphi2b = 0; // cos des halben Winkels
          float wha[2] = {}; // Vektor der Winkelhalbierenden a
@@ -2435,7 +2436,9 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             // Vektoren vorher, nachher
             //float preva[2] = {prevax-ax,prevay-ay};
-            float preva[2] = {prevax-ax,prevay-ay};
+            //float preva[2] = {prevax-ax,prevay-ay};
+            
+            float preva[2] = {ax-prevax,ay-prevay};
             float nexta[2] = {nextax-ax,nextay-ay};
             //NSLog(@"i: %d  preva[0]: %2.4f preva[1]: %2.4f nexta[0]: %1.4f nexta[1]: %2.4f",i,preva[0],preva[1],nexta[0],nexta[1]);
             
@@ -2452,20 +2455,6 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             if (preva[0] || preva[1])
             {
-               /*
-               if (preva[0] && (preva[1]==0))// waagrecht
-               {
-                  prevhypoa =preva[0];
-               }
-               else if (preva[1] && (preva[0]==0))// senkrecht
-               {
-                  prevhypoa =preva[1];
-               }
-               else
-               {
-                prevhypoa=hypot(preva[0],preva[1]); // Laenge des vorherigen Weges
-               }
-                */
                prevhypoa=hypot(preva[0],preva[1]); // Laenge des vorherigen Weges
             }
             else
@@ -2492,8 +2481,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
             float prevnorma[2] = {0.0,0.0};
             if (prevhypoa)
             {
-               prevnorma[0]= (preva[0])/prevhypoa;
-               prevnorma[1] = (preva[1])/prevhypoa; // vorheriger Normalenvektor
+               prevnorma[0]= -(preva[1])/prevhypoa;
+               prevnorma[1] = (preva[0])/prevhypoa; // vorheriger Normalenvektor
             }
             else
             {
@@ -2505,8 +2494,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
             float nextnorma[2] = {0.0,0.0};
             if (nexthypoa)
             {
-               nextnorma[0]= (nexta[0])/nexthypoa;
-               nextnorma[1] = (nexta[1])/nexthypoa; // vorheriger Normalenvektor
+               nextnorma[0]= -(nexta[1])/nexthypoa;
+               nextnorma[1] = (nexta[0])/nexthypoa; // vorheriger Normalenvektor
             }
             else
             {
@@ -2526,9 +2515,9 @@ PortA=vs[n & 3]; warte10ms(); n++;
             if (cosphia >=0)
             {
                // kleine Winkelunterschiede eliminieren
-               if (cosphia >0.99)
+               if (cosphia >0.999)
                {
-                  //NSLog(@"cosphia korr+");
+                  NSLog(@"cosphia korr+");
                   cosphia=1.0;
                   cosphi2a=1.0;
                }
@@ -2541,9 +2530,9 @@ PortA=vs[n & 3]; warte10ms(); n++;
             else
             {
                // kleine Winkelunterschiede eliminieren
-               if (cosphia < (-0.99))
+               if (cosphia < (-0.999))
                {
-                  //NSLog(@"cosphia korr-");
+                  NSLog(@"cosphia korr-");
                   cosphia=-1.0;
                   cosphi2a=-1.0;
                }
@@ -2611,7 +2600,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             // *******
             // Seite 2
             // *******
-            float prevb[2]= {prevbx-bx,prevby-by};
+            float prevb[2]= {bx-prevbx,by-prevby};
             float nextb[2]= {nextbx-bx,nextby-by};
             
             /*
@@ -2637,10 +2626,11 @@ PortA=vs[n & 3]; warte10ms(); n++;
             }
             
             float prevnormb[2] = {0.0,0.0};
+            
             if (prevhypoa)
             {
-               prevnormb[0]= (prevb[0])/prevhypob;
-               prevnormb[1] = (prevb[1])/prevhypob; // vorheriger Normalenvektor
+               prevnormb[0]= -(prevb[1])/prevhypob;
+               prevnormb[1] = (prevb[0])/prevhypob; // vorheriger Normalenvektor
             }
             
             
@@ -2648,15 +2638,49 @@ PortA=vs[n & 3]; warte10ms(); n++;
             float nextnormb[2] = {0.0,0.0};
             if (nexthypoa)
             {
-               nextnormb[0]= (nextb[0])/nexthypob;
-               nextnormb[1] = (nextb[1])/nexthypob; // vorheriger Normalenvektor
+               nextnormb[0]= -(nextb[1])/nexthypob;
+               nextnormb[1] = (nextb[0])/nexthypob; // vorheriger Normalenvektor
             }
 
             // Winkel aus Skalarprodukt der Einheitsvektoren
             float cosphib=prevnormb[0]*nextnormb[0]+ prevnormb[1]*nextnormb[1];
             
+            if (cosphib >=0)
+            {
+               // kleine Winkelunterschiede eliminieren
+               if (cosphib >0.999)
+               {
+                  NSLog(@"cosphia korr+");
+                  cosphib=1.0;
+                  cosphi2b=1.0;
+               }
+               else
+               {
+                  cosphi2b=sqrtf((1+cosphib)/2);                       // cosinus des halben Zwischenwinkels
+               }
+            }
+            
+            else
+            {
+               // kleine Winkelunterschiede eliminieren
+               if (cosphib < (-0.999))
+               {
+                  NSLog(@"cosphib korr-");
+                  cosphib=-1.0;
+                  cosphi2b=-1.0;
+               }
+               else
+               {
+                  cosphi2b=-sqrtf((1+cosphib)/2);                       // cosinus des halben Zwischenwinkels
+               }
+               
+            }
+            
+
+            
+            
             // Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
-            cosphi2b=sqrtf((1-cosphib)/2);
+            //cosphi2b=sqrtf((1-cosphib)/2);
             
             // Winkelhalbierende
             whb[0] = prevnormb[0]+ nextnormb[0];
@@ -2664,7 +2688,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             float detb = prevb[0]*whb[1]-prevb[1]*whb[0];
             
-            if (detb >= 0)
+            if (detb < 0)
             {
                seitenkorrekturb *= -1;
             }
