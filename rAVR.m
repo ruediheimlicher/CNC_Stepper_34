@@ -8397,10 +8397,9 @@ return returnInt;
 
    
    
-   //[CNC_BlockAnfuegenTaste performClick:NULL];
+   [CNC_BlockAnfuegenTaste performClick:NULL];
   
    
-   NSLog(@"G");
    [RechtsLinksRadio setSelectedSegment:0];
    
 }
