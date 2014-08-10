@@ -172,7 +172,7 @@ return sqrt(dX*dX + dY*dY);
 
 - (int)clickedAbschnittvonMaus:(NSPoint)derPunkt
 {
-   //NSLog(@"clickedAbschnittvonMaus: x: %2.2f y: %2.2f",derPunkt.x,derPunkt.y);
+   NSLog(@"clickedAbschnittvonMaus: x: %2.2f y: %2.2f",derPunkt.x,derPunkt.y);
    int index=-1;
    float delta=4;
    //NSRect KlickFeld=NSMakeRect(derPunkt.x-3, derPunkt.y-3, 6, 6);
@@ -181,24 +181,26 @@ return sqrt(dX*dX + dY*dY);
    
 	for(i=0;i<[DatenArray count]-1;i++)
 	{
+      NSLog(@"clickedAbschnittvonMaus: i:%d",i);
 		NSPoint tempPunktA=NSMakePoint([[[DatenArray objectAtIndex:i]objectForKey:@"ax"]floatValue], [[[DatenArray objectAtIndex:i]objectForKey:@"ay"]floatValue]);
 		NSPoint tempPunktB=NSMakePoint([[[DatenArray objectAtIndex:i+1]objectForKey:@"ax"]floatValue], [[[DatenArray objectAtIndex:i+1]objectForKey:@"ay"]floatValue]);
       //NSLog(@"tempPunktA: x: %2.2f y: %2.2f",tempPunktA.x,tempPunktA.y);
       //NSLog(@"tempPunktB: x: %2.2f y: %2.2f",tempPunktB.x,tempPunktB.y);
-		float tanphi=(tempPunktA.y-tempPunktB.y)/(tempPunktA.x-tempPunktB.x);
+//		float tanphi=(tempPunktA.y-tempPunktB.y)/(tempPunktA.x-tempPunktB.x);
       float dist= sqrt(pow((tempPunktA.y-tempPunktB.y),2)+pow((tempPunktA.x-tempPunktB.x),2));
       float sinphi=(tempPunktB.y-tempPunktA.y)/dist;
       float cosphi=(tempPunktB.x-tempPunktA.x)/dist;
       float deltax=delta*sinphi;
       float deltay=delta*cosphi;
       //NSLog(@"dist: %2.2f sinphi: %2.2f cosphi: %2.2f deltax: %2.2f deltay: %2.2f", dist, sinphi, cosphi, deltax, deltay);
-      NSBezierPath* clickPfad=[NSBezierPath bezierPath];;
+      NSBezierPath* clickPfad=[NSBezierPath bezierPath];
       [clickPfad moveToPoint:NSMakePoint(tempPunktA.x+deltax,tempPunktA.y-deltay)];
       [clickPfad lineToPoint:NSMakePoint(tempPunktB.x+deltax,tempPunktB.y-deltay)];
       [clickPfad lineToPoint:NSMakePoint(tempPunktB.x-deltax,tempPunktB.y+deltay)];
       [clickPfad lineToPoint:NSMakePoint(tempPunktA.x-deltax,tempPunktA.y+deltay)];
       //[clickPfad stroke];
-      bool hit=[clickPfad containsPoint:derPunkt];
+      
+      BOOL hit=[clickPfad containsPoint:derPunkt];
       if (hit)
       {
          index=i;
@@ -219,24 +221,25 @@ return sqrt(dX*dX + dY*dY);
 {
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 
-	//NSLog(@"mouseDown: %@",[derEvent description]);
+	NSLog(@"mouseDown: %@",[derEvent description]);
    //NSLog(@"mouseDown: modifierFlags: %d NSShiftKeyMask: %d",[derEvent modifierFlags],NSShiftKeyMask);
    unsigned int shift =[derEvent modifierFlags] & NSShiftKeyMask;
    if (shift)
    {
-   //NSLog(@"shift");
+   NSLog(@"shift");
    }
    else
    {
-      //NSLog(@"kein shift");
+      NSLog(@"kein shift");
    }
+   
 	NSPoint location = [derEvent locationInWindow];
 	NSPoint local_point = [self convertPoint:location fromView:nil];
    mausistdown=1;
    NSMutableDictionary* MausDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [MausDic setObject:[NSNumber numberWithInt:1] forKey:@"mausistdown"];
    [MausDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
-
+   NSLog(@"mouseDown: notific mausdaten");
    [nc postNotificationName:@"mausdaten" object:self userInfo:MausDic];
 
 	float x=local_point.x;
@@ -253,16 +256,17 @@ return sqrt(dX*dX + dY*dY);
 		oldMauspunkt = local_point;
 	}
 	
-	//NSLog(@"mousdown x: %2.2f y: %2.2f",x,y);
+	NSLog(@"mousdown x: %2.2f y: %2.2f",x,y);
 	//NSLog(@"mousdown scale x: %2.2f y: %2.2f",local_point.x,local_point.y);
 	
    int linehit=0;
    if ([DatenArray count]>3)
    {
-      int clickAbschnitt=[self clickedAbschnittvonMaus:local_point];
+      int clickAbschnitt=[self clickedAbschnittvonMaus:local_point]+1;
+      NSLog(@"clickAbschnitt: %d",clickAbschnitt);
       if (clickAbschnitt>=0)
       {
-         //NSLog(@"Profilgraph clickAbschnitt :%d",clickAbschnitt);
+         NSLog(@"Profilgraph clickAbschnitt :%d",clickAbschnitt);
          NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
          [NotificationDic setObject:NSStringFromPoint(local_point) forKey:@"mauspunkt"];
          [NotificationDic setObject:[NSNumber  numberWithInt:clickAbschnitt]forKey:@"klickabschnitt"];
@@ -270,9 +274,13 @@ return sqrt(dX*dX + dY*dY);
 
          [nc postNotificationName:@"mausklick" object:self userInfo:NotificationDic];
       }
+      else
+      {
+         NSLog(@"kein Klick");
+      }
       
    }
-	//NSLog(@" ");
+	NSLog(@"B");
    //NSLog(@" ");
    NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 
@@ -290,7 +298,7 @@ return sqrt(dX*dX + dY*dY);
    // Angeklickte Seite angeben
    [NotificationDic setObject:[NSNumber  numberWithInt:Klickseite]forKey:@"klickseite"];
 
-   //NSLog(@"mousedown startklickpunkt: %d clickedPunkt: %d",startklickpunkt,Klickpunkt);
+   NSLog(@"mousedown startklickpunkt: %d clickedPunkt: %d",startklickpunkt,Klickpunkt);
 	if (Klickpunkt> -1) // Punkt angeklickt
 	{
       
@@ -345,7 +353,7 @@ return sqrt(dX*dX + dY*dY);
       }
       else // Neuanfang, Vorbereitung fuer Aktion mit shift
       {
-         //NSLog(@"kein shift");
+         NSLog(@"kein shift");
          [KlicksetA removeAllIndexes];
          startklickpunkt=Klickpunkt; // Punkt merken
          [NotificationDic setObject:NSStringFromRange(NSMakeRange(0,0)) forKey:@"klickrange"];
@@ -369,7 +377,7 @@ return sqrt(dX*dX + dY*dY);
 		//NSLog(@"mousedown clickedPunkt: %d",klickpunkt);
       //NSLog(@"mousedown NotificationDic: %@",[NotificationDic description]);
 		//[self setNeedsDisplay:YES];
-		
+		NSLog(@"mouseDown: notific mausklick");
       [nc postNotificationName:@"mausklick" object:self userInfo:NotificationDic];
 	}
 	else // Range reseten
@@ -383,8 +391,10 @@ return sqrt(dX*dX + dY*dY);
 		klickrange=NSMakeRange(0,0);
       startklickpunkt=-1;
 		nc=[NSNotificationCenter defaultCenter];
+      NSLog(@"mouseDown: notific mauspunkt");
 		[nc postNotificationName:@"mauspunkt" object:self userInfo:NotificationDic];
 	}
+   NSLog(@"mouseDown  end");
 }
 
 - (void)mouseUp:(NSEvent*)derEvent
