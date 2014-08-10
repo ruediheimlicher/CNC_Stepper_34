@@ -1858,6 +1858,8 @@ return returnInt;
       
    }
    
+   
+   
    [tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:0]];
 	
    //   for (i=0;i<[KoordinatenTabelle count]-1;i++)
@@ -1897,6 +1899,7 @@ return returnInt;
          //nowabrax = nowax;
          //nowabray = noway;
       }
+      
       // Dic des naechsten Datensatzes
       
       //      NSDictionary* tempNextDic=[KoordinatenTabelle objectAtIndex:i+1];
@@ -1925,7 +1928,7 @@ return returnInt;
       
       if ([[tempNowDic objectForKey:@"teil"]intValue]==30)
       {
-         //fprintf(stderr,"unten   %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,distA,distB,wegaunten,wegbunten);
+         fprintf(stderr,"unten   %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,distA,distB,wegaunten,wegbunten);
          wegaunten += distA;
          wegbunten += distB;
       }
@@ -1949,12 +1952,12 @@ return returnInt;
       {
          datensatzok = 1;
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
-         //NSLog(@"cncindex: %d distanz OK. distA: %2.2f distB: %2.2f",cncindex,distA,distB);
+         NSLog(@"i: %d cncindex: %d distanz OK. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
          
       }
       else
       {
-         //NSLog(@"i: %d cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
+         NSLog(@"i: %d cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
          
       }
       
@@ -8391,7 +8394,12 @@ return returnInt;
    [CNC_Eingabe doSchliessenTask];
    
    //   [CNC_BlockKonfigurierenTaste performClick:NULL];
-   [CNC_BlockAnfuegenTaste performClick:NULL];
+
+   
+   
+   //[CNC_BlockAnfuegenTaste performClick:NULL];
+  
+   
    NSLog(@"G");
    [RechtsLinksRadio setSelectedSegment:0];
    

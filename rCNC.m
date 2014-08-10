@@ -2360,7 +2360,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
    int prevseitenkorrektura=1;
    int prevseitenkorrekturb=1;
 
-   
+   float prevhypoa = 0;
+   float nexthypoa= 0;
    
    //   NSLog(@"addAbbrandVonKoordinaten ax: %@",[Koordinatentabelle valueForKey:@"ax"]);
    //   NSLog(@"addAbbrandVonKoordinaten ay: %@",[Koordinatentabelle valueForKey:@"ay"]);
@@ -2377,7 +2378,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
     -Neue Koordinaten in Dic einsetzen: abrax, abray, abrbx, abrby.
     
     */
-   
+   fprintf(stderr,"i\t ax\tay\tpreva[0]\tpreva[1]\tnexta[0]\tnexta[1]\twha[0]\twha[1]\t prevnorma[0]\tprevnorma[1]\tnextnorma[0]\tnextnorma[1]\tcosphia\tlastwha[0]\tlastwha[1]\tprevhypoa\tnexthypoa\tcospsia\n");
+
    for (i=0; i<[Koordinatentabelle count];i++)
    {
       int seitenkorrektura = 1;
@@ -2385,7 +2387,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
       NSMutableDictionary* tempDic=[NSMutableDictionary dictionaryWithDictionary:[Koordinatentabelle objectAtIndex:i]];
       if (i>von-1 && i<bis) // Abbrandbereich, von ist 1-basiert
       {
-         fprintf(stderr,"*** Punkt %d\n",i);
+         //fprintf(stderr,"*** Punkt %d\n",i);
          float ax = [[[Koordinatentabelle objectAtIndex:i]objectForKey:@"ax"]floatValue];
          float ay = [[[Koordinatentabelle objectAtIndex:i]objectForKey:@"ay"]floatValue];
          float bx = [[[Koordinatentabelle objectAtIndex:i]objectForKey:@"bx"]floatValue];
@@ -2401,6 +2403,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          float prevbx = 0;
          float prevby = 0;
          
+         float cosphia = 0; // cos des halben Winkels
          float cosphi2a = 0; // cos des halben Winkels
          float cosphi2b = 0; // cos des halben Winkels
          float wha[2] = {}; // Vektor der Winkelhalbierenden a
@@ -2431,9 +2434,10 @@ PortA=vs[n & 3]; warte10ms(); n++;
             // ********
             
             // Vektoren vorher, nachher
+            //float preva[2] = {prevax-ax,prevay-ay};
             float preva[2] = {prevax-ax,prevay-ay};
             float nexta[2] = {nextax-ax,nextay-ay};
-            //            NSLog(@"i: %d  preva[0]: %2.4f preva[1]: %2.4f nexta[0]: %1.4f nexta[1]: %2.4f",i,preva[0],preva[1],nexta[0],nexta[1]);
+            //NSLog(@"i: %d  preva[0]: %2.4f preva[1]: %2.4f nexta[0]: %1.4f nexta[1]: %2.4f",i,preva[0],preva[1],nexta[0],nexta[1]);
             
             /*
             float prevhypoa=hypot(preva[0],preva[1]); // Laenge des vorherigen Weges
@@ -2444,27 +2448,56 @@ PortA=vs[n & 3]; warte10ms(); n++;
             */
             
             // Laengen der Vektoren bestimmen
-            float prevhypoa = 0;
+            
             
             if (preva[0] || preva[1])
             {
+               /*
+               if (preva[0] && (preva[1]==0))// waagrecht
+               {
+                  prevhypoa =preva[0];
+               }
+               else if (preva[1] && (preva[0]==0))// senkrecht
+               {
+                  prevhypoa =preva[1];
+               }
+               else
+               {
+                prevhypoa=hypot(preva[0],preva[1]); // Laenge des vorherigen Weges
+               }
+                */
                prevhypoa=hypot(preva[0],preva[1]); // Laenge des vorherigen Weges
             }
+            else
+            {
+               NSLog(@"%d kein prevhypoa",i);
+            }
             
-            float nexthypoa= 0;
+            
+            
+            
             
             if (nexta[0] || nexta[1])
             {
                nexthypoa = hypot(nexta[0],nexta[1]); // Laenge des naechsten Weges
             }
+            else
+            {
+               NSLog(@"%d  kein nexthypoa",i);
+            }
+
             
-            NSLog(@"i: %d  prevhypoa: %2.4f nexthypoa: %2.4f",i,prevhypoa,nexthypoa);
+            //NSLog(@"i: %d  prevhypoa: %2.4f nexthypoa: %2.4f",i,prevhypoa,nexthypoa);
             
             float prevnorma[2] = {0.0,0.0};
             if (prevhypoa)
             {
                prevnorma[0]= (preva[0])/prevhypoa;
                prevnorma[1] = (preva[1])/prevhypoa; // vorheriger Normalenvektor
+            }
+            else
+            {
+               NSLog(@"%d kein prevnorma",i);
             }
             
             
@@ -2475,14 +2508,19 @@ PortA=vs[n & 3]; warte10ms(); n++;
                nextnorma[0]= (nexta[0])/nexthypoa;
                nextnorma[1] = (nexta[1])/nexthypoa; // vorheriger Normalenvektor
             }
-            
+            else
+            {
+               NSLog(@"%d kein nextnorma",i);
+            }
+           
 
             
             
             // Winkel aus Skalarprodukt der Einheitsvektoren
-            float cosphia=prevnorma[0]*nextnorma[0]+ prevnorma[1]*nextnorma[1]; // cosinus des Zwischenwinkels
+            cosphia=prevnorma[0]*nextnorma[0]+ prevnorma[1]*nextnorma[1]; // cosinus des Zwischenwinkels
             
-             // Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
+            
+            // Halbwinkelsatz: cos(phi/2)=sqrt((1+cos(phi))/2)
             
             // Vorzeichen von cosphia
             if (cosphia >=0)
@@ -2490,13 +2528,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
                // kleine Winkelunterschiede eliminieren
                if (cosphia >0.99)
                {
-                  NSLog(@"cosphia korr+");
+                  //NSLog(@"cosphia korr+");
                   cosphia=1.0;
                   cosphi2a=1.0;
                }
                else
                {
-               cosphi2a=sqrtf((1+cosphia)/2);                       // cosinus des halben Zwischenwinkels
+                  cosphi2a=sqrtf((1+cosphia)/2);                       // cosinus des halben Zwischenwinkels
                }
             }
             
@@ -2505,7 +2543,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
                // kleine Winkelunterschiede eliminieren
                if (cosphia < (-0.99))
                {
-                  NSLog(@"cosphia korr-");
+                  //NSLog(@"cosphia korr-");
                   cosphia=-1.0;
                   cosphi2a=-1.0;
                }
@@ -2532,6 +2570,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             }
             
             // Winkelhalbierende
+          
             wha[0] = prevnorma[0]+ nextnorma[0];                // Winkelhalbierende als Vektorsumme der Normalenvektoren
             wha[1] = prevnorma[1]+ nextnorma[1];
             
@@ -2648,9 +2687,10 @@ PortA=vs[n & 3]; warte10ms(); n++;
             // cosinussatz
             float cospsia = (wha[0]*lastwha[0]+wha[1]*lastwha[1])/(lasthypoa*currhypoa);
             
-            
-            //          fprintf(stderr,"%d\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\n",i, ax,ay,preva[0],preva[1],nexta[0],nexta[1],wha[0],wha[1], prevnorma[0],prevnorma[1],nextnorma[0],nextnorma[1],cosphia,lastwha[0],lastwha[1],lasthypoa,nexthypoa,cospsia);
-            
+         if (i>[Koordinatentabelle count]-20)
+         {
+            fprintf(stderr,"%d\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\t%1.4f\t%1.4f\t%1.4f\t%1.4f\t%1.6f\n",i, ax,ay,preva[0],preva[1],nexta[0],nexta[1],wha[0],wha[1], prevnorma[0],prevnorma[1],nextnorma[0],nextnorma[1],cosphia,lastwha[0],lastwha[1],prevhypoa,nexthypoa,cospsia);
+         }
             //            NSLog(@"i: %d  lasthypoa: %2.4f currhypoa: %2.4f cospsia: %1.8f",i,lasthypoa,currhypoa,cospsia);
             
             if (cospsia < 0) // Winkel ist > 90°
@@ -2719,7 +2759,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          
          if (i==bis-1) // letzter Punkt, Abbrandvektor soll senkrecht stehen
          {
-            //NSLog(@"i=bis-1");
+            NSLog(@"i=bis-1");
             float deltaax=prevax-ax;
             float deltaay=prevay-ay;
             float normalenhypoa = hypotf(deltaax, deltaay);
@@ -2763,7 +2803,8 @@ PortA=vs[n & 3]; warte10ms(); n++;
          // ++++++++++++++++++++++++++++++++++
          
          float whahypo = hypotf(wha[0],wha[1]);
-         // NSLog(@"prevhypoa %2.2f nexthypoa %2.2f whahypo: %2.4f",prevhypoa,nexthypoa,whahypo);
+          //fprintf(stderr,"i:\t %d \tprevhypoa \t%2.2f\t nexthypoa \t%2.2f \twhahypo: \t%2.4f \tcosphia: \t%2.4f\tcosphi2a: \t%2.4f\n",i,prevhypoa,nexthypoa,whahypo,cosphia,cosphi2a);
+         
          float abbranda[2]={wha[0]*seitenkorrektura/whahypo*abbrandmassa/cosphi2a,wha[1]*seitenkorrektura/whahypo*abbrandmassa/cosphi2a};
          
          float profilabbrandbmass = abbrandmassa;
