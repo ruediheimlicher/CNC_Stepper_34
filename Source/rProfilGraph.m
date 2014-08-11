@@ -181,7 +181,7 @@ return sqrt(dX*dX + dY*dY);
    
 	for(i=0;i<[DatenArray count]-1;i++)
 	{
-      NSLog(@"clickedAbschnittvonMaus: i:%d",i);
+      //NSLog(@"clickedAbschnittvonMaus: i:%d",i);
 		NSPoint tempPunktA=NSMakePoint([[[DatenArray objectAtIndex:i]objectForKey:@"ax"]floatValue], [[[DatenArray objectAtIndex:i]objectForKey:@"ay"]floatValue]);
 		NSPoint tempPunktB=NSMakePoint([[[DatenArray objectAtIndex:i+1]objectForKey:@"ax"]floatValue], [[[DatenArray objectAtIndex:i+1]objectForKey:@"ay"]floatValue]);
       //NSLog(@"tempPunktA: x: %2.2f y: %2.2f",tempPunktA.x,tempPunktA.y);
