@@ -137,8 +137,8 @@ return sqrt(dX*dX + dY*dY);
 
 - (int)clickedPunktvonMaus:(NSPoint)derPunkt
 {
-	
-	NSRect KlickFeld=NSMakeRect(derPunkt.x-3, derPunkt.y-3, 6, 6);
+	float delta=2;
+	NSRect KlickFeld=NSMakeRect(derPunkt.x-delta/2, derPunkt.y-delta/2, delta, delta);
 	int i;
 	for(i=0;i<[DatenArray count];i++)
 	{
@@ -146,7 +146,7 @@ return sqrt(dX*dX + dY*dY);
 		NSPoint tempPunktB=NSMakePoint([[[DatenArray objectAtIndex:i]objectForKey:@"bx"]floatValue], [[[DatenArray objectAtIndex:i]objectForKey:@"by"]floatValue]+GraphOffset);
 		//NSLog(@"tempPunkt x: %2.2f y: %2.2f",tempPunkt.x,tempPunkt.y);
 		//NSLog(@"derPunkt x: %2.2f y: %2.2f",derPunkt.x,derPunkt.y);
-		KlickFeld=NSMakeRect(derPunkt.x-3, derPunkt.y-3, 6, 6);
+		//KlickFeld=NSMakeRect(derPunkt.x-3, derPunkt.y-3, 6, 6);
       
       if ([self mouse:tempPunktA inRect:KlickFeld])//||[self mouse:tempPunktB inRect:KlickFeld])
       {
@@ -155,6 +155,7 @@ return sqrt(dX*dX + dY*dY);
       }
       if ([self mouse:tempPunktB inRect:KlickFeld])
       {
+         NSLog(@"clickedPunktvonMausclickPfad: %@",KlickFeld );
          //NSLog(@"Seite 2 punkt: %d",i);
          return i+0xF000;
       }
@@ -174,7 +175,7 @@ return sqrt(dX*dX + dY*dY);
 {
    NSLog(@"clickedAbschnittvonMaus: x: %2.2f y: %2.2f",derPunkt.x,derPunkt.y);
    int index=-1;
-   float delta=0.5;
+   float delta=4;
    //NSRect KlickFeld=NSMakeRect(derPunkt.x-3, derPunkt.y-3, 6, 6);
    int i;
    // Abschnitte absuchen, Abstand zu derPunkt berechnen
@@ -201,8 +202,12 @@ return sqrt(dX*dX + dY*dY);
       
       if (dist==0)
       {
+         NSLog(@"dist ist null");
          continue;
       }
+      
+      //delta = dist*0.2;
+      
       float sinphi=(tempPunktB.y-tempPunktA.y)/dist;
       float cosphi=(tempPunktB.x-tempPunktA.x)/dist;
       float deltax=delta*sinphi;
@@ -216,15 +221,15 @@ return sqrt(dX*dX + dY*dY);
       [clickPfad lineToPoint:NSMakePoint(tempPunktB.x-deltax,tempPunktB.y+deltay)];
       [clickPfad lineToPoint:NSMakePoint(tempPunktA.x-deltax,tempPunktA.y+deltay)];
       
-      
-      
       //[clickPfad stroke];
       
       BOOL hit=[clickPfad containsPoint:derPunkt];
       if (hit)
       {
+         NSLog(@"tempPunktA: x: %2.2f y: %2.2f",tempPunktA.x,tempPunktA.y);
+         NSLog(@"clickPfad: %@",clickPfad );
          index=i;
-         //NSLog(@"clickedAbschnittvonMaus Abschnitt: %d ",i);
+         NSLog(@"clickedAbschnittvonMaus Abschnitt: %d ",i);
       }
       
       //NSLog(@"tempPunkt x: %2.2f y: %2.2f",tempPunkt.x,tempPunkt.y);
@@ -282,7 +287,7 @@ return sqrt(dX*dX + dY*dY);
    int linehit=0;
    if ([DatenArray count]>3)
    {
-      int clickAbschnitt=[self clickedAbschnittvonMaus:local_point]+1;
+      int clickAbschnitt=[self clickedAbschnittvonMaus:local_point];
       NSLog(@"clickAbschnitt: %d",clickAbschnitt);
       if (clickAbschnitt>=0)
       {
@@ -293,6 +298,7 @@ return sqrt(dX*dX + dY*dY);
          [NotificationDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
 
          [nc postNotificationName:@"mausklick" object:self userInfo:NotificationDic];
+         //return;
       }
       else
       {

@@ -6797,7 +6797,7 @@ return returnInt;
       index++;
  
 
-      // Anfahrt von unten: Zuerst schneiden senkrecht noch oben bis Blockrand
+      // Anfahrt von unten: Zuerst schneiden senkrecht nach oben bis Blockrand
       
       // Hochfahren auf Einlauf. Liegt auf gleicher Hoehe, wenn kein wrench
       //float deltaAY = zugabeunten - miny; 
@@ -6815,13 +6815,14 @@ return returnInt;
       index++;
     
       NSLog(@"Rand bei Einlauf");
-       // Rand bei Einlauf schneiden
+      /*
+       // Rand bei Einlauf nach links freischneiden
        PositionA.x -=rand;
        PositionB.x -=rand;
        //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
        [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
        index++;
-      
+      */
       // Schneiden zum Einlauf. Kann in x und y unterschiedlich sein.
       //     NSLog(@"reportBlockkonfigurieren vor Schneiden zum Einlauf EckeRechtsOben x: %2.2f  y: %2.2f",EckeRechtsOben.x,EckeRechtsOben.y);
       //NSLog(@"vor index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
