@@ -155,7 +155,6 @@ return sqrt(dX*dX + dY*dY);
       }
       if ([self mouse:tempPunktB inRect:KlickFeld])
       {
-         NSLog(@"clickedPunktvonMausclickPfad: %@",KlickFeld );
          //NSLog(@"Seite 2 punkt: %d",i);
          return i+0xF000;
       }

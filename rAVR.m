@@ -4973,6 +4973,9 @@ return returnInt;
       float minwert = [[maxminDic objectForKey:@"minwert"]floatValue]* [ProfilTiefeFeldB intValue];
       //NSLog(@"StartpunktA.y: %.3f maxwert: %.3f minwert: %.3f",StartpunktA.y,maxwert,minwert);
       
+      
+   
+      
       //NSLog(@"StartpunktA.y: %.3f abstandoben: %.3f abstandunten: %.3f",StartpunktA.y,abstandoben,abstandunten);
       //NSLog(@"count: %d KoordinatenTabelle vor: %@",[KoordinatenTabelle count],[KoordinatenTabelle description]);
       
@@ -5063,7 +5066,7 @@ return returnInt;
       float untenBx = [[[HolmArrayB objectAtIndex:2]objectForKey:@"x"]floatValue]; // Dist B vom Start bis erster Knick unten. Soll gleich liegen wie bei A
  //     fprintf(stderr,"A:\t%.3f\tB:\t%.3f\n",untenAx,untenBx);
       
-      float delta = untenAx - untenBx;
+      float delta = untenAx - untenBx + offsetx;
       
       // Startpunkt korrigieren
       // offset bei A: 5
@@ -5078,6 +5081,7 @@ return returnInt;
       tempPunktA.y += 0;
       tempPunktB.x += offsetB;
       tempPunktB.y += 0;
+      fprintf(stderr,"A:\t%.3f\t%.3f\t%.3f\tB:\t%.3f\t%.3f\n",delta,tempPunktA.x,offsetA,tempPunktB.x,offsetB);
       
       [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.x] forKey:@"ax"];
       [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.y] forKey:@"ay"];
@@ -5141,7 +5145,7 @@ return returnInt;
       rahmenindex++;
       tempPunktA.x += offsetA;
       tempPunktA.y += 0;
-      tempPunktB.x = tempPunktA.x; // gleiche Abzisse
+      tempPunktB.x = tempPunktA.x + offsetx; // gleiche Abzisse
       tempPunktB.y += 0;
       
       [tempRahmenDic setObject:[NSNumber numberWithFloat:tempPunktA.x] forKey:@"ax"];
