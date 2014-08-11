@@ -174,13 +174,23 @@ return sqrt(dX*dX + dY*dY);
 {
    NSLog(@"clickedAbschnittvonMaus: x: %2.2f y: %2.2f",derPunkt.x,derPunkt.y);
    int index=-1;
-   float delta=4;
+   float delta=0.5;
    //NSRect KlickFeld=NSMakeRect(derPunkt.x-3, derPunkt.y-3, 6, 6);
    int i;
    // Abschnitte absuchen, Abstand zu derPunkt berechnen
    
 	for(i=0;i<[DatenArray count]-1;i++)
 	{
+      if (i==135)
+      {
+         int a=0;
+        
+      }
+       //NSDictionary* tempdic1 =[DatenArray objectAtIndex:i];
+      if (i<[DatenArray count]-2)
+      {
+       //NSDictionary* tempdic2 =[DatenArray objectAtIndex:i+1];
+      }
       //NSLog(@"clickedAbschnittvonMaus: i:%d",i);
 		NSPoint tempPunktA=NSMakePoint([[[DatenArray objectAtIndex:i]objectForKey:@"ax"]floatValue], [[[DatenArray objectAtIndex:i]objectForKey:@"ay"]floatValue]);
 		NSPoint tempPunktB=NSMakePoint([[[DatenArray objectAtIndex:i+1]objectForKey:@"ax"]floatValue], [[[DatenArray objectAtIndex:i+1]objectForKey:@"ay"]floatValue]);
@@ -188,16 +198,26 @@ return sqrt(dX*dX + dY*dY);
       //NSLog(@"tempPunktB: x: %2.2f y: %2.2f",tempPunktB.x,tempPunktB.y);
 //		float tanphi=(tempPunktA.y-tempPunktB.y)/(tempPunktA.x-tempPunktB.x);
       float dist= sqrt(pow((tempPunktA.y-tempPunktB.y),2)+pow((tempPunktA.x-tempPunktB.x),2));
+      
+      if (dist==0)
+      {
+         continue;
+      }
       float sinphi=(tempPunktB.y-tempPunktA.y)/dist;
       float cosphi=(tempPunktB.x-tempPunktA.x)/dist;
       float deltax=delta*sinphi;
       float deltay=delta*cosphi;
       //NSLog(@"dist: %2.2f sinphi: %2.2f cosphi: %2.2f deltax: %2.2f deltay: %2.2f", dist, sinphi, cosphi, deltax, deltay);
       NSBezierPath* clickPfad=[NSBezierPath bezierPath];
+      
+      
       [clickPfad moveToPoint:NSMakePoint(tempPunktA.x+deltax,tempPunktA.y-deltay)];
       [clickPfad lineToPoint:NSMakePoint(tempPunktB.x+deltax,tempPunktB.y-deltay)];
       [clickPfad lineToPoint:NSMakePoint(tempPunktB.x-deltax,tempPunktB.y+deltay)];
       [clickPfad lineToPoint:NSMakePoint(tempPunktA.x-deltax,tempPunktA.y+deltay)];
+      
+      
+      
       //[clickPfad stroke];
       
       BOOL hit=[clickPfad containsPoint:derPunkt];

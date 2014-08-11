@@ -1952,7 +1952,7 @@ return returnInt;
       {
          datensatzok = 1;
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
-         NSLog(@"i: %d cncindex: %d distanz OK. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
+         //NSLog(@"i: %d cncindex: %d distanz OK. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
          
       }
       else
@@ -6578,7 +6578,7 @@ return returnInt;
 
 - (IBAction)reportBlockkonfigurieren:(id)sender
 {
-   //NSLog(@"reportBlockkonfigurieren Seite: %d",[RechtsLinksRadio selectedSegment]);
+   NSLog(@"reportBlockkonfigurieren Seite: %d",[RechtsLinksRadio selectedSegment]);
    
    // Einlauf und Auslauf in gleicher funktion. Unterschieden durch Parameter 'Lage'.
    // Lage: 0: Einlauf 1: Auslauf
@@ -6765,6 +6765,7 @@ return returnInt;
       
       int index=0;
      
+      NSLog(@"Einstich");
 
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
       
@@ -6786,7 +6787,7 @@ return returnInt;
  */
      
 
-      
+      NSLog(@"Einstich zum Blockrand");
       
       // Einstich  zum Blockrand
       PositionA.x +=einstichx;       
@@ -6805,7 +6806,7 @@ return returnInt;
       float deltaAY = einlaufAY - EckeLinksUnten.y;
       float deltaBY = einlaufBY - EckeLinksUnten.y;
       
-      
+      NSLog(@"Anfahrt von unten");
       
       PositionA.y +=deltaAY;
       PositionB.y +=deltaBY;
@@ -6813,7 +6814,7 @@ return returnInt;
       [BlockKoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm * full_pwm],@"pwm",nil]];
       index++;
     
-      
+      NSLog(@"Rand bei Einlauf");
        // Rand bei Einlauf schneiden
        PositionA.x -=rand;
        PositionB.x -=rand;
@@ -6838,6 +6839,7 @@ return returnInt;
       PositionB.x +=deltaBX;
       PositionB.y +=deltaBY;
       
+      NSLog(@"AAA");
       
       //NSLog(@"nach index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
       
@@ -6853,6 +6855,7 @@ return returnInt;
       // Auslauf
       lage=1;
       
+      NSLog(@"BBB");
       //Letzte Position
       PositionA = NSMakePoint(auslaufAX, auslaufAY);
       PositionB = NSMakePoint(auslaufBX, auslaufBY);
@@ -6884,6 +6887,7 @@ return returnInt;
        */
       //Schneiden zu Blockunterkante rechts
       
+      NSLog(@"Schneiden zu Blockunterkante rechts");
       PositionA.y = EckeRechtsUnten.y;// - einstichy + 3;
       PositionB.y = EckeRechtsUnten.y;// - einstichy + 3;
       
@@ -6892,7 +6896,8 @@ return returnInt;
       
 
       //Schneiden an Blockunterkante links - einstichy
-      
+      NSLog(@"Schneiden zu Blockunterkante links");
+
       //PositionA.x = EckeLinksUnten.x - 4;//-einstichx+1; // Nicht bis Anschlag fahren
       PositionA.x = EckeLinksUnten.x - einstichx; // Bis Anschlag fahren
       
@@ -6914,6 +6919,7 @@ return returnInt;
    
    NSLog(@"reportBlockanfuegen ");
    [self reportBlockkonfigurieren:NULL];
+   NSLog(@"reportBlockanfuegen nach Blockkonfig");
    if ([KoordinatenTabelle count])
    {
       if ([BlockKoordinatenTabelle count])
@@ -8437,8 +8443,8 @@ return returnInt;
    //   [CNC_BlockKonfigurierenTaste performClick:NULL];
 
    
-   
-   [CNC_BlockAnfuegenTaste performClick:NULL];
+   [self reportBlockanfuegen:NULL];
+   //[CNC_BlockAnfuegenTaste performClick:NULL];
   
    
    [RechtsLinksRadio setSelectedSegment:0];

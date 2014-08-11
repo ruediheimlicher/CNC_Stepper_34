@@ -2460,6 +2460,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             else
             {
                NSLog(@"%d kein prevhypoa",i);
+               
             }
             
             
@@ -2600,6 +2601,11 @@ PortA=vs[n & 3]; warte10ms(); n++;
             // *******
             // Seite 2
             // *******
+            
+            if (i==131)
+            {
+               int a=i;
+            }
             float prevb[2]= {bx-prevbx,by-prevby};
             float nextb[2]= {nextbx-bx,nextby-by};
             
@@ -2627,7 +2633,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             float prevnormb[2] = {0.0,0.0};
             
-            if (prevhypoa)
+            if (prevhypob)
             {
                prevnormb[0]= -(prevb[1])/prevhypob;
                prevnormb[1] = (prevb[0])/prevhypob; // vorheriger Normalenvektor
@@ -2636,7 +2642,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             
             float nextnormb[2] = {0.0,0.0};
-            if (nexthypoa)
+            if (nexthypob)
             {
                nextnormb[0]= -(nextb[1])/nexthypob;
                nextnormb[1] = (nextb[0])/nexthypob; // vorheriger Normalenvektor
