@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 #import "rUtils.h"
 
+float det(float v0[],float v1[]);
 
 @interface rCNC : NSObject 
 {

@@ -97,6 +97,14 @@ int min_value(float * p_array,unsigned int values_in_array,float * p_min_value)
    return position;
 }
 
+/*
+float det(float v0[],float v1[])
+{
+   return ( v0[0]*v1[1]-v0[1]*v1[0]);
+}
+*/
+
+
 @implementation rProfildruckView
 
 - (void)setTitel:(NSString*)derTitel
@@ -1892,6 +1900,62 @@ return returnInt;
          nowabray=[[tempNowDic objectForKey:@"abray"]floatValue];
          nowabrbx=[[tempNowDic objectForKey:@"abrbx"]floatValue];
          nowabrby=[[tempNowDic objectForKey:@"abrby"]floatValue];
+         //fprintf(stderr,"nowabr   %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,nowabrax,nowabray,nowabrbx,nowabrby);
+
+         // Rechteck auf Ueberschlagung testen: determinante muss in allen Ecken gleiches VZ haben. Vektoren im Gegenuhrzeigersinn
+         // Vektor 0: prev zu now
+         float v0[2] = {nowax-prevax, noway-prevay};
+         // Vektor 1: now zu nowabr
+         float v1[2] = {nowabrax-nowax, nowabray-noway};
+         // Vektor 2: nowabr zu prevabr
+         float v2[2] = {prevabrax-nowabrax, prevabray-nowabray};
+         // Vektor 3: prevabr zu prev
+         float v3[2] = {nowax-prevabrax, noway-prevabray};
+         
+         int detvorzeichen=0;
+         float det0 = det(v0,v1);
+         if (det0 < 0)
+         {
+            detvorzeichen--;
+         }
+         else
+         {
+            detvorzeichen++;
+         }
+         float det1 = det(v1,v2);
+         if (det1 < 0)
+         {
+            detvorzeichen--;
+         }
+         else
+         {
+            detvorzeichen++;
+         }
+
+         float det2 = det(v2,v3);
+         if (det2 < 0)
+         {
+            detvorzeichen--;
+         }
+         else
+         {
+            detvorzeichen++;
+         }
+
+         float det3 = det(v3,v0);
+         if (det3 < 0)
+         {
+            detvorzeichen--;
+         }
+         else
+         {
+            detvorzeichen++;
+         }
+         
+         if (abs(detvorzeichen)<4)
+         {
+            fprintf(stderr,"determinanten   %d\t%2.8f\t%2.8f\t%2.8f\t%2.8f\t%d\n",i,det0,det1,det2,det3,detvorzeichen);
+         }
          
       }
       else
@@ -1928,17 +1992,18 @@ return returnInt;
       
       if ([[tempNowDic objectForKey:@"teil"]intValue]==30)
       {
-         fprintf(stderr,"unten   %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,distA,distB,wegaunten,wegbunten);
+         //fprintf(stderr,"unten   %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,distA,distB,wegaunten,wegbunten);
          wegaunten += distA;
          wegbunten += distB;
       }
       
-      
+      float deltaabrax =nowabrax-prevabrax;
+      float deltaabray =nowabray-prevabray;
       
       float distabrA = hypot(nowabrax-prevabrax,nowabray-prevabray);
       float distabrB = hypot(nowabrbx-prevabrbx,nowabrby-prevabrby);
       
-      //      fprintf(stderr,"original   %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,distA,distB,distabrA,distabrB);
+      //fprintf(stderr,"original   %d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,nowabrax-prevabrax,nowabray-prevabray,distA,distB,distabrA,distabrB);
       
       NSPoint tempStartPunktA= NSMakePoint(0,0);
       NSPoint tempStartPunktB= NSMakePoint(0,0);
@@ -1957,7 +2022,7 @@ return returnInt;
       }
       else
       {
-         NSLog(@"i: %d cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
+         //NSLog(@"i: %d cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
          
       }
       
@@ -1965,7 +2030,12 @@ return returnInt;
       {
          if ([tempNowDic objectForKey:@"abrax"])
          {
-            if(((distabrA > minimaldistanz || distabrB > minimaldistanz)) ) // Eine der Distanzen ist genügend gross
+            if (deltaabrax <0 && deltaabrax < 0)
+            {
+               datensatzok =1;
+            }
+            
+            else if(((distabrA > minimaldistanz || distabrB > minimaldistanz)) ) // Eine der Distanzen ist genügend gross
             {
                datensatzok =1;
             }
@@ -2155,7 +2225,7 @@ return returnInt;
       //if (i<16 && i>8)
       {
           //NSLog(@"reportStop i: %d \ntempSteuerdatenDic: %@",i,[tempSteuerdatenDic description]);
-         fprintf(stderr, "index: \t%d\t distanza: \t%2.2f\tdistanzb: \t%2.2f \tteil: \t%d\n",i,[[tempSteuerdatenDic objectForKey:@"distanza"]floatValue], [[tempSteuerdatenDic objectForKey:@"distanzb"]floatValue],[[tempSteuerdatenDic objectForKey:@"teil"]intValue]);
+         //fprintf(stderr, "index: \t%d\t distanza: \t%2.2f\tdistanzb: \t%2.2f \tteil: \t%d\n",i,[[tempSteuerdatenDic objectForKey:@"distanza"]floatValue], [[tempSteuerdatenDic objectForKey:@"distanzb"]floatValue],[[tempSteuerdatenDic objectForKey:@"teil"]intValue]);
       }
       
       
@@ -5612,6 +5682,9 @@ return returnInt;
    flipV = [[ProfilDic objectForKey:@"flipv"]intValue];
    reverse = [[ProfilDic objectForKey:@"reverse"]intValue];
 
+   float ProfiltiefeA = [ProfilTiefeFeldA floatValue];
+   float ProfiltiefeB = [ProfilTiefeFeldB floatValue];
+
    
    if ([ProfilDic objectForKey:@"profil1name"])
    {
@@ -5639,16 +5712,36 @@ return returnInt;
    {
       Profil2Array=[ProfilDic objectForKey:@"profil2array"];
    }
-    
+   
+   NSMutableArray* Profil1RedArray = [[NSMutableArray alloc]initWithCapacity:0];
    //NSLog(@"ProfilDic %@",[ProfilDic description]);
    
-   float ProfiltiefeA = [ProfilTiefeFeldA floatValue];
-   float ProfiltiefeB = [ProfilTiefeFeldB floatValue];
+   float minabstand=0.3;
+   [Profil1RedArray addObject:[Profil1Array objectAtIndex:0]];
+   for (int i=1;i<[Profil1Array count];i++)
+   //while ([Profil1RedArray objectAtIndex:i])
+   {
+     float prevdx = [[[Profil1RedArray lastObject]objectForKey:@"x"]floatValue];
+      float prevdy = [[[Profil1RedArray lastObject]objectForKey:@"y"]floatValue];
+      float dx = [[[Profil1Array objectAtIndex:i]objectForKey:@"x"]floatValue];
+      float dy = [[[Profil1Array objectAtIndex:i]objectForKey:@"y"]floatValue];
+      float dist = hypotf(dx-prevdx, dy-prevdy)* MIN(ProfiltiefeA,ProfiltiefeB);
+      
+      //NSLog(@"i: %d obj %2.2f",i,dist);
+      if (dist>minabstand)
+      {
+         [Profil1RedArray addObject:[Profil1Array objectAtIndex:i]];
+         NSLog(@"anz: %d *** dist: %2.2f",[Profil1RedArray count],dist);
+         
+      }
+      
+     // NSLog(@"i: %d dx: %2.2f",i,dx);
+   }
+   
    
    
    float pfeilung = (ProfiltiefeA - ProfiltiefeB)/[Spannweite intValue];
    float arc=atan(pfeilung);
-   float sinus = sin(arc);
    //NSLog(@"pfeilung: %2.8f arc: %2.8f sinus: %2.8f",pfeilung,arc,sinus);
    
    float TiefeA = ProfiltiefeA + [Basisabstand intValue] * pfeilung;

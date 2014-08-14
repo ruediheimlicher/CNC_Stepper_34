@@ -18,6 +18,10 @@ float full_pwm = 1;
 #define MOTOR_C 2
 #define MOTOR_D 3
 
+float det(float v0[],float v1[])
+{
+   return ( v0[0]*v1[1]-v0[1]*v1[0]);
+}
 
 
 @implementation rCNC
@@ -2427,8 +2431,113 @@ PortA=vs[n & 3]; warte10ms(); n++;
             prevby = [[[Koordinatentabelle objectAtIndex:i-1]objectForKey:@"by"]floatValue];
          }
          
+        
+         
+         
+         
+         
          if ((i<bis-1) && (i>von)) // Punkt im Abbrandbereich
          {
+             // Kruemmungen berechnen
+            if (i<bis && i>von+1)
+            {
+               float diffvor[2] = {ax-prevax, ay-prevay};
+               float diffnach[2] = {nextax-ax, nextay-ay};
+               //fprintf(stderr,"mittelpunkt \t%d\t%2.8f\t%2.8f\t%2.8f\t%2.8f\t%2.8f\n",i,diffvor[0],diffvor[1],diffnach[0],diffnach[1],1);
+
+               
+               float mittevor[2] = {(ax+prevax)/2,(prevay+ay)/2};
+               float mittenach[2] = {(ax+nextax)/2,(nextay+ay)/2};
+               //fprintf(stderr,"mittelpunkt \t%d\t%2.8f\t%2.8f\t%2.8f\t%2.8f\t%2.8f\n",i,mittevor[0],mittevor[1],mittenach[0],mittenach[1],1);
+
+               // senkrechte:
+               float steigungvor = 0;
+               float steigungnach = 0;
+               
+               float senkrechtvor = 0;
+               float senkrechtnach = 0;
+               
+               // vor
+               if (diffvor[0]) // nicht senkrecht
+               {
+                  steigungvor = diffvor[1]/diffvor[0];
+                 
+               }
+               if (diffvor[1])
+               {
+                  senkrechtvor = -diffvor[0]/diffvor[1];
+               }
+
+               // nach
+               if (diffnach[0]) // nicht waagrecht
+               {
+                  steigungnach = diffnach[1]/diffnach[0];
+                  
+               }
+               if (diffnach[1])
+               {
+                  senkrechtnach = -diffnach[0]/diffnach[1];
+               }
+
+               //fprintf(stderr,"kruemmung   \t%d\t%2.8f\t%2.8f\t%2.8f\t%2.8f\t%d\n",i,steigungvor,steigungnach,senkrechtvor,senkrechtnach,1);
+               
+               
+               
+               // Mittelsenkrechte vor:
+               // y  = mittevor[0]+ x* senkrechtvor
+               
+               // Mittelsenkrechte nach:
+               // y = mittenach[0]+ x* senkrechtvor
+               // zweiten punkt mit dx=delta: http://de.wikipedia.org/wiki/Zweipunkteform
+               float delta=10;
+               float tempvor[2] = {mittevor[0]+delta,mittevor[1]+senkrechtvor*delta};
+               
+               // Gleichung fuer Senkrechte vor:
+               // senkrechtevor*x   -1*y = (mittevor[0]*senkrechtvor - mittevor[1])
+               // senkrechtenach*x  -1*y = (mittenach[0]*senkrechtenach - mittenach[1])
+               
+               
+               float constvor= mittevor[0]*senkrechtvor - mittevor[1];
+               float constnach= mittenach[0]*senkrechtnach - mittenach[1];
+               
+               // Gleichungssystem:
+               // senkrechtevor  -1 constvor
+               // senkrechtenach -1 constnach
+               
+               // konstante Determinante aus Koeffizienten links
+               float consta[2] ={senkrechtvor,-1};
+               float constb[2] ={senkrechtnach,-1};
+               
+               float detconst = det(consta,constb);
+               
+               // Unterdeterminaten fuer Variable x:
+               
+               float a[2] ={constvor,-1};
+               float b[2] ={constnach,-1};
+               float detvor = det(a,b);
+               
+               // Unterdet fuer Variable y
+               
+               float c[2] = {senkrechtvor,constvor};
+               float d[2] = {senkrechtnach,constnach};
+               float detnach = det(c,d);
+               
+               if (detconst)
+               {
+                  float mittelpunkt[2] = {detvor/detconst,detnach/detconst};
+                  float radius = hypotf(mittelpunkt[0]-ax,mittelpunkt[1]-ay);
+                  //
+                  //
+                  //
+                  if (radius < abbrandmassa )
+                  {
+                     fprintf(stderr,"mittelpunkt \t%d\t%2.3f\t%2.3f\t%2.3f\t%2.3f\t%2.3f\t%2.3f\t%2.3f\n",i,ax,ay,detvor,detnach,mittelpunkt[0],mittelpunkt[1],radius);
+                  }
+                  
+               }
+            }// end Kruemmung berechnen
+            
+            
             //NSLog(@" ");
             // ********
             // Seite 1
@@ -2449,6 +2558,69 @@ PortA=vs[n & 3]; warte10ms(); n++;
             float prevnorma[2]= {(preva[0])/prevhypoa,(preva[1])/prevhypoa}; // vorheriger Normalenvektor
             float nextnorma[2]= {(nexta[0])/nexthypoa,(nexta[1])/nexthypoa}; // naechster Normalenvektor
             */
+            
+            
+            
+            /*
+             
+             
+             // Rechteck auf Ueberschlagung testen: Determinante muss in allen Ecken gleiches VZ haben. Vektoren im Gegenuhrzeigersinn
+             // Vektor 0: prev zu now
+             float v0[2] = {nowax-prevax, noway-prevay};
+             // Vektor 1: now zu nowabr
+             float v1[2] = {nowabrax-nowax, nowabray-noway};
+             // Vektor 2: nowabr zu prevabr
+             float v2[2] = {prevabrax-nowabrax, prevabray-nowabray};
+             // Vektor 3: prevabr zu prev
+             float v3[2] = {nowax-prevabrax, noway-prevabray};
+             
+             int detvorzeichen=0;
+             float det0 = det(v0,v1);
+             if (det0 < 0)
+             {
+             detvorzeichen--;
+             }
+             else
+             {
+             detvorzeichen++;
+             }
+             float det1 = det(v1,v2);
+             if (det1 < 0)
+             {
+             detvorzeichen--;
+             }
+             else
+             {
+             detvorzeichen++;
+             }
+             
+             float det2 = det(v2,v3);
+             if (det2 < 0)
+             {
+             detvorzeichen--;
+             }
+             else
+             {
+             detvorzeichen++;
+             }
+             
+             float det3 = det(v3,v0);
+             if (det3 < 0)
+             {
+             detvorzeichen--;
+             }
+             else
+             {
+             detvorzeichen++;
+             }
+             
+             if (abs(detvorzeichen)<4)
+             {
+             fprintf(stderr,"determinanten   %d\t%2.8f\t%2.8f\t%2.8f\t%2.8f\t%d\n",i,det0,det1,det2,det3,detvorzeichen);
+             }
+
+             
+             */
             
             // Laengen der Vektoren bestimmen
             
