@@ -2452,6 +2452,12 @@ return returnInt;
 }
 
 
+- (float)mindist2save
+{
+   return [MinimaldistanzFeld floatValue];
+}
+
+
 
 - (int)speed
 {
@@ -5557,7 +5563,7 @@ return returnInt;
 
 - (void)LibProfileingabeAktion:(NSNotification*)note
 {
-   
+   NSLog(@"LibProfileingabeAktion");
    //NSLog(@"LibProfileingabeAktion note: %@",[[note userInfo] description]);
 	/*
    Werte fuer "teil":
@@ -5702,43 +5708,65 @@ return returnInt;
    
    // Dic mit keys x,y,index, Werte mit wahrer laenge in mm proportional Profiltiefe
    
-   NSArray* Profil1Array=NULL;
+   NSArray* Profil1RawArray=NULL;
+   
    if ([ProfilDic objectForKey:@"profil1array"])
    {
-      Profil1Array=[ProfilDic objectForKey:@"profil1array"];
+      Profil1RawArray=[ProfilDic objectForKey:@"profil1array"];
    }
-   NSArray* Profil2Array=NULL;
+   NSArray* Profil2RawArray=NULL;
    if ([ProfilDic objectForKey:@"profil2array"])
    {
-      Profil2Array=[ProfilDic objectForKey:@"profil2array"];
+      Profil2RawArray=[ProfilDic objectForKey:@"profil2array"];
    }
    
-   NSMutableArray* Profil1RedArray = [[NSMutableArray alloc]initWithCapacity:0];
-   //NSLog(@"ProfilDic %@",[ProfilDic description]);
    
-   float minabstand=0.3;
-   [Profil1RedArray addObject:[Profil1Array objectAtIndex:0]];
-   for (int i=1;i<[Profil1Array count];i++)
-   //while ([Profil1RedArray objectAtIndex:i])
-   {
-     float prevdx = [[[Profil1RedArray lastObject]objectForKey:@"x"]floatValue];
-      float prevdy = [[[Profil1RedArray lastObject]objectForKey:@"y"]floatValue];
-      float dx = [[[Profil1Array objectAtIndex:i]objectForKey:@"x"]floatValue];
-      float dy = [[[Profil1Array objectAtIndex:i]objectForKey:@"y"]floatValue];
-      float dist = hypotf(dx-prevdx, dy-prevdy)* MIN(ProfiltiefeA,ProfiltiefeB);
+   
+      NSMutableArray* Profil1Array = [[NSMutableArray alloc]initWithCapacity:0];
+      NSMutableArray* Profil2Array = [[NSMutableArray alloc]initWithCapacity:0];
+      //NSLog(@"Profil1RawArray %@",[Profil1RawArray valueForKey:@"x"]);
       
-      //NSLog(@"i: %d obj %2.2f",i,dist);
-      if (dist>minabstand)
+      float minabstand=[MinimaldistanzFeld floatValue];
+      
+      // Erstes Element einsetzen
+      [Profil1Array addObject:[Profil1RawArray objectAtIndex:0]];
+      [Profil2Array addObject:[Profil2RawArray objectAtIndex:0]];
+
+      for (int i=1;i<[Profil1RawArray count];i++)
       {
-         [Profil1RedArray addObject:[Profil1Array objectAtIndex:i]];
-         NSLog(@"anz: %d *** dist: %2.2f",[Profil1RedArray count],dist);
+         //letzte registrierte Werte
+         float prevregdx = [[[Profil1Array lastObject]objectForKey:@"x"]floatValue];
+         float prevregdy = [[[Profil1Array lastObject]objectForKey:@"y"]floatValue];
+
+         // letzte Werte im RawArray
+         float prevdx = [[[Profil1RawArray objectAtIndex:i-1]objectForKey:@"x"]floatValue];
+         float prevdy = [[[Profil1RawArray objectAtIndex:i-1]objectForKey:@"y"]floatValue];
          
+         // aktuelle Werte im RawArray
+         float dx = [[[Profil1RawArray objectAtIndex:i]objectForKey:@"x"]floatValue];
+         float dy = [[[Profil1RawArray objectAtIndex:i]objectForKey:@"y"]floatValue];
+         
+         // distanz zum letzten Element im RawArray
+         float dist = hypotf(dx-prevdx, dy-prevdy)* MIN(ProfiltiefeA,ProfiltiefeB);
+
+         // distanz zum letzten registrierten Element im Array
+         float regdist = hypotf(dx-prevregdx, dy-prevregdy)* MIN(ProfiltiefeA,ProfiltiefeB);
+
+         fprintf(stderr,"i: %d \t %2.2f \t %2.2f \t %2.2f \t %2.2f \t ",i,prevdx,dx,dist,regdist);
+         //NSLog(@"i: %d dx %2.2f",i,dx);
+         if (regdist>minabstand)
+         {
+            [Profil1Array addObject:[Profil1RawArray objectAtIndex:i]];
+            [Profil2Array addObject:[Profil2RawArray objectAtIndex:i]];
+            int index =[Profil1Array count];
+            //NSLog(@"i: %d index: %d dx %2.2f",i,index,dist);
+         
+            fprintf(stderr,"\tindex: %d",index);
+         }
+         
+         // NSLog(@"i: %d dx: %2.2f",i,dx);
+         fprintf(stderr,"\n");
       }
-      
-     // NSLog(@"i: %d dx: %2.2f",i,dx);
-   }
-   
-   
    
    float pfeilung = (ProfiltiefeA - ProfiltiefeB)/[Spannweite intValue];
    float arc=atan(pfeilung);

@@ -23,6 +23,20 @@ float det(float v0[],float v1[])
    return ( v0[0]*v1[1]-v0[1]*v1[0]);
 }
 
+//float (^determinante)(float[],float[]);
+
+float (^determinante)(float*,float*) = ^(float* a, float* b)
+{
+   return (float) a[0]*b[1]-a[1]*b[0];
+};
+
+
+float (^hypotenuse)(float, float) = ^(float x, float y)
+{
+   return (float)sqrt(x*x+y*y);
+};
+
+
 
 @implementation rCNC
 - (id)init
@@ -40,6 +54,7 @@ return self;
 }
 return NULL;
 }
+
 
 - (int)steps
 {
@@ -2508,19 +2523,19 @@ PortA=vs[n & 3]; warte10ms(); n++;
                float consta[2] ={senkrechtvor,-1};
                float constb[2] ={senkrechtnach,-1};
                
-               float detconst = det(consta,constb);
+               float detconst = determinante(consta,constb);
                
                // Unterdeterminaten fuer Variable x:
                
                float a[2] ={constvor,-1};
                float b[2] ={constnach,-1};
-               float detvor = det(a,b);
+               float detvor = determinante(a,b);
                
                // Unterdet fuer Variable y
                
                float c[2] = {senkrechtvor,constvor};
                float d[2] = {senkrechtnach,constnach};
-               float detnach = det(c,d);
+               float detnach = determinante(c,d);
                
                if (detconst)
                {
@@ -2575,7 +2590,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
              float v3[2] = {nowax-prevabrax, noway-prevabray};
              
              int detvorzeichen=0;
-             float det0 = det(v0,v1);
+             float det0 = determinante(v0,v1);
              if (det0 < 0)
              {
              detvorzeichen--;
@@ -2584,7 +2599,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
              {
              detvorzeichen++;
              }
-             float det1 = det(v1,v2);
+             float det1 = determinante(v1,v2);
              if (det1 < 0)
              {
              detvorzeichen--;
@@ -2594,7 +2609,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
              detvorzeichen++;
              }
              
-             float det2 = det(v2,v3);
+             float det2 = determinante(v2,v3);
              if (det2 < 0)
              {
              detvorzeichen--;
@@ -2604,7 +2619,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
              detvorzeichen++;
              }
              
-             float det3 = det(v3,v0);
+             float det3 = determinante(v3,v0);
              if (det3 < 0)
              {
              detvorzeichen--;
@@ -2743,7 +2758,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
              preva[0] preva[1]
              zweite Gerade:
              wha[0] wha[1]
-             det = preva[0]*wha[1]-preva[1]*wha[0]
+             determinante = preva[0]*wha[1]-preva[1]*wha[0]
              */
             
             float deta = preva[0]*wha[1]-preva[1]*wha[0];
@@ -2927,7 +2942,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             //NSLog(@"i=von: %d",i);
             float deltaax=nextax-ax;
             float deltaay=nextay-ay;
-            float normalenhypoa = hypotf(deltaax, deltaay);
+            float normalenhypoa = hypotenuse(deltaax, deltaay);
             
             // Normalenvektor steht senkrecht
             wha[0] = deltaay/normalenhypoa*(-1);      // erster Punkt, wha speichern
@@ -2937,7 +2952,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             float deltabx=nextbx-bx;
             float deltaby=nextby-by;
-            float normalenhypob = hypotf(deltabx, deltaby);
+            float normalenhypob = hypotenuse(deltabx, deltaby);
             // Normalenvektor steht senkrecht
             whb[0] = deltaby/normalenhypob*(-1);
             whb[1] = deltabx/normalenhypob;
@@ -2964,7 +2979,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             //NSLog(@"i=bis-1");
             float deltaax=prevax-ax;
             float deltaay=prevay-ay;
-            float normalenhypoa = hypotf(deltaax, deltaay);
+            float normalenhypoa = hypotenuse(deltaax, deltaay);
             // Normalenvektor steht senkrecht
             wha[0] = deltaay/normalenhypoa*(-1);
             wha[1] = deltaax/normalenhypoa;
@@ -2972,7 +2987,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
             
             float deltabx=prevbx-bx;
             float deltaby=prevby-by;
-            float normalenhypob = hypotf(deltabx, deltaby);
+            float normalenhypob = hypotenuse(deltabx, deltaby);
             // Normalenvektor steht senkrecht
             whb[0] = deltaby/normalenhypob*(-1);
             whb[1] = deltabx/normalenhypob;
@@ -3004,7 +3019,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
          lastwhb[1] = whb[1]*seitenkorrekturb;
          // ++++++++++++++++++++++++++++++++++
          
-         float whahypo = hypotf(wha[0],wha[1]);
+         float whahypo = hypotenuse(wha[0],wha[1]);
           //fprintf(stderr,"i:\t %d \tprevhypoa \t%2.2f\t nexthypoa \t%2.2f \twhahypo: \t%2.4f \tcosphia: \t%2.4f\tcosphi2a: \t%2.4f\n",i,prevhypoa,nexthypoa,whahypo,cosphia,cosphi2a);
          
          float abbranda[2]={wha[0]*seitenkorrektura/whahypo*abbrandmassa/cosphi2a,wha[1]*seitenkorrektura/whahypo*abbrandmassa/cosphi2a};

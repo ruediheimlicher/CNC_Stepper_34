@@ -45,6 +45,10 @@ return sqrt(dX*dX + dY*dY);
    
     return self;
 }
+int (^add)(int,int) = ^(int number1, int number2){
+   return number1+number2;
+};
+
 
 - (void)setScale:(float)derScalefaktor
 {

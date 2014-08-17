@@ -327,6 +327,7 @@
 - (void)DC_ON:(int)pwm;
 - (int)pwm;
 - (int)pwm2save;
+- (float)mindist2save;
 - (void)setStepperstrom:(int)ein;
 - (void)setBusy:(int)busy;
 - (int)speed;

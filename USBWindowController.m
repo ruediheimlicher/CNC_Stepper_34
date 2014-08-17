@@ -803,12 +803,16 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 		{
 	//		[tempPListDic setObject:[AVR KoordinatenTabelle] forKey:@"koordinatentabelle"];
 		}
-      int cncspeed = [AVR speed];
+      //int cncspeed = [AVR speed];
       [tempPListDic setObject:[NSNumber numberWithInt:[AVR speed]] forKey:@"speed"];
-      int pwm = [AVR pwm2save];
+      //int pwm = [AVR pwm2save];
       [tempPListDic setObject:[NSNumber numberWithInt:[AVR pwm2save]] forKey:@"pwm"];
 		//NSLog(@"savePListAktion: gesicherter PListDic: %@",[tempPListDic description]);
 		
+      //float mindist = [AVR mindist2save];
+      [tempPListDic setObject:[NSNumber numberWithFloat:[AVR mindist2save]] forKey:@"minimaldistanz"];
+
+      
 		BOOL PListOK=[tempPListDic writeToURL:PListURL atomically:YES];
 		
 	}
