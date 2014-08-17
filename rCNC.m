@@ -31,6 +31,7 @@ float (^determinante)(float*,float*) = ^(float* a, float* b)
 };
 
 
+
 float (^hypotenuse)(float, float) = ^(float x, float y)
 {
    return (float)sqrt(x*x+y*y);
