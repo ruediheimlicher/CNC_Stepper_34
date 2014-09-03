@@ -2018,6 +2018,7 @@ return returnInt;
          datensatzok = 1;
          //[tempKoordinatenTabelle addObject:[KoordinatenTabelle objectAtIndex:i]];
          //NSLog(@"i: %d cncindex: %d distanz OK. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
+         fprintf(stderr, "i: %d cncindex: %d distanz OK. distA: %2.2f distB: %2.2f\n",i,cncindex,distA,distB);
          
       }
       else
@@ -2025,7 +2026,7 @@ return returnInt;
          //NSLog(@"i: %d cncindex: %d *** distanz zu kurz. distA: %2.2f distB: %2.2f",i,cncindex,distA,distB);
          
       }
-      
+      //datensatzok = 1;
       if ([AbbrandCheckbox state])
       {
          if ([tempNowDic objectForKey:@"abrax"])
@@ -5752,7 +5753,7 @@ return returnInt;
          // distanz zum letzten registrierten Element im Array
          float regdist = hypotf(dx-prevregdx, dy-prevregdy)* MIN(ProfiltiefeA,ProfiltiefeB);
 
-         fprintf(stderr,"i: %d \t %2.2f \t %2.2f \t %2.2f \t %2.2f \t ",i,prevdx,dx,dist,regdist);
+  //       fprintf(stderr,"LibProfil i: %d \t %2.2f \t %2.2f \t %2.2f \t %2.2f \t ",i,prevdx,dx,dist,regdist);
          //NSLog(@"i: %d dx %2.2f",i,dx);
          if (regdist>minabstand)
          {
