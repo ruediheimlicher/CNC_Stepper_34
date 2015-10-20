@@ -214,14 +214,20 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    }
    else
    {
-      //NSLog(@"USBOpen: found rawhid device %d",usbstatus);
+      NSLog(@"USBOpen: found rawhid device %d",usbstatus);
       [AVR setUSB_Device_Status:1];
       const char* manu = get_manu();
-      //fprintf(stderr,"manu: %s\n",manu);
+      fprintf(stderr,"manu: %s\n",manu);
+      
       NSString* Manu = [NSString stringWithUTF8String:manu];
       
       const char* prod = get_prod();
-      //fprintf(stderr,"prod: %s\n",prod);
+      
+      fprintf(stderr,"prod rev: %s\n",prod);
+      if (prod==NULL)
+      {
+         prod = "--\0";
+      }
       NSString* Prod = [NSString stringWithUTF8String:prod];
       //NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
       NSDictionary* USBDatenDic = [NSDictionary dictionaryWithObjectsAndKeys:Prod,@"prod",Manu,@"manu", nil];
@@ -628,11 +634,17 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    }
    */
    
+   //MyShowHIDProperties(get_hid(0));
    const char* manu = get_manu();
    //fprintf(stderr,"manu: %s\n",manu);
    NSString* Manu = [NSString stringWithUTF8String:manu];
    
    const char* prod = get_prod();
+   if (prod==NULL)
+   {
+      prod = "ABC\0";
+   }
+
    //fprintf(stderr,"prod: %s\n",prod);
    NSString* Prod = [NSString stringWithUTF8String:prod];
    NSLog(@"Manu: %@ Prod: %@",Manu, Prod);

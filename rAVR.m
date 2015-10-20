@@ -5762,11 +5762,11 @@ return returnInt;
             int index =[Profil1Array count];
             //NSLog(@"i: %d index: %d dx %2.2f",i,index,dist);
          
-            fprintf(stderr,"\tindex: %d",index);
+            //fprintf(stderr,"\tindex: %d",index);
          }
          
          // NSLog(@"i: %d dx: %2.2f",i,dx);
-         fprintf(stderr,"\n");
+        // fprintf(stderr,"\n");
       }
    
    float pfeilung = (ProfiltiefeA - ProfiltiefeB)/[Spannweite intValue];

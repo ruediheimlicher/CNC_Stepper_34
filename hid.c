@@ -23,6 +23,9 @@
 static IONotificationPortRef    gNotifyPort;
 static io_iterator_t             gAddedIter;
 
+static void MyShowHIDProperties(io_registry_entry_t hidDevice);
+
+
 int rawhid_recv(int num, void *buf, int len, int timeout);
 
 // a list of all opened HID devices, so the caller can
@@ -173,8 +176,13 @@ const char* get_manu()
       //CFStringRef manu = (CFStringRef)prop;
       
       const char* manustr = CFStringGetCStringPtr(manu, kCFStringEncodingMacRoman);
-      //fprintf(stderr,"manustr: %s\n",manustr);   
-      return  manustr; 
+      //fprintf(stderr,"manustr: %s\n",manustr);
+      if (manustr==NULL)
+      {
+         manustr="-\0";
+      }
+
+      return  manustr;
    }
    else 
    {
@@ -183,15 +191,56 @@ const char* get_manu()
    
 }
 
+
+static void MyShowHIDProperties(io_registry_entry_t hidDevice)
+{
+   kern_return_t                                   result;
+   CFMutableDictionaryRef                          properties = 0;
+   char                                            path[512];
+   
+   result = IORegistryEntryGetPath(hidDevice, kIOServicePlane, path);
+   if (result == KERN_SUCCESS)
+      printf("[ %s ]", path);
+   
+   //Create a CF dictionary representation of the I/O
+   //Registry entry's properties
+   result = IORegistryEntryCreateCFProperties(hidDevice, &properties,
+                                              kCFAllocatorDefault, kNilOptions);
+   if ((result == KERN_SUCCESS) && properties)
+   {
+      CFShow(properties);
+      /* Some common properties of interest include:
+       kIOHIDTransportKey, kIOHIDVendorIDKey,
+       kIOHIDProductIDKey, kIOHIDVersionNumberKey,
+       kIOHIDManufacturerKey, kIOHIDProductKey,
+       kIOHIDSerialNumberKey, kIOHIDLocationIDKey,
+       kIOHIDPrimaryUsageKey, kIOHIDPrimaryUsagePageKey,
+       and kIOHIDElementKey.
+       */
+      
+      //Release the properties dictionary
+      CFRelease(properties);
+   }
+   printf("\n\n");
+}
+
+
 const char* get_prod()
 {
    hid_t * cnc = get_hid(0);
    if (cnc)
    {
       CFTypeRef prod= IOHIDDeviceGetProperty(cnc->ref,CFSTR(kIOHIDProductKey));
+      //fprintf(stderr,"get_prod prod: %s\n",prod);
       //CFStringRef manu = (CFStringRef)prop;
-      const char* prodstr = CFStringGetCStringPtr(prod, kCFStringEncodingMacRoman);
-      //fprintf(stderr,"prodstr: %s\n",prodstr);
+       const char* prodstr = CFStringGetCStringPtr(prod, kCFStringEncodingMacRoman);
+      
+      if (prodstr==NULL)
+      {
+         prodstr="--\0";
+      }
+
+      fprintf(stderr,"get_prod prodstr: %s\n",prodstr);
       
       return  prodstr; 
    }
