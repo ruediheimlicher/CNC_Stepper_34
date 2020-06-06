@@ -5,12 +5,12 @@
 @implementation IOWarriorWindowController(rADWandlerController)
 - (void)Alert:(NSString*)derFehler
 {
-	NSAlert * DebugAlert=[NSAlert alertWithMessageText:@"Debugger!" 
-		defaultButton:NULL 
-		alternateButton:NULL 
-		otherButton:NULL 
-		informativeTextWithFormat:@"Mitteilung: \n%@",derFehler];
-		[DebugAlert runModal];
+   NSAlert * DebugAlert = [NSAlert init];
+   DebugAlert.messageText = @"Debugger!";
+   DebugAlert.informativeText = [NSString stringWithFormat:@"Mitteilung: \n%@",derFehler ];
+   
+   [DebugAlert  addButtonWithTitle:@"OK"];
+   [DebugAlert runModal];
 
 }
 

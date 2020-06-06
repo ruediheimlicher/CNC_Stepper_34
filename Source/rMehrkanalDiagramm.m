@@ -167,7 +167,7 @@ for (i=0;i<8;i++)
    {
       NullpunktY=[[derEinheitenDic objectForKey:@"nullpunkt"]intValue];
       
-      NSLog(@"EinheitenDicY %d  NullpunktY: %d",[[derEinheitenDic objectForKey:@"nullpunkt"]intValue],NullpunktY);
+      NSLog(@"EinheitenDicY %d  NullpunktY: %d",[[derEinheitenDic objectForKey:@"nullpunkt"]floatValue],NullpunktY);
       
    }
    

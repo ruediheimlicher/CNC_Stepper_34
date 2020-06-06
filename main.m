@@ -9,6 +9,7 @@
 #import <Cocoa/Cocoa.h>
 int main(int argc, const char *argv[])
 {
-   NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+   //NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+   NSLog(@"argv: %d",argc);
     return NSApplicationMain(argc, argv);
 }

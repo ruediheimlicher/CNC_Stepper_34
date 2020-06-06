@@ -241,7 +241,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
    {
       relevanteZeit = ZeitB;
       relevanteSeite=1; // Seite B
-      if (abs(DistanzBY) > abs(DistanzBX))
+      if (fabs(DistanzBY) > fabs(DistanzBX))
       {
          
          motorstatus |= (1<<MOTOR_D);
@@ -254,7 +254,7 @@ delayx, delayy:	Zeit fuer einen Schritt in x/y-Richtung, Einheit 100us
    else 
    {
       relevanteZeit = ZeitA;
-      if (abs(DistanzAY) > abs(DistanzAX))
+      if (fabs(DistanzAY) > fabs(DistanzAX))
       {
           motorstatus |= (1<<MOTOR_B);
       }
@@ -1305,6 +1305,7 @@ PortA=vs[n & 3]; warte10ms(); n++;
 	 1: links von Startpunkt
 	 2: unter Startpunkt
 	 3: rechts von Startpunkt
+    4: zentriert
 	 */
 	switch (Lage)
 	{
@@ -1327,6 +1328,12 @@ PortA=vs[n & 3]; warte10ms(); n++;
 		{
 			Mittelpunkt.x +=  Radius;
 		}break;
+         
+      case 4:
+      {
+        // Mittelpunkt.x +=  Radius/2;
+        // Mittelpunkt.y +=  Radius/2;
+      }
 			
 	}// switch Lage
 	//NSLog(@"KreisVonPunkt: lage: %d Startpunkt x: %2.2f y: %2.2f Radius: %2.2f",Lage, Startpunkt.x, Startpunkt.y, Radius);
@@ -1417,7 +1424,13 @@ PortA=vs[n & 3]; warte10ms(); n++;
 		{
 			Mittelpunkt.x +=  Radius;
 		}break;
-			
+		
+      case 4:
+      {
+         //Mittelpunkt.x +=  Radius/2;
+        // Mittelpunkt.y +=  Radius/2;
+      }break;
+
 	}// switch Lage
 	//NSLog(@"KreisVonPunkt: lage: %d Startpunkt x: %2.2f y: %2.2f Radius: %2.2f",Lage, Startpunkt.x, Startpunkt.y, Radius);
 	
@@ -1465,6 +1478,10 @@ PortA=vs[n & 3]; warte10ms(); n++;
             tempX=Radius*sin(phi);
             tempY=Radius*cos(phi)*-1;
             break;
+         case 4:
+            tempX=Radius/2*sin(phi);
+            tempY=Radius/2*cos(phi)*-1;
+
       }
       tempX += Mittelpunkt.x;
       tempY += Mittelpunkt.y;
@@ -2650,10 +2667,6 @@ PortA=vs[n & 3]; warte10ms(); n++;
                NSLog(@"%d kein prevhypoa",i);
                
             }
-            
-            
-            
-            
             
             if (nexta[0] || nexta[1])
             {

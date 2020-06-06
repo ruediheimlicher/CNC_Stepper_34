@@ -43,7 +43,7 @@
    BOOL istOrdner;
    NSError* error=0;
    NSFileManager *Filemanager = [NSFileManager defaultManager];
-   NSString* LibPfad=[NSHomeDirectory() stringByAppendingFormat:@"%@%@",@"/Documents",@"/CNCDaten",@"/ElementLib"];
+   NSString* LibPfad=[NSHomeDirectory() stringByAppendingFormat:@"%@%@%@",@"/Documents",@"/CNCDaten",@"/ElementLib"];
    ElementDa= ([Filemanager fileExistsAtPath:LibPfad isDirectory:&istOrdner]&&istOrdner);
    NSLog(@"ElementSichern:    LibPfad: %@",LibPfad );	
    if (ElementDa)

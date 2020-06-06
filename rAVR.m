@@ -15,9 +15,6 @@ extern int usbstatus;
 //#define MO 0
 //#define DI 1
 
-//#define TAGPLANBREITE		0x40	// 64 Bytes, 2 page im EEPROM
-
-//#define RAUMPLANBREITE		0x200	// 512 Bytes
 
 #define PFEILSCHRITT 4
 
@@ -433,6 +430,10 @@ float det(float v0[],float v1[])
 @end
 
 @implementation  rPfeiltaste  
+
+
+
+
 - (void)awakeFromNib
 {
    //NSLog(@"Pfeiltaste awakeFromNib");
@@ -443,17 +444,28 @@ float det(float v0[],float v1[])
 
 - (void)mouseUp:(NSEvent *)event
 {
-  // NSLog(@"up");
+   NSLog(@"AVR mouseup");
    richtung=[self tag];
-   NSLog(@"Pfeiltaste mouseUp richtung: %d",richtung);
+   NSLog(@"AVR mouseUp Pfeiltaste richtung: %d",richtung);
+   /*
+    richtung:
+    right: 1
+    up: 2
+    left: 3
+    down: 4
+    */
+   
    [self setState:NSOffState];
    
    NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 	[NotificationDic setObject:[NSNumber numberWithInt:richtung] forKey:@"richtung"];
 	
    int aktpwm=0;
-   
+   NSPoint location = [event locationInWindow];
+   NSLog(@"Pfeiltaste mouseUp location: %2.2f %2.2f",location.x, location.y);
    [NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"push"];
+   [NotificationDic setObject:[NSNumber numberWithFloat:location.x] forKey:@"locationx"];
+   [NotificationDic setObject:[NSNumber numberWithFloat:location.y] forKey:@"locationy"];
       
 	NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 	[nc postNotificationName:@"Pfeil" object:self userInfo:NotificationDic];
@@ -466,7 +478,7 @@ float det(float v0[],float v1[])
    
    richtung=[self tag];
 
-   //NSLog(@"Pfeiltaste mouseDown richtung: %d",richtung);
+   NSLog(@"AVR mouseDown: Pfeiltaste richtung: %d",richtung);
    [self setState:NSOnState];
 	
    
@@ -554,13 +566,19 @@ float det(float v0[],float v1[])
 
 - (void)Alert:(NSString*)derFehler
 {
-
+/*
 	NSAlert * DebugAlert=[NSAlert alertWithMessageText:@"Debugger!" 
 		defaultButton:NULL 
 		alternateButton:NULL 
 		otherButton:NULL 
 		informativeTextWithFormat:@"Mitteilung: \n%@",derFehler];
 		[DebugAlert runModal];
+ */
+   NSAlert * DebugAlert=[[NSAlert alloc]init];
+   DebugAlert.messageText= @"Debugger!";
+   DebugAlert.informativeText = [NSString stringWithFormat:@"Mitteilung: \n%@",derFehler];
+   
+   [DebugAlert runModal];
 
 }
 
@@ -588,7 +606,7 @@ float det(float v0[],float v1[])
 
 - (int)HexStringZuInt:(NSString*) derHexString
 {
-	int returnInt=-1;
+	uint returnInt=-1;
 	NSScanner* theScanner = [NSScanner scannerWithString:derHexString];
 	
 	if ([theScanner scanHexInt:&returnInt])
@@ -1047,6 +1065,8 @@ return returnInt;
    free(versionstring);
 	//NSLog(@"awake");
    */
+   
+ 
 	int i;
 	NSMutableArray* tempArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
 	NSArray* bitnummerArray=[NSArray arrayWithObjects: @"null", @"eins",@"zwei",@"drei",@"vier",@"fuenf",nil];
@@ -1656,7 +1676,7 @@ return returnInt;
    
    //NSArray* tempLinienArray = [CNC LinieVonPunkt:NSMakePoint(25,25) mitLaenge:15 mitWinkel:30];
    //NSLog(@"tempLinienArray: %@",tempLinienArray);
-   	//NSLog(@"reportStartKnopf state: %d",[sender state]);
+   	NSLog(@"reportStartKnopf state: %d",[sender state]);
 	
    if ([sender state])
 	{
@@ -3067,6 +3087,7 @@ return returnInt;
 
 - (void)ManRichtung:(int)richtung
 {
+   // 
    {
       NSLog(@"AVR  manRichtung richtung: %d",richtung);
       
@@ -3344,7 +3365,7 @@ return returnInt;
    [self ManRichtung:1];
    [CNC_Lefttaste setEnabled:YES];
    [AnschlagLinksIndikator setTransparent:YES];
-   
+   NSLog(@"reportManRight");
    if ((cncstatus)|| !([CNC_Seite1Check state] || [CNC_Seite2Check state]))
    {
       return;
@@ -3974,6 +3995,7 @@ return returnInt;
          }
          //NSLog(@"oldpwm: %d temppwm: %d",oldpwm,temppwm);
       }
+      [CNC_Stoptaste setEnabled:YES];
    }
    else // Start
    {
@@ -4322,7 +4344,7 @@ return returnInt;
 - (void)PfeilAktion:(NSNotification*)note
 {
 	//[self reportManDown:NULL];
-	//NSLog(@"AVR PfeilAktion note: %@",[[note userInfo]description]);
+	NSLog(@"AVR PfeilAktion start note: %@",[[note userInfo]description]);
    
    // Richtung >0: Pfeiltaste
    if ([[note userInfo]objectForKey:@"richtung"]&&[[[note userInfo]objectForKey:@"richtung"]intValue])
@@ -4374,9 +4396,37 @@ return returnInt;
    return [TestPfeiltaste state];
    
 }
+/*
+- (void)mouseUp:(NSEvent *)event
+{
+   NSLog(@"rAVR mouseup");
+   NSLog(@"mouseup: %@",[event description]);
+   //NSLog(@"mouseDown: modifierFlags: %d NSShiftKeyMask: %d",[derEvent modifierFlags],NSShiftKeyMask);
+   unsigned int shift =[event modifierFlags] & NSShiftKeyMask;
+   if (shift)
+   {
+      NSLog(@"shift");
+   }
+   else
+   {
+      NSLog(@"kein shift");
+   }
+   
+   
+   NSRect RaumViewFeld;
+   RaumViewFeld=[ProfilFeld  frame]; 
 
-
-
+   NSLog(@"mouseup Profilfeld origin: %2.2f  %2.2f",RaumViewFeld.origin.x,RaumViewFeld.origin.y);
+   
+   
+   NSPoint location = [event locationInWindow];
+   
+   int pos = NSPointInRect(location, RaumViewFeld);
+   
+   NSLog(@"mouseup: location: %2.2f %2.2f pos: %d",location.x,location.y , pos);
+  // NSPoint local_point = [self convertPoint:(CGPoint)location fromView:nil];
+}
+*/
 - (void)PfeiltasteAktion:(NSNotification*)note
 {
 	float Pfeiltastenschritt=0.2;
@@ -4592,6 +4642,65 @@ return returnInt;
 		[ProfilTable reloadData];
 		[CNCTable reloadData];
 	}
+   else // klickpunkt ist < 0
+   {
+      int pfeiltaste=[[[note userInfo]objectForKey:@"pfeiltaste"]intValue];
+      NSLog(@"PfeiltasteAktion pfeiltaste: %d klickpunkt ist <0" ,pfeiltaste);
+      /*
+       richtung:
+       right: 1   > 124
+       up: 2      > 126
+       left: 3    > 123
+       down: 4    > 125
+       */
+      int richtung = 0;
+      
+      switch (pfeiltaste) 
+      {
+         case 124: // rechts
+         {
+            // Seite 
+            NSLog(@"PfeiltasteAktion rechts");
+            richtung = 1;
+         }break;
+
+         case 126: // up
+         {
+            // von  mouseup;
+            NSLog(@"PfeiltasteAktion up");
+            richtung = 2;
+            
+
+            // Seite 
+            
+         }break;
+
+         case 123: // links
+         {
+            // Seite 
+            NSLog(@"PfeiltasteAktion links");
+            richtung = 3;
+         }break;
+            
+         case 125: // down
+         {
+            // Seite 
+            richtung = 4;
+            NSLog(@"PfeiltasteAktion down");
+         }break;
+
+      }// switch pfeiltaste
+      NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+      [NotificationDic setObject:[NSNumber numberWithInt:richtung] forKey:@"richtung"];
+      
+      int aktpwm=0;
+      
+      [NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"push"];
+      
+      NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+      [nc postNotificationName:@"Pfeil" object:self userInfo:NotificationDic];
+
+   } // klickpunkt ist < 0
 	
 }
 
@@ -5351,7 +5460,7 @@ return returnInt;
 //   for (;;) 
    {
       
-      while ([NSApp runModalSession:session] != NSRunContinuesResponse)
+      while ([NSApp runModalSession:session] != NSModalResponseContinue)
       {
        //NSLog(@"Modal break");
       break;
@@ -5557,6 +5666,8 @@ return returnInt;
    [ProfilGraph setDatenArray:KoordinatenTabelle];
 	[ProfilGraph setNeedsDisplay:YES];
    [CNCTable reloadData];
+   [CNC_Starttaste setEnabled:0];
+   [CNC_Stoptaste setEnabled:1];
 
 }
 
@@ -6319,7 +6430,7 @@ return returnInt;
    [CNCTable reloadData];
    
    
-   
+    [CNC_Sendtaste setEnabled:YES];
 }
 
 - (void)BlockeingabeAktion:(NSNotification*)note
@@ -6425,7 +6536,7 @@ return returnInt;
    [ProfilGraph setDatenArray:KoordinatenTabelle];
 	[ProfilGraph setNeedsDisplay:YES];
    [CNCTable reloadData];
-   
+   [CNC_Sendtaste setEnabled:YES];
 
 
 }
@@ -6700,6 +6811,144 @@ return returnInt;
    [CNC setSpeed:lastSpeed];
    
 }
+#pragma mark Rumpfrohr
+- (IBAction)reportRumpfrohrkonfigurieren:(id)sender
+{
+   NSLog(@"reportRumpfrohrkonfigurieren");
+   if ([KoordinatenTabelle count])
+   {
+      //NSLog(@"BlockKoordinatenTabelle: %@",[BlockKoordinatenTabelle description]);
+      int i=0;
+      //NSLog(@"H");
+      [KoordinatenTabelle removeObjectAtIndex:0];
+   }
+   
+   
+   float blockoberkante = 60;
+   float bohrung = 8; // Durchmeser Bohrung mm
+   int bohrungpunkte = 10;
+   float durchmesserA = 40; // Durchmeser Rohr mm
+   float durchmesserB = 20;
+   int rohrpunkte= 32;
+   
+   
+   // Einlauf und Auslauf in gleicher funktion. Unterschieden durch Parameter 'Lage'.
+   // Lage: 0: Einlauf 1: Auslauf
+   NSLog(@"KoordinatenTabelle: %@",KoordinatenTabelle);
+   
+   float full_pwm = 1;
+   float red_pwm = [red_pwmFeld floatValue];
+   [CNC setredpwm:red_pwm];
+   int aktuellepwm=[DC_PWM intValue];
+   
+   int lage=0;
+   float einlaufAX = 100;
+   float einlaufAY = 80;
+   float einlaufBX = 100;
+   float einlaufBY = 80;
+   
+   NSPoint StartpunktA = NSMakePoint(einlaufAX, einlaufAY);
+   NSPoint StartpunktB = NSMakePoint(einlaufBX, einlaufBY);
+
+   NSMutableArray* RumprohrArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
+   
+   int index=0;
+   
+   NSLog(@"Einstich");
+   
+   NSPoint PositionA = StartpunktA;
+   NSPoint PositionB = StartpunktB;
+
+   
+   [KoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:lage],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
+
+   index++;
+   // ****************
+   // Bohrung
+   // ****************
+   // fahren auf oberkante Bohrung: blockoberkante/2 + bohrung/2
+   PositionA.y -= (blockoberkante/2 - bohrung/2);
+   PositionB.y -= (blockoberkante/2 - bohrung/2);
+   //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
+   index++;
+   [KoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
+
+   // Kreis mit Durchmesser bohrung anfuegen, Lage = unten
+   NSArray* bohrungarrayA = [CNC KreisKoordinatenMitRadius:bohrung/2 mitLage:2  mitAnzahlPunkten:bohrungpunkte];
+   NSLog(@"bohrungarray: %@",bohrungarrayA);
+   NSArray* bohrungarrayB = [CNC KreisKoordinatenMitRadius:bohrung/2 mitLage:2  mitAnzahlPunkten:bohrungpunkte];
+   
+   for (int i=0;i<[bohrungarrayA count];i++)
+   {
+      NSPoint tempPosA;
+      NSDictionary* tempdicA = [bohrungarrayA objectAtIndex:i];
+      tempPosA.x = PositionA.x + [[tempdicA objectForKey:@"x"]floatValue];
+      tempPosA.y = PositionA.y + [[tempdicA objectForKey:@"y"]floatValue];
+      
+      NSPoint tempPosB;
+      NSDictionary* tempdicB = [bohrungarrayB objectAtIndex:i];
+      tempPosB.x = PositionB.x + [[tempdicB objectForKey:@"x"]floatValue];
+      tempPosB.y = PositionB.y + [[tempdicB objectForKey:@"y"]floatValue];
+      
+      [KoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:tempPosA.x],@"ax",[NSNumber numberWithFloat:tempPosA.y],@"ay",[NSNumber numberWithFloat:tempPosB.x],@"bx", [NSNumber numberWithFloat:tempPosB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
+      index++;
+   }
+
+   // Zurueck zu Blockoberkante   
+//   PositionA.x += 1;
+   PositionA.y += (blockoberkante/2 - bohrung/2);
+//   PositionB.x -= 1;
+   PositionB.y += (blockoberkante/2 - bohrung/2);
+   [KoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",[NSNumber numberWithFloat:aktuellepwm*red_pwm],@"pwm",nil]];
+// Ende Bohrung
+   
+   
+   // ****************
+   // Rumpfrohr
+   // ****************
+   PositionA.y -= (blockoberkante/2 - durchmesserA/2); // Oberkante Rumpfrohr
+  
+   PositionB.y -= (blockoberkante/2 - durchmesserB/2);
+   index++;
+   [KoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",[NSNumber numberWithFloat:aktuellepwm*red_pwm],@"pwm",nil]];
+   // Kreis mit Durchmesser bohrung anfuegen, Lage = unten
+   NSArray* rohrarrayA = [CNC KreisKoordinatenMitRadius:durchmesserA/2 mitLage:2  mitAnzahlPunkten:rohrpunkte];
+   NSLog(@"rohrarrayA: %@",rohrarrayA);
+   NSArray* rohrarrayB = [CNC KreisKoordinatenMitRadius:durchmesserB/2 mitLage:2  mitAnzahlPunkten:rohrpunkte];
+   
+   for (int i=0;i<[rohrarrayA count];i++)
+   {
+      NSPoint tempPosA;
+      NSDictionary* tempdicA = [rohrarrayA objectAtIndex:i];
+      tempPosA.x = PositionA.x + [[tempdicA objectForKey:@"x"]floatValue];
+      tempPosA.y = PositionA.y + [[tempdicA objectForKey:@"y"]floatValue];
+      
+      NSPoint tempPosB;
+      NSDictionary* tempdicB = [rohrarrayB objectAtIndex:i];
+      tempPosB.x = PositionB.x + [[tempdicB objectForKey:@"x"]floatValue];
+      tempPosB.y = PositionB.y + [[tempdicB objectForKey:@"y"]floatValue];
+      
+      [KoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:tempPosA.x],@"ax",[NSNumber numberWithFloat:tempPosA.y],@"ay",[NSNumber numberWithFloat:tempPosB.x],@"bx", [NSNumber numberWithFloat:tempPosB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",[NSNumber numberWithFloat:aktuellepwm*full_pwm],@"pwm",nil]];
+      index++;
+   }
+
+   // Zurueck zu Blockoberkante
+   PositionA.y += (blockoberkante/2 - durchmesserA/2); // Oberkante Rumpfrohr
+   PositionB.y += (blockoberkante/2 - durchmesserB/2);
+   [KoordinatenTabelle addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",[NSNumber numberWithFloat:aktuellepwm*red_pwm],@"pwm",nil]];
+
+   
+   NSLog(@"KoordinatenTabelle: %@",KoordinatenTabelle);
+   [self updateIndex];
+   [CNCTable scrollRowToVisible:[KoordinatenTabelle count] - 1];
+   [CNCTable selectRowIndexes:[NSIndexSet indexSetWithIndex:[KoordinatenTabelle count]-1] byExtendingSelection:NO];
+   [CNCTable reloadData];
+   [ProfilGraph setDatenArray:KoordinatenTabelle];
+   [ProfilGraph setNeedsDisplay:YES];
+
+
+}
+
 
 - (IBAction)reportBlockkonfigurieren:(id)sender
 {
@@ -7122,23 +7371,38 @@ return returnInt;
 
 - (NSString *)inputNameMitTitel: (NSString *)prompt information:(NSString *)info defaultValue: (NSString *)defaultValue 
 {
+   /*
    NSAlert *alert = [NSAlert alertWithMessageText: prompt
                                     defaultButton:@"OK"
                                   alternateButton:@"Cancel"
                                       otherButton:nil
                         informativeTextWithFormat:info];
+   */
+   
+   // 200321 
+   NSAlert * alert=[[NSAlert alloc]init];
+   alert.messageText= prompt;
+   alert.informativeText = info;
+   
+   //[alert runModal];
+
+   
    
    NSTextField *input = [[NSTextField alloc] initWithFrame:NSMakeRect(0,0,200,24)];
    [input setStringValue:defaultValue];
    [alert setAccessoryView:input];
    //[alert addButtonWithTitle:@"ax"];
    NSInteger button = [alert runModal];
-   if (button == NSAlertDefaultReturn) 
+   
+   
+   
+   
+   if (button == NSAlertFirstButtonReturn) 
    {
       [input validateEditing];
       return [input stringValue];
    } 
-   else if (button == NSAlertAlternateReturn) 
+   else if (button == NSAlertSecondButtonReturn) 
    {
       [input release];
       return nil;
@@ -7321,7 +7585,7 @@ return returnInt;
   // NSLog(@"reportNeuTaste KoordinatenTabelle vor: %@",[KoordinatenTabelle description]);
 	[CNC_Preparetaste setEnabled:YES];
    [CNC_Halttaste setState:0];
-   [CNC_Halttaste setEnabled:NO];
+//   [CNC_Halttaste setEnabled:NO];
 	[CNC_Sendtaste setEnabled:NO];
 	[CNC_Starttaste setEnabled:YES];
    [CNC_Stoptaste setEnabled:NO];
@@ -8650,7 +8914,7 @@ return returnInt;
          [Warnung addButtonWithTitle:@"Ignorieren"];
          //	[Warnung addButtonWithTitle:@""];
          [Warnung addButtonWithTitle:@"Abbrechen"];
-         [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
+         [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"reportUSB_sendArray 1: CNC Schnitt starten"]];
          
          NSString* s1=@"Der Heizdraht ist noch nicht eingeschaltet.";
          NSString* s2=@"Nach dem Einschalten den Vorgang erneut starten.";
@@ -8746,7 +9010,7 @@ return returnInt;
       [Warnung addButtonWithTitle:@"Zurück"];
       //	[Warnung addButtonWithTitle:@""];
       //[Warnung addButtonWithTitle:@"Abbrechen"];
-      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
+      [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"reportUSB_sendArray 2: CNC Schnitt starten"]];
       
       NSString* s1=@"USB ist noch nicht eingesteckt.";
       NSString* s2=@"";
@@ -8951,6 +9215,35 @@ return returnInt;
    
    return erfolg;
 }
+
+- (IBAction)reportSave:(id)sender
+{
+   /*
+    {
+    abrax = "226.3156";
+    abray = "50.99943";
+    abrbx = "226.3218";
+    abrby = "50.99962";
+    ax = "226.3493";
+    ay = 50;
+    bx = "226.3493";
+    by = 50;
+    index = 5; // Punkt nummer
+    pwm = 37;
+    teil = 10; // Zusammengesetzte Form
+    },
+
+    */
+   NSLog(@"AVR  reportSave");
+   NSLog(@"Koordinatentabelle: %@",KoordinatenTabelle);
+   
+   
+   
+   
+   
+} // save
+
+
 
 - (IBAction)reportPrint:(id)sender
 {

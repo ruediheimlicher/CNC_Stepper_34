@@ -81,7 +81,7 @@ return ProfilTabelle;
 			row:(int)rowIndex
 {
 	//NSLog(@"objectValueForTableColumn");
-    NSDictionary *einTestDic;
+    NSDictionary *einTestDic = [NSDictionary dictionary];
 	if (rowIndex<[ProfilTabelle count])
 	{
 			einTestDic = [ProfilTabelle objectAtIndex: rowIndex];

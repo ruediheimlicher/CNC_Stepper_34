@@ -1193,7 +1193,7 @@
    [Form2Pop removeAllItems];
    [Form2Pop addItemsWithTitles:FormNamenArray];
 
-   NSArray* FormArray = [NSArray arrayWithObjects:@"oben",@"links",@"unten",@"rechts", nil];
+   NSArray* FormArray = [NSArray arrayWithObjects:@"oben",@"links",@"unten",@"rechts",@"zentriert", nil];
    [LagePop removeAllItems];
    [LagePop addItemsWithTitles:FormArray];
 
@@ -3202,7 +3202,8 @@
 
 - (IBAction)reportLagePop:(id)sender
 {
-   //NSLog(@"reportLagePop");
+   NSLog(@"reportLagePop %@",[sender titleOfSelectedItem]);
+   
 }
 
 - (IBAction)reportFormEinfuegen:(id)sender
@@ -3220,19 +3221,19 @@
    {
       case 0: // Kreis
       {
-         if (radiusA1 >= radiusA2)
+         if (radiusA1 >= radiusA2) // 
          {
             if ([AnzahlPunkte intValue]>2)
             {
-         Form1KoordinatenArray = [NSMutableArray arrayWithArray:[CNC KreisKoordinatenMitRadius:radiusA1  mitLage:[LagePop indexOfSelectedItem] mitAnzahlPunkten:[AnzahlPunkte intValue]] ];
+               Form1KoordinatenArray = [NSMutableArray arrayWithArray:[CNC KreisKoordinatenMitRadius:radiusA1  mitLage:[LagePop indexOfSelectedItem] mitAnzahlPunkten:[AnzahlPunkte intValue]] ];
             }
             else
             {
                Form1KoordinatenArray = [NSMutableArray arrayWithArray:[CNC KreisKoordinatenMitRadius:radiusA1  mitLage:[LagePop indexOfSelectedItem] mitAnzahlPunkten:-1] ];
                
             }
-         int anzahlMasterpunkte = [Form1KoordinatenArray count]-1;
-         Form2KoordinatenArray = [NSMutableArray arrayWithArray:[CNC KreisKoordinatenMitRadius:radiusA2  mitLage:[LagePop indexOfSelectedItem]mitAnzahlPunkten: anzahlMasterpunkte]];
+            int anzahlMasterpunkte = [Form1KoordinatenArray count]-1;
+            Form2KoordinatenArray = [NSMutableArray arrayWithArray:[CNC KreisKoordinatenMitRadius:radiusA2  mitLage:[LagePop indexOfSelectedItem]mitAnzahlPunkten: anzahlMasterpunkte]];
          }
          else
          {

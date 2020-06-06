@@ -748,7 +748,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    // Configure your panel the way you want it
    [ProfilOpenPanel setCanChooseFiles:YES];
    [ProfilOpenPanel setCanChooseDirectories:NO];
-   [ProfilOpenPanel setAllowsMultipleSelection:YES];
+   [ProfilOpenPanel setAllowsMultipleSelection:NO];
    [ProfilOpenPanel setAllowedFileTypes:[NSArray arrayWithObject:@"txt"]];
    NSLog(@"readFigur A");
    /*
@@ -782,17 +782,19 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    
    if (ProfilOpenPanel)
    {
-	int antwort=[ProfilOpenPanel runModal];
+      int antwort=[ProfilOpenPanel runModal];
+      NSLog(@"ProfilOpenPanel antwort: %d",antwort);
+      [ProfilOpenPanel release];
    }
    else{
       NSLog(@"kein Panel");
       return;
    }
     
-    return;
+//    return;
 	NSURL* FigurPfad=[ProfilOpenPanel URL];
     
-	//NSLog(@"readFigur: URL: %@",FigurPfad);
+	NSLog(@"readFigur: URL: %@",FigurPfad);
 	NSError* err=0;
 	NSString* FigurString=[NSString stringWithContentsOfURL:FigurPfad encoding:NSUTF8StringEncoding error:&err]; // String des Speicherpfads
 	

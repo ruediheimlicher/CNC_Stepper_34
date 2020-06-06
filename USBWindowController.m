@@ -168,13 +168,13 @@ void print_all_num(struct Abschnitt* list)
 
 - (void)Alert:(NSString*)derFehler
 {
-	NSAlert * DebugAlert=[NSAlert alertWithMessageText:@"Debugger!" 
-		defaultButton:NULL 
-		alternateButton:NULL 
-		otherButton:NULL 
-		informativeTextWithFormat:@"Mitteilung: \n%@",derFehler];
-		[DebugAlert runModal];
+   NSAlert * DebugAlert = [NSAlert init];
+   DebugAlert.messageText = @"Debugger!";
+   DebugAlert.informativeText = [NSString stringWithFormat:@"Mitteilung: \n%@",derFehler ];
 
+   [DebugAlert  addButtonWithTitle:@"OK"];
+   [DebugAlert runModal];
+   
 }
 
 - (void)observerMethod:(id)note
@@ -204,9 +204,12 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 - (int)USBOpen
 {
    
-   int  r;
+   int  r=0;
+  
    
-   r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
+  r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
+//   r = rawhid_open(1, 0x16C0, 0x0486, 0xFFAB, 0x0200);
+   
    if (r <= 0) 
    {
       //NSLog(@"USBOpen: no rawhid device found");
@@ -221,6 +224,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
       NSString* Manu = [NSString stringWithUTF8String:manu];
       
       const char* prod = get_prod();
+      prod="1234\0";
       //fprintf(stderr,"prod: %s\n",prod);
       NSString* Prod = [NSString stringWithUTF8String:prod];
       //NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
@@ -245,6 +249,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 /*" Invoked when the nib file including the window has been loaded. "*/
 - (void) awakeFromNib
 {
+   NSLog(@"AWAKE");
    mausistdown=0;
    anzrepeat=0;
    int listcount=0;
@@ -337,6 +342,16 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 		string[0]=h + 'A'; 
 	}
 	
+#define STARTOFFSET 0xFFF
+#define pi 3.14
+   int tempsin = 0x800 + STARTOFFSET;
+   uint16_t i;
+   for (i=0;i<0x168;i++)
+   {
+     // tempsin = 0x800 + STARTOFFSET + 500 * sin(i/180.0*pi);
+      tempsin = 500 * sin(i/180.0*pi);
+      //NSLog(@"%d",tempsin);
+   }
 	
 	NSImage* myImage = [NSImage imageNamed: @"USB"];
 	[NSApp setApplicationIconImage: myImage];
@@ -390,8 +405,6 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
           selector:@selector(SlaveResetAktion:)
               name:@"slavereset"
             object:nil];
-   
-
 
 
 	[nc addObserver:self
@@ -576,24 +589,6 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
          case NSAlertFirstButtonReturn: // Einschalten
          {
             [self USBOpen];
-            /*
-             int  r;
-             
-             r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
-             if (r <= 0) 
-             {
-             NSLog(@"USBAktion: no rawhid device found");
-             [AVR setUSB_Device_Status:0];
-             return;
-             }
-             else
-             {
-             
-             NSLog(@"USBAktion: found rawhid device %d",usbstatus);
-             [AVR setUSB_Device_Status:1];
-             }
-             usbstatus=r;
-             */
          }break;
             
          case NSAlertSecondButtonReturn: // Ignorieren
@@ -634,8 +629,12 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    
    const char* prod = get_prod();
    //fprintf(stderr,"prod: %s\n",prod);
-   NSString* Prod = [NSString stringWithUTF8String:prod];
-   NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
+   NSString* Prod= @"";
+   if (prod)
+   {
+      NSString* Prod = [NSString stringWithUTF8String:prod];
+      NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
+   }
    NSDictionary* USBDatenDic = [NSDictionary dictionaryWithObjectsAndKeys:Prod,@"prod",Manu,@"manu", nil];
    [AVR setUSBDaten:USBDatenDic];
 
@@ -678,7 +677,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    
    //
 
-
+NSLog(@"AWAKE end");
 }
 
 
@@ -702,7 +701,48 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
 }
 
 
-
+- (void)keyDown:(NSEvent*)derEvent
+{
+   //NSLog(@"keyDown: %@",[derEvent description]);
+   NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
+   [NotificationDic setObject:[NSNumber  numberWithInt:[derEvent keyCode]]forKey:@"pfeiltaste"];
+   /*
+   [NotificationDic setObject:[NSNumber  numberWithInt:Klickpunkt]forKey:@"klickpunkt"];
+   [NotificationDic setObject:[NSNumber  numberWithInt:Klickseite]forKey:@"klickseite"];
+   [NotificationDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
+   */
+   
+   NSLog(@"WC keyDown: %d",[derEvent keyCode]);
+   
+   switch ([derEvent keyCode]) 
+   {
+      case 123:
+         NSLog(@"links");
+         
+         break;
+         
+      case 124:
+         NSLog(@"rechts");
+         break;
+         
+      case 125:
+         NSLog(@"down");
+         break;
+         
+      case 126:
+         NSLog(@"up");
+         break;
+         
+         
+         
+      default:
+         break;
+   }
+   
+   NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
+   [nc postNotificationName:@"pfeiltaste" object:self userInfo:NotificationDic];
+   
+}
 
 
 

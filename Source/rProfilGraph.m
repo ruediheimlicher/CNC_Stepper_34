@@ -389,8 +389,6 @@ int (^add)(int,int) = ^(int number1, int number2){
          [NotificationDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
 
          klickrange=NSMakeRange(0,0);
-         
-         
       }
       
       // Koord Mauspunkt
@@ -428,7 +426,7 @@ int (^add)(int,int) = ^(int number1, int number2){
 
 - (void)mouseUp:(NSEvent*)derEvent
 {
-  // NSLog(@"mouseUp:");
+   NSLog(@"mouseUp:");
    NSMutableDictionary* MausDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [MausDic setObject:[NSNumber numberWithInt:0] forKey:@"mausistdown"];
    [MausDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
@@ -587,7 +585,7 @@ int (^add)(int,int) = ^(int number1, int number2){
 
 - (void)mouseDragged:(NSEvent *)derEvent
 {
-	//NSLog(@"mouseDragged: %@",[derEvent description]);
+	NSLog(@"mouseDragged: %@",[derEvent description]);
 	NSPoint location = [derEvent locationInWindow];
 	NSPoint local_point = [self convertPoint:location fromView:nil];
 	float x=local_point.x;

@@ -1,0 +1,1190 @@
+2020-05-13 16:45:42.501815+0200 USB_Stepper[42908:2329719] argv: 3
+2020-05-13 16:45:42.651945+0200 USB_Stepper[42908:2329719] AWAKE
+2020-05-13 16:45:42.709597+0200 USB_Stepper[42908:2329719] SystemVersion: 10.14.6
+2020-05-13 16:45:42.863782+0200 USB_Stepper[42908:2329719] Failed to connect (DeviceFeld) outlet from (rAVR) to (NSTextField): missing setter or instance variable
+2020-05-13 16:45:42.863895+0200 USB_Stepper[42908:2329719] Failed to connect (Einlaufbreite) outlet from (rAVR) to (NSTextField): missing setter or instance variable
+2020-05-13 16:45:42.863953+0200 USB_Stepper[42908:2329719] Failed to connect (Einlaufkote) outlet from (rAVR) to (NSTextField): missing setter or instance variable
+2020-05-13 16:45:42.864023+0200 USB_Stepper[42908:2329719] Failed to connect (EinlaufkotenStepper) outlet from (rAVR) to (NSStepper): missing setter or instance variable
+2020-05-13 16:45:42.864627+0200 USB_Stepper[42908:2329719] Failed to connect (ProfilWrenchEinheit) outlet from (rAVR) to (NSMatrix): missing setter or instance variable
+2020-05-13 16:45:42.864687+0200 USB_Stepper[42908:2329719] Failed to connect (RechtsLinksOffsetFeld) outlet from (rAVR) to (NSTextField): missing setter or instance variable
+2020-05-13 16:45:42.864972+0200 USB_Stepper[42908:2329719] Failed to connect (red_pwm) outlet from (rAVR) to (NSTextField): missing setter or instance variable
+2020-05-13 16:45:42.919823+0200 USB_Stepper[42908:2329719] Stepperversion: Stepper.12.006 Datum: 16.03.2013
+2020-05-13 16:45:43.235542+0200 USB_Stepper[42908:2329719] kein prod
+2020-05-13 16:45:43.235794+0200 USB_Stepper[42908:2329719] AWAKE end
+2020-05-13 16:45:48.443670+0200 USB_Stepper[42908:2329719] AVR mouseDown: Pfeiltaste richtung: 4
+2020-05-13 16:45:48.444712+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:45:48.444784+0200 USB_Stepper[42908:2329719]  ********************* AVRController  PfeilAktion mousedown=1  Stepperposition: 0
+2020-05-13 16:45:48.444864+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:45:48.444912+0200 USB_Stepper[42908:2329719] AVR  manRichtung richtung: 4
+2020-05-13 16:45:48.444944+0200 USB_Stepper[42908:2329719] AVR  manRichtung aktpwm: 0
+2020-05-13 16:45:48.456121+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:45:48.456197+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 0
+2020-05-13 16:45:48.629609+0200 USB_Stepper[42908:2329719] AVR mouseup
+2020-05-13 16:45:48.629667+0200 USB_Stepper[42908:2329719] AVR mouseUp Pfeiltaste richtung: 4
+2020-05-13 16:45:48.629695+0200 USB_Stepper[42908:2329719] Pfeiltaste mouseUp location: 737.45 436.80
+2020-05-13 16:45:48.629816+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    locationx = "737.4453";
+    locationy = "436.7969";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:45:48.629837+0200 USB_Stepper[42908:2329719]  ********************* AVRController PfeilAktion mouseup pwm: 0
+2020-05-13 16:45:48.632270+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    locationx = "737.4453";
+    locationy = "436.7969";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:45:48.636424+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 225
+2020-05-13 16:45:48.636473+0200 USB_Stepper[42908:2329719] readUSB  mouseup
+2020-05-13 16:45:48.636514+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt >count
+*
+2020-05-13 16:45:48.639974+0200 USB_Stepper[42908:2329719] AbschnittFertig: 225
+2020-05-13 16:45:48.694085+0200 USB_Stepper[42908:2329719] AVR mouseDown: Pfeiltaste richtung: 4
+2020-05-13 16:45:48.694679+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:45:48.694729+0200 USB_Stepper[42908:2329719]  ********************* AVRController  PfeilAktion mousedown=1  Stepperposition: 1
+2020-05-13 16:45:48.694789+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:45:48.694811+0200 USB_Stepper[42908:2329719] AVR  manRichtung richtung: 4
+2020-05-13 16:45:48.694827+0200 USB_Stepper[42908:2329719] AVR  manRichtung aktpwm: 0
+2020-05-13 16:45:48.704193+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:45:48.704257+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 0
+2020-05-13 16:45:48.864178+0200 USB_Stepper[42908:2329719] AVR mouseup
+2020-05-13 16:45:48.864237+0200 USB_Stepper[42908:2329719] AVR mouseUp Pfeiltaste richtung: 4
+2020-05-13 16:45:48.864262+0200 USB_Stepper[42908:2329719] Pfeiltaste mouseUp location: 737.45 436.80
+2020-05-13 16:45:48.864368+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    locationx = "737.4453";
+    locationy = "436.7969";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:45:48.864391+0200 USB_Stepper[42908:2329719]  ********************* AVRController PfeilAktion mouseup pwm: 0
+2020-05-13 16:45:48.872364+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    locationx = "737.4453";
+    locationy = "436.7969";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:45:49.258375+0200 USB_Stepper[42908:2329719] AVR mouseDown: Pfeiltaste richtung: 4
+2020-05-13 16:45:49.259008+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:45:49.259062+0200 USB_Stepper[42908:2329719]  ********************* AVRController  PfeilAktion mousedown=1  Stepperposition: 1
+2020-05-13 16:45:49.259129+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:45:49.259162+0200 USB_Stepper[42908:2329719] AVR  manRichtung richtung: 4
+2020-05-13 16:45:49.259185+0200 USB_Stepper[42908:2329719] AVR  manRichtung aktpwm: 0
+2020-05-13 16:45:49.272193+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:45:49.272270+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 0
+2020-05-13 16:45:49.272303+0200 USB_Stepper[42908:2329719] USB_SchnittdatenAktion laufender timer inval
+2020-05-13 16:45:49.729054+0200 USB_Stepper[42908:2329719] AVR mouseup
+2020-05-13 16:45:49.729110+0200 USB_Stepper[42908:2329719] AVR mouseUp Pfeiltaste richtung: 4
+2020-05-13 16:45:49.729137+0200 USB_Stepper[42908:2329719] Pfeiltaste mouseUp location: 737.45 436.80
+2020-05-13 16:45:49.729237+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    locationx = "737.4453";
+    locationy = "436.7969";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:45:49.729261+0200 USB_Stepper[42908:2329719]  ********************* AVRController PfeilAktion mouseup pwm: 0
+2020-05-13 16:45:49.736155+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    locationx = "737.4453";
+    locationy = "436.7969";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:45:49.738463+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 225
+2020-05-13 16:45:49.738501+0200 USB_Stepper[42908:2329719] readUSB  mouseup
+2020-05-13 16:45:49.738521+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt >count
+*
+2020-05-13 16:45:49.744090+0200 USB_Stepper[42908:2329719] AbschnittFertig: 225
+2020-05-13 16:45:53.525315+0200 USB_Stepper[42908:2329719] AVR mouseDown: Pfeiltaste richtung: 4
+2020-05-13 16:45:53.525925+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:45:53.525979+0200 USB_Stepper[42908:2329719]  ********************* AVRController  PfeilAktion mousedown=1  Stepperposition: 1
+2020-05-13 16:45:53.526045+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:45:53.526078+0200 USB_Stepper[42908:2329719] AVR  manRichtung richtung: 4
+2020-05-13 16:45:53.526105+0200 USB_Stepper[42908:2329719] AVR  manRichtung aktpwm: 0
+2020-05-13 16:45:53.536132+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:45:53.536188+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 0
+2020-05-13 16:46:00.667677+0200 USB_Stepper[42908:2329719] AVR mouseup
+2020-05-13 16:46:00.667731+0200 USB_Stepper[42908:2329719] AVR mouseUp Pfeiltaste richtung: 4
+2020-05-13 16:46:00.667756+0200 USB_Stepper[42908:2329719] Pfeiltaste mouseUp location: 734.52 439.76
+2020-05-13 16:46:00.667856+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    locationx = "734.5195";
+    locationy = "439.7617";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:46:00.667879+0200 USB_Stepper[42908:2329719]  ********************* AVRController PfeilAktion mouseup pwm: 0
+2020-05-13 16:46:00.672543+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    locationx = "734.5195";
+    locationy = "439.7617";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:46:01.553619+0200 USB_Stepper[42908:2329719] AVR mouseDown: Pfeiltaste richtung: 4
+2020-05-13 16:46:01.554271+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:46:01.554324+0200 USB_Stepper[42908:2329719]  ********************* AVRController  PfeilAktion mousedown=1  Stepperposition: 1
+2020-05-13 16:46:01.554404+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    push = 1;
+    richtung = 4;
+}
+2020-05-13 16:46:01.554440+0200 USB_Stepper[42908:2329719] AVR  manRichtung richtung: 4
+2020-05-13 16:46:01.554469+0200 USB_Stepper[42908:2329719] AVR  manRichtung aktpwm: 0
+2020-05-13 16:46:01.568491+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:46:01.568536+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 0
+2020-05-13 16:46:01.568554+0200 USB_Stepper[42908:2329719] USB_SchnittdatenAktion laufender timer inval
+2020-05-13 16:46:01.691093+0200 USB_Stepper[42908:2329719] AVR mouseup
+2020-05-13 16:46:01.691149+0200 USB_Stepper[42908:2329719] AVR mouseUp Pfeiltaste richtung: 4
+2020-05-13 16:46:01.691173+0200 USB_Stepper[42908:2329719] Pfeiltaste mouseUp location: 734.52 439.76
+2020-05-13 16:46:01.691279+0200 USB_Stepper[42908:2329719] AVRController PfeilAktion note: {
+    locationx = "734.5195";
+    locationy = "439.7617";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:46:01.691302+0200 USB_Stepper[42908:2329719]  ********************* AVRController PfeilAktion mouseup pwm: 0
+2020-05-13 16:46:01.696769+0200 USB_Stepper[42908:2329719] AVR PfeilAktion start note: {
+    locationx = "734.5195";
+    locationy = "439.7617";
+    push = 0;
+    richtung = 4;
+}
+2020-05-13 16:46:01.699948+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 225
+2020-05-13 16:46:01.699988+0200 USB_Stepper[42908:2329719] readUSB  mouseup
+2020-05-13 16:46:01.700010+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt >count
+*
+2020-05-13 16:46:01.704483+0200 USB_Stepper[42908:2329719] AbschnittFertig: 225
+2020-05-13 16:46:37.417658+0200 USB_Stepper[42908:2329719] Failed to connect (Einlaufkote) outlet from (rEinstellungen) to (NSTextField): missing setter or instance variable
+2020-05-13 16:46:41.697902+0200 USB_Stepper[42908:2329719] readFigur start
+2020-05-13 16:46:41.963864+0200 USB_Stepper[42908:2330201] [default] Faild to get owner UUID for url: file:///Volumes/Mag/WDTV_Archiv error: Error Domain=NSCocoaErrorDomain Code=260 "The file “WDTV_Archiv” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Volumes/Mag/WDTV_Archiv, NSFilePath=/Volumes/Mag/WDTV_Archiv, NSUnderlyingError=0x600000f18a80 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:41.964651+0200 USB_Stepper[42908:2330201] [default] Faild to get owner UUID for url: file:///Volumes/Mag/WDTV_Archiv error: Error Domain=NSCocoaErrorDomain Code=260 "The file “WDTV_Archiv” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Volumes/Mag/WDTV_Archiv, NSFilePath=/Volumes/Mag/WDTV_Archiv, NSUnderlyingError=0x600000f152f0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:41.966539+0200 USB_Stepper[42908:2330201] [default] Faild to get owner UUID for url: file:///Volumes/WD_TV_D error: Error Domain=NSCocoaErrorDomain Code=260 "The file “WD_TV_D” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Volumes/WD_TV_D, NSFilePath=/Volumes/WD_TV_D, NSUnderlyingError=0x600000ef6af0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:41.967183+0200 USB_Stepper[42908:2330201] [default] Faild to get owner UUID for url: file:///Volumes/WD_TV_D error: Error Domain=NSCocoaErrorDomain Code=260 "The file “WD_TV_D” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Volumes/WD_TV_D, NSFilePath=/Volumes/WD_TV_D, NSUnderlyingError=0x600000f161c0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:41.967967+0200 USB_Stepper[42908:2330201] [default] Faild to get owner UUID for url: file:///Users/nadjarohner/Public error: Error Domain=NSCocoaErrorDomain Code=260 "The file “Public” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Users/nadjarohner/Public, NSFilePath=/Users/nadjarohner/Public, NSUnderlyingError=0x600000f16730 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:41.968331+0200 USB_Stepper[42908:2330201] [default] Faild to get owner UUID for url: file:///Users/nadjarohner/Public error: Error Domain=NSCocoaErrorDomain Code=260 "The file “Public” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Users/nadjarohner/Public, NSFilePath=/Users/nadjarohner/Public, NSUnderlyingError=0x600000f17030 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:42.092150+0200 USB_Stepper[42908:2329719] [default] RETURNING UnknownFS PLACEHOLDER: 33D3E944-F72B-32A1-A693-5179CF9A6BEF
+2020-05-13 16:46:42.245151+0200 USB_Stepper[42908:2329719] readFigur ProfilOpenPanel: <NSOpenPanel: 0x10a9e7770>
+2020-05-13 16:46:42.245245+0200 USB_Stepper[42908:2329719] readFigur A
+objc[42908]: Class FIFinderSyncExtensionHost is implemented in both /System/Library/PrivateFrameworks/FinderKit.framework/Versions/A/FinderKit (0x7fff8ab6a3d8) and /System/Library/PrivateFrameworks/FileProvider.framework/OverrideBundles/FinderSyncCollaborationFileProviderOverride.bundle/Contents/MacOS/FinderSyncCollaborationFileProviderOverride (0x10b35df50). One of the two will be used. Which one is undefined.
+2020-05-13 16:46:46.743761+0200 USB_Stepper[42908:2329719] ProfilOpenPanel antwort: 1
+2020-05-13 16:46:46.743816+0200 USB_Stepper[42908:2329719] readFigur: URL: file:///Users/ruediheimlicher/Documents/CNCDaten/7eck.txt
+2020-05-13 16:46:46.833155+0200 USB_Stepper[42908:2330169] errors encountered while discovering extensions: Error Domain=PlugInKit Code=13 "query cancelled" UserInfo={NSLocalizedDescription=query cancelled}
+2020-05-13 16:46:58.404287+0200 USB_Stepper[42908:2329719] readFigur start
+2020-05-13 16:46:58.482039+0200 USB_Stepper[42908:2330447] [default] Faild to get owner UUID for url: file:///Volumes/Mag/WDTV_Archiv error: Error Domain=NSCocoaErrorDomain Code=260 "The file “WDTV_Archiv” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Volumes/Mag/WDTV_Archiv, NSFilePath=/Volumes/Mag/WDTV_Archiv, NSUnderlyingError=0x6000011e5f80 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:58.482545+0200 USB_Stepper[42908:2330447] [default] Faild to get owner UUID for url: file:///Volumes/Mag/WDTV_Archiv error: Error Domain=NSCocoaErrorDomain Code=260 "The file “WDTV_Archiv” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Volumes/Mag/WDTV_Archiv, NSFilePath=/Volumes/Mag/WDTV_Archiv, NSUnderlyingError=0x6000011e6430 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:58.483221+0200 USB_Stepper[42908:2330447] [default] Faild to get owner UUID for url: file:///Volumes/WD_TV_D error: Error Domain=NSCocoaErrorDomain Code=260 "The file “WD_TV_D” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Volumes/WD_TV_D, NSFilePath=/Volumes/WD_TV_D, NSUnderlyingError=0x6000011e6ca0 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:58.483841+0200 USB_Stepper[42908:2330447] [default] Faild to get owner UUID for url: file:///Volumes/WD_TV_D error: Error Domain=NSCocoaErrorDomain Code=260 "The file “WD_TV_D” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Volumes/WD_TV_D, NSFilePath=/Volumes/WD_TV_D, NSUnderlyingError=0x6000011e7420 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:58.484366+0200 USB_Stepper[42908:2330447] [default] Faild to get owner UUID for url: file:///Users/nadjarohner/Public error: Error Domain=NSCocoaErrorDomain Code=260 "The file “Public” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Users/nadjarohner/Public, NSFilePath=/Users/nadjarohner/Public, NSUnderlyingError=0x6000011e1290 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:58.487822+0200 USB_Stepper[42908:2330447] [default] Faild to get owner UUID for url: file:///Users/nadjarohner/Public error: Error Domain=NSCocoaErrorDomain Code=260 "The file “Public” couldn’t be opened because there is no such file." UserInfo={NSURL=file:///Users/nadjarohner/Public, NSFilePath=/Users/nadjarohner/Public, NSUnderlyingError=0x6000011e1b60 {Error Domain=NSPOSIXErrorDomain Code=2 "No such file or directory"}}
+2020-05-13 16:46:58.610454+0200 USB_Stepper[42908:2329719] readFigur ProfilOpenPanel: <NSOpenPanel: 0x10c178440>
+2020-05-13 16:46:58.610659+0200 USB_Stepper[42908:2329719] readFigur A
+2020-05-13 16:47:01.940416+0200 USB_Stepper[42908:2329719] ProfilOpenPanel antwort: 1
+2020-05-13 16:47:01.940471+0200 USB_Stepper[42908:2329719] readFigur: URL: file:///Users/ruediheimlicher/Documents/CNCDaten/7eck.txt
+2020-05-13 16:47:02.015556+0200 USB_Stepper[42908:2330230] errors encountered while discovering extensions: Error Domain=PlugInKit Code=13 "query cancelled" UserInfo={NSLocalizedDescription=query cancelled}
+2020-05-13 16:47:29.257609+0200 USB_Stepper[42908:2329719] mouseDown: NSEvent: type=LMouseDown loc=(259.625,177.332) time=288598.6 flags=0 win=0x600003e07100 winNum=25041 ctxt=0x0 evNum=18948 click=1 buttonNumber=0 pressure=1 deviceID:0x200000001000000 subtype=NSEventSubtypeTouch
+2020-05-13 16:47:29.257670+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:29.257716+0200 USB_Stepper[42908:2329719] mouseDown: notific mausdaten
+2020-05-13 16:47:29.257769+0200 USB_Stepper[42908:2329719] mousdown x: 217.62 y: 131.33
+2020-05-13 16:47:29.257794+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus: x: 54.41 y: 32.83
+2020-05-13 16:47:29.257875+0200 USB_Stepper[42908:2329719] clickAbschnitt: -1
+2020-05-13 16:47:29.257892+0200 USB_Stepper[42908:2329719] kein Klick
+2020-05-13 16:47:29.257903+0200 USB_Stepper[42908:2329719] B
+2020-05-13 16:47:29.257939+0200 USB_Stepper[42908:2329719] mousedown startklickpunkt: 9 clickedPunkt: -1
+2020-05-13 16:47:29.257989+0200 USB_Stepper[42908:2329719] mouseDown: notific mauspunkt
+2020-05-13 16:47:29.259356+0200 USB_Stepper[42908:2329719] mouseDown  end
+2020-05-13 16:47:34.174341+0200 USB_Stepper[42908:2329719] mouseDown: NSEvent: type=LMouseDown loc=(265.945,173.828) time=288603.5 flags=0 win=0x600003e07100 winNum=25041 ctxt=0x0 evNum=18949 click=1 buttonNumber=0 pressure=1 deviceID:0x200000001000000 subtype=NSEventSubtypeTouch
+2020-05-13 16:47:34.174403+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:34.174436+0200 USB_Stepper[42908:2329719] mouseDown: notific mausdaten
+2020-05-13 16:47:34.174488+0200 USB_Stepper[42908:2329719] mousdown x: 223.95 y: 127.83
+2020-05-13 16:47:34.174512+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus: x: 55.99 y: 31.96
+2020-05-13 16:47:34.174579+0200 USB_Stepper[42908:2329719] clickAbschnitt: -1
+2020-05-13 16:47:34.174595+0200 USB_Stepper[42908:2329719] kein Klick
+2020-05-13 16:47:34.174606+0200 USB_Stepper[42908:2329719] B
+2020-05-13 16:47:34.174622+0200 USB_Stepper[42908:2329719] mousedown startklickpunkt: -1 clickedPunkt: 0
+2020-05-13 16:47:34.174636+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:34.174696+0200 USB_Stepper[42908:2329719] mouseDown: notific mausklick
+2020-05-13 16:47:34.175027+0200 USB_Stepper[42908:2329719] mouseDown  end
+2020-05-13 16:47:39.252774+0200 USB_Stepper[42908:2329719] mouseDown: NSEvent: type=LMouseDown loc=(220.414,70.8086) time=288608.6 flags=0 win=0x600003e07100 winNum=25041 ctxt=0x0 evNum=18950 click=1 buttonNumber=0 pressure=1 deviceID:0x200000001000000 subtype=NSEventSubtypeTouch
+2020-05-13 16:47:39.252834+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:39.252867+0200 USB_Stepper[42908:2329719] mouseDown: notific mausdaten
+2020-05-13 16:47:39.252917+0200 USB_Stepper[42908:2329719] mousdown x: 178.41 y: 24.81
+2020-05-13 16:47:39.252971+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus: x: 44.60 y: 6.20
+2020-05-13 16:47:39.253080+0200 USB_Stepper[42908:2329719] tempPunktA: x: 18.85 y: 20.68
+2020-05-13 16:47:39.253234+0200 USB_Stepper[42908:2329719] clickPfad: Path <0x60000747cfa0>
+  Bounds: {{16.966117858886719, 3.1991128921508789}, {29.973468780517578, 21.01634407043457}}
+  Control point bounds: {{16.966117858886719, 3.1991128921508789}, {29.973468780517578, 21.01634407043457}}
+    16.966118 17.153684 moveto
+    43.180416 3.199113 lineto
+    46.939587 10.260886 lineto
+    20.725288 24.215457 lineto
+2020-05-13 16:47:39.253260+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus Abschnitt: 0
+2020-05-13 16:47:39.253315+0200 USB_Stepper[42908:2329719] clickAbschnitt: 0
+2020-05-13 16:47:39.253337+0200 USB_Stepper[42908:2329719] Profilgraph clickAbschnitt :0
+2020-05-13 16:47:39.253643+0200 USB_Stepper[42908:2329719] B
+2020-05-13 16:47:39.253670+0200 USB_Stepper[42908:2329719] mousedown startklickpunkt: 0 clickedPunkt: 1
+2020-05-13 16:47:39.253687+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:39.253721+0200 USB_Stepper[42908:2329719] mouseDown: notific mausklick
+2020-05-13 16:47:39.253865+0200 USB_Stepper[42908:2329719] mouseDown  end
+2020-05-13 16:47:44.106786+0200 USB_Stepper[42908:2329719] mouseDown: NSEvent: type=LMouseDown loc=(116.547,129.121) time=288613.4 flags=0 win=0x600003e07100 winNum=25041 ctxt=0x0 evNum=18952 click=1 buttonNumber=0 pressure=1 deviceID:0x200000001000000 subtype=NSEventSubtypeTouch
+2020-05-13 16:47:44.106847+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:44.106882+0200 USB_Stepper[42908:2329719] mouseDown: notific mausdaten
+2020-05-13 16:47:44.106933+0200 USB_Stepper[42908:2329719] mousdown x: 74.55 y: 83.12
+2020-05-13 16:47:44.106955+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus: x: 18.64 y: 20.78
+2020-05-13 16:47:44.107082+0200 USB_Stepper[42908:2329719] clickAbschnitt: -1
+2020-05-13 16:47:44.107109+0200 USB_Stepper[42908:2329719] kein Klick
+2020-05-13 16:47:44.107129+0200 USB_Stepper[42908:2329719] B
+2020-05-13 16:47:44.107158+0200 USB_Stepper[42908:2329719] mousedown startklickpunkt: 1 clickedPunkt: 0
+2020-05-13 16:47:44.107175+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:44.107216+0200 USB_Stepper[42908:2329719] mouseDown: notific mausklick
+2020-05-13 16:47:44.107593+0200 USB_Stepper[42908:2329719] mouseDown  end
+2020-05-13 16:47:49.946755+0200 USB_Stepper[42908:2329719] mouseDown: NSEvent: type=LMouseDown loc=(259.121,174.121) time=288619.3 flags=0 win=0x600003e07100 winNum=25041 ctxt=0x0 evNum=18953 click=1 buttonNumber=0 pressure=1 deviceID:0x200000001000000 subtype=NSEventSubtypeTouch
+2020-05-13 16:47:49.946816+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:49.946849+0200 USB_Stepper[42908:2329719] mouseDown: notific mausdaten
+2020-05-13 16:47:49.946901+0200 USB_Stepper[42908:2329719] mousdown x: 217.12 y: 128.12
+2020-05-13 16:47:49.946934+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus: x: 54.28 y: 32.03
+2020-05-13 16:47:49.946986+0200 USB_Stepper[42908:2329719] tempPunktA: x: 23.74 y: 5.40
+2020-05-13 16:47:49.947099+0200 USB_Stepper[42908:2329719] clickPfad: Path <0x60000b37bd40>
+  Bounds: {{21.108054399490356, 2.3900623321533203}, {36.154984951019287, 33.062648773193359}}
+  Control point bounds: {{21.108054399490356, 2.3900623321533203}, {36.154984951019287, 33.062648773193359}}
+    26.378274 2.390062 moveto
+    57.263039 29.434008 lineto
+    51.992820 35.452711 lineto
+    21.108054 8.408766 lineto
+2020-05-13 16:47:49.947130+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus Abschnitt: 0
+2020-05-13 16:47:49.947198+0200 USB_Stepper[42908:2329719] clickAbschnitt: 0
+2020-05-13 16:47:49.947214+0200 USB_Stepper[42908:2329719] Profilgraph clickAbschnitt :0
+2020-05-13 16:47:49.947693+0200 USB_Stepper[42908:2329719] B
+2020-05-13 16:47:49.947733+0200 USB_Stepper[42908:2329719] mousedown startklickpunkt: 0 clickedPunkt: 1
+2020-05-13 16:47:49.947763+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:49.947801+0200 USB_Stepper[42908:2329719] mouseDown: notific mausklick
+2020-05-13 16:47:49.948029+0200 USB_Stepper[42908:2329719] mouseDown  end
+2020-05-13 16:47:54.201835+0200 USB_Stepper[42908:2329719] mouseDown: NSEvent: type=LMouseDown loc=(134.598,66.2969) time=288623.5 flags=0 win=0x600003e07100 winNum=25041 ctxt=0x0 evNum=18954 click=1 buttonNumber=0 pressure=1 deviceID:0x200000001000000 subtype=NSEventSubtypeTouch
+2020-05-13 16:47:54.201894+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:54.201929+0200 USB_Stepper[42908:2329719] mouseDown: notific mausdaten
+2020-05-13 16:47:54.201980+0200 USB_Stepper[42908:2329719] mousdown x: 92.60 y: 20.30
+2020-05-13 16:47:54.202003+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus: x: 23.15 y: 5.07
+2020-05-13 16:47:54.202086+0200 USB_Stepper[42908:2329719] clickAbschnitt: -1
+2020-05-13 16:47:54.202103+0200 USB_Stepper[42908:2329719] kein Klick
+2020-05-13 16:47:54.202114+0200 USB_Stepper[42908:2329719] B
+2020-05-13 16:47:54.202130+0200 USB_Stepper[42908:2329719] mousedown startklickpunkt: 1 clickedPunkt: 0
+2020-05-13 16:47:54.202144+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:47:54.202195+0200 USB_Stepper[42908:2329719] mouseDown: notific mausklick
+2020-05-13 16:47:54.202532+0200 USB_Stepper[42908:2329719] mouseDown  end
+2020-05-13 16:48:06.079259+0200 USB_Stepper[42908:2329719] reportNeueZeile Zeile: 0
+2020-05-13 16:48:10.077542+0200 USB_Stepper[42908:2329719] mouseDown: NSEvent: type=LMouseDown loc=(215.34,156.887) time=288639.4 flags=0 win=0x600003e07100 winNum=25041 ctxt=0x0 evNum=18957 click=1 buttonNumber=0 pressure=1 deviceID:0x200000001000000 subtype=NSEventSubtypeTouch
+2020-05-13 16:48:10.077602+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:48:10.077636+0200 USB_Stepper[42908:2329719] mouseDown: notific mausdaten
+2020-05-13 16:48:10.077689+0200 USB_Stepper[42908:2329719] mousdown x: 173.34 y: 110.89
+2020-05-13 16:48:10.077711+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus: x: 43.33 y: 27.72
+2020-05-13 16:48:10.077799+0200 USB_Stepper[42908:2329719] clickAbschnitt: -1
+2020-05-13 16:48:10.077815+0200 USB_Stepper[42908:2329719] kein Klick
+2020-05-13 16:48:10.077827+0200 USB_Stepper[42908:2329719] B
+2020-05-13 16:48:10.077854+0200 USB_Stepper[42908:2329719] mousedown startklickpunkt: 0 clickedPunkt: -1
+2020-05-13 16:48:10.077900+0200 USB_Stepper[42908:2329719] mouseDown: notific mauspunkt
+2020-05-13 16:48:10.079265+0200 USB_Stepper[42908:2329719] mouseDown  end
+2020-05-13 16:48:11.180983+0200 USB_Stepper[42908:2329719] mouseDown: NSEvent: type=LMouseDown loc=(213.246,154.414) time=288640.5 flags=0 win=0x600003e07100 winNum=25041 ctxt=0x0 evNum=18958 click=1 buttonNumber=0 pressure=1 deviceID:0x200000001000000 subtype=NSEventSubtypeTouch
+2020-05-13 16:48:11.181047+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:48:11.181082+0200 USB_Stepper[42908:2329719] mouseDown: notific mausdaten
+2020-05-13 16:48:11.181134+0200 USB_Stepper[42908:2329719] mousdown x: 171.25 y: 108.41
+2020-05-13 16:48:11.181156+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus: x: 42.81 y: 27.10
+2020-05-13 16:48:11.181247+0200 USB_Stepper[42908:2329719] clickAbschnitt: -1
+2020-05-13 16:48:11.181264+0200 USB_Stepper[42908:2329719] kein Klick
+2020-05-13 16:48:11.181275+0200 USB_Stepper[42908:2329719] B
+2020-05-13 16:48:11.181303+0200 USB_Stepper[42908:2329719] mousedown startklickpunkt: -1 clickedPunkt: 16
+2020-05-13 16:48:11.181323+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:48:11.181377+0200 USB_Stepper[42908:2329719] mouseDown: notific mausklick
+2020-05-13 16:48:11.181664+0200 USB_Stepper[42908:2329719] mouseDown  end
+2020-05-13 16:48:23.278760+0200 USB_Stepper[42908:2329719] mouseDown: NSEvent: type=LMouseDown loc=(122.285,124.145) time=288652.6 flags=0 win=0x600003e07100 winNum=25041 ctxt=0x0 evNum=18963 click=1 buttonNumber=0 pressure=1 deviceID:0x200000001000000 subtype=NSEventSubtypeTouch
+2020-05-13 16:48:23.278822+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:48:23.278856+0200 USB_Stepper[42908:2329719] mouseDown: notific mausdaten
+2020-05-13 16:48:23.278910+0200 USB_Stepper[42908:2329719] mousdown x: 80.29 y: 78.14
+2020-05-13 16:48:23.278933+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus: x: 20.07 y: 19.54
+2020-05-13 16:48:23.279005+0200 USB_Stepper[42908:2329719] tempPunktA: x: 54.41 y: 48.83
+2020-05-13 16:48:23.279101+0200 USB_Stepper[42908:2329719] clickPfad: Path <0x60000f40bc00>
+  Bounds: {{17.371186494827271, 16.40070652961731}, {39.631650447845459, 35.474954128265381}}
+  Control point bounds: {{17.371186494827271, 16.40070652961731}, {39.631650447845459, 35.474954128265381}}
+    51.809663 51.875661 moveto
+    17.371186 22.486012 lineto
+    22.564360 16.400707 lineto
+    57.002837 45.790355 lineto
+2020-05-13 16:48:23.279131+0200 USB_Stepper[42908:2329719] clickedAbschnittvonMaus Abschnitt: 15
+2020-05-13 16:48:23.279146+0200 USB_Stepper[42908:2329719] clickAbschnitt: 15
+2020-05-13 16:48:23.279159+0200 USB_Stepper[42908:2329719] Profilgraph clickAbschnitt :15
+2020-05-13 16:48:23.279794+0200 USB_Stepper[42908:2329719] B
+2020-05-13 16:48:23.279844+0200 USB_Stepper[42908:2329719] mousedown startklickpunkt: 0 clickedPunkt: 16
+2020-05-13 16:48:23.279864+0200 USB_Stepper[42908:2329719] kein shift
+2020-05-13 16:48:23.279901+0200 USB_Stepper[42908:2329719] mouseDown: notific mausklick
+2020-05-13 16:48:23.280151+0200 USB_Stepper[42908:2329719] mouseDown  end
+2020-05-13 16:48:40.023644+0200 USB_Stepper[42908:2329719] reportStartKnopf state: 1
+2020-05-13 16:48:40.757616+0200 USB_Stepper[42908:2329719] reportStartKnopf state: 0
+2020-05-13 16:49:25.067828+0200 USB_Stepper[42908:2329719] SchnittdatenArray 0: (
+        (
+        38,
+        128,
+        4,
+        0,
+        35,
+        0,
+        80,
+        1,
+        38,
+        128,
+        4,
+        0,
+        35,
+        0,
+        80,
+        1,
+        0,
+        1,
+        0,
+        0,
+        48,
+        1
+    ),
+        (
+        137,
+        129,
+        10,
+        133,
+        119,
+        0,
+        36,
+        0,
+        137,
+        129,
+        10,
+        133,
+        119,
+        0,
+        36,
+        0,
+        0,
+        0,
+        0,
+        1,
+        48,
+        2
+    ),
+        (
+        222,
+        3,
+        98,
+        3,
+        46,
+        0,
+        52,
+        0,
+        222,
+        3,
+        98,
+        3,
+        46,
+        0,
+        52,
+        0,
+        0,
+        0,
+        0,
+        2,
+        48,
+        1
+    ),
+        (
+        75,
+        2,
+        146,
+        132,
+        77,
+        0,
+        38,
+        0,
+        75,
+        2,
+        146,
+        132,
+        77,
+        0,
+        38,
+        0,
+        0,
+        0,
+        0,
+        3,
+        48,
+        2
+    ),
+        (
+        21,
+        0,
+        28,
+        5,
+        116,
+        8,
+        34,
+        0,
+        21,
+        0,
+        28,
+        5,
+        116,
+        8,
+        34,
+        0,
+        0,
+        0,
+        0,
+        4,
+        48,
+        2
+    ),
+        (
+        1,
+        5,
+        14,
+        129,
+        35,
+        0,
+        168,
+        0,
+        1,
+        5,
+        14,
+        129,
+        35,
+        0,
+        168,
+        0,
+        0,
+        0,
+        0,
+        5,
+        48,
+        1
+    ),
+        (
+        241,
+        131,
+        65,
+        3,
+        45,
+        0,
+        54,
+        0,
+        241,
+        131,
+        65,
+        3,
+        45,
+        0,
+        54,
+        0,
+        0,
+        0,
+        0,
+        6,
+        48,
+        1
+    ),
+        (
+        241,
+        3,
+        65,
+        3,
+        45,
+        0,
+        54,
+        0,
+        241,
+        3,
+        65,
+        3,
+        45,
+        0,
+        54,
+        0,
+        0,
+        0,
+        0,
+        7,
+        48,
+        1
+    ),
+        (
+        1,
+        133,
+        14,
+        129,
+        35,
+        0,
+        168,
+        0,
+        1,
+        133,
+        14,
+        129,
+        35,
+        0,
+        168,
+        0,
+        0,
+        0,
+        0,
+        8,
+        48,
+        1
+    ),
+        (
+        21,
+        128,
+        28,
+        5,
+        116,
+        8,
+        34,
+        0,
+        21,
+        128,
+        28,
+        5,
+        116,
+        8,
+        34,
+        0,
+        0,
+        0,
+        0,
+        9,
+        48,
+        2
+    ),
+        (
+        75,
+        130,
+        146,
+        132,
+        77,
+        0,
+        38,
+        0,
+        75,
+        130,
+        146,
+        132,
+        77,
+        0,
+        38,
+        0,
+        0,
+        0,
+        0,
+        10,
+        48,
+        2
+    ),
+        (
+        12,
+        132,
+        31,
+        3,
+        43,
+        0,
+        56,
+        0,
+        12,
+        132,
+        31,
+        3,
+        43,
+        0,
+        56,
+        0,
+        0,
+        0,
+        0,
+        11,
+        48,
+        1
+    ),
+        (
+        36,
+        2,
+        164,
+        132,
+        82,
+        0,
+        38,
+        0,
+        36,
+        2,
+        164,
+        132,
+        82,
+        0,
+        38,
+        0,
+        0,
+        0,
+        0,
+        12,
+        48,
+        2
+    ),
+        (
+        247,
+        132,
+        56,
+        129,
+        35,
+        0,
+        145,
+        0,
+        247,
+        132,
+        56,
+        129,
+        35,
+        0,
+        145,
+        0,
+        0,
+        0,
+        0,
+        13,
+        48,
+        1
+    ),
+        (
+        147,
+        4,
+        248,
+        128,
+        35,
+        0,
+        167,
+        0,
+        147,
+        4,
+        248,
+        128,
+        35,
+        0,
+        167,
+        0,
+        0,
+        0,
+        0,
+        14,
+        48,
+        1
+    ),
+        (
+        117,
+        134,
+        68,
+        135,
+        52,
+        0,
+        46,
+        0,
+        117,
+        134,
+        68,
+        135,
+        52,
+        0,
+        46,
+        0,
+        0,
+        2,
+        0,
+        15,
+        48,
+        2
+    )
+)
+2020-05-13 16:49:27.736056+0200 USB_Stepper[42908:2329719] reportUSB_SendArray SchnittdatenDic: {
+    art = 0;
+    cncposition = 0;
+    home = 0;
+    pwm = 48;
+    schnittdatenarray =     (
+                (
+            38,
+            128,
+            4,
+            0,
+            35,
+            0,
+            80,
+            1,
+            38,
+            128,
+            4,
+            0,
+            35,
+            0,
+            80,
+            1,
+            0,
+            1,
+            0,
+            0,
+            48,
+            1
+        ),
+                (
+            137,
+            129,
+            10,
+            133,
+            119,
+            0,
+            36,
+            0,
+            137,
+            129,
+            10,
+            133,
+            119,
+            0,
+            36,
+            0,
+            0,
+            0,
+            0,
+            1,
+            48,
+            2
+        ),
+                (
+            222,
+            3,
+            98,
+            3,
+            46,
+            0,
+            52,
+            0,
+            222,
+            3,
+            98,
+            3,
+            46,
+            0,
+            52,
+            0,
+            0,
+            0,
+            0,
+            2,
+            48,
+            1
+        ),
+                (
+            75,
+            2,
+            146,
+            132,
+            77,
+            0,
+            38,
+            0,
+            75,
+            2,
+            146,
+            132,
+            77,
+            0,
+            38,
+            0,
+            0,
+            0,
+            0,
+            3,
+            48,
+            2
+        ),
+                (
+            21,
+            0,
+            28,
+            5,
+            116,
+            8,
+            34,
+            0,
+            21,
+            0,
+            28,
+            5,
+            116,
+            8,
+            34,
+            0,
+            0,
+            0,
+            0,
+            4,
+            48,
+            2
+        ),
+                (
+            1,
+            5,
+            14,
+            129,
+            35,
+            0,
+            168,
+            0,
+            1,
+            5,
+            14,
+            129,
+            35,
+            0,
+            168,
+            0,
+            0,
+            0,
+            0,
+            5,
+            48,
+            1
+        ),
+                (
+            241,
+            131,
+            65,
+            3,
+            45,
+            0,
+            54,
+            0,
+            241,
+            131,
+            65,
+            3,
+            45,
+            0,
+            54,
+            0,
+            0,
+            0,
+            0,
+            6,
+            48,
+            1
+        ),
+                (
+            241,
+            3,
+            65,
+            3,
+            45,
+            0,
+            54,
+            0,
+            241,
+            3,
+            65,
+            3,
+            45,
+            0,
+            54,
+            0,
+            0,
+            0,
+            0,
+            7,
+            48,
+            1
+        ),
+                (
+            1,
+            133,
+            14,
+            129,
+            35,
+            0,
+            168,
+            0,
+            1,
+            133,
+            14,
+            129,
+            35,
+            0,
+            168,
+            0,
+            0,
+            0,
+            0,
+            8,
+            48,
+            1
+        ),
+                (
+            21,
+            128,
+            28,
+            5,
+            116,
+            8,
+            34,
+            0,
+            21,
+            128,
+            28,
+            5,
+            116,
+            8,
+            34,
+            0,
+            0,
+            0,
+            0,
+            9,
+            48,
+            2
+        ),
+                (
+            75,
+            130,
+            146,
+            132,
+            77,
+            0,
+            38,
+            0,
+            75,
+            130,
+            146,
+            132,
+            77,
+            0,
+            38,
+            0,
+            0,
+            0,
+            0,
+            10,
+            48,
+            2
+        ),
+                (
+            12,
+            132,
+            31,
+            3,
+            43,
+            0,
+            56,
+            0,
+            12,
+            132,
+            31,
+            3,
+            43,
+            0,
+            56,
+            0,
+            0,
+            0,
+            0,
+            11,
+            48,
+            1
+        ),
+                (
+            36,
+            2,
+            164,
+            132,
+            82,
+            0,
+            38,
+            0,
+            36,
+            2,
+            164,
+            132,
+            82,
+            0,
+            38,
+            0,
+            0,
+            0,
+            0,
+            12,
+            48,
+            2
+        ),
+                (
+            247,
+            132,
+            56,
+            129,
+            35,
+            0,
+            145,
+            0,
+            247,
+            132,
+            56,
+            129,
+            35,
+            0,
+            145,
+            0,
+            0,
+            0,
+            0,
+            13,
+            48,
+            1
+        ),
+                (
+            147,
+            4,
+            248,
+            128,
+            35,
+            0,
+            167,
+            0,
+            147,
+            4,
+            248,
+            128,
+            35,
+            0,
+            167,
+            0,
+            0,
+            0,
+            0,
+            14,
+            48,
+            1
+        ),
+                (
+            117,
+            134,
+            68,
+            135,
+            52,
+            0,
+            46,
+            0,
+            117,
+            134,
+            68,
+            135,
+            52,
+            0,
+            46,
+            0,
+            0,
+            2,
+            0,
+            15,
+            48,
+            2
+        )
+    );
+}
+2020-05-13 16:49:27.736941+0200 USB_Stepper[42908:2329719] mit delay
+2020-05-13 16:49:31.738406+0200 USB_Stepper[42908:2329719] USB_SchnittdatenAktion pwm: 48
+2020-05-13 16:49:31.742743+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:49:31.742811+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 0
+2020-05-13 16:49:31.794158+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 175
+2020-05-13 16:49:31.798723+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:49:31.798796+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 1
+2020-05-13 16:49:31.798828+0200 USB_Stepper[42908:2329719] AbschnittFertig: 175
+2020-05-13 16:49:32.143027+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:49:32.150725+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:49:32.150782+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 2
+2020-05-13 16:49:32.150806+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:49:44.143386+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:49:44.151047+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:49:44.151095+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 3
+2020-05-13 16:49:44.151120+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:49:55.894831+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:49:55.895459+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:49:55.895510+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 4
+2020-05-13 16:49:55.895544+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:50:07.365840+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:50:07.367763+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:50:07.367812+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 5
+2020-05-13 16:50:07.367838+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:50:18.895541+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:50:18.896156+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:50:18.896206+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 6
+2020-05-13 16:50:18.896235+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:50:30.445877+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:50:30.448481+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:50:30.448543+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 7
+2020-05-13 16:50:30.448581+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:50:42.140827+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:50:42.144803+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:50:42.144855+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 8
+2020-05-13 16:50:42.144882+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:50:53.896590+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:50:53.897198+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:50:53.897252+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 9
+2020-05-13 16:50:53.897296+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:51:05.446968+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:51:05.449542+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:51:05.449607+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 10
+2020-05-13 16:51:05.449645+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:51:16.918145+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:51:16.921890+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:51:16.921958+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 11
+2020-05-13 16:51:16.921996+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:51:28.396340+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:51:28.402177+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:51:28.402221+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 12
+2020-05-13 16:51:28.402243+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:51:39.896818+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:51:39.898575+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:51:39.898637+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 13
+2020-05-13 16:51:39.898676+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:51:51.551179+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:51:51.554948+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:51:51.555025+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 14
+2020-05-13 16:51:51.555064+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:52:03.033334+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 161
+2020-05-13 16:52:03.035238+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt senderfolg: 20
+2020-05-13 16:52:03.035285+0200 USB_Stepper[42908:2329719] writeCNCAbschnitt  Stepperposition: 15
+2020-05-13 16:52:03.035309+0200 USB_Stepper[42908:2329719] AbschnittFertig: 161
+2020-05-13 16:52:13.649030+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 208
+2020-05-13 16:52:35.702490+0200 USB_Stepper[42908:2329719] **read_USB   buffer 0 173
+2020-05-13 16:52:35.724371+0200 USB_Stepper[42908:2329719] AbschnittFertig: 173
+2020-05-13 16:52:36.201730+0200 USB_Stepper[42908:2329719] reportStartKnopf state: 1
+2020-05-13 16:52:37.620361+0200 USB_Stepper[42908:2329719] reportStartKnopf state: 0

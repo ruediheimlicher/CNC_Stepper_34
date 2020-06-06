@@ -374,6 +374,9 @@
 - (IBAction)reportKreis:(id)sender;
 - (IBAction)reportEllipse:(id)sender;
 - (IBAction)reportHolm:(id)sender;
+
+- (IBAction)reportRumpfrohrkonfigurieren:(id)sender;
+
 - (NSArray*)KoordinatenTabelle;
 - (IBAction)reportSaveStepperDic:(id)sender;
 - (IBAction)reportZeileWeg:(id)sender;
@@ -405,6 +408,10 @@
 - (IBAction)terminateTransfer:(id)sender;
 
 - (IBAction)reportPrint:(id)sender;
+- (IBAction)reportSave:(id)sender;
+
+
+
 - (IBAction)ok:(id)sender;
 - (void)HomebusAnlegen;
 - (void)saveLabel:(NSString*)dasLabel forRaum:(int)derRaum forSegment:(int)dasSegment;

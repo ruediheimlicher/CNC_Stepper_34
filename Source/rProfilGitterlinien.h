@@ -21,7 +21,7 @@
 		int					StartMinute;
 		float					MaxOrdinate;
 }
-- (void)setOffsetY:(int)y;
+//- (void)setOffsetY:(int)y;
 - (void)setEinheitenDicY:(NSDictionary*)derEinheitenDic;
 - (void)setWertMitX:(float)x mitY:(float)y forKanal:(int)derKanal;
 - (void)setWerteArray:(NSArray*)derWerteArray mitKanalArray:(NSArray*)derKanalArray;

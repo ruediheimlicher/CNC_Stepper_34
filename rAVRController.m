@@ -27,7 +27,7 @@ node insert_right(node list, int data)
 
 - (IBAction)showAVR:(id)sender
 {
-   
+
 //NSLog(@"AVR showAVR");
  //	[self Alert:@"showAVR start init"];
 	if (!AVR)
@@ -42,6 +42,22 @@ node insert_right(node list, int data)
 //	if ([AVR window]) ;
 	
 //	[self Alert:@"showAVR window da"];
+   
+   /*
+   
+   NSAlert *alert = [[NSAlert alloc] init];
+   alert.messageText = @"Invalid data format";
+   alert.informativeText = @"Please only use hex values between 00 and FF.";
+   // [alert runModal];
+   [alert beginSheetModalForWindow:self->window completionHandler:^(NSModalResponse returnCode) {
+      if (returnCode == NSAlertSecondButtonReturn) {
+         NSLog(@"Delete was cancelled!");
+         return;
+      }
+      
+      NSLog(@"This project was deleted!");
+   }];
+   */
 
 	[AVR showWindow:NULL];
 	
@@ -253,7 +269,7 @@ private void button4_Click(object sender, EventArgs e)
       //[Warnung addButtonWithTitle:@"Abbrechen"];
       [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"CNC Schnitt starten"]];
       
-      NSString* s1=@"USB ist noch nicht eingesteckt.";
+      NSString* s1=@"USB_SchnittdatenAktion: USB ist noch nicht eingesteckt.";
       NSString* s2=@"";
       NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
       [Warnung setInformativeText:InformationString];
@@ -364,7 +380,19 @@ private void button4_Click(object sender, EventArgs e)
           }
           else
           {
-             NSRunAlertPanel (@"Invalid data format", @"Please only use hex values between 00 and FF.", @"OK", nil, nil);
+             NSAlert *alert = [[NSAlert alloc] init];
+             alert.messageText = @"Invalid data format";
+             alert.informativeText = @"Please only use hex values between 00 and FF.";
+            // [alert runModal];
+             [alert beginSheetModalForWindow:self->window completionHandler:^(NSModalResponse returnCode) {
+                if (returnCode == NSAlertSecondButtonReturn) {
+                   NSLog(@"Delete was cancelled!");
+                   return;
+                }
+                
+                NSLog(@"This project was deleted!");
+             }];
+ //            NSRunAlertPanel (@"Invalid data format", @"Please only use hex values between 00 and FF.", @"OK", nil, nil);
              return;
           }
        }
@@ -458,6 +486,7 @@ private void button4_Click(object sender, EventArgs e)
    if (Stepperposition < [SchnittDatenArray count])
 	{	
         NSDate* dateA=[NSDate date];
+      //dauer1 = [dateA timeIntervalSinceNow]*1000;
       // HALT
       //if ([AVR halt])
          
@@ -513,7 +542,27 @@ private void button4_Click(object sender, EventArgs e)
              }
             else
             {
-               NSRunAlertPanel (@"Invalid data format", @"Please only use hex values between 00 and FF.", @"OK", nil, nil);
+               NSAlert *alert = [[NSAlert alloc] init];
+               [alert setMessageText:@"Invalid data format"];
+               [alert setInformativeText:@"Please only use hex values between 00 and FF."];
+               [alert addButtonWithTitle:@"OK"];
+              // [alert addButtonWithTitle:@"Cancel"];
+               [alert setAlertStyle:NSWarningAlertStyle];
+               
+               
+               
+               [alert beginSheetModalForWindow:self->window completionHandler:^(NSModalResponse returnCode) {
+                  if (returnCode == NSAlertSecondButtonReturn) {
+                     NSLog(@"Umnumerieren erfolglos!");
+                     return;
+                  }
+                  
+                  NSLog(@"Invalid data format");
+                  return;
+               }];
+               
+
+             //  NSRunAlertPanel (@"Invalid data format", @"Please only use hex values between 00 and FF.", @"OK", nil, nil);
                //free (sendbuffer);
                return;
             }
@@ -1218,13 +1267,13 @@ private void button4_Click(object sender, EventArgs e)
       mausistdown=[[[note userInfo]objectForKey:@"push"]intValue];
       if (mausistdown == 1) // mousedown
       {
-         //NSLog(@"PfeilAktion mousdown Stepperposition: %d",Stepperposition);
+         NSLog(@" ********************* AVRController  PfeilAktion mousedown=1  Stepperposition: %d",Stepperposition);
       }
      
       if (mausistdown == 0) // mouseup
       {
          pfeilaktion=1; // in writeCNCAbschnitt wird Datenserie beendet
-         //NSLog(@"PfeilAktion mouseup pwm: %d",pwm);
+         NSLog(@" ********************* AVRController PfeilAktion mouseup pwm: %d",pwm);
          char*      sendbuffer;
          sendbuffer=malloc(32);
          sendbuffer[16]=0xE0;

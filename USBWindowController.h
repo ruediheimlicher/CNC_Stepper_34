@@ -15,6 +15,9 @@
 
 #include <IOKit/hid/IOHIDDevicePlugIn.h>
 #include <IOKit/usb/IOUSBLib.h>
+
+#include <CoreFoundation/CoreFoundation.h>
+
 #define maxLength 32
 
  struct Abschnitt
@@ -57,7 +60,6 @@
     NSData*								lastValueRead; /*" The last value read"*/
     NSData*								lastDataRead; /*" The last value read"*/
 	 
-	
     	
 
 //	rADWandler*			ADWandler;
@@ -95,7 +97,7 @@
 
 
 
-
+- (void)keyDown:(NSEvent*)derEvent;
 - (IBAction)showADWandler:(id)sender;
 - (void)readPList;
 - (IBAction)terminate:(id)sender;
