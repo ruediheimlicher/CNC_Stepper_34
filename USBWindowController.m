@@ -677,7 +677,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
    
    //
 
-NSLog(@"AWAKE end");
+//NSLog(@"AWAKE end");
 }
 
 

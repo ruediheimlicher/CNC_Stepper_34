@@ -42,11 +42,7 @@
                 <outlet property="DC_Stepper" destination="1683" id="1686"/>
                 <outlet property="DC_Taste" destination="1669" id="1673"/>
                 <outlet property="DatumFeld" destination="1296" id="1298"/>
-                <outlet property="DeviceFeld" destination="2123" id="2127"/>
                 <outlet property="EinlaufCheckbox" destination="1573" id="1578"/>
-                <outlet property="Einlaufbreite" destination="1735" id="1753"/>
-                <outlet property="Einlaufkote" destination="1585" id="1589"/>
-                <outlet property="EinlaufkotenStepper" destination="1587" id="1590"/>
                 <outlet property="Einlauflaenge" destination="1735" id="1755"/>
                 <outlet property="Einlaufrand" destination="1595" id="1729"/>
                 <outlet property="Einlauftiefe" destination="1739" id="1754"/>
@@ -73,10 +69,8 @@
                 <outlet property="ProfilPop" destination="2149" id="2155"/>
                 <outlet property="ProfilTiefeFeldA" destination="1192" id="1510"/>
                 <outlet property="ProfilTiefeFeldB" destination="1536" id="1538"/>
-                <outlet property="ProfilWrenchEinheit" destination="1691" id="1697"/>
                 <outlet property="ProfilWrenchEinheitRadio" destination="1691" id="1698"/>
                 <outlet property="ProfilWrenchFeld" destination="1545" id="1547"/>
-                <outlet property="RechtsLinksOffsetFeld" destination="1757" id="1759"/>
                 <outlet property="RechtsLinksRadio" destination="1664" id="1667"/>
                 <outlet property="ScalePop" destination="1237" id="1245"/>
                 <outlet property="Schalendickefeld" destination="2178" id="2181"/>
@@ -97,7 +91,6 @@
                 <outlet property="WertBXStepper" destination="1784" id="1811"/>
                 <outlet property="WertBYFeld" destination="1790" id="1810"/>
                 <outlet property="WertBYStepper" destination="1789" id="1812"/>
-                <outlet property="red_pwm" destination="2135" id="2139"/>
                 <outlet property="red_pwmFeld" destination="2135" id="2140"/>
                 <outlet property="window" destination="5" id="41"/>
             </connections>
@@ -1031,7 +1024,7 @@
                                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMinY="YES"/>
                                                         <clipView key="contentView" id="TVp-fX-ZHa">
                                                             <rect key="frame" x="1" y="0.0" width="313" height="94"/>
-                                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                                                            <autoresizingMask key="autoresizingMask"/>
                                                             <subviews>
                                                                 <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" multipleSelection="NO" autosaveColumns="NO" headerView="1439" id="1441">
                                                                     <rect key="frame" x="0.0" y="0.0" width="313" height="77"/>

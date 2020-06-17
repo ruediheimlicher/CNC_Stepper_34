@@ -130,12 +130,6 @@ int (^add)(int,int) = ^(int number1, int number2){
       NSRect tempMarkARect=NSMakeRect(PunktA.x-4.1, PunktA.y-4.1, 8.2, 8.2);
       [self setNeedsDisplayInRect:tempMarkARect];
       
-      /*
-      NSPoint PunktB=NSMakePoint([[[DatenArray objectAtIndex:pos]objectForKey:@"bx"]floatValue]*scale,([[[DatenArray objectAtIndex:pos]objectForKey:@"by"]floatValue]+GraphOffset)*scale);
-      //NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
-      NSRect tempMarkBRect=NSMakeRect(PunktB.x-4.1, PunktB.y-4.1, 8.1, 8.1);
-      [self setNeedsDisplayInRect:tempMarkBRect];
-       */
    }
 }
 
@@ -249,7 +243,7 @@ int (^add)(int,int) = ^(int number1, int number2){
 {
    NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
 
-	NSLog(@"mouseDown: %@",[derEvent description]);
+	//NSLog(@"mouseDown: %@",[derEvent description]);
    //NSLog(@"mouseDown: modifierFlags: %d NSShiftKeyMask: %d",[derEvent modifierFlags],NSShiftKeyMask);
    unsigned int shift =[derEvent modifierFlags] & NSShiftKeyMask;
    if (shift)
@@ -258,7 +252,7 @@ int (^add)(int,int) = ^(int number1, int number2){
    }
    else
    {
-      NSLog(@"kein shift");
+      //NSLog(@"kein shift");
    }
    
 	NSPoint location = [derEvent locationInWindow];
@@ -267,7 +261,7 @@ int (^add)(int,int) = ^(int number1, int number2){
    NSMutableDictionary* MausDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [MausDic setObject:[NSNumber numberWithInt:1] forKey:@"mausistdown"];
    [MausDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];
-   NSLog(@"mouseDown: notific mausdaten");
+//   NSLog(@"mouseDown: notific mausdaten");
    [nc postNotificationName:@"mausdaten" object:self userInfo:MausDic];
 
 	float x=local_point.x;
@@ -284,17 +278,17 @@ int (^add)(int,int) = ^(int number1, int number2){
 		oldMauspunkt = local_point;
 	}
 	
-	NSLog(@"mousdown x: %2.2f y: %2.2f",x,y);
+//	NSLog(@"mousdown x: %2.2f y: %2.2f",x,y);
 	//NSLog(@"mousdown scale x: %2.2f y: %2.2f",local_point.x,local_point.y);
 	
    int linehit=0;
    if ([DatenArray count]>3)
    {
       int clickAbschnitt=[self clickedAbschnittvonMaus:local_point];
-      NSLog(@"clickAbschnitt: %d",clickAbschnitt);
+ //     NSLog(@"clickAbschnitt: %d",clickAbschnitt);
       if (clickAbschnitt>=0)
       {
-         NSLog(@"Profilgraph clickAbschnitt :%d",clickAbschnitt);
+ //        NSLog(@"Profilgraph clickAbschnitt :%d",clickAbschnitt);
          NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
          [NotificationDic setObject:NSStringFromPoint(local_point) forKey:@"mauspunkt"];
          [NotificationDic setObject:[NSNumber  numberWithInt:clickAbschnitt]forKey:@"klickabschnitt"];
@@ -309,7 +303,7 @@ int (^add)(int,int) = ^(int number1, int number2){
       }
       
    }
-	NSLog(@"B");
+//	NSLog(@"B");
    //NSLog(@" ");
    NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
 
@@ -327,7 +321,7 @@ int (^add)(int,int) = ^(int number1, int number2){
    // Angeklickte Seite angeben
    [NotificationDic setObject:[NSNumber  numberWithInt:Klickseite]forKey:@"klickseite"];
 
-   NSLog(@"mousedown startklickpunkt: %d clickedPunkt: %d",startklickpunkt,Klickpunkt);
+//   NSLog(@"mousedown startklickpunkt: %d clickedPunkt: %d",startklickpunkt,Klickpunkt);
 	if (Klickpunkt> -1) // Punkt angeklickt
 	{
       
@@ -382,7 +376,7 @@ int (^add)(int,int) = ^(int number1, int number2){
       }
       else // Neuanfang, Vorbereitung fuer Aktion mit shift
       {
-         NSLog(@"kein shift");
+//         NSLog(@"kein shift");
          [KlicksetA removeAllIndexes];
          startklickpunkt=Klickpunkt; // Punkt merken
          [NotificationDic setObject:NSStringFromRange(NSMakeRange(0,0)) forKey:@"klickrange"];
@@ -404,7 +398,7 @@ int (^add)(int,int) = ^(int number1, int number2){
 		//NSLog(@"mousedown clickedPunkt: %d",klickpunkt);
       //NSLog(@"mousedown NotificationDic: %@",[NotificationDic description]);
 		//[self setNeedsDisplay:YES];
-		NSLog(@"mouseDown: notific mausklick");
+//		NSLog(@"mouseDown: notific mausklick");
       [nc postNotificationName:@"mausklick" object:self userInfo:NotificationDic];
 	}
 	else // Range reseten
@@ -418,15 +412,15 @@ int (^add)(int,int) = ^(int number1, int number2){
 		klickrange=NSMakeRange(0,0);
       startklickpunkt=-1;
 		nc=[NSNotificationCenter defaultCenter];
-      NSLog(@"mouseDown: notific mauspunkt");
+  //    NSLog(@"mouseDown: notific mauspunkt");
 		[nc postNotificationName:@"mauspunkt" object:self userInfo:NotificationDic];
 	}
-   NSLog(@"mouseDown  end");
+   //NSLog(@"mouseDown  end");
 }
 
 - (void)mouseUp:(NSEvent*)derEvent
 {
-   NSLog(@"mouseUp:");
+//   NSLog(@"mouseUp:");
    NSMutableDictionary* MausDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
    [MausDic setObject:[NSNumber numberWithInt:0] forKey:@"mausistdown"];
    [MausDic setObject:[NSNumber numberWithInt:GraphOffset] forKey:@"graphoffset"];

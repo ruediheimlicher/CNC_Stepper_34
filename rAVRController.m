@@ -327,7 +327,7 @@ private void button4_Click(object sender, EventArgs e)
    if ([[note userInfo]objectForKey:@"pwm"])
    {
       pwm = [[[note userInfo]objectForKey:@"pwm"]intValue];
-      NSLog(@"USB_SchnittdatenAktion pwm: %d",pwm);
+     // NSLog(@"USB_SchnittdatenAktion pwm: %d",pwm);
    }
    
    
@@ -560,26 +560,13 @@ private void button4_Click(object sender, EventArgs e)
                   NSLog(@"Invalid data format");
                   return;
                }];
-               
-
-             //  NSRunAlertPanel (@"Invalid data format", @"Please only use hex values between 00 and FF.", @"OK", nil, nil);
-               //free (sendbuffer);
-               return;
+                return;
             }
             
             //sendbuffer[i]=(char)[[tempSchnittdatenArray objectAtIndex:i]UTF8String];
          }
          
-         //dauer2 = [dateA timeIntervalSinceNow]*1000;
-         //double delta = [anfang timeIntervalSinceNow]*1000;
-         //NSLog(@"delta: %f ms",delta);
-
-         //fprintf(stderr,"\n");
-         
-         //sendbuffer[20] = pwm;
-        //NSLog(@"code: %d",sendbuffer[16]);
-
-         /*
+          /*
          fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
                  sendbuffer[0],(sendbuffer[1]& 0x80),sendbuffer[2],(sendbuffer[3]&0x80),
                  sendbuffer[4],sendbuffer[5],sendbuffer[6],sendbuffer[7],
@@ -588,97 +575,16 @@ private void button4_Click(object sender, EventArgs e)
                  sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19],
                  sendbuffer[20],sendbuffer[21],sendbuffer[22],sendbuffer[23]);
           */
-         
-         /*
-         int schritteax = sendbuffer[1];
-         int negativ=1;
-         if (schritteax & 0x80)
-         {
-            negativ = -1;
-         }
-         schritteax &= 0x7F;
-         schritteax <<= 8;
-         schritteax += (sendbuffer[0] & 0xFF);
-         schritteax *= negativ;         
-         negativ = 1;
-         int schritteay = sendbuffer[3];
-         if (schritteay & 0x80)
-         {
-            negativ = -1;
-         }
-         schritteay &= 0x7F;
-         schritteay <<= 8;
-         schritteay += sendbuffer[2] & 0xFF;
-         schritteay *= negativ;
-         
-         int delayax = sendbuffer[5];
-         delayax &= 0x7F;
-         delayax <<= 8;
-         delayax += (sendbuffer[4] & 0xFF);
-
-         int delayay = sendbuffer[7];
-         delayay &= 0x7F;
-         delayay <<= 8;
-         delayay += (sendbuffer[6] & 0xFF);
-
-         
-         fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
-                 Stepperposition,schritteax,schritteay,delayax,delayay,sendbuffer[20],
-                 sendbuffer[6],sendbuffer[7],
-                 sendbuffer[8],sendbuffer[9],sendbuffer[10],sendbuffer[11],
-                 sendbuffer[12],sendbuffer[13],sendbuffer[14],sendbuffer[15],
-                 sendbuffer[16],sendbuffer[17],sendbuffer[18],sendbuffer[19]);
-          */
-         
-         
-         //NSLog(@"writeCNCAbschnitt  Stepperposition: %d  pwm: %d",Stepperposition,sendbuffer[20]);         
-         //dauer3 = [dateA timeIntervalSinceNow]*1000;
-         
+          
          
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          
          
-         //dauer4 = [dateA timeIntervalSinceNow]*1000;
-//         int senderfolg= rawhid_send(0, newsendbuffer, 32, 50);
-         
-         NSLog(@"writeCNCAbschnitt senderfolg: %X",senderfolg);
-         NSLog(@"writeCNCAbschnitt  Stepperposition: %d ",Stepperposition);
+         NSLog(@"writeCNCAbschnitt  Stepperposition: %d senderfolg: %d",Stepperposition,senderfolg);
          
          Stepperposition++;
          
-        /* 
-        if (Stepperposition<[SchnittDatenArray count]-1)
-        {
-         NSMutableArray* tempNewSchnittdatenArray=(NSMutableArray*)[SchnittDatenArray objectAtIndex:Stepperposition];
-         //[tempSchnittdatenArray addObject:[NSNumber numberWithInt:[AVR pwm]]];
-         NSScanner *theNewScanner;
-         unsigned	  newvalue;
-         //NSLog(@"writeCNCAbschnitt tempSchnittdatenArray count: %d",[tempSchnittdatenArray count]);
-         //NSLog(@"tempSchnittdatenArray object 20: %d",[[tempSchnittdatenArray objectAtIndex:20]intValue]);
-         //NSLog(@"loop start");
-         
-         for (i=0;i<[tempNewSchnittdatenArray count];i++)
-         {
-            //NSLog(@"i: %d tempString: %@",i,tempString);
-            int tempWert=[[tempNewSchnittdatenArray objectAtIndex:i]intValue];
-            //           fprintf(stderr,"%d\t",tempWert);
-            NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
-            
-            theNewScanner = [NSScanner scannerWithString:tempHexString];
-            if ([theNewScanner scanHexInt:&newvalue])
-            {
-               newsendbuffer[i] = (char)newvalue;
-               //NSLog(@"writeCNCAbschnitt: index: %d	string: %@	hexstring: %@ value: %X	buffer: %x",i,tempString,tempHexString, value,sendbuffer[i]);
-               //NSLog(@"writeCNC i: %d	Hexstring: %@ value: %d",i,tempHexString,value);
-            }
-            else
-            {
-               NSRunAlertPanel (@"Invalid data format", @"Please only use hex values between 00 and FF.", @"OK", nil, nil);
-               return;
-            }
-         }
-        } // if count
-        */  
+  
          free (sendbuffer);
       }
 	}

@@ -478,7 +478,7 @@ float det(float v0[],float v1[])
    
    richtung=[self tag];
 
-   NSLog(@"AVR mouseDown: Pfeiltaste richtung: %d",richtung);
+  // NSLog(@"AVR mouseDown: Pfeiltaste richtung: %d",richtung);
    [self setState:NSOnState];
 	
    
@@ -1642,7 +1642,7 @@ return returnInt;
    }
    else 
    {
-      NSLog(@"kein prod");
+      //NSLog(@"kein prod");
       [ProductFeld setStringValue:@"-"];
    }
    if ([datendic objectForKey:@"manu"] && [[datendic objectForKey:@"manu"]length])
@@ -8888,8 +8888,8 @@ return returnInt;
       return;
 
    }
-   NSLog(@"SchnittdatenArray count: %d",[SchnittdatenArray count]);
-   NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
+//   NSLog(@"SchnittdatenArray count: %d",[SchnittdatenArray count]);
+//   NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
    if (AVR_USBStatus)
    {
       //NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
@@ -8983,7 +8983,7 @@ return returnInt;
       }
       
       [SchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"art"]; // 
-      NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
+ //     NSLog(@"reportUSB_SendArray SchnittdatenDic: %@",[SchnittdatenDic description]);
       
       //   [nc postNotificationName:@"usbschnittdaten" object:self userInfo:SchnittdatenDic];
       //NSLog(@"reportUSB_SendArray delayok: %d",delayok);
