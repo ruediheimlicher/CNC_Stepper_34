@@ -8888,6 +8888,7 @@ return returnInt;
       return;
 
    }
+   NSLog(@"SchnittdatenArray count: %d",[SchnittdatenArray count]);
    NSLog(@"SchnittdatenArray 0: %@",[SchnittdatenArray description]);
    if (AVR_USBStatus)
    {

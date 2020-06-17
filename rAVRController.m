@@ -850,7 +850,7 @@ private void button4_Click(object sender, EventArgs e)
       //int abschnittfertig=(UInt8)buffer[0];     // code fuer Art des Pakets
       
       NSNumber* AbschnittFertig=[NSNumber numberWithInt:(UInt8)buffer[0]];
-      NSLog(@"**read_USB   buffer 0 %d",(UInt8)buffer[0]);
+      NSLog(@"\n **************** read_USB   buffer 0 AbschnittFertig: %02X",(UInt8)buffer[0]);
 
      // NSNumber* Abschnittnummer=[NSNumber numberWithInt:(UInt8)buffer[5]];
       
@@ -905,6 +905,8 @@ private void button4_Click(object sender, EventArgs e)
          
          NSNumber* ladePosition=[NSNumber numberWithInt:(UInt8)buffer[6]];
          //NSLog(@"**   ladePosition NSNumber: %d",[ladePosition intValue]);
+      
+         
          //NSLog(@"**readUSB   buffer 6 %d",(UInt8)buffer[6]);
          [NotificationDic setObject:ladePosition forKey:@"outposition"];
          
@@ -1200,8 +1202,10 @@ private void button4_Click(object sender, EventArgs e)
                //dauer4 = [dateA timeIntervalSinceNow]*1000;
                //NSLog(@"readUSB dauer vor writeCNCAbschnitt: %f ms", dauer);
                
-               //NSLog(@"AbschnittFertig writeCNCAbschnitt abschnittfertig: %X",abschnittfertig);
+               NSLog(@"AbschnittFertig writeCNCAbschnitt abschnittfertig: %X",abschnittfertig);
+               
                [self writeCNCAbschnitt];
+               
                //dauer5 = [dateA timeIntervalSinceNow]*1000;
                //NSLog(@"readUSB dauer nach writeCNCAbschnitt: %f ms", dauer);
                
@@ -1215,7 +1219,7 @@ private void button4_Click(object sender, EventArgs e)
          [NotificationDic setObject:[NSNumber numberWithInt:home] forKey:@"home"];
          [NotificationDic setObject:AbschnittFertig forKey:@"abschnittfertig"];
          
-         NSLog(@"AbschnittFertig: %d",[AbschnittFertig intValue]);
+         NSLog(@"AbschnittFertig: %02X",[AbschnittFertig intValue]);
          //NSLog(@"**   outposition  %d",[outPosition intValue]);
          //dauer7 = [dateA timeIntervalSinceNow]*1000;
          NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
