@@ -580,7 +580,7 @@ private void button4_Click(object sender, EventArgs e)
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          
          
-         NSLog(@"writeCNCAbschnitt  Stepperposition: %d senderfolg: %d",Stepperposition,senderfolg);
+  //       NSLog(@"writeCNCAbschnitt  Stepperposition: %d senderfolg: %d",Stepperposition,senderfolg);
          
          Stepperposition++;
          
@@ -756,7 +756,7 @@ private void button4_Click(object sender, EventArgs e)
       //int abschnittfertig=(UInt8)buffer[0];     // code fuer Art des Pakets
       
       NSNumber* AbschnittFertig=[NSNumber numberWithInt:(UInt8)buffer[0]];
-      NSLog(@"\n **************** read_USB   buffer 0 AbschnittFertig: %02X",(UInt8)buffer[0]);
+      NSLog(@"*** read_USB   buffer 0 AbschnittFertig: %02X",(UInt8)buffer[0]);
 
      // NSNumber* Abschnittnummer=[NSNumber numberWithInt:(UInt8)buffer[5]];
       
@@ -1108,7 +1108,7 @@ private void button4_Click(object sender, EventArgs e)
                //dauer4 = [dateA timeIntervalSinceNow]*1000;
                //NSLog(@"readUSB dauer vor writeCNCAbschnitt: %f ms", dauer);
                
-               NSLog(@"AbschnittFertig writeCNCAbschnitt abschnittfertig: %X",abschnittfertig);
+           //    NSLog(@"AbschnittFertig writeCNCAbschnitt abschnittfertig: %X",abschnittfertig);
                
                [self writeCNCAbschnitt];
                
@@ -1125,7 +1125,7 @@ private void button4_Click(object sender, EventArgs e)
          [NotificationDic setObject:[NSNumber numberWithInt:home] forKey:@"home"];
          [NotificationDic setObject:AbschnittFertig forKey:@"abschnittfertig"];
          
-         NSLog(@"AbschnittFertig: %02X",[AbschnittFertig intValue]);
+   //      NSLog(@"AbschnittFertig: %02X",[AbschnittFertig intValue]);
          //NSLog(@"**   outposition  %d",[outPosition intValue]);
          //dauer7 = [dateA timeIntervalSinceNow]*1000;
          NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
