@@ -904,7 +904,7 @@ return returnInt;
 	nc=[NSNotificationCenter defaultCenter];
 
    [nc addObserver:self
-      selector:@selector(MausGraphAktion:)
+      selector:@selector(usbattachAktion:)
          name:@"usb_attach"
        object:nil];
 
@@ -1392,18 +1392,20 @@ return returnInt;
 
 - (void)usbattachAktion:(NSNotification*)note
 {
-   int status = [[note userInfo]objectForKey:@"attach"];
-  
+   int status = [[[note userInfo]objectForKey:@"attach"]intValue];
+   NSLog(@"usbattachAktion status: %d",status);
    
    if (status == USBREMOVED)
    {
       //USB_OK_Feld.image = notok_image
       [USBKontrolle setStringValue:@"USB OFF"];
+      NSLog(@"usbattachAktion USBREMOVED");
    }
   else if (status == USBATTACHED)
    {
       //USB_OK_Feld.image = ok_image
       [USBKontrolle setStringValue:@"USB ON"];
+      NSLog(@"usbattachAktion USBATTACHED");
    }
    
 }
