@@ -902,7 +902,12 @@ return returnInt;
 	
 	NSNotificationCenter * nc;
 	nc=[NSNotificationCenter defaultCenter];
-	
+
+   [nc addObserver:self
+      selector:@selector(MausGraphAktion:)
+         name:@"usb_attach"
+       object:nil];
+
 		[nc addObserver:self
 		   selector:@selector(MausGraphAktion:)
 			   name:@"mauspunkt"
@@ -1384,6 +1389,25 @@ return returnInt;
    
    //NSLog(@"awake end");
 }
+
+- (void)usbattachAktion:(NSNotification*)note
+{
+   int status = [[note userInfo]objectForKey:@"attach"];
+  
+   
+   if (status == USBREMOVED)
+   {
+      //USB_OK_Feld.image = notok_image
+      [USBKontrolle setStringValue:@"USB OFF"];
+   }
+  else if (status == USBATTACHED)
+   {
+      //USB_OK_Feld.image = ok_image
+      [USBKontrolle setStringValue:@"USB ON"];
+   }
+   
+}
+
 
 - (NSArray*)readProfilLib
 {

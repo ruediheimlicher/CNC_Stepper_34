@@ -163,7 +163,7 @@ private void button4_Click(object sender, EventArgs e)
 
 - (void)USBAktion:(NSNotification*)note
 {
-   //NSLog(@"USBAktion usbstatus: %d",usbstatus);
+   NSLog(@"USBAktion usbstatus: %d",usbstatus);
    if ([[note userInfo]objectForKey:@"usb"])
    {
       switch ([[[note userInfo]objectForKey:@"usb"]intValue]) 
@@ -208,6 +208,14 @@ private void button4_Click(object sender, EventArgs e)
                 */
             }
          }  break;
+            
+         case USBATTACHED:
+         {
+            NSLog(@"USB added");
+            [AVR setUSB_Device_Status:1];
+
+         }break;
+           
          case USBREMOVED:
          {
             NSLog(@"USB removed");

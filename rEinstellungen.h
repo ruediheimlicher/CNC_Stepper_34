@@ -76,7 +76,7 @@
    int         anzPunkte2;
 
 }
-- (void)GitterZeichnenMitUrsprung:(NSPoint)ursprung;
+//- (void)GitterZeichnenMitUrsprung:(NSPoint)ursprung;
 - (void)setDaten:(NSDictionary*)datenDic;
 - (void)clearGraph;
 @end
