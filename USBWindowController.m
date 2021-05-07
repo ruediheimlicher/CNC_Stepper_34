@@ -635,6 +635,7 @@ void DeviceRemoved(void *refCon, io_iterator_t iterator)
       NSString* Prod = [NSString stringWithUTF8String:prod];
       NSLog(@"Manu: %@ Prod: %@",Manu, Prod);
    }
+   
    NSDictionary* USBDatenDic = [NSDictionary dictionaryWithObjectsAndKeys:Prod,@"prod",Manu,@"manu", nil];
    [AVR setUSBDaten:USBDatenDic];
 

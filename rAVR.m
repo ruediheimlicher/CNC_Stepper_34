@@ -1252,6 +1252,7 @@ return returnInt;
    
    
    [CNCTable setDataSource:self];
+   
    [WertAXFeld setFormatter:Koordinatenformatter];
    [WertAXFeld setAlignment:NSRightTextAlignment];
    [WertAXFeld setDelegate:self];
@@ -3949,7 +3950,7 @@ return returnInt;
 
 - (void)MausGraphAktion:(NSNotification*)note
 {
-	//NSLog(@"MausGraphAktion note: %@",[[note userInfo]description]);
+	NSLog(@"MausGraphAktion note: %@",[[note userInfo]description]);
    //NSLog(@"MausGraphAktion note: %@",[[note userInfo]objectForKey:@"mauspunkt"]);
    [CNCTable deselectAll:NULL];
 	[[self window]makeFirstResponder: ProfilGraph];
@@ -8426,12 +8427,13 @@ return returnInt;
    [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
    */
 
+   NSLog(@"Vertikal bis Anschlag");
    // Vertikal ab bis Anschlag
- //  PositionA.y -=200;
- //  PositionB.y -=200;
+   PositionA.y -=200;
+   PositionB.y -=200;
    //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
    //index++;
-//   [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
+   [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
    
    // von reportOberkanteAnfahren
    int i=0;
@@ -9036,7 +9038,7 @@ return returnInt;
 
 - (void)USBReadAktion:(NSNotification*)note
 {
-   //NSLog(@"AVR  USBReadAktion note: %@",[[note userInfo]description]);
+   NSLog(@"AVR  USBReadAktion note: %@",[[note userInfo]description]);
    if ([[note userInfo]objectForKey:@"inposition"])
    {
       if ([[[note userInfo]objectForKey:@"outposition"]intValue] > [PositionFeld intValue])
@@ -9064,33 +9066,36 @@ return returnInt;
    int homeanschlagCount=0;
    if ([[note userInfo]objectForKey:@"homeanschlagset"])
    {
+      NSLog(@"AVR USBReadAktion homeanschlagset: %@",[[note userInfo]objectForKey:@"homeanschlagset"]);
       homeanschlagCount = [[[note userInfo]objectForKey:@"homeanschlagset"]count];
    }
 
    if([[note userInfo]objectForKey:@"abschnittfertig"])
    {
+      NSLog(@"AVR USBReadAktion abschnittfertig: %@",[[note userInfo]objectForKey:@"abschnittfertig"]);
+
       int abschnittfertig=[[[note userInfo]objectForKey:@"abschnittfertig"]intValue];
       switch (abschnittfertig)
       {
          case 0xAA:
          {
-          //  NSLog(@"AVR End Abschnitt von A");
+            NSLog(@"AVR End Abschnitt von A");
             
          }break;
          
          case 0xAB:
          {
-          //  NSLog(@"AVR End Abschnitt von B");
+            NSLog(@"AVR End Abschnitt von B");
          }break;
             
          case 0xAC:
          {
-          //  NSLog(@"AVR End Abschnitt von C");
+            NSLog(@"AVR End Abschnitt von C");
          }break;
             
          case 0xAD:
          {
-          //  NSLog(@"AVR End Abschnitt von D");
+            NSLog(@"AVR End Abschnitt von D");
          }break;
             
          case 0xB5:
@@ -9155,11 +9160,12 @@ return returnInt;
    
    if([[note userInfo]objectForKey:@"home"])
    {
-      //NSLog(@"AVR  USBReadAktion home: %d",[[[note userInfo]objectForKey:@"home"]intValue]);
+      NSLog(@"AVR  USBReadAktion home: %d",[[[note userInfo]objectForKey:@"home"]intValue]);
       int home=0;
       if ([[note userInfo]objectForKey:@"home"])
       {
          home = [[[note userInfo]objectForKey:@"home"]intValue];
+         
       }
       if ((home==2)&& (homeanschlagCount <4)) // senkrekten Abschnitt von home schicken.
 //      if ((homeanschlagCount <4)) // senkrekten Abschnitt von home schicken.

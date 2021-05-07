@@ -169,35 +169,42 @@ private void button4_Click(object sender, EventArgs e)
       switch ([[[note userInfo]objectForKey:@"usb"]intValue]) 
       {
          case NEUTASTE:
+            
          case USBTASTE:
          {
-            //NSLog(@"wait USB");
+            NSLog(@"USBAktion Neu, WAIT: usbstatus: %d",usbstatus);
+            if (usbstatus==0)
+            {
             [self performSelector:@selector (USBOpen) withObject:NULL afterDelay:2];
-
+            }
          }break;
          case ANDERESEITEANFAHREN:
          case OBERKANTEANFAHREN:
          case HOMETASTE:
             
          {
-            [self USBOpen];
+            if (usbstatus==0)
+            {
+               
+               [self USBOpen];
+            }
             if (usbstatus==0)
             {
                /*
-               NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
-               //[Warnung addButtonWithTitle:@"Einstecken und einschalten"];
-               [Warnung addButtonWithTitle:@"Zurück"];
-               //	[Warnung addButtonWithTitle:@""];
-               //[Warnung addButtonWithTitle:@"Abbrechen"];
-               [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"USB ist nicht aktiv."]];
-               
-               NSString* s1=@"";
-               NSString* s2=@"";
-               NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
-               [Warnung setInformativeText:InformationString];
-               [Warnung setAlertStyle:NSWarningAlertStyle];
-               
-               int antwort=[Warnung runModal];
+                NSAlert *Warnung = [[[NSAlert alloc] init] autorelease];
+                //[Warnung addButtonWithTitle:@"Einstecken und einschalten"];
+                [Warnung addButtonWithTitle:@"Zurück"];
+                //	[Warnung addButtonWithTitle:@""];
+                //[Warnung addButtonWithTitle:@"Abbrechen"];
+                [Warnung setMessageText:[NSString stringWithFormat:@"%@",@"USB ist nicht aktiv."]];
+                
+                NSString* s1=@"";
+                NSString* s2=@"";
+                NSString* InformationString=[NSString stringWithFormat:@"%@\n%@",s1,s2];
+                [Warnung setInformativeText:InformationString];
+                [Warnung setAlertStyle:NSWarningAlertStyle];
+                
+                int antwort=[Warnung runModal];
                 */
             }
          }  break;
@@ -243,7 +250,7 @@ private void button4_Click(object sender, EventArgs e)
 /*******************************************************************/
 - (void)USB_SchnittdatenAktion:(NSNotification*)note
 {
-   //NSLog(@"USB_SchnittdatenAktion usbstatus: %d usb_present: %d",usbstatus,usb_present());
+   NSLog(@"USB_SchnittdatenAktion usbstatus: %d usb_present: %d",usbstatus,usb_present());
    int antwort=0;
    int delayok=0;
    
@@ -361,13 +368,13 @@ private void button4_Click(object sender, EventArgs e)
        unsigned	  value;
        //NSLog(@"writeCNCAbschnitt tempSchnittdatenArray count: %d",[tempSchnittdatenArray count]);
        //NSLog(@"tempSchnittdatenArray object 20: %d",[[tempSchnittdatenArray objectAtIndex:20]intValue]);
-       //NSLog(@"loop start");
+       NSLog(@"loop start");
        int i=0;
        for (i=0;i<[tempSchnittdatenArray count];i++)
        {
           //NSLog(@"i: %d tempString: %@",i,tempString);
           int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
-          //           fprintf(stderr,"%d\t",tempWert);
+                     fprintf(stderr,"%d\t",tempWert);
           NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
           
           //theScanner = [NSScanner scannerWithString:[[tempSchnittdatenArray objectAtIndex:i]stringValue]];
@@ -741,12 +748,12 @@ private void button4_Click(object sender, EventArgs e)
       
       
       int i=0;
-      /*
+      
        for (i=0; i<10;i++)
        {
-      NSLog(@"i: %d char: %x data: %d",i,buffer[i],[[NSNumber numberWithInt:(UInt8)buffer[i]]intValue]);
+ //     NSLog(@"i: %d char: %x data: %d",i,buffer[i],[[NSNumber numberWithInt:(UInt8)buffer[i]]intValue]);
        }
-       */
+       
 //      NSMutableDictionary* NotificationDic=[[[NSMutableDictionary alloc]initWithCapacity:0]autorelease];
       
       //NSLog(@"**");
@@ -799,6 +806,7 @@ private void button4_Click(object sender, EventArgs e)
          NSLog(@"readUSB 0x44 %d",buffer[5]);
       }
       */
+      NSLog(@"readUSB  %s",buffer);
       if ([AbschnittFertig intValue] >= 0xA0) // Code fuer Fertig: AD
       {
          // verschoben von oben 
