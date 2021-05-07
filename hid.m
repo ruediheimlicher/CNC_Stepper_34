@@ -505,14 +505,11 @@ static void detach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDevic
          NSNotificationCenter *nc=[NSNotificationCenter defaultCenter];
          NSDictionary* NotDic = [NSDictionary  dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:USBREMOVED],@"attach", nil];
          [nc postNotificationName:@"usb_attach" object:NULL userInfo:NotDic];
-
+         fprintf(stderr,"detach notification\n");
 			return;
 		}
 	}
    
-   NSNotificationCenter *nc=[NSNotificationCenter defaultCenter];
-   NSDictionary* NotDic = [NSDictionary  dictionaryWithObjectsAndKeys:[NSNumber numberWithInt:USBREMOVED],@"attach", nil];
-   [nc postNotificationName:@"usb_attach" object:NULL userInfo:NotDic];
 
 }
 
