@@ -448,7 +448,7 @@
    self = [super initWithFrame:frame];
    if (self) 
    {
-      DatenDic=[[[NSArray alloc ]init]retain];
+      DatenDic=[[[NSDictionary alloc ]init]retain];
       oldMauspunkt = NSMakePoint(0,0);
       scale = 1;
       mausistdown=0;

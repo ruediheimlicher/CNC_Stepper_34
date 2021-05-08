@@ -53,7 +53,7 @@
    int richtung;
    IBOutlet id Taste;
 }
-- (IBAction)reportPfeiltaste:(id)sender;
+//- (IBAction)reportPfeiltaste:(id)sender;
 - (void)setRichtung:(int)dieRichtung;
 - (int)Richtung;
 - (int)Tastestatus;
@@ -339,7 +339,7 @@
 
 - (IBAction)reportSpeedStepper:(id)sender;
 
-- (IBAction)reportCNCKnopf:(id)sender;
+//- (IBAction)reportCNCKnopf:(id)sender;
 - (IBAction)reportOberseiteTaste:(id)sender;
 - (IBAction)reportUnterseiteTaste:(id)sender;
 - (IBAction)reportProfil:(id)sender;
@@ -354,7 +354,7 @@
 - (IBAction)reportWertBXStepper:(id)sender;
 - (IBAction)reportWertBYStepper:(id)sender;
 
-- (IBAction)reportPWMStepper:(id)sender;
+//- (IBAction)reportPWMStepper:(id)sender;
 - (IBAction)reportNewElement:(id)sender;
 - (IBAction)reportManLeft:(id)sender;
 - (IBAction)reportManRight:(id)sender;
@@ -402,22 +402,22 @@
 
 // TWI
 //- (void)writeAVR:(int)i2cAdresse mitDaten:(NSArray*)dieDaten;
-- (IBAction)reportUSB_sendArray:(id)sender;
+//- (IBAction)reportUSB_sendArray:(id)sender;
 - (IBAction)reportPrepareTaste:(id)sender;
 - (IBAction)reportNeuTaste:(id)sender;
-- (IBAction)terminateTransfer:(id)sender;
+//- (IBAction)terminateTransfer:(id)sender;
 
 - (IBAction)reportPrint:(id)sender;
 - (IBAction)reportSave:(id)sender;
 
 
 
-- (IBAction)ok:(id)sender;
-- (void)HomebusAnlegen;
-- (void)saveLabel:(NSString*)dasLabel forRaum:(int)derRaum forSegment:(int)dasSegment;
-- (void)checkHomebus;
+//- (IBAction)ok:(id)sender;
+//- (void)HomebusAnlegen;
+//- (void)saveLabel:(NSString*)dasLabel forRaum:(int)derRaum forSegment:(int)dasSegment;
+//- (void)checkHomebus;
 - (int)saveStepperDic;
-- (int)sendData:(NSArray*)dieDaten;
+//- (int)sendData:(NSArray*)dieDaten;
 - (int)sendReport:(NSString*)derReport mitDaten:(NSArray*)dieDaten;
 - (NSString*)IntToBin:(int)dieZahl;
 - (int)halt;

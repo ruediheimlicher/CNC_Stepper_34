@@ -4118,7 +4118,7 @@ return returnInt;
 	else 
 	{
 		
-		if (abs(MausPunkt.x - oldMauspunkt.x) > [CNC steps]*0x7F) // Groesser als int16_t
+      if (fabs(MausPunkt.x - oldMauspunkt.x) > [CNC steps]*0x7F) // Groesser als int16_t
 		{
 			NSLog(@"zu grosser Schritt X");
 			
@@ -4808,12 +4808,12 @@ return returnInt;
    //ProfilArray = [CNC ProfilVonPunkt:Startpunkt mitProfil:ProfilDic mitProfiltiefe:[ProfilTiefeFeldA intValue] mitScale:[[ScalePop selectedItem]tag]];
    
   
-   
+ //  [Utils ProfilDatenAnPfad:Profilpfad];
       
    // Dic mit keys x,y,index, Werte mit wahrer laenge in mm proportional Profiltiefe
-   NSDictionary* ProfilpunktDicA=[CNC ProfilDicVonPunkt:StartpunktA mitProfil:ProfilDic mitProfiltiefe:ProfiltiefeA mitScale:[[ScalePop selectedItem]tag]];
+   NSDictionary* ProfilpunktDicA=[CNC ProfilDicVonPunkt:StartpunktA mitProfil:[ProfilDic objectForKey:@"profilarray"] mitProfiltiefe:ProfiltiefeA mitScale:[[ScalePop selectedItem]tag]];
    
-   NSDictionary* ProfilpunktDicB=[CNC ProfilDicVonPunkt:StartpunktB mitProfil:ProfilDic mitProfiltiefe:ProfiltiefeB mitScale:[[ScalePop selectedItem]tag]];
+   NSDictionary* ProfilpunktDicB=[CNC ProfilDicVonPunkt:StartpunktB mitProfil:[ProfilDic objectForKey:@"profilarray"] mitProfiltiefe:ProfiltiefeB mitScale:[[ScalePop selectedItem]tag]];
    
    //NSLog(@"ProfilpunktDicA %@",[ProfilpunktDicA description]);
    ProfilArrayA = [ProfilpunktDicA objectForKey:@"profilpunktarray"];
@@ -9379,7 +9379,7 @@ return returnInt;
 
 }
 
-- (int)numberOfRowsInTableView:(NSTableView *)tableView
+- (NSInteger)numberOfRowsInTableView:(NSTableView *)tableView
 {
     //return [ProfilDaten count];
 	 return [KoordinatenTabelle count];
@@ -9387,7 +9387,7 @@ return returnInt;
 
 - (id)tableView:(NSTableView *)tableView
       objectValueForTableColumn:(NSTableColumn *)tableColumn
-      row:(int)row
+      row:(NSInteger)row
 {
  //   return [KoordinatenTabelle objectAtIndex:row];
 	id dieZeile;

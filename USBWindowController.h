@@ -99,7 +99,7 @@
 
 
 - (void)keyDown:(NSEvent*)derEvent;
-- (IBAction)showADWandler:(id)sender;
+//- (IBAction)showADWandler:(id)sender;
 - (void)readPList;
 - (IBAction)terminate:(id)sender;
 - (void) setLastValueRead:(NSData*) inData;
@@ -111,8 +111,8 @@
 
 @interface IOWarriorWindowController(rADWandlerController)
 //- (id)initWithFrame:(NSRect)frame;
-- (IBAction)showADWandler:(id)sender;
-- (IBAction)saveMehrkanalDaten:(id)sender;
+//- (IBAction)showADWandler:(id)sender;
+//- (IBAction)saveMehrkanalDaten:(id)sender;
 @end
 
 

@@ -125,7 +125,15 @@
 - (rElement*)ElementHolen:(NSString*)LibName
 {
    int erfolg=0;
-   rElement* LibElement;
+   /*
+    
+    NSPoint  Startpunkt;
+    NSPoint  Endpunkt;
+    NSArray* ElementdatenArray;
+    NSString* Elementname;
+
+    */
+   rElement* LibElement = [rElement init];
    NSLog(@"ElementHolen");
    BOOL istOrdner;
    NSFileManager *Filemanager = [NSFileManager defaultManager];
@@ -143,8 +151,11 @@
       NSLog(@"Elementholen: LibPfad: %@ ",LibPfad);
       if ([Filemanager fileExistsAtPath:LibPfad])
       {
+         NSDictionary* libdic = [NSDictionary dictionaryWithContentsOfFile:LibPfad];
+         if (libdic)
+         {
          LibElement=[NSDictionary dictionaryWithContentsOfFile:LibPfad];
-
+         }
       }
       
    }// erfolg

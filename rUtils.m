@@ -735,6 +735,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 - (NSArray*)readFigur
 {
 	NSMutableArray* FigurArray=[[NSMutableArray alloc]initWithCapacity:0];
+   NSArray* tempArray = [NSArray array];
 	/*
     NSOpenPanel* ProfilOpenPanel=[[NSOpenPanel alloc ]init];
 	[ProfilOpenPanel setCanChooseFiles:YES];
@@ -788,7 +789,7 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
    }
    else{
       NSLog(@"kein Panel");
-      return;
+      return tempArray;
    }
     
 //    return;
@@ -800,7 +801,6 @@ NSLog(@"logRect: origin.x %2.2f origin.y %2.2f size.heigt %2.2f size.width %2.2f
 	
    //NSLog(@"Utils openProfil FigurString: \n%@",FigurString);
 	
-   NSArray* tempArray = [NSArray array];
    
 	//NSArray* tempArray=[FigurString componentsSeparatedByString:@"\r"];
    
