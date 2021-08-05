@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>E311429F-541A-4A51-B275-410DE39AA61B</string>
+	<key>IDESourceControlProjectName</key>
+	<string>USB_Stepper</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>8EB9B3D5EAE748DBD2D8B25B215586A4E6F4BC44</key>
+		<string>https://github.com/ruediheimlicher/Quiz.git</string>
+		<key>C15FFF6D8583ED971ACA20E7E34BF664E8E18098</key>
+		<string>github.com:ruediheimlicher/CNC_Stepper_34.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>USB_Stepper.xcodeproj</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>8EB9B3D5EAE748DBD2D8B25B215586A4E6F4BC44</key>
+		<string>../../..</string>
+		<key>C15FFF6D8583ED971ACA20E7E34BF664E8E18098</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:ruediheimlicher/CNC_Stepper_34.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>C15FFF6D8583ED971ACA20E7E34BF664E8E18098</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>8EB9B3D5EAE748DBD2D8B25B215586A4E6F4BC44</string>
+			<key>IDESourceControlWCCName</key>
+			<string></string>
+		</dict>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>C15FFF6D8583ED971ACA20E7E34BF664E8E18098</string>
+			<key>IDESourceControlWCCName</key>
+			<string>CNC_Stepper_12</string>
+		</dict>
+	</array>
+</dict>
+</plist>

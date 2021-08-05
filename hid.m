@@ -493,7 +493,7 @@ static void detach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDevic
 {
 	hid_t *p;
    
-	fprintf(stderr,"detach callback\n");
+	fprintf(stderr,"hid detach callback\n");
    usbstatus=0;
 	for (p = first_hid; p; p = p->next) 
    {
@@ -518,7 +518,7 @@ static void attach_callback(void *context, IOReturn r, void *hid_mgr, IOHIDDevic
 {
    struct hid_struct *h;
    
-	fprintf(stderr,"attach callback\n");
+	fprintf(stderr,"hid attach callback\n");
    //
 	if (IOHIDDeviceOpen(dev, kIOHIDOptionsTypeNone) != kIOReturnSuccess) return;
 	h = (hid_t *)malloc(sizeof(hid_t));

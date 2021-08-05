@@ -444,9 +444,9 @@ float det(float v0[],float v1[])
 
 - (void)mouseUp:(NSEvent *)event
 {
-   NSLog(@"AVR mouseup");
+   //NSLog(@"AVR mouseup");
    richtung=[self tag];
-   NSLog(@"AVR mouseUp Pfeiltaste richtung: %d",richtung);
+   //NSLog(@"AVR mouseUp Pfeiltaste richtung: %d",richtung);
    /*
     richtung:
     right: 1
@@ -462,7 +462,7 @@ float det(float v0[],float v1[])
 	
    int aktpwm=0;
    NSPoint location = [event locationInWindow];
-   NSLog(@"Pfeiltaste mouseUp location: %2.2f %2.2f",location.x, location.y);
+   //NSLog(@"Pfeiltaste mouseUp location: %2.2f %2.2f",location.x, location.y);
    [NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"push"];
    [NotificationDic setObject:[NSNumber numberWithFloat:location.x] forKey:@"locationx"];
    [NotificationDic setObject:[NSNumber numberWithFloat:location.y] forKey:@"locationy"];
@@ -1070,7 +1070,7 @@ return returnInt;
    free(versionstring);
 	//NSLog(@"awake");
    */
-   
+   [[[[self window]contentView]viewWithTag:9002]setState:1];
  
 	int i;
 	NSMutableArray* tempArray=[[[NSMutableArray alloc]initWithCapacity:0]autorelease];
@@ -1393,19 +1393,19 @@ return returnInt;
 - (void)usbattachAktion:(NSNotification*)note
 {
    int status = [[[note userInfo]objectForKey:@"attach"]intValue];
-   NSLog(@"usbattachAktion status: %d",status);
-   
+   NSLog(@"AVR usbattachAktion status: %d",status);
+   NSLog(@"usbstatus: %d",usbstatus);
    if (status == USBREMOVED)
    {
       //USB_OK_Feld.image = notok_image
       [USBKontrolle setStringValue:@"USB OFF"];
-      NSLog(@"usbattachAktion USBREMOVED");
+      NSLog(@"AVR usbattachAktion USBREMOVED");
    }
   else if (status == USBATTACHED)
    {
       //USB_OK_Feld.image = ok_image
       [USBKontrolle setStringValue:@"USB ON"];
-      NSLog(@"usbattachAktion USBATTACHED");
+      NSLog(@"AVR usbattachAktion USBATTACHED");
    }
    
 }
@@ -3976,7 +3976,7 @@ return returnInt;
 
 - (void)MausGraphAktion:(NSNotification*)note
 {
-	NSLog(@"MausGraphAktion note: %@",[[note userInfo]description]);
+	//NSLog(@"MausGraphAktion note: %@",[[note userInfo]description]);
    //NSLog(@"MausGraphAktion note: %@",[[note userInfo]objectForKey:@"mauspunkt"]);
    [CNCTable deselectAll:NULL];
 	[[self window]makeFirstResponder: ProfilGraph];
@@ -8412,7 +8412,7 @@ return returnInt;
 
 
 
-
+#pragma mark  HOME
 - (IBAction)reportHome:(id)sender
 {
    NSLog(@"AVR  reportHome");
@@ -8455,8 +8455,8 @@ return returnInt;
 
    NSLog(@"Vertikal bis Anschlag");
    // Vertikal ab bis Anschlag
-   PositionA.y -=200;
-   PositionB.y -=200;
+   PositionA.y -=199;
+   PositionB.y -=199;
    //NSLog(@"index: %d A.x: %2.2f A.y: %2.2f B.x: %2.2f B.y: %2.2f",index,PositionA.x,PositionA.y,PositionB.x,PositionB.y);
    //index++;
    [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
@@ -8549,7 +8549,7 @@ return returnInt;
    }
    else
    {
-      [HomeSchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"home"]; // 
+  //    [HomeSchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"home"]; // 
       
    }
    
@@ -8573,9 +8573,7 @@ return returnInt;
    NSLog(@"Vertikal bis Anschlag");
    //return;
    NSMutableArray* AnfahrtArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
-   
-   
-   
+      
    // Startpunkt ist aktuelle Position. Lage: 2: Home horizontal
    NSPoint PositionA = NSMakePoint(0, 0);
    NSPoint PositionB = NSMakePoint(0, 0);
@@ -8887,6 +8885,7 @@ return returnInt;
 #pragma mark USB_Aktion
 - (IBAction)reportUSB_sendArray:(id)sender
 {
+   NSLog(@"reportUSB_sendArray");
    if ([SchnittdatenArray count]==0)
    {
       NSLog(@"reportUSB_sendArray SchnittdatenArray leer");
@@ -9064,7 +9063,7 @@ return returnInt;
 
 - (void)USBReadAktion:(NSNotification*)note
 {
-   NSLog(@"AVR  USBReadAktion note: %@",[[note userInfo]description]);
+   //NSLog(@"AVR  USBReadAktion note: %@",[[note userInfo]description]);
    if ([[note userInfo]objectForKey:@"inposition"])
    {
       if ([[[note userInfo]objectForKey:@"outposition"]intValue] > [PositionFeld intValue])
@@ -9092,13 +9091,13 @@ return returnInt;
    int homeanschlagCount=0;
    if ([[note userInfo]objectForKey:@"homeanschlagset"])
    {
-      NSLog(@"AVR USBReadAktion homeanschlagset: %@",[[note userInfo]objectForKey:@"homeanschlagset"]);
+      //NSLog(@"AVR USBReadAktion homeanschlagset: %@",[[note userInfo]objectForKey:@"homeanschlagset"]);
       homeanschlagCount = [[[note userInfo]objectForKey:@"homeanschlagset"]count];
    }
-
+   
    if([[note userInfo]objectForKey:@"abschnittfertig"])
    {
-      NSLog(@"AVR USBReadAktion abschnittfertig: %@",[[note userInfo]objectForKey:@"abschnittfertig"]);
+      NSLog(@"AVR USBReadAktion abschnittfertig: %02X",[[[note userInfo]objectForKey:@"abschnittfertig"]intValue]);
 
       int abschnittfertig=[[[note userInfo]objectForKey:@"abschnittfertig"]intValue];
       switch (abschnittfertig)
@@ -9121,17 +9120,18 @@ return returnInt;
             
          case 0xAD:
          {
-            NSLog(@"AVR End Abschnitt von D");
+            NSLog(@"AD AVR End Abschnitt von D");
          }break;
             
          case 0xB5:
          {
-            NSLog(@"AVR Anschlag A0 home first");
+            NSLog(@"B5 AVR Anschlag A0 home first");
+            
          }break;
             
          case 0xB6:
          {
-            NSLog(@"AVR Anschlag B0 home first");
+            NSLog(@"B6 AVR Anschlag B0 home first");
          }break;
             
          case 0xB7:
@@ -9146,36 +9146,44 @@ return returnInt;
          
          case 0xA5:   
          {
-            NSLog(@"AVR Anschlag A0");
+            NSLog(@"AVR A5: Anschlag A0");
             [AnschlagDic setObject:[NSNumber numberWithInt:abschnittfertig] forKey:@"anschlaga0"];
             [AnschlagLinksIndikator setTransparent:NO];
             [CNC_Lefttaste setEnabled:NO];
+            int anschlagtag = abschnittfertig -0xA5;
+            [[[[self window]contentView]viewWithTag:9000+anschlagtag]setState:1];
          }break;
             
          case 0xA6:   
          {
-            NSLog(@"AVR Anschlag B0");
+            NSLog(@"AVR A6: Anschlag B0");
             [AnschlagDic setObject:[NSNumber numberWithInt:abschnittfertig] forKey:@"anschlagb0"];
             [AnschlagUntenIndikator setTransparent:NO];
             [CNC_Downtaste setEnabled:NO];
+            int anschlagtag = abschnittfertig -0xA5;
+            [[[[self window]contentView]viewWithTag:9000+anschlagtag]setState:1];
 
          }break;
             
          case 0xA7:   
          {
-            NSLog(@"AVR Anschlag C0");
+            NSLog(@"AVR A 7: Anschlag C0");
             [AnschlagDic setObject:[NSNumber numberWithInt:abschnittfertig] forKey:@"anschlagc0"];
             [AnschlagLinksIndikator setTransparent:NO];
             [CNC_Lefttaste setEnabled:NO];
-            
+            int anschlagtag = abschnittfertig -0xA5;
+            [[[[self window]contentView]viewWithTag:9000+anschlagtag]setState:1];
+           
          }break;
             
          case 0xA8:   
          {
-            NSLog(@"AVR Anschlag D0");
+            NSLog(@"AVR A8: Anschlag D0");
             [AnschlagDic setObject:[NSNumber numberWithInt:abschnittfertig] forKey:@"anschlagd0"];
             [AnschlagUntenIndikator setTransparent:NO];
             [CNC_Downtaste setEnabled:NO];
+            int anschlagtag = abschnittfertig -0xA5;
+            [[[[self window]contentView]viewWithTag:9000+anschlagtag]setState:1];
 
          }break;
             
@@ -9186,16 +9194,17 @@ return returnInt;
    
    if([[note userInfo]objectForKey:@"home"])
    {
-      NSLog(@"AVR  USBReadAktion home: %d",[[[note userInfo]objectForKey:@"home"]intValue]);
+      //NSLog(@"AVR  USBReadAktion home: %d",[[[note userInfo]objectForKey:@"home"]intValue]);
       int home=0;
       if ([[note userInfo]objectForKey:@"home"])
       {
          home = [[[note userInfo]objectForKey:@"home"]intValue];
-         
       }
+      NSLog(@"AVR  USBReadAktion home: %d homeanschlagCount: %d",home,homeanschlagCount);
       if ((home==2)&& (homeanschlagCount <4)) // senkrekten Abschnitt von home schicken.
 //      if ((homeanschlagCount <4)) // senkrekten Abschnitt von home schicken.
       {
+         NSLog(@"AVR USBReadAktion homeSenkrechtSchicken homeanschlagCount: %d",homeanschlagCount);
          [self homeSenkrechtSchicken];
          [HomeTaste setState:0];
       }

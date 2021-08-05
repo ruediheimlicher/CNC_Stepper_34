@@ -7,7 +7,7 @@
 	<key>CFBundleDocumentTypes</key>
 	<array/>
 	<key>CFBundleExecutable</key>
-	<string>USB_Stepper</string>
+	<string>Charger_Master</string>
 	<key>CFBundleIconFile</key>
 	<string>USB</string>
 	<key>CFBundleIdentifier</key>
