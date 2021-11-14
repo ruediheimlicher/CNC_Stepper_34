@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "C15FFF6D8583ED971ACA20E7E34BF664E8E18098",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8EB9B3D5EAE748DBD2D8B25B215586A4E6F4BC44" : 0,
+    "C15FFF6D8583ED971ACA20E7E34BF664E8E18098" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "E311429F-541A-4A51-B275-410DE39AA61B",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8EB9B3D5EAE748DBD2D8B25B215586A4E6F4BC44" : "..\/..",
+    "C15FFF6D8583ED971ACA20E7E34BF664E8E18098" : "CNC_Stepper_12\/"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "USB_Stepper",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "USB_Stepper.xcodeproj",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "https:\/\/github.com\/ruediheimlicher\/Quiz.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8EB9B3D5EAE748DBD2D8B25B215586A4E6F4BC44"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:ruediheimlicher\/CNC_Stepper_34.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "C15FFF6D8583ED971ACA20E7E34BF664E8E18098"
+    }
+  ]
+}
