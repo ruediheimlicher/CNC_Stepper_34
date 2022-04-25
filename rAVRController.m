@@ -163,9 +163,10 @@ private void button4_Click(object sender, EventArgs e)
 
 - (void)USBAktion:(NSNotification*)note
 {
-   NSLog(@"USBAktion usbstatus: %d",usbstatus);
+   NSLog(@"USBAktion usbstatus: %d note: %@",usbstatus, note);
    if ([[note userInfo]objectForKey:@"usb"])
    {
+      
       switch ([[[note userInfo]objectForKey:@"usb"]intValue]) 
       {
          case NEUTASTE:
@@ -211,14 +212,14 @@ private void button4_Click(object sender, EventArgs e)
             
          case USBATTACHED:
          {
-            NSLog(@"USB added");
+            NSLog(@"AVRController USBAktion USBATTACHED USB added");
             [AVR setUSB_Device_Status:1];
 
          }break;
            
          case USBREMOVED:
          {
-            NSLog(@"USB removed");
+            NSLog(@"AVRController USBAktion USBREMOVEDUSB removed");
             [AVR setUSB_Device_Status:0];
 
          }break;
@@ -358,7 +359,7 @@ private void button4_Click(object sender, EventArgs e)
        
        //NSLog(@"USB_SchnittdatenAktion Object 0 aus SchnittDatenArray aus note: %@",[[[[note userInfo]objectForKey:@"schnittdatenarray"]objectAtIndex:0] description]);
        [SchnittDatenArray setArray:[[note userInfo]objectForKey:@"schnittdatenarray"]];
-       //NSLog(@"USB_SchnittdatenAktion SchnittDatenArray %@",[[SchnittDatenArray objectAtIndex:0] description]);
+       //NSLog(@"Stepper 12 USB_SchnittdatenAktion SchnittDatenArray %@",[[SchnittDatenArray objectAtIndex:0] description]);
        //NSLog(@"USB_SchnittdatenAktion SchnittDatenArray: %@",[SchnittDatenArray description]);
 
        Stepperposition=0;
@@ -376,8 +377,9 @@ private void button4_Click(object sender, EventArgs e)
        unsigned	  value;
        //NSLog(@"writeCNCAbschnitt tempSchnittdatenArray count: %d",[tempSchnittdatenArray count]);
        //NSLog(@"tempSchnittdatenArray object 20: %d",[[tempSchnittdatenArray objectAtIndex:20]intValue]);
-       NSLog(@"loop start");
+       //NSLog(@"loop start");
        int i=0;
+       fprintf(stderr,"USB_SchnittdatenAktion\n");
        for (i=0;i<[tempSchnittdatenArray count];i++)
        {
           //NSLog(@"i: %d tempString: %@",i,tempString);
@@ -412,7 +414,7 @@ private void button4_Click(object sender, EventArgs e)
           }
        }
       
-       
+       fprintf(stderr,"\n");
        
        [self writeCNCAbschnitt];
        //NSLog(@"readUSB Start Timer");
@@ -482,7 +484,7 @@ private void button4_Click(object sender, EventArgs e)
 
 - (void)writeCNCAbschnitt
 {
-	//NSLog(@"writeCNCAbschnitt Start Stepperposition: %d count: %d",Stepperposition,[SchnittDatenArray count]);
+	NSLog(@"writeCNCAbschnitt Start Stepperposition: %d count: %d",Stepperposition,[SchnittDatenArray count]);
 	//NSLog(@"writeCNCAbschnitt SchnittDatenArray anz: %d\n SchnittDatenArray: %@",[SchnittDatenArray count],[SchnittDatenArray description]);
    
    /*
@@ -535,6 +537,7 @@ private void button4_Click(object sender, EventArgs e)
          
          
          NSMutableArray* tempSchnittdatenArray=(NSMutableArray*)[SchnittDatenArray objectAtIndex:Stepperposition];
+         //NSLog(@"Stepper 12 writeCNCAbschnitt tempSchnittdatenArray: %@",[tempSchnittdatenArray description]);
          //[tempSchnittdatenArray addObject:[NSNumber numberWithInt:[AVR pwm]]];
          NSScanner *theScanner;
          unsigned	  value;
@@ -543,12 +546,14 @@ private void button4_Click(object sender, EventArgs e)
          //NSLog(@"loop start");
          //NSDate *anfang = [NSDate date];
          //dauer1 = [dateA timeIntervalSinceNow]*1000;
+         fprintf(stderr,"\nStepper12\n");
+         fprintf(stderr,"writeCNCAbschnitt Stepperposition %d: *\t\t",Stepperposition);
          for (i=0;i<[tempSchnittdatenArray count];i++)
          {
             
 
              int tempWert=[[tempSchnittdatenArray objectAtIndex:i]intValue];
- //           fprintf(stderr,"%d\t",tempWert);
+            fprintf(stderr,"%d\t",tempWert);
              NSString*  tempHexString=[NSString stringWithFormat:@"%x",tempWert];
             theScanner = [NSScanner scannerWithString:tempHexString];
             if ([theScanner scanHexInt:&value])
@@ -580,7 +585,7 @@ private void button4_Click(object sender, EventArgs e)
             
             //sendbuffer[i]=(char)[[tempSchnittdatenArray objectAtIndex:i]UTF8String];
          }
-         
+         fprintf(stderr,"\n");
           /*
          fprintf(stderr,"%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\t%d\n",
                  sendbuffer[0],(sendbuffer[1]& 0x80),sendbuffer[2],(sendbuffer[3]&0x80),
@@ -595,7 +600,7 @@ private void button4_Click(object sender, EventArgs e)
          int senderfolg= rawhid_send(0, sendbuffer, 32, 50);
          
          
-  //       NSLog(@"writeCNCAbschnitt  Stepperposition: %d senderfolg: %d",Stepperposition,senderfolg);
+         NSLog(@"writeCNCAbschnitt  Stepperposition: %d senderfolg: %d",Stepperposition,senderfolg);
          
          Stepperposition++;
          
@@ -771,7 +776,7 @@ private void button4_Click(object sender, EventArgs e)
       //int abschnittfertig=(UInt8)buffer[0];     // code fuer Art des Pakets
       
       NSNumber* AbschnittFertig=[NSNumber numberWithInt:(UInt8)buffer[0]];
-      NSLog(@"*** read_USB   buffer 0 AbschnittFertig: %02X",(UInt8)buffer[0]);
+      //NSLog(@"*** read_USB   buffer 0 AbschnittFertig: %02X",(UInt8)buffer[0]);
 
      // NSNumber* Abschnittnummer=[NSNumber numberWithInt:(UInt8)buffer[5]];
       
@@ -814,7 +819,7 @@ private void button4_Click(object sender, EventArgs e)
          NSLog(@"readUSB 0x44 %d",buffer[5]);
       }
       */
-      NSLog(@"readUSB  %s",buffer);
+      //NSLog(@"readUSB  %s",buffer);
       if ([AbschnittFertig intValue] >= 0xA0) // Code fuer Fertig: AD
       {
          // verschoben von oben 
@@ -926,7 +931,7 @@ private void button4_Click(object sender, EventArgs e)
                // Anschlag first
             case 0xA5:   
             {
-               NSLog(@"Anschlag A0");
+               NSLog(@"AVRController A5 Anschlag A0");
                [AnschlagSet addIndex:0];// schritteax lb
                [AnschlagSet addIndex:1];// schritteax hb
                [AnschlagSet addIndex:4];// delayax lb
@@ -1029,11 +1034,11 @@ private void button4_Click(object sender, EventArgs e)
                
                
          }// switch abschnittfertig
-         
+         NSLog(@"AVRController AnschlagSet: %@",AnschlagSet);
          //dauer3 = [dateA timeIntervalSinceNow]*1000;
          //NSLog(@"readUSB dauer bis nach switch: %f ms", dauer);
          
-         if ([AnschlagSet count])
+         if ([AnschlagSet count]) // restliche Daten entfernen
          {
             for(i=Stepperposition-1;i<[SchnittDatenArray count];i++)
             {
@@ -1185,7 +1190,7 @@ private void button4_Click(object sender, EventArgs e)
 - (void)PfeilAktion:(NSNotification*)note
 {
 	//[self reportManDown:NULL];
-	NSLog(@"AVRController PfeilAktion note: %@",[[note userInfo]description]);
+   NSLog(@"\n\n\t************************\nAVRController PfeilAktion note: %@",[[note userInfo]description]);
    
    if ([[note userInfo]objectForKey:@"push"])
    {

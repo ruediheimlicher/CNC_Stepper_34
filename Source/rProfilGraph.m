@@ -764,7 +764,7 @@ int (^add)(int,int) = ^(int number1, int number2){
 		for (i=0;i<anz;i++)
 		{
 			NSPoint PunktA=NSMakePoint([[[DatenArray objectAtIndex:i]objectForKey:@"ax"]floatValue]*scale,[[[DatenArray objectAtIndex:i]objectForKey:@"ay"]floatValue]*scale);
-			//NSLog(@"i: %d Punkt.x: %.4f Punkt.y: %.4f",i,Punkt.x,Punkt.y);
+			//NSLog(@"i: %d stepperposition: %d Punkt.x: %.4f Punkt.y: %.4f",i,stepperposition,PunktA.x,PunktA.y);
 			[LinieA lineToPoint:PunktA];
 			NSBezierPath* tempMarkA;//=[NSBezierPath bezierPathWithOvalInRect:tempMarkRect];
          
@@ -813,13 +813,16 @@ int (^add)(int,int) = ^(int number1, int number2){
                [[NSColor redColor]set];
                //[tempMarkA fill];
                //[tempMarkA stroke];
+             //  NSLog(@"kreuz bei  i: %d",i);
                [NSBezierPath strokeLineFromPoint:NSMakePoint(PunktA.x-4.1, PunktA.y-4.1)toPoint:NSMakePoint(PunktA.x+4.1, PunktA.y+4.1)];
                [NSBezierPath strokeLineFromPoint:NSMakePoint(PunktA.x+4.1, PunktA.y-4.1) toPoint:NSMakePoint(PunktA.x-4.1, PunktA.y+4.1)];
+               
 
             }
             } // if screen
             
 			}
+         usleep(100);
 			//NSLog(@"in klickset i: %d Desc: %@",i,[klickset description]);
          
          if ([KlicksetA count] && screen)

@@ -431,9 +431,6 @@ float det(float v0[],float v1[])
 
 @implementation  rPfeiltaste  
 
-
-
-
 - (void)awakeFromNib
 {
    //NSLog(@"Pfeiltaste awakeFromNib");
@@ -444,9 +441,9 @@ float det(float v0[],float v1[])
 
 - (void)mouseUp:(NSEvent *)event
 {
-   NSLog(@"AVR mouseup");
+   NSLog(@"Pfeiltastemouseup");
    richtung=[self tag];
-   NSLog(@"AVR mouseUp Pfeiltaste richtung: %d",richtung);
+   //NSLog(@"AVR mouseUp Pfeiltaste richtung: %d",richtung);
    /*
     richtung:
     right: 1
@@ -462,7 +459,7 @@ float det(float v0[],float v1[])
 	
    int aktpwm=0;
    NSPoint location = [event locationInWindow];
-   NSLog(@"Pfeiltaste mouseUp location: %2.2f %2.2f",location.x, location.y);
+   //NSLog(@"Pfeiltaste mouseUp location: %2.2f %2.2f",location.x, location.y);
    [NotificationDic setObject:[NSNumber numberWithInt:0] forKey:@"push"];
    [NotificationDic setObject:[NSNumber numberWithFloat:location.x] forKey:@"locationx"];
    [NotificationDic setObject:[NSNumber numberWithFloat:location.y] forKey:@"locationy"];
@@ -1393,19 +1390,19 @@ return returnInt;
 - (void)usbattachAktion:(NSNotification*)note
 {
    int status = [[[note userInfo]objectForKey:@"attach"]intValue];
-   NSLog(@"usbattachAktion status: %d",status);
-   
+   NSLog(@"AVR usbattachAktion status: %d",status);
+   NSLog(@"usbstatus: %d",usbstatus);
    if (status == USBREMOVED)
    {
       //USB_OK_Feld.image = notok_image
       [USBKontrolle setStringValue:@"USB OFF"];
-      NSLog(@"usbattachAktion USBREMOVED");
+      NSLog(@"AVR usbattachAktion USBREMOVED");
    }
   else if (status == USBATTACHED)
    {
       //USB_OK_Feld.image = ok_image
       [USBKontrolle setStringValue:@"USB ON"];
-      NSLog(@"usbattachAktion USBATTACHED");
+      NSLog(@"AVR usbattachAktion USBATTACHED");
    }
    
 }
@@ -3395,6 +3392,7 @@ return returnInt;
    NSLog(@"reportManRight");
    if ((cncstatus)|| !([CNC_Seite1Check state] || [CNC_Seite2Check state]))
    {
+      NSLog(@"if (cncstatus)OR!([CNC_Seite1Check state] OR [CNC_Seite2Check state])");
       return;
    }
    //NSLog(@"reportManRight: %d",[sender tag]);
@@ -3976,7 +3974,7 @@ return returnInt;
 
 - (void)MausGraphAktion:(NSNotification*)note
 {
-	NSLog(@"MausGraphAktion note: %@",[[note userInfo]description]);
+	//NSLog(@"MausGraphAktion note: %@",[[note userInfo]description]);
    //NSLog(@"MausGraphAktion note: %@",[[note userInfo]objectForKey:@"mauspunkt"]);
    [CNCTable deselectAll:NULL];
 	[[self window]makeFirstResponder: ProfilGraph];
@@ -8887,6 +8885,7 @@ return returnInt;
 #pragma mark USB_Aktion
 - (IBAction)reportUSB_sendArray:(id)sender
 {
+   NSLog(@"reportUSB_sendArray");
    if ([SchnittdatenArray count]==0)
    {
       NSLog(@"reportUSB_sendArray SchnittdatenArray leer");
@@ -9064,7 +9063,7 @@ return returnInt;
 
 - (void)USBReadAktion:(NSNotification*)note
 {
-   NSLog(@"AVR  USBReadAktion note: %@",[[note userInfo]description]);
+   //NSLog(@"AVR  USBReadAktion note: %@",[[note userInfo]description]);
    if ([[note userInfo]objectForKey:@"inposition"])
    {
       if ([[[note userInfo]objectForKey:@"outposition"]intValue] > [PositionFeld intValue])
@@ -9092,7 +9091,7 @@ return returnInt;
    int homeanschlagCount=0;
    if ([[note userInfo]objectForKey:@"homeanschlagset"])
    {
-      NSLog(@"AVR USBReadAktion homeanschlagset: %@",[[note userInfo]objectForKey:@"homeanschlagset"]);
+      //NSLog(@"AVR USBReadAktion homeanschlagset: %@",[[note userInfo]objectForKey:@"homeanschlagset"]);
       homeanschlagCount = [[[note userInfo]objectForKey:@"homeanschlagset"]count];
    }
 
@@ -9186,7 +9185,7 @@ return returnInt;
    
    if([[note userInfo]objectForKey:@"home"])
    {
-      NSLog(@"AVR  USBReadAktion home: %d",[[[note userInfo]objectForKey:@"home"]intValue]);
+      //NSLog(@"AVR  USBReadAktion home: %d",[[[note userInfo]objectForKey:@"home"]intValue]);
       int home=0;
       if ([[note userInfo]objectForKey:@"home"])
       {
