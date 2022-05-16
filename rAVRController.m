@@ -688,44 +688,7 @@ private void button4_Click(object sender, EventArgs e)
    }
 	//NSLog(@"readUSB A");
    
-   
-   /*
-    // USB lesen
-    int status= rawhid_status();
-    
-    //NSLog(@"readUSB status: %d",status);
-    if (status == usbstatus)
-    {
-    //NSLog(@"readUSB status no change: %d",status);
-    [AVR setUSB_Device_Status:status];
-    if (status == 1)
-    {
-    if (USBStatus == 0)
-    {
-    int r = rawhid_open(1, 0x16C0, 0x0480, 0xFFAB, 0x0200);
-    if (r <= 0) 
-    {
-    NSLog(@"no rawhid device found");
-    //printf("no rawhid device found\n");
-    [AVR setUSB_Device_Status:0];
-    
-    }
-    else
-    {
-    NSLog(@"readUSB found rawhid device");
-    [AVR setUSB_Device_Status:1];
-    
-    }
-    USBStatus =1;
-    }
-    }
-    }
-    else
-    {
-    usbstatus=status;
-    }
-    */
-   result = rawhid_recv(0, buffer, 32, 50);
+     result = rawhid_recv(0, buffer, 32, 50);
    
 
 //fprintf(stderr,"readUSB rawhid_recv: %d\n",result);
@@ -855,17 +818,7 @@ private void button4_Click(object sender, EventArgs e)
          [NotificationDic setObject:[NSNumber numberWithInt:mausistdown] forKey:@"mausistdown"];
          // end verschieben
          
-         //dauer2 = [dateA timeIntervalSinceNow]*1000;
-         //NSLog(@"readUSB dauer bis (if Abschnittfertig): %f ms", dauer);
-         
-         //NSLog(@"readUSB AbschnittFertig:  %X",abschnittfertig);
-         //NSLog(@"readUSB AbschnittFertig:  %X buffer A: %d B: %d C: %d D: %d ",abschnittfertig,(UInt8)buffer[16],(UInt8)buffer[17],(UInt8)buffer[18],(UInt8)buffer[19]); 
-         //NSLog(@"readUSB AbschnittFertig:  %X buffer 20: %d 21: %d 22: %d 23: %d ",abschnittfertig,(UInt8)buffer[20],(UInt8)buffer[21],(UInt8)buffer[22],(UInt8)buffer[23]); 
-
-         //NSLog(@"readUSB AbschnittFertig: %X  Abschnittnummer: %@ ladePosition: %@ Stepperposition: %d",[AbschnittFertig intValue],Abschnittnummer , ladePosition, Stepperposition);
-         
-         // NSLog(@"AVRController mausistdown: %d abschnittfertig: %d anzrepeat: %d",mausistdown, abschnittfertig,anzrepeat);
-         /*
+          /*
           Array:
           
           0    schritteax lb
