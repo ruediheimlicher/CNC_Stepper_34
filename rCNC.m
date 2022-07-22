@@ -1502,6 +1502,131 @@ PortA=vs[n & 3]; warte10ms(); n++;
    
 }
 
+
+- (NSArray*)SegmentKoordinatenMitRadiusA:(float)RadiusA mitRadiusB:(float)RadiusB mitWinkel:(float)Winkel mitLage:(int)Lage mitAnzahlPunkten:(int)anzahlPunkte vonStartpunktA:(NSPoint)startpunktA vonStartpunktB:(NSPoint)startpunktB
+{
+   NSMutableArray* segmentKoordinatenArray=[[NSMutableArray alloc]initWithCapacity:0]; // Dics 
+ 
+   // linksbogen
+   /*
+    Lage: 
+    0: nach rechts oben ueber Startpunkt
+    1: nach links oben von Startpunkt
+   
+    2: nach links unten von Startpunkt
+    3: nach rechts unten von Startpunkt
+*/
+   NSPoint StartpunktA = startpunktA;
+   NSPoint MittelpunktA = startpunktA;
+
+   NSPoint StartpunktB = startpunktB;
+   NSPoint MittelpunktB = startpunktB;
+   
+   switch (Lage)
+   {
+      case 0: // nach rechts oben ueber Startpunkt
+      {
+         MittelpunktA.y -= RadiusA;
+         MittelpunktB.y -= RadiusB;
+      }break;
+
+      case 1: // nach links oben von Startpunkt
+      {
+         MittelpunktA.x -= RadiusA;
+         MittelpunktA.x -= RadiusB;
+      }break;
+ 
+      case 2: // nach links unten von Startpunkt
+      {
+         MittelpunktA.y += RadiusA;
+         MittelpunktB.y += RadiusB;
+      }break;
+         
+      case 3: // nach rechts unten von Startpunkt
+      {
+         MittelpunktA.x += RadiusA;
+         MittelpunktA.x += RadiusB;
+      }break;
+         
+          
+   }// switch Lage
+   
+   
+   float winkelschritt = Winkel/anzahlPunkte*M_PI/180;
+   
+   int index;
+   for(index=0;index<anzahlPunkte+1;index++) // incl. letzten Punkt
+   {
+      float tempAX=0;
+      float tempAY=0;
+      
+      float tempBX=0;
+      float tempBY=0;
+
+      //float phi=2*M_PI/anzahlPunkte*index;
+      float phi=winkelschritt*index;
+      switch (Lage)
+      {
+         case 0: // nach rechts oben ueber Startpunkt
+            tempAX=RadiusA*sin(phi);
+            tempAY=RadiusA*(1-cos(phi));
+ 
+            tempBX=RadiusB*sin(phi);
+            tempBY=RadiusB*(1-cos(phi));
+            
+            break;
+         case 1: // nach links oben von Startpunkt
+            tempAX=RadiusA*(1-cos(phi))*-1;
+            tempAY=RadiusA*sin(phi);
+            tempBX=RadiusB*(1-cos(phi))*-1;
+            tempBY=RadiusB*sin(phi);
+            
+            break;
+            
+         case 2:
+            tempAX=RadiusA*sin(phi)*-1;
+            tempAY=RadiusA*(1-cos(phi))*-1;
+
+            tempBX=RadiusB*sin(phi)*-1;
+            tempBY=RadiusB*(1-cos(phi))*-1;
+            
+            break;
+
+         case 3:  // nach links unten von Startpunkt
+            tempAX=RadiusA*(1-cos(phi));
+            tempAY=RadiusA*sin(phi)*-1;
+            
+            tempBX=RadiusB*(1-cos(phi));
+            tempBY=RadiusB*sin(phi)*-1;
+
+  
+            break;
+
+      }
+      tempAX += startpunktA.x;
+      tempAY += startpunktA.y;
+
+      tempBX += startpunktB.x;
+      tempBY += startpunktB.y;
+      
+      NSNumber* KoordinateAX=[NSNumber numberWithFloat:tempAX];
+      NSNumber* KoordinateAY=[NSNumber numberWithFloat:tempAY];
+
+      NSNumber* KoordinateBX=[NSNumber numberWithFloat:tempBX];
+      NSNumber* KoordinateBY=[NSNumber numberWithFloat:tempBY];
+
+      
+      NSDictionary* tempDic=[NSDictionary dictionaryWithObjectsAndKeys:KoordinateAX, @"ax",KoordinateAY,@"ay" ,KoordinateBX, @"bx",KoordinateBY,@"by" ,[NSNumber numberWithInt:index],@"index", nil];
+      [segmentKoordinatenArray addObject:tempDic];
+
+
+   } // for i
+   
+   
+   
+   return segmentKoordinatenArray;
+}
+
 - (NSArray*)EllipsenKoordinatenMitRadiusA:(float)RadiusA mitRadiusB:(float)RadiusB mitLage:(int)Lage
 {
 	NSPoint Mittelpunkt = NSMakePoint(0, 0);

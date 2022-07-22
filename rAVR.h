@@ -397,6 +397,8 @@
 - (IBAction)reportProfilOberseiteTask:(id)sender;
 - (IBAction)reportProfilUnterseiteTask:(id)sender;
 - (IBAction)reportEdgeTask:(id)sender;
+
+- (IBAction)reportRumpfrohrkonfigurieren:(id)sender;
 // SPI
 
 
