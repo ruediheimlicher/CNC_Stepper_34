@@ -441,7 +441,7 @@ float det(float v0[],float v1[])
 
 - (void)mouseUp:(NSEvent *)event
 {
-   NSLog(@"Pfeiltastemouseup");
+   NSLog(@"Pfeiltaste mouseup");
    richtung=[self tag];
    //NSLog(@"AVR mouseUp Pfeiltaste richtung: %d",richtung);
    /*
@@ -3127,6 +3127,7 @@ return returnInt;
       }
       NSLog(@"AVR  manRichtung aktpwm: %d",aktpwm);
       [self setStepperstrom:aktpwm];
+      [CNC setSpeed:10];
       NSMutableArray* ManArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
       
       // Startpunkt ist aktuelle Position. Lage: 2: Home horizontal
@@ -3249,7 +3250,7 @@ return returnInt;
       [HomeSchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"home"]; // 
       
       [HomeSchnittdatenDic setObject:[NSNumber numberWithInt:0] forKey:@"art"]; // 
-      //NSLog(@"reportManLeft SchnittdatenDic: %@",[HomeSchnittdatenDic description]);
+      NSLog(@"reportManLeft SchnittdatenDic: %@",[HomeSchnittdatenDic description]);
       
       NSNotificationCenter* nc=[NSNotificationCenter defaultCenter];
       [nc postNotificationName:@"usbschnittdaten" object:self userInfo:HomeSchnittdatenDic];
@@ -4408,7 +4409,7 @@ return returnInt;
          }
          else
          {
-            
+            NSLog(@"AVR PfeilAktion mouseup");
          }
       }
    }
@@ -8427,7 +8428,7 @@ return returnInt;
 
 	[nc postNotificationName:@"slavereset" object:self userInfo:NULL];
 
-   NSLog(@"Horizontal bis Anschlag");
+   //NSLog(@"Horizontal bis Anschlag");
    
    NSMutableArray* AnfahrtArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    
@@ -8451,7 +8452,7 @@ return returnInt;
    [AnfahrtArray addObject:[NSDictionary dictionaryWithObjectsAndKeys:[NSNumber numberWithFloat:PositionA.x],@"ax",[NSNumber numberWithFloat:PositionA.y],@"ay",[NSNumber numberWithFloat:PositionB.x],@"bx", [NSNumber numberWithFloat:PositionB.y],@"by",[NSNumber numberWithInt:index],@"index",[NSNumber numberWithInt:0],@"lage",nil]];
    */
 
-   NSLog(@"Vertikal bis Anschlag");
+   //NSLog(@"Vertikal bis Anschlag");
    // Vertikal ab bis Anschlag
    PositionA.y -=200;
    PositionB.y -=200;
@@ -8568,7 +8569,7 @@ return returnInt;
    {
       return;
    }
-   NSLog(@"Vertikal bis Anschlag");
+   //NSLog(@"Vertikal bis Anschlag");
    //return;
    NSMutableArray* AnfahrtArray = [[[NSMutableArray alloc]initWithCapacity:0]autorelease];
    
@@ -9075,6 +9076,8 @@ return returnInt;
        if ([[[note userInfo]objectForKey:@"stepperposition"]intValue] > [CNCPositionFeld intValue])
        {
          [CNCPositionFeld setIntValue:[[[note userInfo]objectForKey:@"stepperposition"]intValue]];
+       
+  // diff        
           //[ProfilGraph setStepperposition:[[[note userInfo]objectForKey:@"stepperposition"]intValue]];
           //[ProfilGraph setNeedsDisplay:YES];
        }
@@ -9087,6 +9090,7 @@ return returnInt;
    
    }
   
+   // diff intervalll, h
    
    int homeanschlagCount=0;
    if ([[note userInfo]objectForKey:@"homeanschlagset"])
@@ -9095,6 +9099,7 @@ return returnInt;
       homeanschlagCount = [[[note userInfo]objectForKey:@"homeanschlagset"]count];
    }
 
+   
    if([[note userInfo]objectForKey:@"abschnittfertig"])
    {
       NSLog(@"AVR USBReadAktion abschnittfertig: %@",[[note userInfo]objectForKey:@"abschnittfertig"]);
@@ -9183,6 +9188,7 @@ return returnInt;
 
    }
    
+   // nicht verwendet
    if([[note userInfo]objectForKey:@"home"])
    {
       //NSLog(@"AVR  USBReadAktion home: %d",[[[note userInfo]objectForKey:@"home"]intValue]);
